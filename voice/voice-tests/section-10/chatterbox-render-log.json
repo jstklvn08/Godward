@@ -52,5 +52,14 @@
     "audio_seconds": 29.12,
     "generation_seconds": 118.9,
     "realtime_factor": 4.08
+  },
+  "am_fenrir": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 32.56,
+    "generation_seconds": 127.9,
+    "realtime_factor": 3.93
   }
 }
