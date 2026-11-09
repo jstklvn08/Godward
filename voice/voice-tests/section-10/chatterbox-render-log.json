@@ -43,5 +43,14 @@
     "audio_seconds": 34.68,
     "generation_seconds": 134.0,
     "realtime_factor": 3.86
+  },
+  "am_michael": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 29.12,
+    "generation_seconds": 118.9,
+    "realtime_factor": 4.08
   }
 }
