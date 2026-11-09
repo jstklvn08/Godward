@@ -37,16 +37,19 @@ REFERENCE_SECONDS = 12.0
 # (number, gender, voice id, accent, Kokoro overall grade from VOICES.md)
 VOICES = [
     (1, "female", "af_heart", "American", "A"),
-    (2, "female", "af_bella", "American", "A-"),
-    (3, "female", "bf_emma", "British", "B-"),
+    (2, "female", "bf_emma", "British", "B-"),
+    (3, "female", "af_nicole", "American", "B-"),
     (4, "female", "bf_isabella", "British", "C"),
-    (5, "female", "af_sarah", "American", "C+"),
+    (5, "female", "af_kore", "American", "C+"),
     (6, "male", "am_michael", "American", "C+"),
     (7, "male", "am_fenrir", "American", "C+"),
-    (8, "male", "am_puck", "American", "C+"),
-    (9, "male", "bm_george", "British", "C"),
-    (10, "male", "bm_fable", "British", "C"),
+    (8, "male", "bm_george", "British", "C"),
+    (9, "male", "bm_fable", "British", "C"),
+    (10, "male", "bm_lewis", "British", "D+"),
 ]
+# Swapped out before the Chatterbox run because their Kokoro median pitch was within
+# 0.5 semitone of a kept voice: af_bella (A-, 203 Hz vs af_heart 201 Hz),
+# af_sarah (C+, 197 Hz vs af_heart), am_puck (C+, 114 Hz vs am_michael 115 Hz).
 
 
 def sentences(text: str = NARRATION) -> list[str]:
