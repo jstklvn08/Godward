@@ -16,5 +16,14 @@
     "audio_seconds": 30.52,
     "generation_seconds": 123.1,
     "realtime_factor": 4.03
+  },
+  "af_nicole": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 37.04,
+    "generation_seconds": 139.9,
+    "realtime_factor": 3.78
   }
 }
