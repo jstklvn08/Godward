@@ -25,5 +25,14 @@
     "audio_seconds": 37.04,
     "generation_seconds": 139.9,
     "realtime_factor": 3.78
+  },
+  "bf_isabella": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 31.16,
+    "generation_seconds": 124.2,
+    "realtime_factor": 3.98
   }
 }
