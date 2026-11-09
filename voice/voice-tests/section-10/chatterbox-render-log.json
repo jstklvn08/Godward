@@ -34,5 +34,14 @@
     "audio_seconds": 31.16,
     "generation_seconds": 124.2,
     "realtime_factor": 3.98
+  },
+  "af_kore": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 34.68,
+    "generation_seconds": 134.0,
+    "realtime_factor": 3.86
   }
 }
