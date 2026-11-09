@@ -27,7 +27,8 @@ NEAR_SEMITONES = 1.0  # medians closer than this count as "nearly identical"
 
 
 def words(text: str) -> list[str]:
-    return re.findall(r"[a-z']+", text.lower().replace("’", "'"))
+    text = text.lower().replace("’", "'").replace("saviour", "savior")  # spelling, not speech
+    return re.findall(r"[a-z']+", text)
 
 
 SCRIPT_WORDS = words(NARRATION)

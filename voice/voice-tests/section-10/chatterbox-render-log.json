@@ -26,15 +26,6 @@
     "generation_seconds": 139.9,
     "realtime_factor": 3.78
   },
-  "bf_isabella": {
-    "device": "cpu",
-    "seed": 1,
-    "exaggeration": 0.3,
-    "cfg_weight": 0.5,
-    "audio_seconds": 31.16,
-    "generation_seconds": 124.2,
-    "realtime_factor": 3.98
-  },
   "af_kore": {
     "device": "cpu",
     "seed": 1,
@@ -62,15 +53,6 @@
     "generation_seconds": 127.9,
     "realtime_factor": 3.93
   },
-  "bm_george": {
-    "device": "cpu",
-    "seed": 1,
-    "exaggeration": 0.3,
-    "cfg_weight": 0.5,
-    "audio_seconds": 33.92,
-    "generation_seconds": 128.8,
-    "realtime_factor": 3.8
-  },
   "bm_fable": {
     "device": "cpu",
     "seed": 1,
@@ -79,5 +61,32 @@
     "audio_seconds": 29.48,
     "generation_seconds": 119.5,
     "realtime_factor": 4.05
+  },
+  "bm_lewis": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 32.32,
+    "generation_seconds": 126.2,
+    "realtime_factor": 3.9
+  },
+  "bf_alice": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 33.16,
+    "generation_seconds": 129.5,
+    "realtime_factor": 3.91
+  },
+  "bm_daniel": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 27.0,
+    "generation_seconds": 110.6,
+    "realtime_factor": 4.1
   }
 }

@@ -17,12 +17,6 @@
     "realtime_factor": 0.263,
     "reference_seconds": 10.84
   },
-  "bf_isabella": {
-    "audio_seconds": 32.02,
-    "generation_seconds": 7.31,
-    "realtime_factor": 0.228,
-    "reference_seconds": 10.94
-  },
   "af_kore": {
     "audio_seconds": 31.35,
     "generation_seconds": 7.94,
@@ -41,12 +35,6 @@
     "realtime_factor": 0.245,
     "reference_seconds": 12.72
   },
-  "bm_george": {
-    "audio_seconds": 35.3,
-    "generation_seconds": 7.72,
-    "realtime_factor": 0.219,
-    "reference_seconds": 12.56
-  },
   "bm_fable": {
     "audio_seconds": 32.98,
     "generation_seconds": 7.52,
@@ -58,5 +46,17 @@
     "generation_seconds": 9.17,
     "realtime_factor": 0.26,
     "reference_seconds": 12.94
+  },
+  "bf_alice": {
+    "audio_seconds": 32.0,
+    "generation_seconds": 8.3,
+    "realtime_factor": 0.259,
+    "reference_seconds": 12.24
+  },
+  "bm_daniel": {
+    "audio_seconds": 31.15,
+    "generation_seconds": 7.9,
+    "realtime_factor": 0.254,
+    "reference_seconds": 12.96
   }
 }

@@ -39,17 +39,20 @@ VOICES = [
     (1, "female", "af_heart", "American", "A"),
     (2, "female", "bf_emma", "British", "B-"),
     (3, "female", "af_nicole", "American", "B-"),
-    (4, "female", "bf_isabella", "British", "C"),
+    (4, "female", "bf_alice", "British", "D"),
     (5, "female", "af_kore", "American", "C+"),
     (6, "male", "am_michael", "American", "C+"),
     (7, "male", "am_fenrir", "American", "C+"),
-    (8, "male", "bm_george", "British", "C"),
+    (8, "male", "bm_daniel", "British", "D"),
     (9, "male", "bm_fable", "British", "C"),
     (10, "male", "bm_lewis", "British", "D+"),
 ]
 # Swapped out before the Chatterbox run because their Kokoro median pitch was within
 # 0.5 semitone of a kept voice: af_bella (A-, 203 Hz vs af_heart 201 Hz),
 # af_sarah (C+, 197 Hz vs af_heart), am_puck (C+, 114 Hz vs am_michael 115 Hz).
+# Swapped after the first full check because they were within 1 semitone of another voice in BOTH
+# the Kokoro and Chatterbox takes: bf_isabella (C; vs af_heart 0.69 st Kokoro, 0.0 st Chatterbox)
+# and bm_george (C; vs am_fenrir 1.0 st Kokoro, 0.41 st Chatterbox).
 
 
 def sentences(text: str = NARRATION) -> list[str]:

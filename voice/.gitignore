@@ -2,3 +2,4 @@
 render.out
 .venv-kokoro/
 voice-tests/**/chatterbox.out
+voice-tests/**/check.out
