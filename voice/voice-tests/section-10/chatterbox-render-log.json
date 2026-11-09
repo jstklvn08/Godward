@@ -1,0 +1,11 @@
+{
+  "af_heart": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 31.56,
+    "generation_seconds": 142.5,
+    "realtime_factor": 4.51
+  }
+}
