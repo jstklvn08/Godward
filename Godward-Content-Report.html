@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godward Content Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF7EE; --card:#FFFDF8; --ink:#25221D; --ink2:#5C564C; --ink3:#756E62;
+  --line:#E4DDCD; --rule:#2B2822; --ot:#2F5FA8; --nt:#C8642B; --mute:#B9B1A1; --mark:#FFE9A3;
+  --hand:"Caveat","Segoe Print","Bradley Hand","Comic Sans MS",cursive;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1F1D1A; --card:#292622; --ink:#F1ECE1; --ink2:#C5BEB0; --ink3:#A59D8E;
+    --line:#3C3832; --rule:#D9D2C4; --ot:#5B8DDB; --nt:#CF7433; --mute:#6A645A; --mark:#6B5518;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1F1D1A; --card:#292622; --ink:#F1ECE1; --ink2:#C5BEB0; --ink3:#A59D8E;
+  --line:#3C3832; --rule:#D9D2C4; --ot:#5B8DDB; --nt:#CF7433; --mute:#6A645A; --mark:#6B5518;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--sans)}
+.page{max-width:860px;margin:0 auto;padding:48px 24px 72px}
+a{color:var(--ot);text-underline-offset:2px}
+h1,h2,h3{font-family:var(--hand);font-weight:700;line-height:1.1;margin:0}
+h1{font-size:clamp(44px,8vw,68px)}
+h2{font-size:clamp(32px,5vw,42px);margin:0 0 14px}
+h3{font-size:27px;margin:26px 0 8px}
+p{margin:0 0 14px}
+.kicker{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:10px}
+.sub{font-size:19px;color:var(--ink2);margin-top:14px;max-width:44em}
+.squiggle{display:block;width:210px;height:14px;margin-top:10px;color:var(--ot)}
+section{margin-top:56px}
+.sec-head{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.sec-head h2{margin:0}
+.num{flex:none;width:46px;height:46px;display:grid;place-items:center;font:700 28px/1 var(--hand);
+  border:2px solid var(--rule);border-radius:58% 42% 55% 45%/48% 58% 42% 52%}
+.box{background:var(--card);border:2px solid var(--rule);padding:22px 24px;
+  border-radius:255px 18px 225px 18px/18px 225px 18px 255px}
+.verdict{margin-top:30px}
+.verdict .big{font:700 clamp(30px,5vw,38px)/1.15 var(--hand);margin-bottom:10px}
+.verdict p:last-child{margin-bottom:0}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 14px 12px}
+.tile b{display:block;font:650 27px/1.15 var(--sans)}
+.tile span{display:block;font-size:14px;line-height:1.35;color:var(--ink2);margin-top:6px}
+mark{background:var(--mark);color:inherit;padding:0 3px;border-radius:3px}
+.scroll{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13.5px;color:var(--ink2);font-weight:600;border-bottom:2px solid var(--rule)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{font-size:14.5px;color:var(--ink2)}
+ul{margin:0 0 14px;padding-left:22px}
+li{margin-bottom:7px}
+figure{margin:18px 0}
+figcaption{font-weight:650;font-size:16px;margin-bottom:10px}
+.legend{display:flex;gap:18px;font-size:14px;color:var(--ink2);margin:-4px 0 10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.row{display:grid;grid-template-columns:230px 1fr;align-items:center;min-height:30px;outline:none;border-radius:4px;cursor:default}
+.row:hover .lab,.row:focus-visible .lab{color:var(--ink)}
+.row:focus-visible{box-shadow:0 0 0 2px var(--ot)}
+.lab{font-size:14.5px;color:var(--ink2);padding-right:12px;line-height:1.25}
+.lab.strong{color:var(--ink);font-weight:650}
+.plot{position:relative;height:30px}
+.grid{position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.bar{position:absolute;left:0;top:8px;height:14px;border-radius:0 4px 4px 0}
+.val{position:absolute;top:4px;font-size:14px;font-weight:650;white-space:nowrap;padding-left:7px}
+.axis{display:grid;grid-template-columns:230px 1fr;margin-top:2px}
+.ticks{position:relative;height:20px;font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.ticks span{position:absolute;transform:translateX(-50%)}
+.ticks span:first-child{transform:none}
+details{margin-top:10px;font-size:15px}
+summary{cursor:pointer;color:var(--ink2)}
+#tip{position:fixed;z-index:9;pointer-events:none;background:var(--ink);color:var(--paper);font-size:13.5px;line-height:1.35;
+  padding:7px 10px;border-radius:6px;max-width:260px;opacity:0;transition:opacity .08s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.avoid li::marker{content:"✗  ";color:var(--nt)}
+.do li::marker{content:"✓  ";color:var(--ot)}
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink2)}
+.sources{columns:2;column-gap:28px;font-size:14.5px;padding-left:18px}
+.sources li{break-inside:avoid;margin-bottom:5px}
+@media (max-width:640px){
+  body{font-size:16px}
+  .page{padding:32px 16px 56px}
+  .tiles{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr;padding-top:5px}
+  .plot{height:24px}.bar{top:5px}.val{top:1px}
+  .axis{grid-template-columns:1fr}.axis>div:first-child{display:none}
+  .box{padding:18px;border-radius:14px}
+  .sources{columns:1}
+}
+@media print{.page{max-width:none;padding:0}section{break-inside:avoid-page}#tip{display:none}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <div class="kicker">Godward content report · 9 November 2026</div>
+  <h1>Draw the Old Testament's greatest stories</h1>
+  <svg class="squiggle" viewBox="0 0 210 14" fill="none" aria-hidden="true"><path d="M2 8c14-7 24 6 38 1s22-8 36-2 26 6 40 0 24-6 38 0 28 5 54-1" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+  <p class="sub">What Christian content gets watched on YouTube, and what Godward should make first, based on 24 ranked channels and 73 BibleProject book videos.</p>
+</header>
+
+<div class="box verdict">
+  <div class="big">Make English, hand-drawn-style Old Testament story videos for teens and adults.</div>
+  <p>Stories out-perform prayer and Bible study among US-based channels. The Old Testament out-performs the New. The whiteboard "drawn and explained" format has built a 738K-subscriber channel on 139 videos. Nobody in this sample combines that format with dramatic, character-led storytelling as its main offer, and that's the opening.</p>
+</div>
+
+<div class="tiles">
+  <div class="tile"><b>396K</b><span>average views per video on the leading drawn-and-explained channel</span></div>
+  <div class="tile"><b>268K</b><span>average per video for US Bible story channels, against 80K for study and 61K for prayer</span></div>
+  <div class="tile"><b>+30%</b><span>more views per video for Old Testament book overviews than New</span></div>
+  <div class="tile"><b>4.8M</b><span>views on the format's biggest hit, "Every Angel in the Bible Drawn and Explained"</span></div>
+</div>
+
+<section>
+  <div class="sec-head"><div class="num">1</div><h2>Why "drawn and explained"</h2></div>
+  <p>The format is digital whiteboard animation with voiceover. Its leading example is <a href="https://www.youtube.com/@bible.animations">Bible Animations</a>, based in Australia: 738K subscribers, 55M views and 139 videos in about four years, or roughly one upload every ten days.</p>
+
+  <figure>
+    <figcaption>Average views per video, selected channels and category averages</figcaption>
+    <div id="chart1"></div>
+    <details><summary>View as table</summary><div class="scroll"><table>
+      <tr><th>Channel or group</th><th>Format</th><th class="n">Views per video</th></tr>
+      <tr><td>Expedition Bible</td><td>Cinematic documentary, 54 videos</td><td class="n">1,720,279</td></tr>
+      <tr><td>BibleProject</td><td>Hand-drawn explainer, 556 videos</td><td class="n">1,072,171</td></tr>
+      <tr><td>Bible Animations</td><td>Drawn and explained, 139 videos</td><td class="n">395,800</td></tr>
+      <tr><td>US Bible story average</td><td>4 channels</td><td class="n">267,983</td></tr>
+      <tr><td>US Bible study average</td><td>6 channels</td><td class="n">79,822</td></tr>
+      <tr><td>US prayer average</td><td>5 channels</td><td class="n">60,686</td></tr>
+    </table></div></details>
+  </figure>
+
+  <p>The format beats the US story average. It's also likely simpler to produce than the documentary and full-illustration work of the two channels above it, though I have no cost data to confirm that. The strongest titles promise <mark>a complete, visual map of something mysterious</mark>:</p>
+
+  <div class="scroll"><table>
+    <tr><th>Bible Animations video</th><th class="n">Views</th><th class="n">vs channel median</th></tr>
+    <tr><td>Every Angel in the Bible Drawn and Explained</td><td class="n">4.8M</td><td class="n">18.3×</td></tr>
+    <tr><td>The Entire Biblical Story told from Satan's Perspective</td><td class="n">4.4M</td><td class="n">16.8×</td></tr>
+    <tr><td>23 Bible Stories with Deeper Meanings</td><td class="n">2.5M</td><td class="n">9.5×</td></tr>
+    <tr><td>The Unforgivable Sin is FAR worse than I thought...</td><td class="n">2.0M</td><td class="n">7.6×</td></tr>
+    <tr><td>What REALLY Happens After You Die According To The Bible?</td><td class="n">1.8M</td><td class="n">6.9×</td></tr>
+    <tr><td>The Entire Bible Drawn and Explained (Every Book)</td><td class="n">860K</td><td class="n">3.3×</td></tr>
+    <tr><td>The Entire Old Testament Drawn and Explained</td><td class="n">799K</td><td class="n">3.0×</td></tr>
+    <tr><td>Every Demon in the Bible Drawn and Explained</td><td class="n">618K</td><td class="n">2.4×</td></tr>
+  </table></div>
+  <p class="note">Figures from OutlierKit, 17 July 2026. Videos with the same titles as "The Entire Bible" and "The Entire Old Testament" showed 1.8M and 936K on YouTube in November, so these may have grown since.</p>
+
+  <h3>What the channel makes</h3>
+  <p>Its six main topic clusters are deeper meanings in Bible stories (15 videos), controversial questions (14), Satan, demons and spiritual warfare (12), end times (11), drawn-and-explained mega-overviews (10) and the life of Paul (6). Most of the catalog is theology and lore, so <strong>a story-first channel in this style wouldn't be competing with it directly.</strong></p>
+</section>
+
+<section>
+  <div class="sec-head"><div class="num">2</div><h2>Why Bible stories</h2></div>
+  <p>Worldwide, prayer gets the most views, but that's driven by Brazilian channels posting thousands of Portuguese videos. Bispo Bruno Leonardo alone has 12.84B views. Among US-based channels, the order reverses.</p>
+  <div class="scroll"><table>
+    <tr><th>US-based channels</th><th class="n">Bible story (4)</th><th class="n">Bible study (6)</th><th class="n">Prayer (5)</th></tr>
+    <tr><td>Total lifetime views</td><td class="n"><b>2.03B</b></td><td class="n">976M</td><td class="n">467M</td></tr>
+    <tr><td>Number of videos</td><td class="n">7,586</td><td class="n">12,232</td><td class="n">7,691</td></tr>
+    <tr><td>Average views per video</td><td class="n"><b>267,983</b></td><td class="n">79,822</td><td class="n">60,686</td></tr>
+    <tr><td>Median views per video</td><td class="n"><b>224,852</b></td><td class="n">58,493</td><td class="n">38,923</td></tr>
+    <tr><td>Views in the last 28 days</td><td class="n"><b>19.6M</b></td><td class="n">16.0M</td><td class="n">3.0M</td></tr>
+  </table></div>
+  <p>The groups differ significantly on total views (p = 0.046). Views per video narrowly misses that bar (p = 0.052), and recent views aren't significantly different (p = 0.22).</p>
+  <p><strong>US search demand agrees, with a catch.</strong> On Google Trends for US YouTube search, "prayer" alone beats "bible story" easily, but that word also catches non-Christian searches. Against specifically Christian prayer phrases, Bible stories lead 78.0 to 42.7, with Bible study at 33.9.</p>
+</section>
+
+<section>
+  <div class="sec-head"><div class="num">3</div><h2>Why the Old Testament</h2></div>
+  <p>BibleProject's two book-by-book playlists have the same creator, style and format, which makes them a fair test.</p>
+  <div class="scroll"><table>
+    <tr><th>BibleProject overviews</th><th class="n">Old Testament</th><th class="n">New Testament</th></tr>
+    <tr><td>Videos</td><td class="n">41</td><td class="n">32</td></tr>
+    <tr><td>Total views</td><td class="n"><b>175.3M</b></td><td class="n">105.2M</td></tr>
+    <tr><td>Average views per video</td><td class="n"><b>4.28M</b></td><td class="n">3.29M</td></tr>
+    <tr><td>Views per minute of running time</td><td class="n"><b>561,349</b></td><td class="n">384,292</td></tr>
+  </table></div>
+  <p>The gap is statistically significant (views per video p ≈ 0.002, views per minute p &lt; 0.001), and 15 of the 20 most-viewed videos are Old Testament.</p>
+
+  <figure>
+    <figcaption>The 12 most-watched Bible books, by views of the book's overview video</figcaption>
+    <div class="legend"><span><i style="background:var(--ot)"></i>Old Testament</span><span><i style="background:var(--nt)"></i>New Testament</span></div>
+    <div id="chart2"></div>
+    <details><summary>View as table</summary><div class="scroll"><table>
+      <tr><th>Book</th><th>Testament</th><th class="n">Views</th></tr>
+      <tr><td>Genesis</td><td>Old</td><td class="n">10.0M</td></tr>
+      <tr><td>Revelation</td><td>New</td><td class="n">9.6M</td></tr>
+      <tr><td>Joshua</td><td>Old</td><td class="n">6.6M</td></tr>
+      <tr><td>Job</td><td>Old</td><td class="n">6.6M</td></tr>
+      <tr><td>Isaiah</td><td>Old</td><td class="n">6.1M</td></tr>
+      <tr><td>Exodus</td><td>Old</td><td class="n">5.9M</td></tr>
+      <tr><td>Ezekiel</td><td>Old</td><td class="n">5.9M</td></tr>
+      <tr><td>1 Samuel</td><td>Old</td><td class="n">5.8M</td></tr>
+      <tr><td>Judges</td><td>Old</td><td class="n">5.7M</td></tr>
+      <tr><td>Matthew</td><td>New</td><td class="n">5.6M</td></tr>
+      <tr><td>1–2 Kings</td><td>Old</td><td class="n">5.3M</td></tr>
+      <tr><td>Daniel</td><td>Old</td><td class="n">5.3M</td></tr>
+    </table></div></details>
+  </figure>
+  <p>Narrative books dominate, and the weakest performers are short New Testament letters such as 2 Peter (1.5M) and 2 Thessalonians (1.4M). Revelation is the one New Testament book worth prioritizing.</p>
+</section>
+
+<section>
+  <div class="sec-head"><div class="num">4</div><h2>The first eight videos</h2></div>
+  <p>The order follows book popularity and story strength. The working titles are suggestions, using a placeholder series name, "Drawn Out". Godward should have its own name rather than borrowing Bible Animations' signature phrase.</p>
+  <div class="scroll"><table>
+    <tr><th>#</th><th>Story</th><th>Working title</th><th class="n">Book's overview views</th></tr>
+    <tr><td>1</td><td>Creation and the fall</td><td>How Everything Went Wrong in Eden, Drawn Out</td><td class="n">Genesis 10.0M</td></tr>
+    <tr><td>2</td><td>Jericho and the conquest</td><td>The Fall of Jericho, Drawn Out</td><td class="n">Joshua 6.6M</td></tr>
+    <tr><td>3</td><td>Job's suffering</td><td>The Test of Job, Drawn Out</td><td class="n">Job 6.6M</td></tr>
+    <tr><td>4</td><td>Moses and the plagues</td><td>All Ten Plagues of Egypt, Drawn Out</td><td class="n">Exodus 5.9M</td></tr>
+    <tr><td>5</td><td>David and Goliath</td><td>David and Goliath, Drawn Out</td><td class="n">1 Samuel 5.8M</td></tr>
+    <tr><td>6</td><td>Samson or Gideon</td><td>The Rise and Fall of Samson, Drawn Out</td><td class="n">Judges 5.7M</td></tr>
+    <tr><td>7</td><td>Daniel or Esther</td><td>Daniel in Babylon, Drawn Out</td><td class="n">Daniel 5.3M</td></tr>
+    <tr><td>8</td><td>Revelation</td><td>Every Beast in Revelation, Drawn Out</td><td class="n">Revelation 9.6M</td></tr>
+  </table></div>
+
+  <h3>How long should they be?</h3>
+  <p>The evidence points two ways. BibleProject's book overviews run mostly 7–9 minutes and hold 4.3M views per video, and its 5–7 minute Torah Series earns about 621K views per minute. But Bible Animations' recent uploads average about 27 minutes, and its "entire" overviews run for over an hour.</p>
+  <p><strong>Recommended test:</strong> make the first six as standalone 6–9 minute stories, then stitch them into one 30–45 minute compilation. That tests long-form viewing at almost no extra cost. Let your own retention numbers decide from there.</p>
+</section>
+
+<section>
+  <div class="sec-head"><div class="num">5</div><h2>How to make them work</h2></div>
+  <div class="two">
+    <div class="box">
+      <h3 style="margin-top:0">Do</h3>
+      <ul class="do">
+        <li>Tell the story with characters and tension, not book structure.</li>
+        <li>Lead with a mystery, a conflict or an unusual point of view.</li>
+        <li>Make each video stand on its own.</li>
+        <li>Aim for one upload every 7–10 days.</li>
+        <li>Review retention after the first 5–8 videos.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3 style="margin-top:0">Avoid</h3>
+      <ul class="avoid">
+        <li>Two-part videos: Part 1 beat Part 2 in every pair checked.</li>
+        <li>Short letters early on.</li>
+        <li>English prayer as the main format.</li>
+        <li>Copying BibleProject's book-summary approach.</li>
+        <li>Clickbait the story can't back up, which costs trust.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Kids or adults?</h3>
+  <p>Aim for teens and adults. Kids' channels get strong views per subscriber, but repeat viewing may inflate those numbers, and YouTube limits ads and comments on content made for children.</p>
+  <h3>A realistic money picture</h3>
+  <p>OutlierKit estimates Bible Animations earns about $2K–$6K a month including sponsorship, after four years and 738K subscribers. That's a third-party estimate rather than reported income, but it's a useful check on expectations.</p>
+  <h3>A good second format</h3>
+  <p>Once the channel has traction, try Bible study. US study channels drew nearly as many recent views as story channels (16.0M against 19.6M), though that category depends on viewers trusting a specific teacher.</p>
+</section>
+
+<section>
+  <div class="sec-head"><div class="num">6</div><h2>How far to trust this</h2></div>
+  <ul>
+    <li><strong>Small, hand-picked sample.</strong> These channels were selected by hand, so the report shows what has worked for them and can't guarantee the same for a new channel.</li>
+    <li><strong>One channel carries the format case.</strong> Bible Animations is the only drawn-and-explained channel measured, and it's Australian, so it isn't part of the US averages. Similar channels such as The Drawn Bible weren't analyzed.</li>
+    <li><strong>"US" means where a channel is registered.</strong> Those channels' views include viewers worldwide.</li>
+    <li><strong>Book popularity comes from one channel.</strong> Reading data points elsewhere: Psalms is often cited as the most-read book but ranks 21st by video views.</li>
+    <li><strong>The story category skews young.</strong> Three of the four US story channels are aimed largely at children, which may inflate their averages.</li>
+    <li><strong>Numbers are approximate.</strong> Channel figures come from third-party trackers, and YouTube rounds view counts. Bible Animations' figures are from July 2026, the others from November 2026.</li>
+    <li><strong>No retention data.</strong> Public numbers don't show how long people watch, which is what will decide length and pacing.</li>
+  </ul>
+</section>
+
+<footer>
+  <h3 style="margin-top:0">Sources</h3>
+  <ul class="sources">
+    <li><a href="https://outlierkit.com/channel/bible-animations">OutlierKit: Bible Animations</a></li>
+    <li><a href="https://www.youtube.com/@bibleproject/playlists">BibleProject playlists</a></li>
+    <li><a href="https://trends.google.com/trends/explore?geo=US&amp;gprop=youtube&amp;date=today%2012-m&amp;q=prayer,bible%20story,bible%20study">Google Trends: US YouTube search</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/top/category/religion/">vidIQ Religion top 100</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@bibleproject/">vidIQ: BibleProject</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@superbooktv/">vidIQ: Superbook</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@saddlebackkids/">vidIQ: Saddleback Kids</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@theholytales/">vidIQ: The Holy Tales</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/expeditionbible/">vidIQ: Expedition Bible</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@gracetoyou/">vidIQ: Grace to You</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@MikeWinger/">vidIQ: Mike Winger</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@ligonier/">vidIQ: Ligonier</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@bibletalktv/">vidIQ: BibleTalk.tv</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@koinoniahouse/">vidIQ: Koinonia House</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@thebiblerecap/">vidIQ: The Bible Recap</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@AbideMeditationApp/">vidIQ: Abide</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@EVANGELISTFERNANDOPEREZ/">vidIQ: Fernando Perez</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/UCGbJnU4B58FBeaG_OUwHvjA/">vidIQ: Prayer Meets Heaven</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@HallowApp/">vidIQ: Hallow</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/UCgThUHsRcKuz60xV5ONSF8w/">vidIQ: Daily Prayer Inspirations</a></li>
+    <li><a href="https://vidiq.com/youtube-stats/channel/@bispobrunoleonardo/">vidIQ: Bispo Bruno Leonardo</a></li>
+  </ul>
+</footer>
+</div>
+<div id="tip" role="status"></div>
+<script>
+(function(){
+  var tip=document.getElementById('tip');
+  function show(row,x,y){
+    tip.textContent=row.dataset.tip; tip.style.opacity=1;
+    var r=tip.getBoundingClientRect();
+    var left=Math.min(x+14,innerWidth-r.width-8), top=y-r.height-10;
+    tip.style.left=Math.max(8,left)+'px'; tip.style.top=(top<8?y+16:top)+'px';
+  }
+  function hide(){tip.style.opacity=0}
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+  function render(id,rows,max,ticks,fmt){
+    var host=document.getElementById(id),html='';
+    var grid=ticks.map(function(t){return '<span class="grid" style="left:'+(t/max*100)+'%"></span>'}).join('');
+    rows.forEach(function(r){
+      var w=r.v/max*100;
+      html+='<div class="row" tabindex="0" aria-label="'+esc(r.l)+': '+esc(r.t||fmt(r.v))+'" data-tip="'+esc(r.l)+': '+esc(r.t||fmt(r.v))+'">'
+        +'<div class="lab'+(r.hl?' strong':'')+'">'+esc(r.l)+'</div>'
+        +'<div class="plot">'+grid+'<span class="bar" style="width:'+w+'%;background:'+r.c+'"></span>'
+        +(r.hl?'<span class="val" style="left:'+w+'%">'+esc(fmt(r.v))+'</span>':'')+'</div></div>';
+    });
+    html+='<div class="axis"><div></div><div class="ticks">'+ticks.map(function(t){return '<span style="left:'+(t/max*100)+'%">'+fmt(t)+'</span>'}).join('')+'</div></div>';
+    host.innerHTML=html;
+    host.querySelectorAll('.row').forEach(function(row){
+      row.addEventListener('mousemove',function(e){show(row,e.clientX,e.clientY)});
+      row.addEventListener('mouseleave',hide);
+      row.addEventListener('focus',function(){var b=row.getBoundingClientRect();show(row,b.left+40,b.top)});
+      row.addEventListener('blur',hide);
+    });
+  }
+  var mute='var(--mute)',ot='var(--ot)',nt='var(--nt)';
+  function k(v){return v===0?'0':v>=1e6?(v/1e6).toFixed(v%1e6?1:0)+'M':Math.round(v/1e3)+'K'}
+  render('chart1',[
+    {l:'Expedition Bible',v:1720279,c:mute,t:'1,720,279'},
+    {l:'BibleProject',v:1072171,c:mute,t:'1,072,171'},
+    {l:'Bible Animations (drawn and explained)',v:395800,c:ot,hl:1,t:'395,800'},
+    {l:'US Bible story average',v:267983,c:mute,t:'267,983'},
+    {l:'US Bible study average',v:79822,c:mute,t:'79,822'},
+    {l:'US prayer average',v:60686,c:mute,t:'60,686'}
+  ],2000000,[0,500000,1000000,1500000,2000000],k);
+  function m(v){return v===0?'0':(v%1?v.toFixed(1):v)+'M'}
+  render('chart2',[
+    {l:'Genesis',v:10,c:ot,hl:1},{l:'Revelation',v:9.6,c:nt,hl:1},{l:'Joshua',v:6.6,c:ot},{l:'Job',v:6.6,c:ot},
+    {l:'Isaiah',v:6.1,c:ot},{l:'Exodus',v:5.9,c:ot},{l:'Ezekiel',v:5.9,c:ot},{l:'1 Samuel',v:5.8,c:ot},
+    {l:'Judges',v:5.7,c:ot},{l:'Matthew',v:5.6,c:nt},{l:'1–2 Kings',v:5.3,c:ot},{l:'Daniel',v:5.3,c:ot}
+  ],12,[0,3,6,9,12],m);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Large local Python environment and model downloads
+voice/.venv/
+voice/.cache/
+voice/install-*.log
+
+__pycache__/
+*.pyc
+desktop.ini
+Thumbs.db
+.env

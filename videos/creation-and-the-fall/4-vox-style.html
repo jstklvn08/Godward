@@ -1,0 +1,260 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Creation and the Fall: Mixed-Media Explainer</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="shared.js"></script>
+<script src="style-kit.js"></script>
+<script>
+const {G,R,C,E,L,P,T,pop,prog,ease,lerp,mix,sc,rng,clamp}=K;
+const {tw,hash,jit,piece,glow,torn,ridge,strip,tape,label,labelW,mark,scribble,arrow,highlight,paperDefs,paperOver,sword,wing}=S;
+const INK='#141416',CREAM='#EFE6D2',YEL='#FFDE00',RED='#E22F24';
+const BOUND=[2.5,5.05,7.65];
+
+const defs=`<defs>
+<linearGradient id="skA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9B884"/><stop offset="1" stop-color="#8E5A3A"/></linearGradient>
+<linearGradient id="tuA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E7CB84"/><stop offset="1" stop-color="#7C5A2A"/></linearGradient>
+<linearGradient id="tuE" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4DFD0"/><stop offset="1" stop-color="#6F7F88"/></linearGradient>
+<linearGradient id="bark" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B98A5E"/><stop offset="1" stop-color="#3B2A1E"/></linearGradient>
+<radialGradient id="leaf" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#A8D47E"/><stop offset="1" stop-color="#2A6A3E"/></radialGradient>
+<radialGradient id="apple" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#FF9A7C"/><stop offset="1" stop-color="#B51E1E"/></radialGradient>
+<radialGradient id="globe" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#BFE6EE"/><stop offset=".6" stop-color="#4C8EC2"/><stop offset="1" stop-color="#16345F"/></radialGradient>
+<radialGradient id="land" cx=".4" cy=".3" r=".9"><stop offset="0" stop-color="#C7D88A"/><stop offset="1" stop-color="#4E7A3A"/></radialGradient>
+<linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C9BBA2"/><stop offset="1" stop-color="#4D4238"/></linearGradient>
+<linearGradient id="snake" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C8E070"/><stop offset="1" stop-color="#1F6A3A"/></linearGradient>
+</defs>`;
+
+// Profile figure facing right. Feet at y=0, head near y=-430.
+function person(o){
+  const {f=false,step=0,reach=0,bow=0,fruit=false}=o;
+  const a=step*30,sk='#D7A373',sd='#A9744C';
+  let g='';
+  if(!f)g+=L(-14,-170,-14-a,-14,sd,29)+E(-8-a,-8,27,11,sd);
+  else g+=L(-12,-150,-12-a*.7,-14,sd,25)+E(-6-a*.7,-8,25,10,sd);
+  g+=L(14,-170,14+a,-14,sk,f?25:29)+E(20+a,-8,27,11,sk);
+  const legs=g;g='';
+  // far arm
+  g+=L(-30,-262,-52-a*.6,-150,sd,25);
+  // hair behind
+  if(f)g+=P('M-40 -404 C-96 -396 -104 -300 -96 -214 C-92 -176 -66 -170 -48 -190 C-36 -242 -28 -292 -16 -320Z','#2A1C14');
+  // tunic
+  g+=f?P('M-54 -286 Q0 -304 50 -284 L72 -74 Q0 -56 -72 -74Z','url(#tuE)'):P('M-56 -284 Q0 -304 52 -284 L66 -96 Q0 -80 -66 -96Z','url(#tuA)');
+  g+=P(f?'M-14 -280 L-26 -70 M24 -280 L34 -72':'M-16 -280 L-24 -92 M22 -282 L30 -92','none',{stroke:'#000',opacity:.22,'stroke-width':4});
+  g+=L(-58,-190,58,-192,'#3A2A1A',11);
+  // head
+  let h=P('M-14 -298 L-14 -262 L26 -262 L24 -300Z',sd);
+  h+=P('M-42 -392 C-30 -428 30 -432 46 -396 C50 -384 50 -376 52 -368 L66 -348 C68 -342 60 -340 54 -340 C56 -332 56 -326 52 -322 C54 -316 50 -306 44 -302 C30 -292 6 -292 -8 -306 L-44 -330 C-54 -350 -50 -376 -42 -392Z','url(#skA)');
+  if(f)h+=P('M-44 -364 C-58 -436 48 -456 52 -394 C28 -414 -2 -408 -14 -390 C-24 -376 -30 -356 -38 -340 C-42 -344 -44 -354 -44 -364Z','#2A1C14');
+  else h+=P('M-46 -372 C-62 -434 42 -456 52 -396 C30 -412 0 -406 -12 -390 C-20 -378 -26 -360 -34 -346 C-40 -350 -44 -360 -46 -372Z','#1F1712')+P('M52 -340 C54 -320 52 -308 46 -292 C28 -268 -8 -272 -20 -316 C-6 -320 22 -332 52 -340Z','#1F1712');
+  h+=E(34,-376,6.5,4.2,'#111')+L(24,-391,46,-392,'#111',4.5);
+  if(f)h+=P('M50 -322 Q40 -318 32 -324','none',{stroke:'#6E2A22','stroke-width':4});
+  g+=`<g transform="rotate(${bow} 0 -280) translate(4 -290) scale(.8) translate(-4 290)">${h}</g>`;
+  // near arm
+  const hx=lerp(40+a*.6,128,reach),hy=lerp(-146,-330,reach);
+  g+=L(26,-264,hx,hy,sk,27)+C(hx,hy,16,sk);
+  if(fruit)g+=C(hx+6,hy-20,24,'url(#apple)');
+  return `<g filter="url(#ht)">${legs}<g transform="translate(0 -38)">${g}</g></g>`;
+}
+function vTree(){
+  let g=P('M-74 0 C-40 -110 -50 -260 -40 -400 L40 -400 C50 -260 40 -110 74 0Z','url(#bark)');
+  g+=P('M-30 -300 C-90 -340 -140 -360 -190 -410 L-160 -430 C-110 -390 -60 -370 -24 -350Z M30 -320 C100 -350 150 -380 190 -420 L170 -440 C120 -400 70 -380 26 -360Z','#5C4230');
+  [[-210,-520,130],[210,-520,130],[-90,-640,150],[100,-650,150],[0,-500,170]].forEach(a=>g+=C(a[0],a[1],a[2],'url(#leaf)'));
+  [[-220,-470],[-120,-590],[40,-470],[190,-560],[10,-690],[260,-470]].forEach(a=>g+=C(a[0],a[1],26,'url(#apple)'));
+  return g;
+}
+const NEP='M1290 330 C1200 300 1150 340 1180 390 C1210 440 1320 430 1330 500 C1340 570 1200 560 1200 630 C1200 690 1320 690 1310 760';
+
+// Beat 1: Genesis page with verse 1 highlighted, an arrow to a collaged earth.
+function beatPage(t,l){
+  let g=R(0,0,1920,1080,0,'#D9CDB3');
+  const push=lerp(1,1.045,l/2.6);
+  let w='';
+  // Black space paper with light and a cut-out globe.
+  let sp=strip(1120,90,740,880,6,'#121220',{ax:18,ay:8});
+  const lp=ease.out(prog(l,.1,.5));
+  // Pure light pouring in from off-page; no sun, no visible source.
+  const fl=Math.floor(t*12);
+  sp+=`<clipPath id="spc"><path d="${torn(1120,90,740,880,6,18,8)}"/></clipPath><g clip-path="url(#spc)">`;
+  for(let i=0;i<7;i++){const a=8+i*12.5+(hash(fl,i)-.5)*1.4,w=3.6+(i%2)*1.8;sp+=`<g transform="translate(1040 -40) rotate(${a})"><path d="M0 0 L1300 ${-1300*Math.tan(w*Math.PI/180)} L1300 ${1300*Math.tan(w*Math.PI/180)}Z" fill="${i%2?'#FFF7C2':YEL}" opacity="${i%2?.82:.92}"/></g>`;}
+  sp+='</g>';
+  const r0=rng(31);
+  for(let i=0;i<70;i++){const x=1150+r0()*680,y=120+r0()*820,s=2+r0()*5;sp+=C(x,y,s,'#fff',{opacity:.35+.65*hash(Math.floor(t*6),i)});}
+  w+=G(jit(t,3,1490,520,2),sp,lp);
+  w+=piece(t,.55,1490,480,`<g transform="translate(1490 660)"><g filter="url(#ht)"><circle cx="0" cy="-180" r="218" fill="url(#globe)"/>
+    <path d="M-196 -250 C-120 -372 -30 -392 40 -386 C70 -360 20 -330 -30 -310 C-60 -290 -30 -250 -70 -230 C-110 -210 -160 -190 -198 -160 C-210 -190 -210 -220 -196 -250Z" fill="url(#land)"/>
+    <path d="M30 -250 C90 -290 170 -290 212 -230 C216 -170 200 -110 170 -60 C130 -80 150 -140 100 -160 C60 -180 10 -200 30 -250Z" fill="url(#land)"/>
+    <path d="M-120 -90 C-70 -120 -30 -100 -40 -60 C-30 -20 -60 20 -90 28 C-130 -10 -150 -60 -120 -90Z" fill="url(#land)"/></g></g>`,4,3);
+  // The Genesis page.
+  let pg=strip(120,50,960,980,2,'#F3EAD3',{ax:6,ay:3,edge:'#FFFDF5'});
+  const px=210;
+  pg+=T(600,142,'THE FIRST BOOK OF MOSES, CALLED',{size:24,font:'Georgia',anchor:'middle',fill:'#4A3C2A',ls:4});
+  pg+=T(600,232,'GENESIS',{size:92,font:'Georgia',weight:700,anchor:'middle',fill:INK,ls:10});
+  pg+=T(600,288,'CHAPTER 1',{size:26,font:'Georgia',anchor:'middle',fill:'#4A3C2A',ls:6});
+  pg+=L(240,322,960,322,INK,2.5);
+  const S1=58,y1=410,y2=490,x1=px+58;
+  const a='In the beginning God created',b='the heaven and the earth.';
+  const wa=tw(a,S1),wb=tw(b,S1);
+  pg+=highlight(x1-4,y1-52,wa+10,68,ease.inOut(prog(l,.55,1.15)),YEL);
+  pg+=highlight(x1-4,y2-52,wb+10,68,ease.inOut(prog(l,1.15,1.55)),YEL);
+  pg+=T(px,y1,'1',{size:38,font:'Georgia',weight:700,fill:RED});
+  pg+=T(x1,y1,a,{size:S1,font:'Georgia',fill:INK})+T(x1,y2,b,{size:S1,font:'Georgia',fill:INK});
+  const rest=[['2','And the earth was without form, and void;'],['','and darkness was upon the face of the deep.'],['','And the Spirit of God moved upon the face'],['','of the waters.'],['3','And God said, Let there be light:'],['','and there was light.']];
+  rest.forEach((r,i)=>{const y=590+i*62;if(r[0])pg+=T(px,y,r[0],{size:28,font:'Georgia',weight:700,fill:'#8A7A62'});pg+=T(x1,y,r[1],{size:38,font:'Georgia',fill:'#6D6150'});});
+  w+=G(jit(t,1,600,540,1.6),pg);
+  w+=tape(610,48,220,-2);
+  // Marker notes over the page.
+  const cx=x1+tw('In the beginning God ',S1)+tw('created',S1)/2;
+  w+=mark(scribble(cx,y1-18,tw('created',S1)/2+13,42,4),ease.inOut(prog(l,1.5,1.9)),RED,8);
+  w+=arrow(x1+wb+20,y2-14,1050,560,1262,520,ease.inOut(prog(l,1.8,2.2)),RED,9);
+  g+=G(sc(960,540,push),w);
+  g+=piece(t,.25,330,960,label(170,948,'GENESIS 1:1',{size:40,rot:-2}),5,2);
+  return g;
+}
+
+// Beat 2: annotated schematic map.
+function beatMap(t,l){
+  let g=R(0,0,1920,1080,0,'#2A5A4A');
+  let m=strip(40,40,1190,1000,8,'#EADFC2',{ax:8,ay:4});
+  const sea='#9CC6C2';
+  const clip=`<clipPath id="mapc"><path d="${torn(44,44,1182,992,8,8,4)}"/></clipPath>`;
+  let s=`<path d="M30 300 C180 280 300 330 400 380 C440 420 430 490 390 560 C300 530 200 580 30 610Z" fill="${sea}"/>`;
+  s+=`<path d="M930 720 C1000 700 1090 760 1260 860 V1060 H1140 C1060 960 980 800 930 720Z" fill="${sea}"/>`;
+  s+=`<path d="M300 40 H620 C640 90 560 130 470 124 C400 120 310 110 300 40Z" fill="${sea}"/>`;
+  s+=`<path d="M1030 30 C1120 30 1150 120 1130 230 C1110 300 1050 290 1030 210 C1010 140 1000 60 1030 30Z" fill="${sea}"/>`;
+  // Mountains where both rivers start.
+  for(let i=0;i<7;i++){const x=480+i*62,y=172+Math.sin(i*2.1)*12;s+=P(`M${x-34} ${y+30} L${x} ${y-28} L${x+34} ${y+30}`,'none',{stroke:'#8A7A62','stroke-width':5});}
+  m+=clip+`<g clip-path="url(#mapc)">${s}`;
+  // Grid
+  for(let i=1;i<8;i++)m+=L(40+i*150,40,40+i*150,1040,'#6D6150',1.4,{opacity:.32,'stroke-dasharray':'3 10'});
+  for(let i=1;i<7;i++)m+=L(40,40+i*150,1240,40+i*150,'#6D6150',1.4,{opacity:.32,'stroke-dasharray':'3 10'});
+  m+='</g>';
+  m+=T(150,455,'Mediterranean',{size:30,font:'Georgia',style:'italic',fill:'#2C5A5C'});
+  m+=T(1000,742,'Persian Gulf',{size:26,font:'Georgia',style:'italic',fill:'#1F4A4C',extra:'transform="rotate(30 1000 742)"'});
+  const tig='M720 210 C760 300 770 340 810 420 C850 500 880 590 925 650 C940 680 950 700 945 722';
+  const eup='M620 200 C570 240 510 300 525 390 C540 470 640 530 720 590 C800 650 900 690 945 722';
+  const tp=ease.inOut(prog(l,.2,1.15)),ep=ease.inOut(prog(l,.5,1.45));
+  m+=mark(tig,tp,'#0F5BB8',11)+mark(eup,ep,'#0F5BB8',11);
+  let out=G(jit(t,1,640,540,1.4),m);
+  out+=piece(t,1.05,1030,330,label(860,300,'TIGRIS (HIDDEKEL)',{size:30})+L(860,326,800,372,INK,4),2,1.6);
+  out+=piece(t,1.4,300,650,label(165,640,'EUPHRATES',{size:30})+L(372,640,560,508,INK,4),3,1.6);
+  // Uncertainty mark, kept as a question rather than a location.
+  const dp=ease.inOut(prog(l,1.5,2.0));
+  out+=mark(scribble(735,510,165,150,7),dp,RED,8,{'stroke-dasharray':dp>=1?'.02 .017':`${dp} 1.3`});
+  if(l>1.75)out+=piece(t,2.5+1.75+0,735,510,T(735,552,'?',{size:150,font:'Arial Black',fill:RED,anchor:'middle',weight:900}),4,2);
+  out+=piece(t,2.5+.75,380,950,`<g transform="rotate(-1.5 380 950)">${R(70,886,640,132,3,INK)}${T(96,944,"EDEN'S LOCATION IS UNKNOWN",{size:34,font:'Segoe UI Black',fill:YEL,weight:900})}${T(96,992,'This map is schematic, not a claim about where it was.',{size:24,font:'Segoe UI',weight:600,fill:'#fff'})}</g>`,5,1.2);
+  // Garden panel, right.
+  let gp=strip(1270,40,610,740,12,'#6FA35A',{ax:12,ay:6});
+  gp+=`<path d="${ridge(3,560,22,120,1270,1880,770)}" fill="#3F7A44"/>`;
+  out+=G(jit(t,9,1570,400,1.6),gp);
+  out+=G(jit(t,8,1570,720,2)+' translate(1570 758) scale(.82)',vTree().replace(/^/,'<g filter="url(#ht)">')+'</g>');
+  const ap=ease.back(prog(l,.5,.8));
+  out+=G(jit(t,11,1410,760,3)+` translate(1410 770) scale(${.7*ap})`,person({f:false}));
+  out+=G(jit(t,13,1740,760,3)+` translate(1740 770) scale(${-.68*ap} ${.68*ap})`,person({f:true}));
+  out+=piece(t,2.5+.35,1575,92,label(1575,62,'“A GARDEN EASTWARD IN EDEN”  2:8',{size:26,anchor:'middle'}),6,1.2);
+  // Verse strip.
+  const v='And the fourth river is Euphrates.',vs=52,vw=tw(v,vs),sx=1010;
+  const st=piece(t,2.5+1.05,sx+460,900,
+    strip(sx,830,vw+110,120,21,'#F5EEDC',{ax:14,ay:5})+
+    highlight(sx+55+tw('And the fourth river is ',vs),856,tw('Euphrates',vs),60,ease.inOut(prog(l,1.5,1.95)),YEL)+
+    T(sx+55,906,v,{size:vs,font:'Georgia',fill:INK})+
+    tape(sx+vw/2,830,160,3)+
+    label(sx+vw+110,950,'GENESIS 2:14',{size:30,anchor:'end'}),7,1.5);
+  out+=st;
+  return g+out;
+}
+
+// Beat 3: the two sentences, compared.
+function beatNot(t,l){
+  let g=R(0,0,1920,1080,0,'#173A2C');
+  g+=`<path d="${ridge(6,760,30,180)}" fill="#245338"/><path d="${ridge(9,900,26,140)}" fill="#2E6A46"/>`;
+  const r0=rng(77);
+  for(let i=0;i<16;i++){const x=r0()*1920,y=r0()*700,a=r0()*360,s=.7+r0()*.9;g+=G(`translate(${x} ${y}) rotate(${a}) scale(${s})`,P('M0 0 C40 -60 130 -60 180 0 C130 40 40 40 0 0Z','#245338',{opacity:.8}));}
+  // Tree and serpent, right.
+  g+=G(jit(t,2,1560,1040,2)+' translate(1560 1040) scale(1.02)',`<g filter="url(#ht)">${vTree()}</g>`);
+  const take=ease.inOut(prog(l,1.2,1.55)),sp=ease.out(prog(l,.15,1));
+  g+=`<g transform="${jit(t,6,1560,500,1.5)}">`+snakeBody(sp)+`</g>`;
+  g+=G(jit(t,12,1310,1040,3)+' translate(1310 1040)',person({f:true,reach:take,fruit:take>.75}));
+  g+=G(jit(t,14,1838,1040,3)+' translate(1838 1040) scale(-.96 .96)',person({f:false}));
+  // Strips.
+  const size=80,a1='“thou shalt ',b1='not',c1=' eat of it”',a2='“Ye shall ',b2='not',c2=' surely die”';
+  const f=(s)=>tw(s,size);
+  const x1=110,x2=150,w1=f(a1+b1+c1)+120,w2=f(a2+b2+c2)+120,y1=170,y2=560;
+  const n1=x1+60+f(a1)+f(b1)/2,n2=x2+60+f(a2)+f(b2)/2;
+  g+=piece(t,5.05+.08,x1+w1/2,y1+85,strip(x1,y1,w1,170,31,'#F5EEDC',{ax:16,ay:5})+T(x1+60,y1+112,a1+b1+c1,{size,font:'Georgia',fill:INK})+tape(x1+40,y1+4,130,-14)+tape(x1+w1-40,y1+4,130,12),1,1.8);
+  g+=piece(t,5.05+.08,x1+200,y1-30,label(x1,y1-62,'GOD COMMANDS  ·  GENESIS 2:17',{size:30}),3,1.2);
+  g+=piece(t,5.05+.5,x2+w2/2,y2+85,strip(x2,y2,w2,170,35,'#F5EEDC',{ax:16,ay:5})+T(x2+60,y2+112,a2+b2+c2,{size,font:'Georgia',fill:INK})+tape(x2+40,y2+4,130,10)+tape(x2+w2-40,y2+4,130,-12),2,1.8);
+  g+=piece(t,5.05+.5,x2+200,y2+200,label(x2,y2+182,'THE SERPENT REPLIES  ·  GENESIS 3:4',{size:30,bg:RED}),4,1.2);
+  g+=mark(scribble(n1,y1+86,f(b1)/2+15,50,3),ease.inOut(prog(l,.42,.78)),RED,9);
+  g+=mark(scribble(n2,y2+86,f(b2)/2+15,50,6),ease.inOut(prog(l,.98,1.34)),RED,9);
+  g+=arrow(n1-10,y1+146,n1-170,y1+290,n2-34,y2+42,ease.inOut(prog(l,1.3,1.7)),RED,9);
+  // What she did next.
+  const s3=38,l1='she took of the fruit thereof, and did eat,',l2='and gave also unto her husband with her',w3=tw(l1,s3)+100,y3=826;
+  g+=piece(t,5.05+1.4,110+w3/2,y3+70,strip(110,y3,w3,134,47,'#F5EEDC',{ax:14,ay:4})+T(160,y3+56,l1,{size:s3,font:'Georgia',fill:INK})+T(160,y3+106,l2,{size:s3,font:'Georgia',fill:INK})+label(110+w3+8,y3+74,'GENESIS 3:6',{size:30}),5,1.2);
+  return g;
+}
+function snakeBody(sp){
+  const d='M1700 330 C1600 300 1500 350 1530 430 C1560 490 1660 500 1630 590 C1600 660 1540 650 1510 620 C1490 600 1480 588 1450 585';
+  const pt=S.along(d,Math.max(.02,sp));
+  let h=`<g transform="translate(${pt.x} ${pt.y}) rotate(${pt.ang})">${E(8,0,50,30,'#D9A83A')}${C(26,-13,9,'#FFF2A8')}${C(28,-13,4,'#111')}${P('M56 2 L90 6 M90 6 L108 -6 M90 6 L108 16','none',{stroke:RED,'stroke-width':6})}</g>`;
+  // The filter region is local, so shift the coordinates to sit inside it.
+  return `<g transform="translate(1560 500)"><g filter="url(#ht)"><g transform="translate(-1560 -500)">${P(d,'none',{stroke:'url(#snakeU)','stroke-width':36,pathLength:1,'stroke-dasharray':`${sp} 1.3`})}${h}</g></g></g>`;
+}
+
+// Beat 4: exile.
+function beatExit(t,l){
+  let g=R(0,0,1920,1080,0,'#201827');
+  g+=`<path d="${ridge(4,430,40,240)}" fill="#6B2A1E"/><path d="${ridge(12,560,34,200)}" fill="#C4541F"/><path d="${ridge(15,690,20,170)}" fill="#3A1F20"/><path d="${ridge(18,860,16,150)}" fill="#141019"/>`;
+  const st=Math.floor(t*12)/12;
+  // Gate cut-out, with a local origin so the filter region covers it.
+  const gate=`<g filter="url(#ht)"><path d="M-300 0 V-480 Q0 -800 300 -480 V0 H200 V-460 Q0 -660 -200 -460 V0Z" fill="url(#stone)"/></g>`;
+  g+=G(jit(t,2,1450,700,1.5)+' translate(1450 1010)',`<path d="M-200 0 V-460 Q0 -660 200 -460 V0Z" fill="#F2B046"/>`+gate);
+  // Wings of light, abstract.
+  const wo=ease.out(prog(l,.25,.7));
+  g+=G(jit(t,4,1450,520,2,8)+' translate(1450 520)',`<g transform="translate(-290 60) scale(-.54 .8)">${wing(wo,'#FFF7CC')}</g><g transform="translate(290 60) scale(.54 .8)">${wing(wo,'#FFF7CC')}</g>`);
+  g+=G(`translate(1450 915) rotate(${Math.sin(st*2.6)*7})`,`<g filter="url(#sticker)">${sword(st,450)}</g>`);
+  // People leaving, one held pose at a time.
+  const w=ease.inOut(prog(l,.1,2.3)),cyc=Math.floor(t*8)%4,step=[1,0,-1,0][cyc];
+  g+=G(jit(t,6,1050,800,3)+` translate(${lerp(1120,420,w)} ${1010+(cyc%2)*-5}) scale(-.86 .86)`,person({f:false,step,bow:9}));
+  g+=G(jit(t,7,1050,800,3)+` translate(${lerp(1290,590,w)} ${1010+((cyc+1)%2)*-5}) scale(-.84 .84)`,person({f:true,step:-step,bow:9}));
+  // Strips.
+  const size=40;
+  const a='Therefore the LORD God sent him forth from the garden of Eden',w1=tw(a,size)+90;
+  g+=piece(t,7.65+.1,60+w1/2,120,strip(60,62,w1,100,41,'#F5EEDC',{ax:14,ay:4})+T(105,126,a,{size,font:'Georgia',fill:INK})+tape(90,62,120,-10),1,1.4);
+  g+=piece(t,7.65+.1,60,150,label(60,18,'GENESIS 3:23',{size:28}),3,1);
+  const l1='and he placed at the east of the garden of Eden Cherubims,',l2='and a flaming sword which turned every way',w2=tw(l1,size)+90,y=228;
+  const hlx=105+tw('and a ',size),hlw=tw('flaming sword',size);
+  g+=piece(t,8.45,100+w2/2,y+80,strip(100,y-10,w2,158,43,'#F5EEDC',{ax:14,ay:4})+
+    highlight(hlx+40,y+74,hlw,54,ease.inOut(prog(l,1.2,1.6)),YEL)+
+    T(145,y+56,l1,{size,font:'Georgia',fill:INK})+T(145,y+114,l2,{size,font:'Georgia',fill:INK})+tape(100+w2-30,y-10,120,10),2,1.4);
+  g+=piece(t,8.45,100+w2,y+150,label(100+w2,y+132,'GENESIS 3:24',{size:28,anchor:'end'}),4,1);
+  g+=arrow(hlx+150,y+152,850,y+300,1370,620,ease.inOut(prog(l,1.5,1.9)),'#FFE100',9);
+  return g;
+}
+
+function yellowWipe(t){
+  let out='';
+  BOUND.forEach(b=>{
+    const p=prog(t,b-.17,b+.17);
+    if(p<=0||p>=1)return;
+    const lead=lerp(-300,2300,clamp(p*2)),tail=lerp(-300,2300,clamp(p*2-1));
+    out+=P(`M${tail} 0 L${lead+180} 0 L${lead} 1080 L${tail-180} 1080Z`,YEL);
+    out+=T(lead-130,620,'',{});
+  });
+  return out;
+}
+
+mount(t=>{
+  const f=Math.floor(t*12);
+  const weave=`translate(${((hash(f,1)-.5)*2.4).toFixed(2)} ${((hash(f,2)-.5)*2.4).toFixed(2)})`;
+  let g=paperDefs(t)+defs+`<linearGradient id="snakeU" gradientUnits="userSpaceOnUse" x1="1440" y1="300" x2="1700" y2="740"><stop offset="0" stop-color="#F6D65A"/><stop offset="1" stop-color="#A5521F"/></linearGradient>`;
+  let s;
+  if(t<BOUND[0])s=beatPage(t,t);
+  else if(t<BOUND[1])s=beatMap(t,t-BOUND[0]);
+  else if(t<BOUND[2])s=beatNot(t,t-BOUND[1]);
+  else s=beatExit(t,t-BOUND[2]);
+  g+=G(weave,s);
+  g+=yellowWipe(t);
+  g+=paperOver({tex:.2,grain:.3,blot:.13});
+  return g;
+});
+</script>

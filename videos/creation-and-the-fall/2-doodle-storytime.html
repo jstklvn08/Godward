@@ -1,0 +1,119 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Creation and the Fall: Doodle Storytime</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="shared.js"></script>
+<script>
+const {G,R,C,E,L,P,T,pop,prog,ease,lerp,mix,sc,scenes,rng}=K;
+const INK='#222',PAPER='#FFFDF4',F='Segoe Print';
+const ln=(w=7)=>({stroke:INK,'stroke-width':w});
+
+function paper(gray=0){
+  let g=R(0,0,1920,1080,0,mix(PAPER,'#E4E2DC',gray));
+  for(let y=70;y<1080;y+=68) g+=L(0,y,1920,y,'#C9DDF0',2,{opacity:.65});
+  return g+L(150,0,150,1080,'#F2A7A7',3,{opacity:.8});
+}
+function ref(s,gray){ return G('rotate(-2 1650 1010)',R(1400,960,480,84,8,gray?'#D9D6CC':'#FFF08A',ln(5))+T(1640,1016,s,{size:40,font:F,weight:700,fill:INK,anchor:'middle'})); }
+function cap(lines,x=210,y=1000,size=36){ return T(x,y,lines,{size,font:F,fill:INK,lh:1.2}); }
+function bubble(x,y,w,h,lines,tailx,taily,size=52,bf=.5){
+  return P(`M${x+40} ${y} H${x+w-40} Q${x+w} ${y} ${x+w} ${y+40} V${y+h-40} Q${x+w} ${y+h} ${x+w-40} ${y+h} H${x+w*(bf+.08)} L${tailx} ${taily} L${x+w*(bf-.08)} ${y+h} H${x+40} Q${x} ${y+h} ${x} ${y+h-40} V${y+40} Q${x} ${y} ${x+40} ${y}Z`,'#fff',ln(7))+
+    T(x+w/2,y+h/2+size*.34-(lines.length-1)*size*.6,lines,{size,font:F,weight:700,fill:INK,anchor:'middle',lh:1.2});
+}
+function dude(x,y,s,o={}){
+  const {f=false,flip=1,mood='happy',bob=0,reach=0,leaf='#7CCB5B',gray=false}=o;
+  let g='';
+  const le=gray?'#AFAFA8':leaf;
+  if(f) g+=P('M-96 -240 C-126 -130 -120 -80 -70 -70 L70 -70 C120 -80 126 -130 96 -240Z','#6B4A2B',ln());
+  g+=L(-26,-70,-34,0,INK,8)+L(26,-70,34,0,INK,8)+P('M-50 0 h26 M24 0 h26','none',ln(8));
+  g+=L(-42,-120,-92,-70+bob,INK,8)+L(42,-120,lerp(92,150,reach),lerp(-70-bob,-195,reach),INK,8);
+  g+=P('M-46 -150 Q0 -162 46 -150 L60 -66 Q0 -46 -60 -66Z',le,ln());
+  g+=C(0,-250,102,'#fff',ln());
+  if(f) g+=P('M-100 -262 C-96 -372 96 -372 100 -262 C62 -322 30 -320 -8 -318 C-44 -318 -74 -310 -100 -262Z','#6B4A2B',ln());
+  else g+=P('M-90 -300 l10 -38 l22 26 l14 -44 l26 34 l18 -44 l22 42 l24 -32 l10 42 l22 -22 l6 40 Q0 -350 -90 -300Z','#3a2a1c',ln(6));
+  const my=-212;
+  if(mood==='happy') g+=C(-38,-258,9,INK)+C(38,-258,9,INK)+P(`M-32 ${my} Q0 ${my+36} 32 ${my}`,'none',ln(7));
+  if(mood==='wow') g+=C(-38,-262,20,'#fff',ln(5))+C(38,-262,20,'#fff',ln(5))+C(-34,-262,7,INK)+C(42,-262,7,INK)+E(0,my+10,17,23,INK);
+  if(mood==='hmm') g+=L(-56,-268,-20,-258,INK,8)+L(56,-284,20,-274,INK,8)+C(-30,-246,9,INK)+C(44,-254,9,INK)+L(-24,my+10,32,my,INK,7);
+  if(mood==='sad') g+=L(-56,-272,-20,-286,INK,8)+L(56,-272,20,-286,INK,8)+C(-38,-252,9,INK)+C(38,-252,9,INK)+P(`M-32 ${my+22} Q0 ${my-12} 32 ${my+22}`,'none',ln(7))+P('M-52 -226 q-13 22 0 30 q13 -8 0 -30Z','#78B7E8',ln(3));
+  return G(`translate(${x} ${y}) scale(${s*flip} ${s})`,g);
+}
+function dtree(x,y,s,fruits,gray=false){
+  const leaf=gray?'#BDBDB5':'#8ED06B';
+  let g=P('M-28 0 C-14 -90 -32 -180 -24 -240 L26 -240 C32 -160 14 -90 30 0Z',gray?'#C2BDB1':'#C89A63',ln());
+  g+=P('M-180 -240 C-260 -310 -180 -400 -120 -380 C-120 -470 20 -500 50 -430 C130 -480 240 -390 180 -320 C260 -260 190 -170 110 -210 C50 -160 -120 -160 -180 -240Z',leaf,ln());
+  if(fruits)[[-100,-310],[0,-390],[110,-300],[20,-260],[-40,-230]].forEach(f=>g+=C(f[0],f[1],24,gray?'#8d8d86':'#EE5A4E',ln(6)));
+  return G(`translate(${x} ${y}) scale(${s})`,g);
+}
+function bunny(x,y,s){ return G(`translate(${x} ${y}) scale(${s})`,E(0,-40,62,40,'#fff',ln())+C(52,-82,34,'#fff',ln())+E(46,-130,10,34,'#fff',ln())+E(70,-126,10,34,'#fff',ln())+C(62,-88,5,INK)+L(-30,-2,-30,6,INK,6)+L(24,-2,24,6,INK,6)); }
+function flower(x,y,c){ return L(x,y,x,y+58,INK,6)+[0,72,144,216,288].map(a=>G(`translate(${x} ${y}) rotate(${a})`,C(0,-20,14,c,ln(4)))).join('')+C(x,y,10,'#FFD84D',ln(4)); }
+function snake(x,y,s,sw){
+  const d=`M0 -300 C${60+sw} -210 ${-70-sw} -130 ${20+sw} -30 S${-30} 70 ${40} 120`;
+  return G(`translate(${x} ${y}) scale(${s})`,P(d,'none',{stroke:INK,'stroke-width':54})+P(d,'none',{stroke:'#A2D24B','stroke-width':38})+
+    E(70,154,84,58,'#A2D24B',ln())+C(50,134,18,'#fff',ln(4))+C(100,134,18,'#fff',ln(4))+C(58,136,8,INK)+C(108,136,8,INK)+
+    P('M24 104 L64 122 M124 104 L90 122','none',ln(7))+P('M40 172 Q76 196 112 170','none',ln(6))+P('M78 190 L78 232 M78 232 L62 250 M78 232 L94 250','none',{stroke:'#E84A3F','stroke-width':7}));
+}
+function s1(t,l){
+  const b=ease.out(prog(l,1.15,1.75));
+  let g=paper();
+  const void_='M200 60 L1730 44 L1760 900 L180 920Z';
+  g+=P(void_,'#191919',ln(10));
+  g+=T(960,300,'In the beginning...',{size:82,font:F,weight:700,fill:'#fff',anchor:'middle',op:ease.out(prog(l,.05,.4))*(1-b)});
+  const rays=[...Array(16)].map((_,i)=>G(`rotate(${i*22.5+l*18})`,L(0,-250,0,-360,'#F7B500',18))).join('');
+  g+=G(`translate(960 560) scale(${b*.78})`,C(0,0,2600,'#FFF1A8')+rays+P([...Array(24)].map((_,i)=>{const r=i%2?120:225,a=i*Math.PI/12;return (i?'L':'M')+(r*Math.cos(a)).toFixed(1)+' '+(r*Math.sin(a)).toFixed(1);}).join(' ')+'Z','#FFD84D',ln(10)));
+  g+=G(`translate(960 180) scale(${Math.max(0,pop(l,.55,.3))})`,bubble(-510,-100,1020,170,['LET THERE BE LIGHT!'],0,70,72));
+  g+=G('',T(800,1000,['and there was light.'],{size:56,font:F,weight:700,fill:INK,anchor:'middle'}),prog(l,1.7,2));
+  return g+ref('Genesis 1:3');
+}
+function ground(gray){return P('M0 800 C300 750 600 830 960 790 S1620 760 1920 810 V1080 H0Z',gray?'#CFCEC6':'#BDE69A',ln());}
+function s2(t,l){
+  const b=Math.sin(l*8)*12;
+  let g=paper()+ground()+dtree(330,830,1.15,false)+dtree(1590,830,1.1,true);
+  g+=flower(600,760,'#FF9ECF')+flower(1190,780,'#9EC9FF')+flower(1330,740,'#FFB36B')+flower(540,820,'#C8A2FF');
+  g+=bunny(1260,880,1.05);
+  g+=dude(760,870+b*.2,1,{bob:b,mood:'happy'})+dude(1030,860-b*.2,.95,{f:true,flip:-1,bob:-b,mood:'happy'});
+  const h=[0,1,2].map(i=>{const a=(l+i*.5)%1.5/1.5;return G(`translate(${900+i*50-50} ${lerp(420,250,a)}) scale(${lerp(.6,1.1,a)})`,P('M0 18 C-40 -14 -22 -48 0 -24 C22 -48 40 -14 0 18Z','#F36D84',ln(5)),1-a);}).join('');
+  g+=h;
+  g+=T(960,175,'Everything was VERY good.',{size:88,font:F,weight:700,fill:INK,anchor:'middle',op:ease.out(prog(l,.15,.45))});
+  g+=P('M380 205 q290 26 580 2 t580 2','none',{stroke:'#F36D84','stroke-width':9,'stroke-dasharray':1200,'stroke-dashoffset':lerp(1200,0,prog(l,.45,.9))});
+  g+=cap(['Adam and Eve. A garden.','Zero problems.'],210,985,42);
+  return g+ref('Genesis 1:31');
+}
+function s3(t,l){
+  const sw=Math.sin(l*4)*20;
+  let g=paper();
+  g+=P('M740 -30 C730 100 880 130 950 90 C1000 170 1190 150 1240 96 C1320 140 1450 100 1460 -30Z','#8ED06B',ln());
+  g+=G('',C(1250,70,44,'#EE5A4E',ln()),1);
+  g+=snake(1020,370,1.2,sw);
+  g+=G(`translate(760 300) scale(${Math.max(0,pop(l,.2,.3))})`,bubble(-510,-170,760,250,['Ye shall not','surely die.'],240,180,76,.86));
+  g+=dude(380,980,1.2,{f:true,mood:l>1.2?'wow':'hmm'});
+  g+=C(1300,780,0,'#000');
+  const ar=prog(l,1,1.4);
+  g+=G('',P('M1500 470 Q1440 400 1300 430 M1300 430 l36 -26 M1300 430 l42 16','none',ln(8))+T(1520,500,['very','trustworthy','snake'],{size:48,font:F,weight:700,fill:'#E84A3F',lh:1.1}),ar);
+  return g+ref('Genesis 3:4');
+}
+function s4(t,l){
+  // Crunch, then the colour drains and they leave.
+  if(l<.95){
+    let g=paper();
+    const k=Math.max(0,pop(l,.05,.2));
+    g+=G(`translate(960 640) scale(${k*.82})`,P('M150 -260 A300 300 0 1 0 282 103 Q190 110 200 40 Q130 20 150 -60 Q90 -100 140 -170 Q100 -230 150 -260Z','#EE5A4E',ln(12))+P('M0 -300 C20 -360 60 -390 110 -400','none',ln(16))+P('M110 -400 C170 -440 230 -420 260 -380 C200 -350 150 -360 110 -400Z','#8ED06B',ln(8)));
+    g+=G(`translate(960 215) rotate(-6) scale(${Math.max(0,pop(l,.18,.25))})`,T(0,0,'CRUNCH',{size:210,font:F,weight:700,fill:'#fff',anchor:'middle',extra:`stroke="${INK}" stroke-width="10" paint-order="stroke"`}));
+    return g+ref('Genesis 3:6');
+  }
+  const a=l-.95,w=ease.inOut(prog(a,.15,1.45)),b=Math.sin(a*16)*12;
+  let g=paper(1)+ground(true)+dtree(1745,840,.8,true,true);
+  const fx=[...Array(5)].map((_,i)=>{const s=Math.sin(a*11+i)*18;return P(`M${-44+i*20} 0 C${-60+i*20+s} -70 ${-20+i*20} -90 ${-14+i*20+s} -150 C${10+i*20} -80 ${24+i*20} -60 ${6+i*20} 0Z`,i%2?'#F7B500':'#EE5A4E',ln(5));}).join('');
+  g+=G('translate(1220 830)',L(0,0,0,-400,INK,12)+L(260,0,260,-400,INK,12)+P('M-24 -396 Q130 -540 284 -396','none',ln(12))+G('translate(130 -130)',L(0,0,0,-130,INK,14)+L(-40,0,40,0,INK,12)+L(0,0,0,40,INK,12)+G('translate(-16 -120) scale(.82)',fx)));
+  g+=dude(lerp(1050,520,w),870+b*.25,.92,{flip:-1,mood:'sad',bob:b,gray:true})+dude(lerp(1210,700,w),870-b*.25,.88,{f:true,flip:-1,mood:'sad',bob:-b,gray:true});
+  g+=T(960,175,['Sent out of the garden.'],{size:88,font:F,weight:700,fill:INK,anchor:'middle',op:ease.out(prog(a,.05,.4))});
+  g+=cap(['But the story was','not over...'],210,985,42);
+  g+=G('',C(0,0,0,'#000'),1);
+  return g+ref('Genesis 3:23',true);
+}
+mount(t=>{
+  const seed=(Math.floor(t*8)%6)+1;
+  return `<defs><filter id="boil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="${seed}"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter></defs>`+
+    `<g filter="url(#boil)">${scenes(t,[[0,s1],[2.2,s2],[5,s3],[7.6,s4]],.16)}</g>`;
+});
+</script>

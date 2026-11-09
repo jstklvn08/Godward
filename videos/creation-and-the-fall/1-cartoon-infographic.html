@@ -1,0 +1,145 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Creation and the Fall: Cartoon Infographic</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="shared.js"></script>
+<script>
+const {G,R,C,E,L,P,T,pop,prog,ease,lerp,mix,sc,scenes}=K;
+const INK='#1d2233',NAVY='#17325C',YEL='#FFC93C',RED='#E8473F',GRN='#4FA64A',CREAM='#F7F2E4';
+const outl={stroke:INK,'stroke-width':6};
+
+function banner(t,a,s){
+  const p=ease.out(prog(t,a,a+.3));
+  return G(`translate(0 ${lerp(-140,0,p)})`,
+    R(460,30,1000,104,26,YEL,outl)+T(960,102,s,{size:58,weight:800,anchor:'middle',fill:NAVY,ls:1}));
+}
+function verse(t,a,lines,ref){
+  const p=ease.out(prog(t,a,a+.35));
+  return G(`translate(0 ${lerp(220,0,p)})`,
+    R(210,872,1500,160,24,'#fff',outl)+R(210,872,26,160,12,RED)+
+    T(270,932,lines,{size:40,font:'Georgia',style:'italic',fill:INK,lh:1.3})+
+    T(1670,1010,ref,{size:32,weight:700,fill:RED,anchor:'end'}));
+}
+function person(x,y,s,o={}){
+  const {f=false,flip=1,walk=0,sad=false,reach=0,look=0}=o;
+  const skin=f?'#DDA56C':'#C68642',hair='#3B2314';
+  const sw=Math.sin(walk)*24,arm=Math.sin(walk)*16;
+  const limb=(a,b,c,d)=>L(a,b,c,d,INK,27)+L(a,b,c,d,skin,15);
+  let g='';
+  if(f) g+=P('M-70 -225 Q-92 -110 -56 -92 L56 -92 Q92 -110 70 -225Z',hair,outl);
+  g+=limb(-20,-58,-20-sw,0)+limb(20,-58,20+sw,0);
+  g+=limb(-44,-135,-74,-72+arm);
+  g+=P('M-42 -152 Q0 -168 42 -152 L58 -50 L38 -38 L20 -52 L0 -36 L-20 -52 L-38 -38 L-58 -50Z',GRN,outl);
+  g+=limb(44,-135,lerp(76,112,reach),lerp(-72-arm,-175,reach));
+  g+=C(0,-218,68,skin,outl);
+  if(f) g+=P('M-70 -222 Q-66 -300 0 -296 Q66 -300 70 -222 Q36 -268 0 -262 Q-36 -268 -70 -222Z',hair,outl);
+  else g+=P('M-70 -228 Q-64 -298 0 -294 Q64 -298 70 -228 Q34 -262 0 -256 Q-34 -262 -70 -228Z',hair,outl)+P('M-60 -205 Q-40 -142 0 -146 Q40 -142 60 -205 Q30 -176 0 -180 Q-30 -176 -60 -205Z',hair);
+  [-26,26].forEach(e=>{g+=C(e,-224,15,'#fff',{stroke:INK,'stroke-width':3})+C(e+look*6,-224,8,INK);});
+  const m=f?-188:-182;
+  g+=P(`M-20 ${sad?m+8:m} Q0 ${sad?m-12:m+18} 20 ${sad?m+8:m}`,'none',{stroke:INK,'stroke-width':6});
+  if(sad) g+=P('M-46 -254 L-14 -246 M46 -254 L14 -246','none',{stroke:INK,'stroke-width':6});
+  return G(`translate(${x} ${y}) scale(${s*flip} ${s})`,g);
+}
+function tree(x,y,s,fruit,t=0){
+  let g=P('M-26 0 Q-14 -90 -22 -190 L22 -190 Q14 -90 26 0Z','#8A5A2B',outl);
+  [[0,-300,120],[-100,-235,88],[100,-235,88],[-55,-360,76],[60,-360,76]].forEach(c=>g+=C(c[0],c[1],c[2],fruit?'#2E9E5B':'#57B947',outl));
+  g+=C(0,-280,110,fruit?'#2E9E5B':'#57B947');
+  if(fruit)[[-90,-240],[20,-330],[92,-230],[-20,-210],[58,-290]].forEach(f=>g+=C(f[0],f[1],21,RED,{stroke:INK,'stroke-width':4}));
+  else [[-90,-240],[20,-330],[92,-230],[-20,-210],[58,-290]].forEach(f=>g+=C(f[0],f[1],15,YEL,{stroke:INK,'stroke-width':4}));
+  return G(`translate(${x} ${y}) scale(${s})`,g);
+}
+function garden(d=0){
+  const flowers=[[150,860],[330,920],[760,960],[1010,880],[1240,950],[1640,900],[1820,960]];
+  let g=R(0,0,1920,1080,0,mix('#8FD8F2','#F2925C',d));
+  g+=C(lerp(1040,1420,d),lerp(240,500,d),90,mix('#FFE27A','#FFB25C',d),outl);
+  g+=P('M0 620 Q360 470 760 610 T1560 590 T1920 620 V1080 H0Z',mix('#A7DE7E','#C98F58',d),outl);
+  g+=P('M0 760 Q500 650 1000 750 T1920 720 V1080 H0Z',mix('#7CC85B','#8F7443',d),outl);
+  g+=P('M860 742 C800 840 1040 900 930 1080 L1120 1080 C1230 900 980 840 1010 745Z',mix('#4FB4EA','#54748F',d),outl);
+  flowers.forEach(f=>{g+=C(f[0],f[1],17,'#fff',{stroke:INK,'stroke-width':4})+C(f[0],f[1],7,YEL);});
+  return g;
+}
+function snake(x,y,s){
+  const d='M-200 90 C-120 -20 -60 150 20 40 S120 -60 140 -110';
+  return G(`translate(${x} ${y}) scale(${s})`,
+    P(d,'none',{stroke:INK,'stroke-width':52})+P(d,'none',{stroke:'#7A3FA0','stroke-width':38})+
+    E(160,-130,62,42,'#7A3FA0',outl)+C(178,-146,14,'#fff',{stroke:INK,'stroke-width':3})+C(182,-146,6,INK)+
+    P('M218 -122 L262 -112 M262 -112 L284 -126 M262 -112 L286 -98','none',{stroke:RED,'stroke-width':6}));
+}
+const icons=[
+ ()=>P([...Array(20)].map((_,i)=>{const r=i%2?36:74,a=i*Math.PI/10;return (i?'L':'M')+(r*Math.cos(a)).toFixed(1)+' '+(r*Math.sin(a)).toFixed(1);}).join(' ')+'Z',YEL,outl)+[...Array(10)].map((_,i)=>G(`rotate(${i*36})`,L(0,-82,0,-108,'#E8A000',12))).join(''),
+ ()=>P('M-100 60 q25 -36 50 0 t50 0 t50 0 t50 0 V100 H-100Z','#4FB4EA',outl)+E(-30,-40,70,42,'#fff',outl)+E(36,-56,62,44,'#fff',outl),
+ ()=>P('M-120 90 Q-30 -60 120 90Z','#7CC85B',outl)+L(0,-30,0,50,'#8A5A2B',16)+C(0,-58,48,'#2E9E5B',outl),
+ ()=>C(-62,-20,46,YEL,outl)+P('M50 -64 A56 56 0 1 0 50 40 A44 44 0 1 1 50 -64Z','#CFD6E6',outl)+P('M-4 56 l10 22 l24 3 l-18 16 l5 24 l-21 -12 l-21 12 l5 -24 l-18 -16 l24 -3Z',YEL,{stroke:INK,'stroke-width':4}),
+ ()=>P('M-110 -38 Q-70 -92 -30 -38 Q10 -92 50 -38 Q0 -14 -30 -18 Q-70 -14 -110 -38Z','#fff',outl)+E(10,62,72,36,'#FF9A4D',outl)+P('M78 62 L120 30 V94Z','#FF9A4D',outl)+C(-26,54,7,INK),
+ ()=>G('translate(-104 118) scale(.62)',person(0,0,1,{}))+G('translate(36 118) scale(.62)',person(0,0,1,{f:true}))+E(150,80,44,28,'#fff',outl)+C(188,52,20,'#fff',outl)+L(126,106,126,120,INK,7)+L(172,106,172,120,INK,7),
+];
+const days=['LIGHT','SKY & SEAS','LAND & PLANTS','SUN, MOON, STARS','BIRDS & FISH','ANIMALS & PEOPLE'];
+
+function s1(t,l){
+  let g=R(0,0,1920,1080,0,CREAM);
+  days.forEach((d,i)=>{
+    const x=210+(i%3)*510,y=165+Math.floor(i/3)*340,p=Math.max(0,pop(t,.15+i*.22,.32));
+    g+=G(`translate(${x+240} ${y+160}) scale(${p})`,
+      R(-240,-160,480,320,26,'#fff',outl)+
+      C(-188,-108,42,NAVY)+T(-188,-92,i+1,{size:46,weight:800,fill:'#fff',anchor:'middle'})+
+      G('translate(10 -24) scale(.82)',icons[i]())+
+      T(0,136,d,{size:36,weight:800,fill:NAVY,anchor:'middle'}));
+  });
+  return g+banner(t,0,'DAYS 1–6: GOD CREATES')+verse(t,.5,['In the beginning God created the heaven and the earth.'],'Genesis 1:1');
+}
+function callout(t,a,px,py,lx,ly,s,w){
+  const p=Math.max(0,pop(t,a,.3));
+  return G('',L(px,py,lx,ly,INK,5)+C(px,py,10,RED,{stroke:INK,'stroke-width':4}),Math.min(1,p))+
+    G(`translate(${lx} ${ly}) scale(${p})`,R(-w/2,-34,w,68,34,'#fff',outl)+T(0,14,s,{size:36,weight:800,fill:NAVY,anchor:'middle'}));
+}
+function s2(t,l){
+  const b=Math.sin(l*7)*5;
+  let g=garden()+tree(340,800,1.15,false)+tree(1560,800,1.15,true);
+  g+=person(760,850+b,.9,{look:1})+person(1180,850-b,.9,{f:true,flip:-1,look:1});
+  g+=callout(l,.2,340,470,300,215,'TREE OF LIFE',340);
+  g+=callout(l,.42,1560,470,1560,215,'TREE OF KNOWLEDGE',500);
+  g+=callout(l,.64,760,600,630,440,'ADAM',190);
+  g+=callout(l,.8,1180,600,1310,440,'EVE',150);
+  g+=callout(l,1,965,800,965,560,'RIVER FROM EDEN',420);
+  return g+banner(l,0,'THE GARDEN OF EDEN')+verse(l,.25,['And the LORD God planted a garden eastward in Eden;','and there he put the man whom he had formed.'],'Genesis 2:8');
+}
+function card(x,c,h,lines,p){
+  return G(`translate(${x+290} 490) scale(${p})`,
+    R(-290,-300,580,600,28,'#fff',outl)+R(-290,-300,580,96,28,c,outl)+
+    T(0,-234,h,{size:44,weight:800,fill:'#fff',anchor:'middle'})+
+    T(0,-130,lines,{size:44,font:'Georgia',style:'italic',fill:INK,anchor:'middle',lh:1.32}));
+}
+function noTree(){return G('translate(-20 230) scale(.42)',tree(0,0,1,true))+G('translate(-20 118)',C(0,0,100,'none',{stroke:RED,'stroke-width':16})+L(-70,-70,70,70,RED,16));}
+function s3(t,l){
+  const eye=Math.sin(l*5)>0?1:-1, q=Math.max(0,pop(l,.05,.3)),r=Math.max(0,pop(l,.5,.3));
+  let g=garden(.15)+R(0,0,1920,1080,0,NAVY,{opacity:.62});
+  g+=card(90,GRN,'GOD SAID',['“Of the tree of the','knowledge of good','and evil, thou shalt','not eat of it.”'],q);
+  g+=card(1250,RED,'THE SERPENT SAID',['“Ye shall not','surely die.”'],r);
+  g+=G('',snake(1530,640,.92),Math.min(1,r));
+  g+=G(`translate(380 490) scale(${q}) translate(0 40)`,noTree());
+  g+=person(960,850,1.55,{f:true,look:eye,reach:ease.inOut(prog(l,1.3,2))});
+  g+=G(`translate(960 200) scale(${Math.max(0,pop(l,.9,.3))})`,C(0,0,70,YEL,outl)+T(0,20,'VS',{size:58,weight:900,fill:NAVY,anchor:'middle'}));
+  g+=C(lerp(1040,1132,ease.inOut(prog(l,1.3,2))),lerp(735,566,ease.inOut(prog(l,1.3,2))),32,RED,outl);
+  return g+banner(l,0,'THE TEST')+verse(l,.2,['Would they trust what God said,','or the voice that questioned it?'],'Genesis 2:17; 3:4');
+}
+function gate(x,y,t){
+  const fl=[...Array(7)].map((_,i)=>{const a=t*12+i*2;const h=46+Math.sin(a)*16;return P(`M${-30+i*10} 0 Q${-44+i*10} ${-h*.6} ${-30+i*10+Math.sin(a)*8} ${-h} Q${-14+i*10} ${-h*.5} ${-16+i*10} 0Z`,i%2?YEL:'#FF7A2E');}).join('');
+  return G(`translate(${x} ${y})`,
+    R(-120,-470,70,470,8,'#B9A27A',outl)+R(150,-470,70,470,8,'#B9A27A',outl)+P('M-136 -462 Q50 -640 236 -462 L190 -462 Q50 -570 -90 -462Z','#CDB78D',outl)+
+    G('translate(50 -170)',L(0,0,0,-210,'#C9D2DF',18,{stroke:INK})+R(-44,-6,88,16,6,INK)+L(0,10,0,62,'#8A5A2B',18)+G('translate(0 -210)',fl)+G('translate(0 -130)',fl)));
+}
+function s4(t,l){
+  const w=ease.inOut(prog(l,.1,2.3)),b=Math.sin(l*16)*4;
+  let g=garden(.9)+R(0,0,1920,1080,0,'#3B2A52',{opacity:.28})+tree(300,800,1,false)+gate(1500,860,l);
+  g+=person(lerp(1160,650,w),852+b,.88,{flip:-1,sad:true,walk:l*14,look:-1});
+  g+=person(lerp(1340,820,w),852-b,.88,{f:true,flip:-1,sad:true,walk:l*14+1.4,look:-1});
+  ['DOUBT','CHOICE','SHAME','EXILE'].forEach((s,i)=>{
+    const x=225+i*400,p=Math.max(0,pop(l,.15+i*.28,.28));
+    g+=G(`translate(${x+145} 212) scale(${p})`,R(-145,-42,290,84,20,i==3?RED:'#fff',outl)+T(0,16,`${i+1}. ${s}`,{size:40,weight:800,fill:i==3?'#fff':NAVY,anchor:'middle'}));
+    if(i<3) g+=G('',P(`M${x+305} 212 h44 m-16 -16 l18 16 l-18 16`,'none',{stroke:'#fff','stroke-width':9}),Math.min(1,Math.max(0,pop(l,.32+i*.28,.2))));
+  });
+  return g+banner(l,0,'THE RESULT')+verse(l,.25,['Therefore the LORD God sent him forth','from the garden of Eden.'],'Genesis 3:23');
+}
+mount(t=>scenes(t,[[0,s1],[2.5,s2],[5,s3],[7.5,s4]],.28));
+</script>

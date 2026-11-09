@@ -1,0 +1,269 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Creation and the Fall: Glowing Cosmos</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="shared.js"></script>
+<script src="style-kit.js"></script>
+<script>
+const {G,R,C,E,L,P,T,prog,ease,lerp,mix,sc,rng,clamp}=K;
+const {glow,vgrad,nid,chubby,along,sword,wing,vignette,hash,snake}=S;
+
+// One continuous zoom: the garden is drawn at full size on a planet of radius W0, seen from far away at first.
+const W0=8320,GY=830,Z0=1/32;
+const gy=x=>GY+(x-960)*(x-960)/(2*W0);
+
+const EDEN={skyT:'#080C3C',skyM:'#123388',skyB:'#12B2AE',far:'#0F4A8E',mid:'#0C6E86',ground:'#084058',rim:'#22E0B4',trunkA:'#4630A0',trunkB:'#1E1658',canA:'#1FE5C0',canB:'#2E62E8',canC:'#6A2FD8',fruit:'#FFD45E',accent:'#7CFFE6',river:'#6CF4FF',plant:'#35F2B4',plant2:'#FF7BD5'};
+const CRIM={skyT:'#22041E',skyM:'#6A0D38',skyB:'#F03A4A',far:'#561040',mid:'#7C1440',ground:'#3E0A2C',rim:'#FF5A4E',trunkA:'#5C1440',trunkB:'#2A0820',canA:'#F2404E',canB:'#AA1C60',canC:'#560F60',fruit:'#FFB63C',accent:'#FFA48C',river:'#FF7E72',plant:'#FF6A5C',plant2:'#FFC04C'};
+const DRAIN={skyT:'#090818',skyM:'#17162C',skyB:'#3A3850',far:'#1E1D30',mid:'#262438',ground:'#161526',rim:'#4A4860',trunkA:'#2C2A3C',trunkB:'#15141F',canA:'#4C4A5E',canB:'#393750',canC:'#2A283C',fruit:'#6C6068',accent:'#6A6880',river:'#44435A',plant:'#47455A',plant2:'#55505E'};
+const blendP=(a,b,p)=>Object.fromEntries(Object.keys(a).map(k=>[k,mix(a[k],b[k],p)]));
+
+const r=rng(911);
+const stars=[...Array(220)].map(()=>[r()*1920,r()*1080,.8+r()*2.8,r()*6]);
+const dust=[...Array(300)].map(()=>({a:r()*6.283,rr:280+r()*900,d:r()*.28,s:1.4+r()*3.6,c:['#7CFFE6','#FFD45E','#FF7BD5','#FFFFFF','#6AA8FF'][Math.floor(r()*5)]}));
+const flies=[...Array(46)].map(()=>[r()*1920,380+r()*480,r()*6.28,2+r()*3.2,r()]);
+const motes=[...Array(44)].map(()=>[r(),r(),r()]);
+const embers=[...Array(70)].map(()=>[r(),r(),r()]);
+const plants=[...Array(34)].map(()=>[-80+r()*2080,55+r()*125,r()*6.28,r()>.5?1:0,9+r()*10]);
+const FRUITS=[[840,240],[930,120],[1080,190],[1230,110],[1370,210],[1490,330],[1340,350],[1180,300],[1000,330],[880,390],[1530,190],[760,330],[1090,70],[1420,70]];
+const LOW=[815,622];
+const BLOBS=[[1120,240,370,2],[800,300,180,2],[1460,290,210,2],[1000,150,190,1],[1270,140,210,1],[1400,250,170,1],[870,340,140,1],[1120,300,230,0],[1000,250,130,0],[1290,300,130,0]];
+const SNK='M1420 330 C1250 300 1040 350 1050 430 C1064 500 1250 480 1236 560 C1222 640 1040 610 1012 632 C996 646 985 588 945 572';
+
+function radial(id,cx,cy,rad,stops){return `<radialGradient id="${id}" gradientUnits="userSpaceOnUse" cx="${cx}" cy="${cy}" r="${rad}">${stops.map(s=>`<stop offset="${s[0]}" stop-color="${s[1]}" stop-opacity="${s[2]===undefined?1:s[2]}"/>`).join('')}</radialGradient>`;}
+
+function planetArt(t,o){
+  // Radius 260 around the origin.
+  const shift=-t*34;
+  const id=nid();
+  const land=[[-90,-100,110,64],[70,-40,132,84],[-60,110,86,104],[170,130,76,52],[-220,20,66,92],[260,-120,88,60]];
+  let g=`<clipPath id="${id}"><circle r="260"/></clipPath>`+radial(id+'a',-80,-90,420,[[0,'#3EE8E0'],[.5,'#1A7CD8'],[1,'#1B1A78']]);
+  g+=C(0,0,260,`url(#${id}a)`);
+  g+=`<g clip-path="url(#${id})"><g transform="translate(${shift%640} 0)">`+[0,640,-640].map(dx=>land.map(a=>E(a[0]+dx,a[1],a[2],a[3],'#29E3A0')+E(a[0]+dx-8,a[1]-8,a[2]*.62,a[3]*.62,'#58EDAE')).join('')).join('')+`</g>`;
+  g+=`<g transform="translate(${(t*62)%700} 0)">`+[0,-700].map(dx=>[[-160,-180,120,16],[60,-20,170,14],[-90,70,130,12],[130,170,100,12]].map(a=>E(a[0]+dx,a[1],a[2],a[3],'#fff',{opacity:.55})).join('')).join('')+`</g>`;
+  g+=radial(id+'s',110,120,430,[[0,'#050726',0],[.55,'#050726',.15],[1,'#050726',.82]])+C(0,0,262,`url(#${id}s)`)+`</g>`;
+  return G('',g,o);
+}
+
+function world(t,c,gl,zp,tag){
+  // Everything in final-garden coordinates.
+  let g='';
+  const cz=clamp((zp-.45)/.4);
+  // Horizon glow and hills.
+  g+=G('',P('M-900 1120 C-700 700 -300 620 240 700 C560 760 840 600 1160 640 C1500 690 1780 540 2100 660 C2500 780 2800 800 3100 1240 V1300 H-900Z',c.far),cz);
+  g+=G('',P('M-900 1140 C-600 760 60 760 460 760 C820 760 1040 680 1340 730 C1660 790 2000 690 2400 780 C2700 840 2900 900 3100 1260 V1300 H-900Z',c.mid),cz);
+  // Glow dots on the distant slopes.
+  for(let i=0;i<30;i++){const x=hash(i,3)*2000-40,y=gy(x)-40-hash(i,4)*110;g+=G('',glow(x,y,20,c.accent,.8*gl)+C(x,y,3.4,c.accent),cz*(.5+.5*Math.sin(t*2+i)));}
+  // Planet body.
+  const id=tag+'gr';
+  g+=radial(id,960,GY+W0,W0,[[0,c.ground],[.965,c.ground],[.993,mix('#000000','#000000',0).replace('rgb(0,0,0)',c.rim)],[1,c.rim]]);
+  g+=C(960,GY+W0,W0,`url(#${id})`);
+  // Planet art, visible from orbit, gives way to the ground.
+  const po=1-prog(zp,.2,.44);
+  if(po>0)g+=G(`translate(960 ${GY+W0}) scale(32)`,planetArt(t,po));
+  const rid=tag+'atm';
+  const atm=1-prog(zp,.3,.62);
+  if(atm>0)g+=radial(rid,960,GY+W0,W0*1.26,[[0,c.accent,0],[.76,c.accent,0],[.8,'#6CE8FF',.75],[.88,'#3B8CFF',.3],[1,'#3B8CFF',0]])+G('',C(960,GY+W0,W0*1.26,`url(#${rid})`),atm);
+  if(cz<=0)return g;
+  let d='';
+  // Small glowing plants along the ground.
+  plants.forEach((p,i)=>{
+    const x=p[0],base=gy(x)+8,h=p[1],sw=Math.sin(t*1.6+p[2])*9,tx=x+sw,ty=base-h,col=p[3]?c.plant:c.plant2;
+    d+=P(`M${x} ${base} Q${x+sw*.2} ${base-h*.6} ${tx} ${ty}`,'none',{stroke:mix('#0A3A4E','#0A3A4E',0),'stroke-width':7,opacity:.9});
+    d+=glow(tx,ty,46,col,.65*gl)+E(tx,ty,p[4]*1.25,p[4]*.86,col)+E(tx-2,ty-3,p[4]*.5,p[4]*.34,'#fff',{opacity:.55*gl});
+  });
+  // The tree.
+  const tr=tag+'tr';
+  d+=`<linearGradient id="${tr}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${c.trunkA}"/><stop offset="1" stop-color="${c.trunkB}"/></linearGradient>`;
+  d+=glow(1120,300,860,c.canA,.34*gl);
+  d+=P(`M1000 860 C1050 780 1030 600 1030 420 L1215 420 C1215 600 1190 780 1252 860Z`,`url(#${tr})`);
+  d+=P('M1060 468 C960 470 880 500 815 598 C890 540 960 530 1060 526Z',c.trunkA);
+  BLOBS.forEach((b,i)=>{
+    const sway=Math.sin(t*.9+i)*5,id2=tag+'bl'+i,col=b[3]===0?c.canA:b[3]===1?c.canB:c.canC,hi=b[3]===0?'#FFFFFF':c.canA;
+    d+=radial(id2,b[0]-b[2]*.35,b[1]-b[2]*.45,b[2]*1.9,[[0,mix('#000000','#000000',0).replace('rgb(0,0,0)',col)],[1,b[3]===0?c.canB:c.canC]]);
+    d+=C(b[0]+sway,b[1],b[2],`url(#${id2})`);
+  });
+  // Fruit.
+  FRUITS.forEach((f,i)=>{
+    const p=.86+.14*Math.sin(t*3+i*1.3),x=f[0]+Math.sin(t*.9+i)*5;
+    d+=glow(x,f[1],84*p,c.fruit,.78*gl)+C(x,f[1],26,c.fruit)+C(x-8,f[1]-9,8,'#fff',{opacity:.55*gl});
+  });
+  g+=G('',d,cz);
+  return g;
+}
+function serpent(t,c,gl,p){
+  if(p<=0)return '';
+  const pt=along(SNK,Math.max(.01,p)),dash=`${(pt.len*p).toFixed(1)} 3000`;
+  let g=P(SNK,'none',{stroke:'#FF74E6','stroke-width':74,opacity:.2,'stroke-dasharray':dash});
+  g+=glow(pt.x,pt.y,110,'#FF74E6',.65)+snake(SNK,p,t,{});
+  return g;
+}
+function people(t,c,gl,drained){
+  const reach=ease.inOut(prog(t,5.75,6.2)),take=ease.inOut(prog(t,6.25,6.55)),toMouth=ease.inOut(prog(t,6.6,6.95));
+  const bit=t>=6.97;
+  const eveY=gy(690),adY=gy(500);
+  const adamX=lerp(470,525,ease.inOut(prog(t,6.5,7)));
+  const skin=drained?'#7E7482':'#F5BE8E',shade=drained?'#544C5C':'#C4835E';
+  const adamTunic=drained?['#55536A','#3A3850']:['#FFC24C','#E0623C'];
+  const eveTunic=drained?['#5F5A70','#3E3B52']:['#7CFFE6','#2E9AD8'];
+  const hair=drained?'#1E1C2C':'#2E1C52';
+  let g='';
+  g+=chubby(adamX,adY,1.05,{f:false,reach:ease.inOut(prog(t,6.8,7.15))*.55,skin,shade,tunic:adamTunic[0],tunic2:adamTunic[1],hair,aura:c.accent,auraOp:.4*gl});
+  const R1=reach*(1-.3*toMouth);
+  g+=chubby(690,eveY,1.05,{f:true,reach:R1,skin,shade,tunic:eveTunic[0],tunic2:eveTunic[1],hair,aura:c.accent,auraOp:.4*gl});
+  // The low fruit leaves the branch with her hand and is brought toward her mouth.
+  const hx=690+lerp(52,116,R1)*1.05,hy=eveY-lerp(54,172,R1)*1.05-25;
+  const fx=lerp(LOW[0],hx,take),fy=lerp(LOW[1],hy,take);
+  g+=glow(fx,fy,90,c.fruit,.85*gl)+C(fx,fy,26,c.fruit)+C(fx-8,fy-9,8,'#fff',{opacity:.55*gl});
+  if(bit)g+=C(fx-19,fy-7,13,drained?'#A8A0A0':'#FFF0C8');
+  return g;
+}function scene(t,c,gl,zp,z,Y,tag,drained){
+  const push=lerp(1,1.24,ease.inOut(prog(t,5.1,6.5)));
+  const a=tag+'sky';
+  let g=`<linearGradient id="${a}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.skyT}"/><stop offset=".45" stop-color="${c.skyM}"/><stop offset=".78" stop-color="${c.skyB}"/></linearGradient>`;
+  const so=ease.inOut(prog(zp,.38,.8));
+  g+=R(0,0,1920,1080,0,`url(#${a})`,{opacity:so});
+  // Aurora ribbons in the sky.
+  g+=G('',[0,1,2].map(i=>P(`M-100 ${180+i*90+Math.sin(t*.7+i)*18} C400 ${80+i*110} 800 ${300+i*40} 1200 ${170+i*80} S1800 ${100+i*90} 2100 ${220+i*60}`,'none',{stroke:i===1?c.accent:c.canC,'stroke-width':34-i*7,opacity:.14*gl})).join(''),so);
+  stars.forEach((s,i)=>{if(i%2===0&&s[1]<560)g+=C(s[0],s[1],s[2]*.8,'#fff',{opacity:so*(.25+.45*Math.sin(t*2.2+s[3])**2)*(.3+.7*gl)});});
+  // Camera: zoom into the planet top, then a gentle push toward the temptation.
+  g+=`<g transform="${sc(860,720,push)}">`;
+  const grow=ease.back(prog(t,.92,1.5));
+  g+=`<g transform="${sc(960,480,grow)}"><g transform="translate(960 ${Y}) scale(${z}) translate(-960 -${GY})">`+world(t,c,gl,zp,tag)+`</g></g>`;
+  if(zp>=.85){
+    const co=prog(zp,.85,1);
+    let w='';
+    w+=serpent(t,c,gl,ease.inOut(prog(t,4.9,6.2)));
+    w+=G('',people(t,c,gl,drained),ease.out(prog(t,3.2,3.7)));
+    // Dark foreground fronds for depth.
+    const fr=(x,y,rot,s,i)=>{const sw=Math.sin(t*1.2+i)*4;return `<g transform="translate(${x} ${y}) rotate(${rot+sw}) scale(${s})">`+[0,1,2,3].map(k=>`<g transform="rotate(${-34+k*23})">`+P('M0 0 C60 -130 60 -300 0 -440 C-60 -300 -60 -130 0 0Z','#04162A')+`</g>`).join('')+`</g>`;};
+    w+=fr(90,1140,18,1.02,1)+fr(1830,1140,-16,1.1,2)+fr(1660,1170,8,.72,3)+fr(330,1180,-8,.58,4);
+    g+=G('',w,co);
+  }
+  g+='</g>';
+  return g;
+}
+function cosmos(t,zp){
+  let g=R(0,0,1920,1080,0,'#05061E');
+  const a=nid();
+  g+=radial(a+'n',1320,240,920,[[0,'#3A1FA8',.72],[.6,'#1A1468',.35],[1,'#05061E',0]])+R(0,0,1920,1080,0,`url(#${a}n)`);
+  g+=radial(a+'m',360,860,860,[[0,'#0D8FA8',.62],[.6,'#0A4080',.3],[1,'#05061E',0]])+R(0,0,1920,1080,0,`url(#${a}m)`);
+  stars.forEach(s=>{g+=C(s[0],s[1],s[2],'#fff',{opacity:prog(t,.1,.7)*(.4+.6*Math.sin(t*2.4+s[3])**2)});});
+  return g;
+}
+function burst(t){
+  const cx=960,cy=480;
+  let g='';
+  const fl=Math.sin(clamp(prog(t,0,.85))*Math.PI);
+  if(fl>0){const bid=nid(),br=lerp(160,1700,ease.out(prog(t,0,.7)));g+=radial(bid,cx,cy,br,[[0,'#FFFFFF',fl],[.1,'#F4FFFF',fl*.92],[.3,'#8FE8FF',fl*.5],[.62,'#6A4CFF',fl*.24],[1,'#3A1FA8',0]])+C(cx,cy,br,`url(#${bid})`);}
+  dust.forEach((d,i)=>{
+    const out=ease.out(prog(t,0,.75)),inn=ease.inOut(prog(t,.55+d.d,1.5+d.d)),ang=d.a+inn*inn*4.6+t*.3;
+    const rad=d.rr*out*(1-inn)+6;
+    const x=cx+Math.cos(ang)*rad,y=cy+Math.sin(ang)*rad*.86;
+    const a2=ang-.09,rad2=rad*1.05,x2=cx+Math.cos(a2)*rad2,y2=cy+Math.sin(a2)*rad2*.86;
+    const o=Math.min(prog(t,.02,.2),1-prog(t,1.3+d.d,1.62+d.d));
+    if(o>0)g+=L(x2,y2,x,y,d.c,d.s,{opacity:o});
+  });
+  const land=prog(t,.9,1.5)*(1-prog(t,1.5,2.0));
+  if(land>0)g+=glow(cx,cy,620,'#BFFFF0',land*.6);
+  return g;
+}
+function fireflies(t,c,gl,o){
+  let g='';
+  flies.forEach((f,i)=>{
+    const x=f[0]+Math.sin(t*.8+f[2])*46+t*8*(f[4]-.5),y=f[1]+Math.cos(t*.95+f[2]*2)*30,pl=.5+.5*Math.sin(t*3.4+i);
+    g+=glow(x,y,f[3]*11,c.accent,pl*gl*.9)+C(x,y,f[3],'#fff',{opacity:pl*(.3+.7*gl)});
+  });
+  return G('',g,o);
+}
+function gateScene(t,l){
+  const s=lerp(1.14,1,ease.out(prog(l,0,2.3)));
+  let g='';
+  const [a,dA]=vgrad([[0,'#090A2C'],[.5,'#3A0F4E'],[.8,'#D03A3A'],[1,'#FF8A3C']]);
+  g+=dA+R(0,0,1920,1080,0,`url(#${a})`);
+  stars.forEach((st,i)=>{if(i%2&&st[1]<520)g+=C(st[0],st[1],st[2]*.8,'#fff',{opacity:.35+.45*Math.sin(t*2.2+st[3])**2});});
+  let w='';
+  w+=glow(1330,560,1050,'#FF7A34',.5);
+  w+=P('M-200 720 C160 560 520 660 820 680 C1160 700 1500 590 2120 660 V1200 H-200Z','#3C1450');
+  w+=P('M-200 820 C200 720 620 800 960 790 C1320 780 1700 730 2120 790 V1200 H-200Z','#22103E');
+  // The gate.
+  const inner='M-210 0 V-500 C-210 -700 210 -700 210 0 V0Z';
+  w+=`<g transform="translate(1330 860)">`;
+  const b=nid(),e=nid(),q=nid();
+  w+=`<linearGradient id="${b}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4A2C8C"/><stop offset="1" stop-color="#1A1048"/></linearGradient>`+
+     `<linearGradient id="${q}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7CFFE6"/><stop offset=".6" stop-color="#FFD45E"/><stop offset="1" stop-color="#FF9A3C"/></linearGradient>`;
+  w+=P('M-340 0 V-520 C-340 -900 340 -900 340 -520 V0Z',`url(#${b})`);
+  w+=P('M-224 0 V-500 C-224 -780 224 -780 224 -500 V0Z',`url(#${q})`);
+  // Faint glimpse of the garden they have lost.
+  [[-110,-200,70],[120,-260,92],[0,-340,110],[-70,-420,70]].forEach(p=>w+=C(p[0],p[1],p[2],'#2ECCB0',{opacity:.55}));
+  w+=P('M-224 -60 C-70 -110 70 -40 224 -80 V0 H-224Z','#1F8E7E',{opacity:.7});
+  w+=glow(0,-380,560,'#FFE9A8',.5);
+  // Cherubim: wings of light only.
+  const wf=.78+.14*Math.sin(l*3);
+  w+=`<g transform="translate(-345 -470) scale(-.86 .86)">${wing(wf,'#FFEFB0')}</g>`;
+  w+=`<g transform="translate(345 -470) scale(.56 .86)">${wing(wf,'#FFEFB0')}</g>`;
+  w+=glow(-345,-470,190,'#FFF4C8',.75)+glow(345,-470,190,'#FFF4C8',.75);
+  w+=glow(0,-300,520,'#FF6A1E',.62);
+  w+=`<g transform="translate(0 -60) rotate(${Math.sin(l*1.8)*11})">${sword(l*1.4+1,560,{n:15})}</g>`;
+  w+=`</g>`;
+  w+=P('M-200 900 C300 830 900 880 1340 850 C1660 830 1900 860 2120 850 V1200 H-200Z','#120A28');
+  w+=glow(1330,870,400,'#FF8A3C',.5);
+  embers.forEach(e2=>{const a0=(e2[0]+l*(.22+e2[2]*.32))%1;w+=C(1330+(e2[1]-.5)*980+Math.sin(l*4+e2[0]*9)*26,lerp(860,120,a0),1.8+e2[2]*4.6,e2[2]>.5?'#FFD45E':'#FF7A34',{opacity:(1-a0)*.95});});
+  // Two small figures, walking away.
+  const p=ease.inOut(prog(l,.05,2.25)),wk=l*11;
+  const c1=['#6C6A84','#3E3C58'],c2=['#74708E','#444264'];
+  w+=chubby(lerp(800,300,p),880,.62,{flip:-1,walk:wk,tunic:c1[0],tunic2:c1[1],skin:'#A98B82',shade:'#6E5A62',hair:'#1E1C2C',eye:'#0C0A18',aura:'#FF8A3C',auraOp:.26});
+  w+=chubby(lerp(915,415,p),884,.6,{f:true,flip:-1,walk:wk+1.4,tunic:c2[0],tunic2:c2[1],skin:'#A98B82',shade:'#6E5A62',hair:'#1E1C2C',eye:'#0C0A18',aura:'#FF8A3C',auraOp:.26});
+  g+=G(sc(1100,640,s),w);
+  return g;
+}
+function caption(t,a,b,lines,ref){
+  const o=ease.out(prog(t,a,a+.3))*(1-prog(t,b-.2,b));
+  if(o<=0)return '';
+  const y0=lines.length>1?944:972;
+  return G(`translate(0 ${(1-ease.out(prog(t,a,a+.3)))*16})`,
+    T(960,y0,lines,{size:40,font:'Segoe UI',weight:700,fill:'#fff',anchor:'middle',lh:1.26})+
+    T(960,1046,ref.toUpperCase(),{size:24,font:'Segoe UI',weight:700,fill:'#7CFFE6',anchor:'middle',ls:6}),o);
+}
+
+mount(t=>{
+  const zp=ease.inOut(prog(t,1.95,3.45));
+  const z=Math.exp(lerp(Math.log(Z0),0,zp));
+  const Y=lerp(220,GY,zp);
+  // Palette shifts from Eden to crimson as the serpent descends.
+  const cr=ease.inOut(prog(t,4.95,6.3));
+  const c=blendP(EDEN,CRIM,cr);
+  const gl=lerp(1,.86,cr);
+  let g='';
+  if(t<8.2){
+    if(zp<.9)g+=cosmos(t,zp);
+    g+=scene(t,c,gl,zp,z,Y,'a',false);
+    g+=fireflies(t,c,gl,prog(zp,.8,1));
+  }
+  // The shockwave expands from the bite and drains the world behind it.
+  if(t>=6.98&&t<8.2){
+    const p=ease.out(prog(t,6.98,7.75)),rad=lerp(0,2500,p),cx=760,cy=590;
+    const id=nid(),dr=blendP(DRAIN,DRAIN,0);
+    g+=`<clipPath id="${id}"><circle cx="${cx}" cy="${cy}" r="${rad}"/></clipPath><g clip-path="url(#${id})">${scene(t,dr,.08,1,1,GY,'b',true)}${fireflies(t,dr,.08,.45)}</g>`;
+    const ro=1-prog(t,7.5,7.85);
+    g+=C(cx,cy,rad,'none',{stroke:'#FFF2D0','stroke-width':26,opacity:ro})+C(cx,cy,rad*.93,'none',{stroke:'#FF7A5C','stroke-width':64,opacity:ro*.42})+C(cx,cy,rad*.82,'none',{stroke:'#7CFFE6','stroke-width':14,opacity:ro*.34});
+  }
+  if(t<3)g+=burst(t);
+  if(t>=7.75){
+    // The light of the gate opens over the drained garden.
+    const p=ease.inOut(prog(t,7.75,8.2)),rad=lerp(0,2300,p),id=nid();
+    g+=`<clipPath id="${id}"><circle cx="1330" cy="500" r="${rad}"/></clipPath><g clip-path="url(#${id})">${gateScene(t,t-7.75)}</g>`;
+    if(p<1)g+=C(1330,500,rad,'none',{stroke:'#FFD9A0','stroke-width':30,opacity:1-p})+C(1330,500,rad*.94,'none',{stroke:'#FF7A34','stroke-width':70,opacity:(1-p)*.4});
+  }
+  // Motes drift over everything.
+  motes.forEach(m=>{const y=(m[1]+t*.03)%1,x=(m[0]+Math.sin(t*.5+m[2]*6)*.01);g+=C(x*1920,y*1080,1.3+m[2]*2.4,'#fff',{opacity:.2+.2*m[2]});});
+  const [a,dA]=vgrad([[0,'#02021A'],[1,'#02021A']]);
+  g+=`<linearGradient id="capg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".82"/></linearGradient>`+R(0,860,1920,220,0,'url(#capg)');
+  g+=vignette(.68);
+  g+=caption(t,.5,2.15,['In the beginning God created the heaven and the earth.'],'Genesis 1:1');
+  g+=caption(t,3.2,5.0,['And the LORD God planted a garden eastward in Eden;','and there he put the man whom he had formed.'],'Genesis 2:8');
+  g+=caption(t,5.3,7.7,['she took of the fruit thereof, and did eat,','and gave also unto her husband with her'],'Genesis 3:6');
+  g+=caption(t,7.95,10.4,['and he placed at the east of the garden of Eden Cherubims,','and a flaming sword which turned every way'],'Genesis 3:24');
+  return g;
+});
+</script>

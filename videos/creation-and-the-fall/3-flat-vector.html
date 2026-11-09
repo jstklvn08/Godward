@@ -1,0 +1,147 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Creation and the Fall: Flat Vector</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="shared.js"></script>
+<script>
+const {G,R,C,E,L,P,T,pop,prog,ease,lerp,mix,sc,rng,clamp}=K;
+const r=rng(77);
+const stars=[...Array(170)].map(()=>[r()*1920,r()*1080,1+r()*3.4,r()*6]);
+const embers=[...Array(36)].map(()=>[r(),r(),r()]);
+
+function caption(t,a,b,lines,ref){
+  const o=ease.out(prog(t,a,a+.35))*(1-prog(t,b-.25,b));
+  const y=lines.length>1?944:972;
+  return G('',R(0,890,1920,190,0,'#0B1026',{opacity:.62})+
+    T(960,y,lines,{size:42,font:'Georgia',style:'italic',fill:'#fff',anchor:'middle',lh:1.28})+
+    T(960,1056,ref.toUpperCase(),{size:24,font:'Segoe UI',weight:700,fill:'#FFD36B',anchor:'middle',ls:6}),o);
+}
+function space(t){
+  const grow=ease.out(prog(t,.45,1.8));
+  const zoom=ease.inOut(prog(t,2,2.75));
+  const flash=Math.sin(clamp(prog(t,.1,.95))*Math.PI);
+  let g=R(0,0,1920,1080,0,'#080C24');
+  stars.forEach(s=>{g+=C(s[0],s[1],s[2],'#fff',{opacity:(.45+.55*Math.sin(t*2.4+s[3])**2)*prog(t,.15,.7)});});
+  const rad=lerp(0,300,grow);
+  let e=`<defs><clipPath id="ec"><circle cx="0" cy="0" r="300"/></clipPath></defs>`;
+  const rot=-t*62;
+  const land=[[-110,-90,120,74],[80,-40,150,92],[-60,120,92,120],[180,150,84,56],[-240,40,74,104],[300,-110,104,70],[-400,-60,120,80]];
+  e+=C(0,0,300,'#2478D4')+`<g clip-path="url(#ec)"><g transform="translate(${rot} 0)">${land.concat(land.map(a=>[a[0]+760,a[1],a[2],a[3]])).map(a=>E(a[0],a[1],a[2],a[3],'#58C26B')).join('')}</g><path d="M-300 -300 H300 V300 H-300Z M120 -320 A330 330 0 0 1 120 320 A430 430 0 0 0 120 -320Z" fill="#0B1026" opacity="0" /><ellipse cx="150" cy="60" rx="330" ry="360" fill="#0B1E5A" opacity=".26"/></g>`;
+  g+=G(`translate(960 480) scale(${(rad/300)*lerp(1,9,zoom)})`,e,1-prog(t,2.42,2.75));
+  g+=C(960,480,lerp(40,1300,flash),'#FFF4C2',{opacity:flash*.82});
+  return g;
+}
+function pal(t){
+  const d=ease.inOut(prog(t,5.1,7.2)),n=ease.inOut(prog(t,7.2,8.2));
+  const m=(a,b,c)=>n>0?mix(b,c,n):mix(a,b,d);
+  return {skyT:m('#7ED0E8','#E86F5B','#14143A'),skyB:m('#CFF1E1','#F7BA74','#54234F'),sun:m('#FFE98F','#FFB05C','#FF5B3C'),
+    far:m('#74C7A3','#B46A6B','#2A2452'),mid:m('#4FB07C','#8B4C63','#20203F'),near:m('#2F8E62','#5F3757','#17172F'),
+    trunk:m('#6C4630','#4A2D3C','#15122A'),leaf:m('#1F9A68','#7C3D5F','#1F1A3C'),leaf2:m('#30B878','#9B4A63','#2B2148')};
+}
+function backdrop(t,cam,c){
+  const px=f=>`translate(${cam.x*f} ${cam.y*f})`;
+  let g=`<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.skyT}"/><stop offset="1" stop-color="${c.skyB}"/></linearGradient></defs>`;
+  g+=R(0,0,1920,1080,0,'url(#sky)');
+  const sunY=lerp(230,640,ease.inOut(prog(t,5.1,8)));
+  g+=G(px(.1),C(1490,sunY,132,c.sun)+C(1490,sunY,200,c.sun,{opacity:.24}));
+  const clouds=prog(t,6.8,7.6);
+  [[300,190,1],[820,120,.76],[1180,250,.62]].forEach((a,i)=>{const x=a[0]+t*16*(i+1);g+=G(px(.2)+` translate(${x} ${a[1]}) scale(${a[2]})`,E(0,0,130,44,'#fff')+C(-50,-22,50,'#fff')+C(40,-36,66,'#fff'),.82*(1-clouds));});
+  g+=G(px(.28),P('M-200 640 Q260 400 700 590 T1540 540 T2200 620 V1100 H-200Z',c.far));
+  g+=G(px(.5),P('M-200 740 Q420 560 1000 720 T2200 680 V1100 H-200Z',c.mid));
+  return g;
+}
+function foreground(t,cam,c){
+  const px=`translate(${cam.x} ${cam.y})`;
+  let g=P('M-200 830 Q500 730 1050 815 T2200 790 V1200 H-200Z',c.near);
+  return G(px,g);
+}
+function bigTree(t,c){
+  const glow=.28+.14*Math.sin(t*3);
+  let g=P('M-50 0 C-26 -120 -46 -240 -34 -340 L34 -340 C46 -240 26 -120 50 0Z',c.trunk);
+  [[-170,-370,140],[160,-370,140],[0,-520,170],[-110,-470,120],[110,-470,120],[0,-380,160]].forEach((a,i)=>g+=C(a[0],a[1],a[2],i%2?c.leaf:c.leaf2));
+  g+=C(0,-430,330,'#FFE28A',{opacity:glow*(1-prog(t,7.2,8.2))*.5});
+  return g;
+}
+const FR=[[-180,-360],[-70,-490],[62,-380],[175,-440],[0,-605],[-205,-455],[40,-545]];
+function fruitAll(t,c,skip){
+  return FR.map((f,i)=>i===skip?'':C(f[0],f[1],25,mix('#FF4D5E','#B62D4A',prog(t,6,8)))).join('');
+}
+function figure(x,y,s,o){
+  const {f,walk=0,flip=1,reach=0,bow=0,c}=o;
+  const sw=Math.sin(walk)*26,sk=f?'#E0A873':'#BC7B47';
+  let g='';
+  g+=L(-16,-120,-16-sw,0,o.dim||sk,26)+L(16,-120,16+sw,0,o.dim||sk,26);
+  if(f) g+=P('M-52 -318 Q-74 -205 -48 -160 L48 -160 Q74 -205 52 -318Z','#3B2115');
+  g+=P('M-46 -250 Q0 -268 46 -250 L54 -104 L-54 -104Z',o.cloth||'#E9C45D');
+  g+=L(-46,-232,-64+sw*.4,-126,o.dim||sk,22)+L(44,-232,lerp(70,132,reach),lerp(-126,-280,reach),o.dim||sk,22);
+  g+=G(`rotate(${bow} 0 -280)`,C(0,-322,58,o.dim||sk)+(f?P('M-60 -330 Q-56 -392 0 -390 Q56 -392 60 -330 Q24 -364 -14 -360 Q-46 -354 -60 -330Z','#3B2115'):P('M-60 -336 Q-52 -392 0 -390 Q52 -392 60 -336 Q20 -362 -60 -336Z','#2B1A10')+P('M-58 -316 Q-50 -262 0 -260 Q50 -262 58 -316 Q30 -290 0 -292 Q-30 -290 -58 -316Z','#2B1A10')));
+  return G(`translate(${x} ${y}) scale(${s*flip} ${s})`,g);
+}
+function deer(x,y,s,c){
+  return G(`translate(${x} ${y}) scale(${s})`,R(-70,-96,140,62,30,c)+R(-58,-52,14,52,6,c)+R(44,-52,14,52,6,c)+P('M50 -90 L84 -170 L120 -160 L92 -84Z',c)+E(112,-172,38,22,c)+P('M92 -188 L78 -232 M78 -232 L60 -240 M78 -232 L92 -252 M112 -190 L122 -232 M122 -232 L108 -252 M122 -232 L142 -240','none',{stroke:c,'stroke-width':7}));
+}
+function bird(x,y,s,w,c){return G(`translate(${x} ${y}) scale(${s})`,P(`M-48 ${w} Q-20 ${-16-w*.5} 0 2 Q20 ${-16-w*.5} 48 ${w}`,'none',{stroke:c,'stroke-width':8}));}
+function serpent(t,l){
+  const d=ease.inOut(prog(l,.1,1.2)),sw=Math.sin(l*5)*14;
+  const path='M-20 -470 C90 -420 -70 -350 30 -280 C110 -210 -60 -150 20 -100 C90 -70 130 -160 120 -262';
+  const pe=document.createElementNS('http://www.w3.org/2000/svg','path');pe.setAttribute('d',path);const len=pe.getTotalLength(),dash=len*d,pt=pe.getPointAtLength(dash);
+  const k=lerp(.05,1,d);
+  return G('',P(path,'none',{stroke:'#35C6B4','stroke-width':26,'stroke-dasharray':`${dash} 2000`})+
+    G(`translate(${pt.x} ${pt.y+sw*.25}) scale(${k})`,E(0,0,42,26,'#35C6B4')+C(13,-9,7,'#FFEA8C')+P('M40 0 L74 6 M74 6 L90 -6 M74 6 L92 16','none',{stroke:'#FF4D5E','stroke-width':5})));
+}
+function garden(t){
+  const c=pal(t);
+  const zoomIn=ease.out(prog(t,2.5,3.5));
+  const push=ease.inOut(prog(t,5,6.2));
+  const cam={x:Math.sin(t*.6)*22,y:0};
+  const s=lerp(1.08,1,zoomIn)*lerp(1,1.32,push);
+  const orig=`${sc(960,740,s)}`;
+  let g=backdrop(t,cam,c);
+  let w='';
+  w+=G(`translate(${cam.x*.65} 0)`,C(240,720,90,c.leaf)+C(340,700,114,c.leaf2)+R(322,740,24,96,6,c.trunk)+C(1680,710,104,c.leaf2)+C(1580,735,80,c.leaf)+R(1660,746,24,92,6,c.trunk));
+  w+=foreground(t,cam,c);
+  w+=G(`translate(${cam.x*.9} 0)`,P('M820 812 C780 880 1020 930 900 1110 L1120 1110 C1250 930 990 880 1000 808Z',mix('#59C5EE','#31305F',prog(t,5.3,8)),{}));
+  const dv=1-prog(t,5,5.5);
+  w+=G('',deer(lerp(1500,1440,zoomIn),820,1.05,c.trunk),dv);
+  w+=G('',bird(380+t*30,330,1,Math.sin(t*9)*18,'#24405C')+bird(470+t*30,290,.8,Math.sin(t*9+1)*18,'#24405C')+bird(540+t*30,350,.7,Math.sin(t*9+2)*18,'#24405C'),dv);
+  const r2=ease.inOut(prog(t,5.8,6.8)),take=ease.inOut(prog(t,6.5,7.3));
+  const eveX=lerp(1190,1160,r2);
+  // The picked fruit travels from the branch to Eve's hand.
+  const tree=G('translate(960 830)',bigTree(t,c)+fruitAll(t,c,take>0?2:-1)+(t>=5?serpent(t,t-5):''));
+  w+=tree;
+  w+=figure(lerp(740,780,r2),860,1.04,{f:false,c});
+  w+=figure(eveX,860,1.02,{f:true,flip:-1,reach:r2,c});
+  if(take>0) w+=C(lerp(1022,eveX-136,take),lerp(450,572,take),25,'#FF4D5E');
+  g+=G(orig,w);
+  return g;
+}
+function gateScene(t,l){
+  const c=pal(t),w=ease.inOut(prog(l,.1,2.3)),b=Math.sin(l*15)*5;
+  let g=backdrop(t,{x:0,y:0},c)+foreground(t,{x:0,y:0},c);
+  const light=.55+.1*Math.sin(l*10);
+  g+=G('translate(1320 830)',
+    P('M-240 0 V-500 Q0 -760 240 -500 V0 H170 V-480 Q0 -660 -170 -480 V0Z','#0E0D22')+
+    P('M-168 0 V-476 Q0 -656 168 -476 V0Z',mix('#A85A3C','#E89A52',light))+
+    G(`rotate(${Math.sin(l*2)*5} 0 -160)`,R(-10,-500,20,370,8,'#FFF3D0')+R(-58,-132,116,18,8,'#D9A441')+R(-9,-118,18,74,8,'#7A5230')+
+      [...Array(14)].map((_,i)=>{const y=-500+i*26,h=Math.sin(l*14+i)*20;return P(`M-22 ${y} Q${-70+h} ${y-16} ${h*.3} ${y-92} Q${70+h} ${y-20} 22 ${y}Z`,i%2?'#FFD36B':'#FF6A2E',{opacity:.92});}).join(''))+
+    // Abstract cherubim as paired wings of light, either side of the gateway.
+    [-1,1].map(s=>G(`translate(${s*252} -380) scale(${s} 1)`,[0,1,2,3].map(i=>P(`M0 ${i*38} Q${140-i*22} ${-40+i*30} ${200-i*28} ${80+i*44} Q${90} ${70+i*38} 0 ${54+i*38}Z`,'#FFE6B0',{opacity:.68-i*.12})).join(''))).join(''));
+  embers.forEach(e=>{const a=(e[0]+l*(.25+e[2]*.35))%1;g+=C(1320+(e[1]-.5)*520+Math.sin(l*4+e[0]*9)*22,lerp(820,250,a),2+e[2]*5,'#FFB25C',{opacity:(1-a)*.88});});
+  const walk=l*13;
+  g+=figure(lerp(1000,470,w),860+b,.98,{f:false,flip:-1,walk,bow:-7,cloth:'#6C5B66',dim:'#7E5A52'});
+  g+=figure(lerp(1190,650,w),860-b,.95,{f:true,flip:-1,walk:walk+1.5,bow:-7,cloth:'#6C5B66',dim:'#8D6A5C'});
+  return g;
+}
+mount(t=>{
+  let g='';
+  if(t<2.8) g+=space(t);
+  if(t>=2.4&&t<7.9) g+=G('',garden(t),ease.out(prog(t,2.4,2.8)));
+  if(t>=7.5) g+=G('',gateScene(t,t-7.5),ease.out(prog(t,7.5,7.9)));
+  g+=caption(t,.45,2.4,['In the beginning God created the heaven and the earth.'],'Genesis 1:1');
+  g+=caption(t,2.7,5,['And the LORD God planted a garden eastward in Eden;','and there he put the man whom he had formed.'],'Genesis 2:8');
+  g+=caption(t,5.2,7.5,['She took of the fruit thereof, and did eat,','and gave also unto her husband with her.'],'Genesis 3:6');
+  g+=caption(t,7.75,10.3,['So he drove out the man; and he placed at the east of the garden','of Eden Cherubims, and a flaming sword which turned every way.'],'Genesis 3:24');
+  return g;
+});
+</script>
