@@ -1,2 +1,3 @@
 # Live console log of render_all.py (render-log.json holds the results)
 render.out
+.venv-kokoro/
