@@ -1,0 +1,116 @@
+{
+  "1-cartoon-infographic": {
+    "preset": "brisk",
+    "text": "In six days, God made everything. He planted a garden in Eden, and gave one warning. A serpent questioned it. Doubt, choice, shame, exile.",
+    "attempts": [
+      {
+        "output": "/home/user/Godward/voice/clips/1-cartoon-infographic.wav",
+        "device": "cpu",
+        "seed": 1,
+        "audio_seconds": 7.48,
+        "generation_seconds": 38.69,
+        "realtime_factor": 5.17
+      }
+    ]
+  },
+  "2-doodle-storytime": {
+    "preset": "warm",
+    "text": "Let there be light. Everything was very good. Then a very trustworthy snake said, Ye shall not surely die. Crunch. But the story was not over.",
+    "attempts": [
+      {
+        "output": "/home/user/Godward/voice/clips/2-doodle-storytime.wav",
+        "device": "cpu",
+        "seed": 1,
+        "audio_seconds": 7.48,
+        "generation_seconds": 28.04,
+        "realtime_factor": 3.75
+      }
+    ]
+  },
+  "3-flat-vector": {
+    "preset": "calm",
+    "text": "In the beginning God created the heaven and the earth. A garden in Eden. One fruit, taken. Then a flaming sword which turned every way.",
+    "attempts": [
+      {
+        "output": "/home/user/Godward/voice/clips/3-flat-vector.wav",
+        "device": "cpu",
+        "seed": 1,
+        "audio_seconds": 7.88,
+        "generation_seconds": 30.7,
+        "realtime_factor": 3.9
+      }
+    ]
+  },
+  "comparison/a-default-ex0.5-cfg0.5": {
+    "text": "In the beginning God created the heaven and the earth. A garden in Eden. One fruit, taken. Then a flaming sword which turned every way.",
+    "setting": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "attempts": [
+      {
+        "output": "/home/user/Godward/voice/comparison/a-default-ex0.5-cfg0.5.wav",
+        "device": "cpu",
+        "seed": 1,
+        "audio_seconds": 7.32,
+        "generation_seconds": 29.1,
+        "realtime_factor": 3.98
+      }
+    ]
+  },
+  "comparison/b-restrained-ex0.3-cfg0.5": {
+    "text": "In the beginning God created the heaven and the earth. A garden in Eden. One fruit, taken. Then a flaming sword which turned every way.",
+    "setting": {
+      "exaggeration": 0.3,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "attempts": [
+      {
+        "output": "/home/user/Godward/voice/comparison/b-restrained-ex0.3-cfg0.5.wav",
+        "device": "cpu",
+        "seed": 1,
+        "audio_seconds": 7.88,
+        "generation_seconds": 31.24,
+        "realtime_factor": 3.96
+      }
+    ]
+  },
+  "comparison/c-measured-ex0.4-cfg0.3": {
+    "text": "In the beginning God created the heaven and the earth. A garden in Eden. One fruit, taken. Then a flaming sword which turned every way.",
+    "setting": {
+      "exaggeration": 0.4,
+      "cfg_weight": 0.3,
+      "temperature": 0.8
+    },
+    "attempts": [
+      {
+        "output": "/home/user/Godward/voice/comparison/c-measured-ex0.4-cfg0.3.wav",
+        "device": "cpu",
+        "seed": 1,
+        "audio_seconds": 8.44,
+        "generation_seconds": 31.91,
+        "realtime_factor": 3.78
+      }
+    ]
+  },
+  "comparison/d-dramatic-ex0.7-cfg0.3": {
+    "text": "In the beginning God created the heaven and the earth. A garden in Eden. One fruit, taken. Then a flaming sword which turned every way.",
+    "setting": {
+      "exaggeration": 0.7,
+      "cfg_weight": 0.3,
+      "temperature": 0.8
+    },
+    "attempts": [
+      {
+        "output": "/home/user/Godward/voice/comparison/d-dramatic-ex0.7-cfg0.3.wav",
+        "device": "cpu",
+        "seed": 1,
+        "audio_seconds": 6.08,
+        "generation_seconds": 25.02,
+        "realtime_factor": 4.12
+      }
+    ]
+  }
+}
