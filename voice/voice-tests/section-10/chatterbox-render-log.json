@@ -61,5 +61,14 @@
     "audio_seconds": 32.56,
     "generation_seconds": 127.9,
     "realtime_factor": 3.93
+  },
+  "bm_george": {
+    "device": "cpu",
+    "seed": 1,
+    "exaggeration": 0.3,
+    "cfg_weight": 0.5,
+    "audio_seconds": 33.92,
+    "generation_seconds": 128.8,
+    "realtime_factor": 3.8
   }
 }
