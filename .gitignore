@@ -23,3 +23,6 @@ voice/full/*/chunks/
 # Files filled with ESV text (Crossway copyright)
 *.esv.md
 *.esv.json
+
+# Narration renders (WAVs stay local; passages.json and timings are committed)
+voice/full/**/*.wav
