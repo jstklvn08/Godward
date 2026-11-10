@@ -173,7 +173,7 @@
   "mix": {
     "voice": {"volume": 1.25},
     "buses": [
-      {"name": "music", "stem": "score.wav", "volume": 1.6,
+      {"name": "music", "stem": "score.wav", "volume": 0.8,
        "duck": {"threshold": 0.02, "ratio": 4, "attack": 30, "release": 500, "makeup": 1},
        "envelope": [
          {"comment": "opening choir swell", "from": 1.0, "to": {"word": "You shall not steal", "offset": -1.2}, "db": 7, "in": 1.0, "out": 0.4},
