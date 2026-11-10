@@ -106,7 +106,7 @@ def use_ref_dir(ref_dir: Path, name: str) -> None:
 
 def use_script(script: Path) -> None:
     """Point at a script and load its optional <script>.voice.json sidecar."""
-    global SCRIPT
+    global SCRIPT, SENTENCE_GAP
     SCRIPT = script
     render_full.SCRIPT = script
     sidecar = script.with_suffix(".voice.json")
@@ -115,6 +115,14 @@ def use_script(script: Path) -> None:
         SECTION_MODE.update({int(k): v for k, v in data.get("section_mode", {}).items()})
         OVERRIDES.update(data.get("overrides", {}))
         render_full.SAY.update(data.get("say", {}))
+        # Optional per-episode delivery: "modes": {"story": [exaggeration, cfg, temperature]},
+        # "pace": {"story": [low, high]} words/s, "sentence_gap": seconds (tight edit).
+        for mode, values in data.get("modes", {}).items():
+            MODES[mode] = VoiceSetting(*values)
+        for mode, window in data.get("pace", {}).items():
+            PACE[mode] = tuple(window)
+        if "sentence_gap" in data:
+            SENTENCE_GAP = float(data["sentence_gap"])
 
 
 def read_sections(only: set[int]) -> list[tuple[int, str, str]]:
@@ -149,7 +157,8 @@ def passages_with_pauses(section: int, text: str) -> list[tuple[str, str, float]
     marker = re.compile("|".join(re.escape(m) for m in MARKERS))
     out: list[list] = []
     # Clean the text first (quotes, pronunciations), then split, so sentences ending in a quote split.
-    for sentence in re.split(r"(?<=[.?!])\s+", render_full.to_speech(text)):
+    # Also split after a pause marker, so a marker at the end of a line pauses after that sentence, not the next.
+    for sentence in re.split(r"(?<=[.?!])\s+|(?<=\[beat\])\s+|(?<=\[pause\])\s+|(?<=\[hold\])\s+", render_full.to_speech(text)):
         extra = sum(MARKERS[m] for m in marker.findall(sentence))
         sentence = marker.sub("", sentence).strip()
         if not sentence:

@@ -6,7 +6,8 @@ draft against this list before sending it; it is cheaper than another round of n
 ## Format
 - Primary deliverable: vertical 9:16 (1080×1920) for Shorts, Reels and TikTok. The user writes it
   as "9:6". It must be remade to fit the tall frame, never cropped from landscape.
-- Also produce landscape 1920×1080 for YouTube from the same page.
+- Vertical is the only format (user, Nov 2026: "change skill to vertical 9:6"). No landscape cut
+  unless the user asks for one.
 - Instagram feed thumbnail: 4:5 (1080×1350), key content inside the centre 1012 px (grid crop).
 - Send short samples early and often ("give me a sample when possible"). Never surprise the user
   with a 45-minute full render they haven't previewed.
@@ -49,7 +50,8 @@ draft against this list before sending it; it is cheaper than another round of n
 - Every word must match the script; listen-check the very short lines.
 
 ## Content
-- Scripture exact (ESV via the API; KJV fallback); paraphrase never shown as scripture.
+- Scripture exact, always ESV (via the API; the user chose ESV for the channel). KJV only if the
+  user asks. Paraphrase never shown as scripture.
 - God never depicted as a person: light, wind, fire, words.
 - Order of creation respected (light before the sun; the sun on Day 4).
 - People modestly clothed; cherubim as wings of light, not figures.

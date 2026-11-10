@@ -4,7 +4,9 @@
     python scripts/fill_esv.py scripts/ten-commandments-1-no-other-gods.md
 
 Writes <name>.esv.md next to the input. Use --list to print the references
-without calling the API. The filled files are git-ignored: they hold ESV text,
+without calling the API. --kjv fills the same placeholders with the King James
+Version (public domain, from bible-api.com) into <name>.kjv.md, for when there is
+no working ESV key. The filled files are git-ignored: they hold ESV text,
 which is under copyright to Crossway, so check Crossway's and the API's terms
 before publishing them anywhere.
 """
@@ -67,10 +69,21 @@ def fetch(ref: str, key: str) -> str:
     return " ".join(passages[0].split())
 
 
+def fetch_kjv(ref: str) -> str:
+    """Public-domain KJV text for a reference, from bible-api.com."""
+    url = "https://bible-api.com/" + urllib.parse.quote(ref) + "?translation=kjv"
+    body = subprocess.run(["curl", "-sf", url], check=True, capture_output=True, text=True, encoding="utf-8").stdout
+    text = json.loads(body).get("text", "")
+    if not text.strip():
+        raise ValueError(f"bible-api.com returned no text for {ref!r}")
+    return " ".join(text.split())
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("script", type=Path)
     parser.add_argument("--list", action="store_true", help="Print the references and stop.")
+    parser.add_argument("--kjv", action="store_true", help="Fill with the public-domain KJV instead (no key needed).")
     args = parser.parse_args()
 
     source = args.script.read_text(encoding="utf-8")
@@ -80,7 +93,16 @@ def main() -> int:
         print(f"{len(refs)} references", file=sys.stderr)
         return 0
 
-    key = os.environ.get("ESV_API_KEY") or read_env_file().get("ESV_API_KEY")
+    if args.kjv:
+        texts = {ref: fetch_kjv(ref) for ref in refs}
+        filled = PLACEHOLDER.sub(lambda m: f"“{texts[m.group(1).strip()]}”", source)
+        filled += "\n\n---\n\nScripture quotations are from the King James Version (public domain).\n"
+        out = args.script.with_suffix(".kjv.md")
+        out.write_text(filled, encoding="utf-8")
+        print(f"Filled {len(refs)} references (KJV) into {out}")
+        return 0
+
+    key = read_env_file().get("ESV_API_KEY") or os.environ.get("ESV_API_KEY")  # .env wins over a stale system variable
     if not key:
         print("Set ESV_API_KEY, or add ESV_API_KEY=<key> to .env at the repo root.", file=sys.stderr)
         return 1

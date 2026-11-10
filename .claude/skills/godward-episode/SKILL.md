@@ -1,6 +1,6 @@
 ---
 name: godward-episode
-description: Make a Godward Bible-story episode end to end, the way "Creation and the Fall" was made - script with exact ESV scripture, narration in the narrator's own voice, word-timed glowing-collage animation (vertical 9:16 for Shorts/Reels/TikTok plus landscape for YouTube), a scene-matched soundtrack and mix, thumbnails, and renders. Use whenever the user wants a new episode or video for the Godward channel, wants to continue or remake one (e.g. "do the next episode", "make the Ten Commandments video", "animate this script", "turn this into a short"), or wants to change one stage of an existing episode (re-voice, re-time, new soundtrack, re-render, thumbnail).
+description: Make a Godward Bible-story episode end to end, the way "Creation and the Fall" was made - script with exact ESV scripture, narration in the narrator's own voice, word-timed glowing-collage animation in vertical 9:16 (1080x1920, the user writes it "9:6") for Shorts/Reels/TikTok, a scene-matched soundtrack and mix, thumbnails, and renders. Use whenever the user wants a new episode or video for the Godward channel, wants to continue or remake one (e.g. "do the next episode", "make the Ten Commandments video", "animate this script", "turn this into a short"), or wants to change one stage of an existing episode (re-voice, re-time, new soundtrack, re-render, thumbnail).
 ---
 
 # Godward episode
@@ -37,18 +37,20 @@ videos/<slug>/episode.html      the page (copied from videos/_template/)
 videos/<slug>/words.js          word timings (align_words.py)
 videos/<slug>/audio-cues.json   soundtrack plan
 videos/<slug>/build/            audio stems, mix, stills, samples (git-ignored)
-videos/<slug>/<slug>-vertical.mp4, <slug>.mp4, thumbnail-ig-4x5.png, thumbnail-yt-16x9.png
+videos/<slug>/<slug>-vertical.mp4, thumbnail-ig-4x5.png
 ```
 
 ## Stage by stage
 
 **0. Kick-off.** Agree the story, the Bible passages, target length (episode 1: 4:21, 639 words)
-and formats (vertical first, landscape too). Check what already exists: `scripts/` and `videos/`
+The format is vertical 9:16 only (1080×1920; the user calls it "9:6"). Make a landscape cut only
+if the user asks for one. Check what already exists: `scripts/` and `videos/`
 may already hold a draft (the Ten Commandments has two scripts and a 30 s cold open).
 
 **1. Script.** Write `scripts/NN-<slug>.md` per reference/script.md: thesis and spine, sections
 with Visual / On screen / Narration, delivery tags and pause markers, `{{ESV ...}}` placeholders.
-Fill scripture with `python scripts/fill_esv.py scripts/NN-<slug>.md`.
+Fill scripture with `python scripts/fill_esv.py scripts/NN-<slug>.md`. Scripture is always ESV
+(key in `.env`; see reference/script.md). No working key: stop and ask, don't fall back to KJV.
 *Checkpoint: the user approves the script.*
 
 **2. Voice.** From `voice/`: `--plan`, then a two-section test (send it), then the full natural
@@ -63,8 +65,8 @@ cast, palettes, one sheet per story beat, cameras, focus beats, talk windows. Ev
 from `E.cue('word')`, never typed seconds, so re-voicing re-times everything. Draw in the house
 style (paper sheets, glowing round characters, torn verse strips, coral marker, grain); reuse
 `window.S` (style-kit) pieces before inventing new ones.
-- After each sheet: `node tools/render.js stills videos/<slug>/episode.html videos/<slug>/build/stills <times> --vertical`
-  (and without `--vertical`), then `node tools/render.js sheet <out.jpg> 4 <stills...>` and look at
+- After each sheet: `node tools/render.js stills videos/<slug>/episode.html videos/<slug>/build/stills <times> --vertical`,
+  then `node tools/render.js sheet <out.jpg> 4 <stills...>` and look at
   the contact sheet. Check it against taste.md: no empty bands, nothing clipped, labels clear of
   words and characters, framing on the subject, captions readable.
 - Long episodes: sheets are independent functions, so several can be drawn in parallel by
@@ -90,15 +92,17 @@ busy scene).*
 **6. Render.** Full renders run in the background (about 6 minutes per 4:20 with 6 workers):
 ```
 node tools/render.js video videos/<slug>/episode.html videos/<slug>/<slug>-vertical.mp4 --vertical --audio videos/<slug>/build/mix.wav --workers 6
-node tools/render.js video videos/<slug>/episode.html videos/<slug>/<slug>.mp4 --audio videos/<slug>/build/mix.wav --workers 6
 ```
+Vertical only. The page still draws a landscape cut (it is how the engine works), but don't render or
+check it unless the user asks; then drop `--vertical` and write `<slug>.mp4`.
 `--quality web` (default) gives about 11 Mb/s instead of episode 1's 40 Mb/s (about 360 MB instead
 of 1.3 GB for 4:20) and is what the platforms re-encode to anyway; use `--quality master` only for
 an archive copy. Late fixes: re-render the whole film (6 minutes) rather than splicing segments,
 which re-encodes and loses quality. Spot-check a few frames of the result before sending it.
 
 **7. Thumbnail and delivery.** Build `thumbnail-ig-4x5.html` (1080×1350, key content in the centre
-1012 px) like `videos/creation-and-the-fall/thumbnail-ig-4x5.html`, and a 1280×720 YouTube one;
+1012 px) like `videos/creation-and-the-fall/thumbnail-ig-4x5.html` (a 1280×720 YouTube one only if a
+landscape cut was asked for);
 render with `node tools/render.js shot <page.html> <out.png> 1080 1350` (the page sets
 `window.ready=true` when drawn). Deliver with SendUserFile. Remind the user of the description
 credits: ESV notice, and that the narration is AI-generated from their own voice (YouTube's
