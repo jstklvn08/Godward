@@ -185,7 +185,7 @@
   "mix": {
     "voice": {"volume": 1.25},
     "buses": [
-      {"name": "music", "stem": "score.wav", "volume": 0.8,
+      {"name": "music", "stem": "score.wav", "volume": 0.65,
        "duck": {"threshold": 0.02, "ratio": 4, "attack": 30, "release": 500, "makeup": 1},
        "envelope": [
          {"comment": "opening choir swell", "from": 0.6, "to": {"word": "Only one of them"}, "db": 6, "in": 0.8, "out": 1.5},
