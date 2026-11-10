@@ -38,7 +38,7 @@ const AT={
   centuries:cue('Centuries later'), pray:cue('taught his followers'), firstThing:cue('the first thing he asked'),
   father:cue('Our Father'), hallowedBe:span('hallowed be your name'), means:cue('Hallowed means'), full:cue('Full not empty'),
   christians:cue('Christians have long'), prayer:cue('into a prayer'), weighs:cue('weighs nothing'), carryIt:cue('Carry it like'),
-  best:cue('best thing you own'), next:cue('Next time'),
+  best:cue('best thing you own'), next:cue('Next time'), apart:end('set apart'),
 };
 AT.last=WORDS[WORDS.length-1][2];
 
@@ -138,7 +138,12 @@ function coldOpen(t){
   let g=stars(t,.4,300)+fireflies(t,0,-600,1920,700,'#FFE9A8',14,.4);
   const dim=ease.inOut(prog(t,AT.swear,AT.swear+1.2)),glowIn=ease.out(prog(t,0,AT.most+1));
   const lit=k=>k===2?glowIn*(1+.2*Math.sin(t*3)*dim):glowIn*(1-.85*dim);
-  g+=`<path d="${ridge(5,hv(930,vy(1250)),14,260)}" fill="#1E1A24"/>`;
+  // Sinai behind the tablets, and lit ground filling the lower frame.
+  g+=mountain(3,960,hv(150,vy(620)),'#1A1626',1.1)+glow(960,hv(160,vy(640)),hv(300,420),'#FF8A3C',.18);
+  g+=`<path d="${ridge(5,hv(930,vy(1250)),14,260)}" fill="#2A2232"/><path d="${ridge(5,hv(930,vy(1250)),14,260)}" fill="none" stroke="#FFD86B" stroke-width="4" opacity=".35"/>`;
+  if(E.VERT){g+=`<path d="${ridge(6,vy(1560),18,220)}" fill="#3A2C3A"/><path d="${ridge(6,vy(1560),18,220)}" fill="none" stroke="#FFB04C" stroke-width="5" opacity=".45"/>`+
+    glow(960,vy(1560),700,'#FFB04C',.12*glowIn)+fireflies(t,0,vy(1380),1920,vy(1800)-vy(1380),'#FFE9A8',10,.6*glowIn);
+    [[380,1640],[760,1700],[1220,1660],[1560,1720]].forEach(([x,y],i)=>g+=Ell(x,vy(y),70+i*12,26,'#251C28')+Ell(x-10,vy(y)-10,40+i*6,9,'#FFD86B',{opacity:.18}));}
   const cy=Y(560,860),s=hv(1,1.36);
   const tf=`translate(960 ${cy}) scale(${s}) translate(-960 -560)`;
   g+=piece(t,0,960,cy,G(tf,tablets(960,560,1,lit)+mark(scribble(790,597,210,58,4),ease.inOut(prog(t,AT.v207,AT.v207+.8)),CORAL,8)),1,1.2);
@@ -176,8 +181,12 @@ function bushSheet(t,lt){
 
 // ---------- 2. A name given ----------
 function nameSheet(t,lt){
-  let g=stars(t,.4,1080)+glow(960,420,900,'#5A2A10',.5)+fireflies(t,0,-600,1920,2200,'#FFB04C',14,.5)+`<path d="${ridge(35,hv(900,vy(1380)),12,240)}" fill="#2A1A14"/>`;
-  const ly=Y(380,720),lp=ease.out(prog(t,AT.four-.2,AT.four+.6));
+  let g=stars(t,.4,1080)+glow(960,420,900,'#5A2A10',.5)+fireflies(t,0,-600,1920,2200,'#FFB04C',14,.5);
+  // The desert of the bush continues: a far mountain, a small bush still burning, lit ground below.
+  g+=mountain(17,1300,hv(300,vy(980)),'#2A1C2E',.9)+bush(t,X(1500,905),Y(800,1185),hv(.4,.45),1);
+  g+=`<path d="${ridge(35,hv(900,vy(1380)),12,240)}" fill="#6A4024"/><path d="${ridge(35,hv(900,vy(1380)),12,240)}" fill="none" stroke="#FFB04C" stroke-width="5" opacity=".5"/>`;
+  if(E.VERT)g+=`<path d="${ridge(36,vy(1600),10,200)}" fill="#4E301C"/>`+glow(960,vy(1500),700,'#FF8A3C',.15);
+  const ly=Y(380,720),lp=ease.out(prog(t,AT.hebrew-.1,AT.hebrew+.6));
   // Four letters on a torn strip, each lit in turn.
   if(lp>0){let s=strip(X(560,180),ly-110,hv(800,720),220,41,'#1C1420',{edge:'#3A2A30'})+tape(960,ly-108,140,-3);
     ['Y','H','W','H'].forEach((c,i)=>{const on=ease.out(prog(t,AT.four+i*.25,AT.four+i*.25+.4)),x=960+(i-1.5)*hv(170,160);
@@ -248,7 +257,9 @@ function marketSheet(t,lt){
 // ---------- 5. Wearing the name ----------
 function wearSheet(t,lt){
   let g=glow(960,380,1000,'#7A3A8A',.4)+stars(t,.3,500)+fireflies(t,0,-600,1920,2200,'#FFE9F0',14,.5);
+  g+=mountain(57,960,hv(260,vy(700)),'#2A1840',1)+glow(960,hv(260,vy(700)),hv(260,320),'#FFD86B',.2);
   g+=`<path d="${ridge(51,hv(880,vy(1190)),10,240)}" fill="#3A2450"/>`;
+  g+=fade(t,AT.wore-.6,tag(t,AT.bigger+.3,960,Y(150,420),'MORE THAN WORDS',SZ(40,48),7));
   const bride=ease.inOut(prog(t,AT.bride-.3,AT.bride+.5));
   // Israel under a band of light: the name settles on them.
   const settle=ease.out(prog(t,AT.upon[0],AT.upon[1]+.6));
@@ -298,17 +309,23 @@ function worldSheet(t,lt){
 
 // ---------- 7. Hallowed, then the end card ----------
 function hallowSheet(t,lt){
+  const sun=ease.out(prog(t,AT.centuries,AT.centuries+3)),sy=Y(640,1050);
   let g=glow(960,560,1200,'#FFE9B0',.55)+fireflies(t,0,-600,1920,2300,'#FFF6DA',20,.7);
+  for(let i=0;i<18;i++){const a=i/18*6.283+t*.03;g+=P(`M960 ${sy}L${(960+Math.cos(a)*2400).toFixed(0)} ${(sy+Math.sin(a)*2400).toFixed(0)}L${(960+Math.cos(a+.1)*2400).toFixed(0)} ${(sy+Math.sin(a+.1)*2400).toFixed(0)}Z`,'#FFFFFF',{opacity:(.22*sun).toFixed(3)});}
+  g+=glow(960,sy,hv(700,800),'#FFC86A',.6*sun)+C(960,sy,hv(130,160),'#FFC24C',{opacity:(.9*sun).toFixed(2)})+C(960,sy,hv(100,125),'#FFF3C4',{opacity:(.95*sun).toFixed(2)});
+  g+=`<path d="${ridge(73,hv(700,vy(1120)),20,300)}" fill="#E8B070"/><path d="${ridge(74,hv(760,vy(1200)),14,260)}" fill="#D99A5A"/>`;
   g+=`<path d="${ridge(71,hv(960,vy(1380)),12,240)}" fill="#5AD890" opacity=".55"/><path d="${ridge(72,hv(1010,vy(1470)),10,200)}" fill="#3BBF7A" opacity=".6"/>`;
   for(let i=0;i<14;i++){const a=i/14*6.283+t*.04;g+=P(`M960 560L${(960+Math.cos(a)*1800).toFixed(0)} ${(560+Math.sin(a)*1800).toFixed(0)}L${(960+Math.cos(a+.08)*1800).toFixed(0)} ${(560+Math.sin(a+.08)*1800).toFixed(0)}Z`,'#FFF6DA',{opacity:.12});}
-  g+=fade(t,AT.father-.3,tag(t,AT.firstThing,960,Y(880,1420),'THE FIRST REQUEST',SZ(40,48),1));
-  g+=verse(t,AT.father-.15,420,140,['Our Father in heaven,','hallowed be your name.'],'MATTHEW 6:9 ESV',{size:58,hl:'hallowed be your name.',hlAt:AT.hallowedBe[0],hlDur:AT.hallowedBe[1]-AT.hallowedBe[0],seed:22,id:9});
-  // The name plate, full; then the tablets with the third line brightest.
+  // A sunrise behind a hillside where the followers gather to learn to pray.
+  g+=crowd(t,X(380,130),Y(800,1165),hv(7,6),hv(190,165),hv(.8,.95),{aura:'#FFE9A8',auraOp:.3+.4*prog(t,AT.father,AT.father+1),reach:t>AT.father&&t<AT.means?.55:.15});
+  g+=fade(t,AT.father-.3,tag(t,AT.pray,960,Y(140,420),'JESUS TEACHES PRAYER',SZ(40,48),7)+tag(t,AT.firstThing,960,Y(880,1420),'THE FIRST REQUEST',SZ(40,48),1));
+  g+=verse(t,AT.father-.15,420,140,['Our Father in heaven,','hallowed be your name.'],'MATTHEW 6:9 ESV',{size:58,hl:'hallowed be your name.',hlAt:AT.hallowedBe[0],hlDur:AT.hallowedBe[1]-AT.hallowedBe[0],seed:22,id:9,end:AT.apart+.6});
+  // The name plate, full and large over the people; then the tablets with the third line brightest.
   const np=ease.out(prog(t,AT.means-.2,AT.means+.6))*(1-ease.inOut(prog(t,AT.weighs-.6,AT.weighs)));
-  if(np>0)g+=G('',namePlate(t,960,Y(560,860),hv(.9,1),1),np);
+  if(np>0)g+=G('',glow(960,Y(500,780),hv(600,700),'#FFD86B',.45)+namePlate(t,960,Y(500,780),hv(1,1.55),1),np);
   g+=fade(t,AT.christians-.3,tag(t,AT.means,960,Y(880,1420),'HALLOWED = HOLY, SET APART',SZ(38,44),2,{bg:CORAL})+
     tag(t,AT.full,960,Y(960,1520),'FULL, NOT EMPTY',SZ(42,50),3));
-  g+=fade(t,AT.weighs-.3,tag(t,AT.prayer-.4,960,Y(880,1440),'A COMMANDMENT, TURNED INTO A PRAYER',SZ(30,34),4));
+  g+=fade(t,AT.weighs-.3,tag(t,AT.christians+.2,960,Y(880,1440),'A COMMANDMENT, TURNED INTO A PRAYER',SZ(30,34),4));
   const tb=ease.out(prog(t,AT.weighs-.2,AT.weighs+1));
   if(tb>0){const ty=Y(420,700),s=hv(.62,.9),lit=k=>k===2?1.2:.45;g+=G('',glow(960,ty,700,'#FFD86B',.4*tb)+G(`translate(960 ${ty}) scale(${s}) translate(-960 -560)`,tablets(960,560,1,lit)),tb);}
   g+=fade(t,AT.last+.5,tag(t,AT.carryIt,960,Y(900,1440),'CARRY IT LIKE TREASURE',SZ(42,50),5,{bg:CORAL}));
