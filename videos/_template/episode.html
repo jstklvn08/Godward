@@ -1,0 +1,159 @@
+<!doctype html>
+<meta charset="utf-8">
+<!-- EPISODE: the page title. -->
+<title>Godward Template: Episode</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="words.js"></script>
+<script src="../_kit/episode-engine.js"></script>
+<script>
+// Minimal working episode on the Godward engine: three sheets, timed only by spoken words.
+// Landscape 1920x1080 by default, vertical 1080x1920 with ?v=1. Guide: .claude/skills/godward-episode/reference/engine.md
+// Note: K.E is the ellipse helper, window.E is the engine. Ellipses are written Ell(...) here.
+const {G,R,C,L,P,T,prog,ease,lerp,mix,sc,clamp}=K, Ell=K.E;
+const {tw,hash,piece,glow,label,mark,scribble,arrow}=S;
+const {cue,end,after,span,shot,ridge,verse,fade,char,hv,stars,fireflies,INK,YEL,CORAL}=E;
+
+// EPISODE: every time the story needs, taken from the narration. Defined up front so a typo fails at load.
+// cue(word, n) = start of the nth time it is spoken, end(word, n) = its end, phrases like 'On the fifth' work too.
+const AT={
+  heavens:span('the heavens and the earth'),
+  formless:cue('formless'), empty:cue('empty'), darkness:cue('darkness'),
+  spoke:cue('spoke'), spokeEnd:end('spoke'),
+  day1:cue('On the first'), first:cue('first'), light:cue('light'), lightEnd:end('darkness',2),
+  day2:cue('On the second'), second:cue('second'), sky:cue('sky'),
+  day3:cue('On the third'), third:cue('third'), land:cue('land'), plants:cue('plants'),
+  day4:cue('On the fourth'), fourth:cue('fourth'), sun:cue('sun'), moon:cue('moon'), starsW:cue('stars'),
+  day5:cue('On the fifth'), fifth:cue('fifth'), creatures:cue('creatures'), birds:cue('birds'),
+  sixth:cue('sixth'), animals:cue('animals'), walked:cue('walked'),
+};
+
+// ---------- Sheet 0: In the beginning (0 to "On the first day") ----------
+// EPISODE: replace with your opening. A verse card, a few labels, and light when God speaks (light only, never a figure).
+function opening(t){
+  let g=stars(t,.5*prog(t,.2,1.5),700);
+  // The deep: dark paper waves, slowly rolling. ridge() reaches further down in the vertical cut.
+  for(let i=0;i<4;i++){const y=640+i*95,ph=t*.35*(i%2?1:-1);g+=`<path d="${ridge(30+i,y+Math.sin(ph)*8,22-i*3,160+i*30)}" fill="${['#0E1A44','#0A1438','#07102C','#050A20'][i]}" transform="translate(${(Math.sin(t*.3+i)*30).toFixed(1)} 0)"/>`;}
+  // Formless and empty: a slow dark swirl over the waters.
+  const sw=prog(t,AT.formless-.4,AT.formless+1.5);
+  for(let k=0;k<5;k++){const a=t*(8+k*4)*(k%2?1:-1);g+=Ell(1300,560,520-k*90,150-k*24,'none',{stroke:['#2C3F8E','#24357C','#1C2C6C','#2A4A9E','#3A5FC8'][k],'stroke-width':10-k,'stroke-dasharray':`${60+k*30} ${40+k*20}`,transform:`rotate(${a.toFixed(1)} 1300 560)`,opacity:((.55-k*.06)*sw).toFixed(3)});}
+  g+=glow(1300,560,520,'#1E2C7A',.5*sw);
+  // EPISODE: verse cards. Exact scripture text, reference below. Vertical moves them to the top band automatically.
+  g+=verse(t,.25,90,110,['In the beginning, God created','the heavens and the earth.'],'GENESIS 1:1',{size:62,hl:'the heavens and the earth.',hlAt:AT.heavens[0],hlDur:AT.heavens[1]-AT.heavens[0],seed:3,id:1});
+  // Labels sit clear of the verse card and of the caption line (landscape y 1000+, vertical y 1250-1350).
+  g+=fade(t,AT.spoke,piece(t,AT.formless,1260,560,label(1180,540,'FORMLESS',{size:32}),2,1.4)+arrow(1300,600,1330,660,1250,720,ease.inOut(prog(t,AT.formless+.2,AT.formless+.7)),CORAL,7));
+  // hv(landscape, vertical): a different spot in the vertical cut, where the camera is closer and the right edge is busy.
+  g+=fade(t,AT.spoke,piece(t,AT.empty,hv(1480,1340),440,label(hv(1400,1260),420,'EMPTY',{size:32,bg:CORAL}),3,1.4)+mark(scribble(hv(1560,1400),760,hv(170,120),70,9),ease.inOut(prog(t,AT.empty+.2,AT.empty+.8)),CORAL,7));
+  g+=fade(t,AT.spoke,piece(t,AT.darkness,hv(800,620),540,label(hv(800,620),520,'DARKNESS OVER THE DEEP',{size:32,anchor:'middle'}),4,1.4));
+  // "Then God spoke": a line of light crosses the dark. No sun yet (that is Day 4).
+  const sp=ease.inOut(prog(t,AT.spoke-.6,AT.spokeEnd));
+  if(sp>0){
+    const x=lerp(-100,2000,sp);
+    g+=glow(x,560,420,'#E9FFFF',.75)+L(-100,560,x,560,'#F4FFFF',5,{opacity:.9})+glow(960,560,1200,'#FFFBE6',.5*prog(t,AT.spokeEnd-.6,AT.day1));
+    g+=piece(t,AT.spoke-.5,960,380,label(960,350,'THEN GOD SPOKE',{size:40,anchor:'middle'}),6,1.2);
+  }
+  return g;
+}
+
+// ---------- Sheet 1: two storytellers walk through Days 1-4 ----------
+// EPISODE: replace with your scene. Shows two cast members talking (TALK windows), panels popping in on cue,
+// and a FOCUS beat when the sun appears.
+// Panels are spaced 160 px apart so a vertical close-up of one never shows a sliver of its neighbour.
+const PANELS=[[700,110],[1360,110],[700,480],[1360,480]],PW=500,PH=330;
+function panel(t,i,inner,name){
+  const [x,y]=PANELS[i],at=[AT.first,AT.second,AT.third,AT.fourth][i];
+  const id='pn'+i;
+  const body=`<clipPath id="${id}"><rect x="${x}" y="${y}" width="${PW}" height="${PH}" rx="6"/></clipPath>`+
+    R(x-8,y-8,PW+16,PH+16,8,'#F6EFDC')+`<g clip-path="url(#${id})">${inner}</g>`+label(x+14,y+14,name,{size:22});
+  return piece(t,at,x+PW/2,y+PH/2,body,10+i,1.2);
+}
+function days(t){
+  let g=`<path d="${ridge(95,880,12,200)}" fill="#7A5A3E"/><path d="${ridge(96,940,8,150)}" fill="#5E4430"/>`;
+  g+=glow(370,700,420,'#7CFFE6',.18);
+  // Day 1: light with no source, set apart from the dark.
+  {const [x,y]=PANELS[0],p=ease.out(prog(t,AT.light,AT.light+1.2));
+    g+=panel(t,0,R(x,y,PW,PH,0,'#03041A')+glow(x+PW*.72,y+PH*.5,PW*.7*p+1,'#FFE4A0',.95)+glow(x+PW*.85,y+PH*.3,PW*.4*p+1,'#FFFFFF',.7),'DAY 1 · LIGHT');}
+  // Day 2: waters above, sky between, waters below.
+  {const [x,y]=PANELS[1],p=ease.inOut(prog(t,AT.sky-.3,AT.sky+.9)),cy=y+PH/2;
+    g+=panel(t,1,R(x,y,PW,PH,0,'#3A7ED0')+R(x,y,PW,lerp(PH/2,PH*.25,p),0,'#0B88B0')+R(x,lerp(cy,y+PH*.75,p),PW,PH,0,'#086A96')+
+      [0,1,2].map(k=>Ell(x+90+k*160+Math.sin(t*.6+k)*10,lerp(cy,y+PH*.5,p),40,12,'#EAF4FF',{opacity:(.8*p).toFixed(2)})).join(''),'DAY 2 · SKY');}
+  // Day 3: dry land rising out of the sea, then plants.
+  {const [x,y]=PANELS[2],r=ease.out(prog(t,AT.land-.3,AT.land+.8)),pl=ease.back(prog(t,AT.plants,AT.plants+.5));
+    g+=panel(t,2,R(x,y,PW,PH,0,'#1E5698')+Ell(x+PW*.45,y+PH*.78+(1-r)*120,PW*.38,PH*.32,'#1FAE7C')+R(x,y+PH*.78,PW,PH,0,'#0A5290',{opacity:.85})+
+      (pl>0?[0,1,2,3,4].map(k=>{const px=x+PW*(.22+k*.11),py=y+PH*.56;return L(px,py,px,py-26*pl,'#0E6A52',4)+C(px,py-26*pl,8*pl,['#FF7BD5','#FFD45E','#35F2B4'][k%3]);}).join(''):''),'DAY 3 · LAND · PLANTS');}
+  // Day 4: the sun, the moon, then the stars, each on its own word.
+  {const [x,y]=PANELS[3],su=ease.back(prog(t,AT.sun,AT.sun+.5)),mo=ease.back(prog(t,AT.moon,AT.moon+.5)),sa=prog(t,AT.starsW,AT.starsW+.8);
+    let a=R(x,y,PW,PH,0,'#0B1650');
+    for(let k=0;k<26;k++)a+=C(x+hash(k,71)*PW,y+hash(k,72)*PH,1.5+hash(k,73)*2,'#fff',{opacity:(sa*(.4+.6*Math.sin(t*2+k)**2)).toFixed(2)});
+    if(su>0)a+=glow(x+150,y+190,140*su,'#FFC24C',.9)+C(x+150,y+190,52*su,'#FFD45E');
+    if(mo>0)a+=C(x+380,y+100,34*mo,'#F3ECD8')+C(x+394,y+92,30*mo,'#0B1650');
+    g+=panel(t,3,a,'DAY 4 · SUN · MOON · STARS');}
+  // The storytellers (placeholder cast). They gesture while their TALK window is open.
+  // EPISODE: your characters. Keep them modestly clothed, and never draw God as a person.
+  g+=char('teller1',hv(250,280),930,1.15)+char('teller2',hv(520,470),930,1.12,{flip:-1});
+  // The reference sits under the panels, well above the landscape caption line (y 1000+).
+  g+=piece(t,AT.day1,1030,870,label(1030,850,'GENESIS 1:3–19',{size:24,anchor:'middle'}),20,1);
+  return g;
+}
+
+// ---------- Sheet 2: closing wide shot (Days 5-6), then fade ----------
+// EPISODE: replace with your closing. Hold a wide shot and let the engine fade to black after the last word.
+function closing(t){
+  let g=glow(960,300,900,'#7CFFE6',.18)+stars(t,.25,300);
+  // Sea on the left, land on the right.
+  g+=`<path d="${ridge(201,700,18,190)}" fill="#1E8A6A"/><path d="${ridge(202,800,14,150)}" fill="#16A876"/>`;
+  g+=`<path d="M-120 700 C300 690 560 720 820 760 C900 800 960 980 1060 1200 L-120 1200Z" fill="#0A5290"/>`;
+  for(let k=0;k<10;k++){const px=((hash(k,5)*900+t*(k%2?14:-10))%900+900)%900-60,py=780+hash(k,6)*260;g+=P(`M${(px-12).toFixed(1)} ${py.toFixed(1)}Q${px.toFixed(1)} ${(py-9).toFixed(1)} ${(px+12).toFixed(1)} ${py.toFixed(1)}`,'none',{stroke:'#5FD0F2','stroke-width':3,opacity:.6});}
+  // Day 5: fish in the sea, birds in the sky.
+  const fs=prog(t,AT.creatures,AT.creatures+.6),bs=prog(t,AT.birds,AT.birds+.6);
+  for(let k=0;k<6;k++){const x=120+k*110+Math.sin(t*.8+k)*30,y=800+(k%3)*60+Math.cos(t+k)*10;if(fs>0)g+=G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(fs*(k%2?-1:1)).toFixed(3)} ${fs.toFixed(3)})`,Ell(0,0,26,12,['#FFD45E','#FF8A5C','#7CFFE6'][k%3])+P('M-24 0 L-40 -12 L-40 12Z',['#FFD45E','#FF8A5C','#7CFFE6'][k%3])+C(14,-3,2.5,INK));}
+  for(let k=0;k<7;k++){const x=((300+k*240+t*60)%2200)-140,y=220+(k%3)*70+Math.sin(t*2+k)*12,f=Math.sin(t*9+k);if(bs>0)g+=G(`translate(${x.toFixed(1)} ${y.toFixed(1)})`,P(`M-26 ${(-10*f).toFixed(1)} Q-12 -4 0 4 Q12 -4 26 ${(-10*f).toFixed(1)}`,'none',{stroke:'#F3ECD8','stroke-width':5}),bs);}
+  // Day 6: animals walk the land (simple paper shapes, walking in place).
+  const as=prog(t,AT.animals,AT.animals+.5);
+  [[1100,760,'#C99C5E',1],[1380,800,'#A8643A',1.15],[1660,770,'#E8D2B0',.9]].forEach(([x,y,c,s],k)=>{
+    if(as<=0)return;const st=Math.sin(t*6+k)*10,wx=x+Math.sin(t*.5+k)*20;
+    g+=G(`translate(${wx.toFixed(1)} ${y}) scale(${(s*as).toFixed(3)})`,L(-30,0,-30+st*.4,46,c,9)+L(26,0,26-st*.4,46,c,9)+Ell(0,-4,54,30,c)+C(52,-30,20,c)+C(58,-34,3,INK)+L(-50,-10,-66,-26,c,6));
+  });
+  // In the vertical wide shot (zoom .84) labels shrink with the sheet, so they are drawn larger there.
+  const ls=hv(28,40);
+  g+=fade(t,AT.sixth-.4,piece(t,AT.fifth,hv(300,640),140,label(hv(300,640),hv(120,420),'DAY 5 · SEA CREATURES · BIRDS',{size:ls,anchor:'middle'}),1,1.2));
+  g+=piece(t,AT.sixth,1380,560,label(hv(1380,1180),hv(540,500),'DAY 6 · LAND ANIMALS',{size:ls,anchor:'middle'}),2,1.2);
+  g+=piece(t,AT.sixth,1380,610,label(hv(1380,1180),hv(600,580),'GENESIS 1:20–25',{size:hv(22,30),anchor:'middle'}),3,1);
+  g+=fireflies(t,0,200,1920,500,'#7CFFE6',18,.6);
+  return g;
+}
+
+E.start({
+  // EPISODE: the cast. Look options are style-kit chubby options (f = female hair, tunic colours, skin, hair).
+  cast:{
+    teller1:{f:false,tunic:'#FFC24C',tunic2:'#E0623C',aura:'#7CFFE6',auraOp:.4},
+    teller2:{f:true,tunic:'#B98CFF',tunic2:'#6A4CD8',aura:'#7CFFE6',auraOp:.4},
+  },
+  // EPISODE: sheets in order. 'at' = when the sheet takes over (the first is 0). bg = paper gradient.
+  // cam = vertical camera keys [time, x, y, zoom] in the sheet's own 1920x1080 coordinates
+  //       (zoom 0.84 or less = deliberate wide shot, otherwise it is raised to at least 1.12).
+  // fore = vertical foreground (grass/flower colours) so the lower band is never bare; leave it out where there is no land yet.
+  sheets:[
+    {name:'opening',draw:opening,bg:['#10144A','#05061C'],
+      // shot(from, to, x, y, zoom) holds a framing; the camera eases between the end of one shot and the start of the next.
+      cam:[shot(0,AT.formless-.8,960,560,.84),shot(AT.formless-.2,AT.darkness-.8,1250,560,1.15),shot(AT.darkness-.2,AT.spoke-1.2,620,560,1.15),shot(AT.spoke-.4,AT.day1,960,520,.84)]},
+    {name:'days 1-4',at:AT.day1-.1,draw:days,bg:['#1A1E6A','#0B3A5C'],vIn:'cut',
+      fore:{grass:['#7A5A3E','#6A4C34','#8C6A4A'],flowers:[]},
+      cam:[shot(AT.day1,AT.light-.6,360,842,1.6),shot(AT.light,AT.lightEnd,950,500,1.45),shot(AT.second,AT.day3-.5,1610,500,1.45),
+           shot(AT.third,AT.plants+.6,950,870,1.45),shot(AT.plants+1.2,AT.sun-.6,360,842,1.6),shot(AT.sun-.1,AT.day5,1610,870,1.45)]},
+    {name:'closing',at:AT.day5-.1,draw:closing,bg:['#123C7A','#0B5A7C'],
+      fore:{grass:['#22E0B4','#1AB894','#3BF0C4'],flowers:['#FF7BD5','#FFD45E','#7CFFE6']},
+      cam:[shot(AT.day5,AT.birds-.6,700,600,.84),shot(AT.birds,AT.animals-.8,900,560,.84),shot(AT.animals,AT.animals+3,1300,620,.84)]},
+  ],
+  // EPISODE: who talks when: [start, end, castName]. Gestures show only inside these windows.
+  talk:[[AT.day1,AT.lightEnd,'teller1'],[AT.day2,AT.day3-.2,'teller2'],[AT.day3,AT.day4-.2,'teller1'],[AT.day4,AT.day5-.3,'teller2']],
+  // EPISODE: focus beats [time, strength 0.5-1.2]: a short punch-in and shake. Use a few, on the big words only.
+  focus:[[AT.spoke,1.0],[AT.sun,.8],[AT.sixth,.5]],
+  // EPISODE: full-frame flashes [time, seconds, colour]: here, light breaking in as Day 1 begins.
+  flashes:[[AT.day1-.1,.95,'#FFFBEC']],
+  tail:1.6,     // seconds after the last word (DUR = last word end + tail)
+  fadeOut:.9,   // fade to black over the last 0.9 s
+});
+</script>

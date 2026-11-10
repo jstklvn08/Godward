@@ -40,6 +40,7 @@ PRESETS = {
     "brisk": VoiceSetting(0.55, 0.55),
     "warm": VoiceSetting(0.65, 0.4),
     "calm": VoiceSetting(0.35, 0.45),
+    "restrained": VoiceSetting(0.3, 0.5),
 }
 
 
@@ -99,12 +100,20 @@ class Narrator:
         }
 
     def _generate(self, text: str, setting: VoiceSetting, seed: int, voice_ref: Path | None):
+        # Analysing a reference clip is slow (about 40 s on the RTX 2050), so do it once per
+        # clip and reuse it. Chatterbox applies a new exaggeration to the stored clip itself.
+        if voice_ref:
+            cache = self.__dict__.setdefault("_conds", {})
+            if voice_ref not in cache:
+                self.model.prepare_conditionals(str(voice_ref), exaggeration=setting.exaggeration)
+                cache[voice_ref] = self.model.conds
+            self.model.conds = cache[voice_ref]
         torch.manual_seed(seed)
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(seed)
         return self.model.generate(
             text,
-            audio_prompt_path=str(voice_ref) if voice_ref else None,
+            audio_prompt_path=None,
             exaggeration=setting.exaggeration,
             cfg_weight=setting.cfg_weight,
             temperature=setting.temperature,

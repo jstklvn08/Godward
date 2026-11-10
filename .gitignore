@@ -8,3 +8,18 @@ __pycache__/
 desktop.ini
 Thumbs.db
 .env
+
+# Rendered videos: re-renderable from the episode pages, and episodes exceed GitHub's 100 MB limit.
+# Short clips committed before this rule stay tracked.
+*.mp4
+
+# Render tools' packages, per-episode build output, large rescued audio stems
+node_modules/
+videos/*/build/
+tools/rescued/**/*.wav
+tools/rescued/**/*.mp3
+voice/full/*/chunks/
+
+# Files filled with ESV text (Crossway copyright)
+*.esv.md
+*.esv.json

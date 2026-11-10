@@ -1,0 +1,62 @@
+{
+  "af_heart": {
+    "audio_seconds": 30.9,
+    "generation_seconds": 7.38,
+    "realtime_factor": 0.239,
+    "reference_seconds": 12.02
+  },
+  "bf_emma": {
+    "audio_seconds": 31.38,
+    "generation_seconds": 7.73,
+    "realtime_factor": 0.246,
+    "reference_seconds": 12.24
+  },
+  "af_nicole": {
+    "audio_seconds": 46.23,
+    "generation_seconds": 12.16,
+    "realtime_factor": 0.263,
+    "reference_seconds": 10.84
+  },
+  "af_kore": {
+    "audio_seconds": 31.35,
+    "generation_seconds": 7.94,
+    "realtime_factor": 0.253,
+    "reference_seconds": 12.7
+  },
+  "am_michael": {
+    "audio_seconds": 35.23,
+    "generation_seconds": 8.57,
+    "realtime_factor": 0.243,
+    "reference_seconds": 10.94
+  },
+  "am_fenrir": {
+    "audio_seconds": 30.45,
+    "generation_seconds": 7.47,
+    "realtime_factor": 0.245,
+    "reference_seconds": 12.72
+  },
+  "bm_fable": {
+    "audio_seconds": 32.98,
+    "generation_seconds": 7.52,
+    "realtime_factor": 0.228,
+    "reference_seconds": 11.6
+  },
+  "bm_lewis": {
+    "audio_seconds": 35.27,
+    "generation_seconds": 9.17,
+    "realtime_factor": 0.26,
+    "reference_seconds": 12.94
+  },
+  "bf_alice": {
+    "audio_seconds": 32.0,
+    "generation_seconds": 8.3,
+    "realtime_factor": 0.259,
+    "reference_seconds": 12.24
+  },
+  "bm_daniel": {
+    "audio_seconds": 31.15,
+    "generation_seconds": 7.9,
+    "realtime_factor": 0.254,
+    "reference_seconds": 12.96
+  }
+}
