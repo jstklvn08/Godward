@@ -1,0 +1,459 @@
+{
+ "s00-01-pivot-519ba9.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "Four commandments in, something changes.",
+  "seed": 1,
+  "words_per_second": 1.86,
+  "in_range": false
+ },
+ "s00-02-story-b4251a.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "The first four are all about God.",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": true
+ },
+ "s00-03-talk-707bd3.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Then, before murder or stealing or lying, God talks about your mother and father.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": true
+ },
+ "s00-04-grave-88699e.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "Honor your father and your mother,",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true
+ },
+ "s00-05-grave-b8b936.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "that your days may be long in the land that the LORD your God is giving you.",
+  "seed": 1,
+  "words_per_second": 3.29,
+  "in_range": false
+ },
+ "s00-06-talk-91e7b2.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most people hear that as a rule for little kids.",
+  "seed": 3,
+  "words_per_second": 3.64,
+  "in_range": true
+ },
+ "s00-07-story-1ddbbf.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Do what you're told.",
+  "seed": 6,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s00-08-pivot-843d51.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "It's much bigger than that.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true
+ },
+ "s01-01-story-eaaa04.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Many readers picture the commandments in two halves: loving God, then loving your neighbor.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true
+ },
+ "s01-02-talk-9c9306.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "And the very first neighbor God names is the one closest to you.",
+  "seed": 1,
+  "words_per_second": 4.19,
+  "in_range": false
+ },
+ "s01-03-story-c1bfad.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "The people you came from.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s01-04-story-fc876d.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "So this command sits right on the hinge.",
+  "seed": 1,
+  "words_per_second": 2.39,
+  "in_range": false
+ },
+ "s01-05-story-e20728.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Between heaven and home.",
+  "seed": 1,
+  "words_per_second": 2.17,
+  "in_range": false
+ },
+ "s02-01-pivot-e13775.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "So what does honor actually mean?",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s02-02-talk-74127c.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "In Hebrew, the word for honor comes from a root that means heavy.",
+  "seed": 1,
+  "words_per_second": 3.57,
+  "in_range": true
+ },
+ "s02-03-talk-4fa6e7.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "It's the same root as the word for glory.",
+  "seed": 2,
+  "words_per_second": 3.66,
+  "in_range": true
+ },
+ "s02-04-story-7d6dcd.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "To honor your parents is to give them weight.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s02-05-story-b4f79e.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "To take them seriously.",
+  "seed": 3,
+  "words_per_second": 2.48,
+  "in_range": true
+ },
+ "s02-06-talk-59de44.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "A small child obeys.",
+  "seed": 2,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s02-07-story-4d3eec.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "But a grown adult with grey-haired parents still honors them.",
+  "seed": 1,
+  "words_per_second": 2.97,
+  "in_range": true
+ },
+ "s03-01-pivot-8107ac.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "And this command comes with something none of the others have.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s03-02-story-39c876.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "The apostle Paul pointed it out.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s03-03-grave-8a21dc.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "Honor your father and mother (this is the first commandment with a promise),",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true
+ },
+ "s03-04-grave-a26f31.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "that it may go well with you and that you may live long in the land.",
+  "seed": 2,
+  "words_per_second": 3.89,
+  "in_range": false
+ },
+ "s03-05-talk-2c2bd2.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "For Israel, it was about life in the land.",
+  "seed": 2,
+  "words_per_second": 3.81,
+  "in_range": true
+ },
+ "s03-06-story-8eba01.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Christians have long read it more widely: homes where parents are honored tend to hold together.",
+  "seed": 1,
+  "words_per_second": 3.19,
+  "in_range": true
+ },
+ "s04-01-pivot-c5adb2.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "But what if your parents were hard to honor?",
+  "seed": 1,
+  "words_per_second": 3.9,
+  "in_range": true
+ },
+ "s04-02-talk-9cf042.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "For some people, this commandment feels heavy in a different way.",
+  "seed": 1,
+  "words_per_second": 3.38,
+  "in_range": true
+ },
+ "s04-03-story-7100bb.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "A parent who hurt them. A parent who left.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s04-04-story-c8d402.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "A parent they never knew.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s04-05-talk-575666.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Honor is not the same as pretending.",
+  "seed": 1,
+  "words_per_second": 3.63,
+  "in_range": true
+ },
+ "s04-06-story-a2f8af.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "It doesn't mean calling wrong things right, or staying in harm's way.",
+  "seed": 1,
+  "words_per_second": 3.42,
+  "in_range": true
+ },
+ "s04-07-talk-e7b97e.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Many Christian teachers put it like this: you can respect the place a parent holds,",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true
+ },
+ "s04-08-talk-6802f6.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "while grieving what they did with it.",
+  "seed": 1,
+  "words_per_second": 4.67,
+  "in_range": false
+ },
+ "s04-09-story-a89829.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Then Paul turns straight to the parents too.",
+  "seed": 1,
+  "words_per_second": 2.97,
+  "in_range": true
+ },
+ "s04-10-grave-dd7ed3.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "Fathers, do not provoke your children to anger,",
+  "seed": 1,
+  "words_per_second": 2.08,
+  "in_range": true
+ },
+ "s04-11-grave-72a77e.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "but bring them up in the discipline and instruction of the Lord.",
+  "seed": 2,
+  "words_per_second": 3.43,
+  "in_range": false
+ },
+ "s04-12-talk-9f1f43.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "The weight runs both ways.",
+  "seed": 1,
+  "words_per_second": 3.25,
+  "in_range": true
+ },
+ "s05-01-story-36e460.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And if a father or mother let you go, there is a line in the Psalms for you.",
+  "seed": 2,
+  "words_per_second": 3.04,
+  "in_range": true
+ },
+ "s05-02-grave-129e55.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "For my father and my mother have forsaken me, but the LORD will take me in.",
+  "seed": 3,
+  "words_per_second": 3.23,
+  "in_range": false
+ },
+ "s05-03-grave-c5b011.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Whoever let you go, God does not.",
+  "seed": 1,
+  "words_per_second": 2.79,
+  "in_range": true
+ },
+ "s06-01-pivot-c39b04.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "And then there's the cross.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true
+ },
+ "s06-02-story-cd71a9.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Jesus is dying, and his mother is standing there, watching.",
+  "seed": 1,
+  "words_per_second": 2.29,
+  "in_range": false
+ },
+ "s06-03-grave-b9b725.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "When Jesus saw his mother and the disciple whom he loved standing nearby, he said to his mother, Woman,",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true
+ },
+ "s06-04-grave-80ac7b.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "behold, your son!",
+  "seed": 2,
+  "words_per_second": 1.9,
+  "in_range": false
+ },
+ "s06-05-grave-c380c1.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Then he said to the disciple, Behold, your mother!",
+  "seed": 1,
+  "words_per_second": 2.68,
+  "in_range": true
+ },
+ "s06-06-grave-cf00d2.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "And from that hour the disciple took her to his own home.",
+  "seed": 1,
+  "words_per_second": 3.34,
+  "in_range": false
+ },
+ "s06-07-talk-1d767a.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "In the middle of his own suffering, he still made sure his mother had a home.",
+  "seed": 2,
+  "words_per_second": 4.28,
+  "in_range": false
+ },
+ "s06-08-story-bc4b0d.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He kept this commandment to the very end.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true
+ },
+ "s07-01-talk-edc902.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "So what does honor look like now?",
+  "seed": 1,
+  "words_per_second": 3.78,
+  "in_range": true
+ },
+ "s07-02-story-f394fa.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "A phone call you keep putting off.",
+  "seed": 1,
+  "words_per_second": 3.37,
+  "in_range": true
+ },
+ "s07-03-story-794138.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Patience with a parent who is getting older.",
+  "seed": 2,
+  "words_per_second": 3.48,
+  "in_range": true
+ },
+ "s07-04-talk-4c8567.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "And sometimes, it looks like forgiveness, from a safe distance.",
+  "seed": 2,
+  "words_per_second": 2.9,
+  "in_range": true
+ },
+ "s07-05-story-04a2a4.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Giving weight to the people who gave you a start.",
+  "seed": 2,
+  "words_per_second": 3.21,
+  "in_range": true
+ },
+ "s08-01-story-705ea0.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "The fifth commandment is a doorway.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": true
+ },
+ "s08-02-story-024ab9.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Love for God walks through it, and arrives at home first.",
+  "seed": 1,
+  "words_per_second": 3.47,
+  "in_range": true
+ },
+ "s08-03-grave-760866.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "Next time, the sixth commandment, and why every human life matters to God.",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true
+ }
+}
