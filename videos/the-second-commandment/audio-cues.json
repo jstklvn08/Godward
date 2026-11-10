@@ -1,0 +1,200 @@
+{
+  "_doc": "Soundtrack for 'The Second Commandment' (Ten Commandments part 2). Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue, so re-voicing re-times the sound.",
+  "episode": "the-second-commandment",
+  "words": "words.js",
+  "duration": {"word": "name", "n": -1, "edge": "end", "offset": 7},
+  "marks": {
+    "second": {"word": "Right after", "offset": -0.1},
+    "list": {"word": "Notice the list", "offset": -0.1},
+    "sinai": {"word": "Why be so strict", "offset": -0.1},
+    "spoke": {"word": "Then the LORD spoke"},
+    "shelf": {"word": "So here's the problem", "offset": -0.1},
+    "image": {"word": "But here's the surprise", "offset": -0.1},
+    "carve": {"word": "We may never", "offset": -0.1},
+    "mercy": {"word": "ends with a warning", "offset": -0.1},
+    "lastWord": {"word": "name", "n": -1, "edge": "end"}
+  },
+  "motifs": {
+    "VOICE": [62, 66, 69, 71],
+    "VOICEm": [62, 65, 69, 70]
+  },
+  "scenes": [
+    {"name": "half-a-log", "start": 0, "screen": "warm workshop; a log split, half in the fire, half carved into an idol; he kneels; SAME TREE", "music": "plucked wooden folk tune (minor VOICE motif), soft pad; a wry bell on 'as a joke'", "sound": "fire crackle, axe thump, carving scrapes"},
+    {"name": "second-word", "start": "second", "screen": "the tablets, line II circled; Exodus 20:4-5; WHICH GOD / HOW", "music": "choir on the commandment, steady pad", "sound": "low wind, shimmer as line II lights"},
+    {"name": "list", "start": "list", "screen": "three panels: sky, land, water, each crossed out", "music": "harp plucks per panel", "sound": "birds, a low, waves"},
+    {"name": "sinai", "start": "sinai", "screen": "Sinai in fire; an empty dotted outline, crossed out; words rise from the fire", "music": "low drones; SILENCE before 'Then the LORD spoke'; choir after", "sound": "rumble, flame, wind; thunder at 'Then the LORD spoke'"},
+    {"name": "shelf", "start": "shelf", "screen": "a shelf of idols: one shrinks, one's mouth crossed out; the gold calf; THE GOD WHO SPEAKS", "music": "sparse detuned piano, cold pad; warm swell when God speaks", "sound": "faint cold room tone, warm wind at 'The God of Sinai'"},
+    {"name": "image", "start": "image", "screen": "warm light; Genesis 1:27; the first two people, then a crowd, all glowing", "music": "warm pads, flute VOICE motif, choir on the verse", "sound": "birds and warm wind"},
+    {"name": "carve", "start": "carve", "screen": "the workshop again: a gold mask of the carpenter's own face, then it shrinks", "music": "the wooden tune again, thinner and minor", "sound": "carving scrapes, fire"},
+    {"name": "mercy", "start": "mercy", "screen": "a balance: 3-4 against THOUSANDS; the tablets with two lines lit; end card", "music": "low tension, then major choir and bells at 'steadfast love'; held chord under the end card", "sound": "shimmer, warm wind"}
+  ],
+
+  "stems": {
+    "score": {
+      "seed": 2030,
+      "reverb": {"room": 0.85, "damp": 0.35, "wet": 0.36},
+      "autoLevel": {"window": 0.1, "smooth": 15, "min": 0.35, "max": 4},
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2.5},
+      "events": [
+        {"scene": "half-a-log"},
+        {"inst": "pad", "at": 0, "to": "second", "notes": [38, 50, 57, 62], "lv": 0.45, "bright": 0.3, "a": 2.5, "r": 1.5},
+        {"inst": "pluck", "repeat": {"from": 0.3, "to": {"word": "He prays to it", "offset": -0.4}, "every": 0.4}, "seq": [62, 65, 69, 65, 62, 60, 62, 69], "lv": 0.45, "pan": [0.35, 0.65], "len": 1.0, "bright": 0.5},
+        {"inst": "choir", "at": {"word": "He prays to it", "offset": -0.3}, "to": {"word": "you are my god", "edge": "end", "offset": 1.2}, "notes": [50, 57, 62, 65], "lv": 0.6, "att": 0.8, "rel": 1.5},
+        {"inst": "flute", "motif": "VOICEm", "at": {"word": "Same tree"}, "step": 0.7, "len": 0.55, "lv": 0.7, "pan": 0.55},
+        {"inst": "bell", "at": {"word": "as a joke"}, "note": 79, "lv": 0.5, "pan": 0.6, "dec": 2},
+        {"inst": "pad", "at": {"word": "What's actually wrong", "offset": -0.3}, "to": "second", "notes": [50, 57, 62, 64], "lv": 0.7, "bright": 0.45, "a": 0.6, "r": 1},
+
+        {"scene": "second-word"},
+        {"inst": "pad", "repeat": {"from": "second", "to": "list", "every": 4}, "chords": [[38, 50, 57, 62], [34, 46, 53, 58], [36, 48, 55, 60], [33, 45, 52, 57]], "hold": 4.3, "lv": 0.7, "bright": 0.45, "a": 1.2, "r": 0.6},
+        {"inst": "choir", "at": {"word": "You shall not make", "offset": -0.3}, "to": {"word": "or serve them", "edge": "end", "offset": 1.2}, "notes": [62, 66, 69, 74], "lv": 0.85, "att": 0.8, "rel": 1.5},
+        {"inst": "bell", "motif": "VOICE", "at": {"word": "comes the second"}, "step": 0.6, "transpose": 12, "lv": 0.6, "pan": 0.5, "dec": 3},
+        {"inst": "drum", "at": [{"word": "which God you"}, {"word": "is about how"}], "lv": 1.2, "f0": 52},
+
+        {"scene": "list"},
+        {"inst": "pad", "at": "list", "to": "sinai", "notes": [43, 55, 59, 62], "lv": 0.6, "bright": 0.5, "a": 1, "r": 1},
+        {"inst": "pluck", "at": [{"word": "sky"}, {"word": "land and"}, {"word": "and sea"}], "notes": [67, 71, 74], "strum": 0.07, "lv": 0.6, "pan": 0.5, "len": 1.2, "bright": 0.7},
+        {"inst": "drum", "at": [{"word": "stand in for", "offset": 0.2}, {"word": "stand in for", "offset": 0.5}, {"word": "stand in for", "offset": 0.8}], "lv": 1.3, "f0": 50},
+
+        {"scene": "sinai"},
+        {"inst": "pad", "at": "sinai", "to": "spoke", "notes": [26, 33, 38, 45], "lv": 0.9, "bright": 0.3, "a": 2, "r": 1},
+        {"inst": "tremolo", "at": {"word": "Then the LORD spoke"}, "to": "spoke-0.6", "notes": [50, 53, 57, 62], "lv": 0.9},
+        {"inst": "choir", "at": "spoke+1.2", "to": {"word": "someone to listen", "offset": 2}, "notes": [62, 66, 69, 74], "lv": 0.8, "att": 1.5, "rel": 1.5},
+        {"inst": "flute", "motif": "VOICE", "at": {"word": "someone to listen"}, "step": 0.7, "transpose": 12, "len": 0.6, "lv": 0.8, "pan": 0.5},
+
+        {"scene": "shelf"},
+        {"inst": "pad", "at": "shelf", "to": {"word": "The God of Sinai"}, "notes": [26, 38, 50], "lv": 0.5, "bright": 0.2, "a": 1.5, "r": 1},
+        {"inst": "piano", "repeat": {"from": "shelf+0.6", "to": {"word": "The God of Sinai", "offset": -0.5}, "every": 1.6, "jitter": 1.2}, "pick": "random", "seq": [62, 65, 69, 72, 74, 77], "lv": 0.6, "pan": "random", "dec": 2.5, "detune": {"rand": [-0.006, 0.006]}},
+        {"inst": "glide", "at": {"word": "Remember the golden calf"}, "len": 2.4, "from": 40, "toNote": 34, "lv": 0.9, "pan": 0.5},
+        {"inst": "pad", "at": {"word": "The God of Sinai", "offset": -0.3}, "to": "image", "notes": [50, 57, 62, 66, 69], "lv": 0.8, "bright": 0.6, "a": 0.8, "r": 1},
+        {"inst": "choir", "at": {"word": "The God of Sinai"}, "to": "image", "notes": [62, 66, 69, 74], "lv": 0.7, "att": 1, "rel": 1},
+
+        {"scene": "image"},
+        {"inst": "pad", "repeat": {"from": "image", "to": "carve", "every": 3.6}, "chords": [[43, 55, 59, 62, 67], [40, 52, 55, 59, 64], [36, 48, 55, 60, 64], [38, 50, 54, 57, 62]], "hold": 3.9, "lv": 0.75, "bright": 0.55, "a": 1.2, "r": 0.6},
+        {"inst": "choir", "at": {"word": "So God created", "offset": -0.3}, "to": {"word": "male and female", "offset": 2.5}, "notes": [67, 71, 74, 79], "lv": 0.9, "att": 1, "rel": 1.5},
+        {"inst": "flute", "motif": "VOICE", "at": {"word": "it's people"}, "step": 0.75, "transpose": 12, "len": 0.6, "lv": 0.9, "pan": 0.5},
+        {"inst": "bell", "at": {"word": "You meet it"}, "note": 86, "lv": 0.5, "pan": 0.6, "dec": 3},
+
+        {"scene": "carve"},
+        {"inst": "pad", "at": "carve", "to": "mercy", "notes": [38, 50, 57, 60], "lv": 0.5, "bright": 0.3, "a": 1.2, "r": 1},
+        {"inst": "pluck", "repeat": {"from": "carve+0.3", "to": {"word": "much too small"}, "every": 0.45}, "seq": [62, 65, 69, 65, 62, 60, 58, 60], "lv": 0.35, "pan": [0.4, 0.6], "len": 0.9, "bright": 0.4},
+        {"inst": "reversed", "at": {"word": "much too small", "offset": -2}, "len": 2, "notes": [50, 57], "lv": 0.8},
+
+        {"scene": "mercy"},
+        {"inst": "pad", "at": "mercy", "to": {"word": "but showing steadfast"}, "notes": [26, 38, 45, 50], "lv": 0.7, "bright": 0.3, "a": 1.2, "r": 0.8},
+        {"inst": "drum", "at": [{"word": "third and fourth"}, {"word": "third and fourth", "offset": 0.45}], "lv": 1.4, "f0": 48},
+        {"inst": "pad", "repeat": {"from": {"word": "but showing steadfast", "offset": -0.3}, "to": {"mark": "lastWord", "offset": 0.5}, "every": 3.6}, "chords": [[43, 55, 59, 62, 67], [40, 52, 55, 59, 64], [36, 48, 55, 60, 64], [38, 50, 54, 57, 62]], "hold": 3.9, "holdClip": false, "lv": 0.8, "bright": 0.55, "a": 1, "r": 0.6},
+        {"inst": "choir", "at": {"word": "but showing steadfast", "offset": -0.3}, "to": {"word": "keep my commandments", "edge": "end", "offset": 1.5}, "notes": [62, 66, 69, 74, 78], "lv": 1.0, "att": 0.8, "rel": 2},
+        {"inst": "bell", "repeat": {"from": {"word": "steadfast love to thousands"}, "to": {"word": "keep my commandments"}, "every": 0.3, "shift": 0.15}, "seq": [86, 90, 93, 98], "lv": 0.45, "pan": "random", "dec": 3},
+        {"inst": "flute", "motif": "VOICE", "at": {"word": "mercy is heavier", "offset": 0.4}, "step": 0.8, "transpose": 12, "len": 0.6, "lv": 1.0, "pan": 0.5},
+        {"comment": "'waiting to be heard': the warmest chord, held under the end card", "inst": "pad", "at": {"word": "waiting to be heard"}, "to": {"mark": "lastWord", "offset": 6.5}, "notes": [43, 55, 59, 62, 67, 71, 74], "lv": 1, "bright": 0.6, "a": 0.8, "r": 2},
+        {"inst": "choir", "at": {"word": "waiting to be heard"}, "to": {"mark": "lastWord", "offset": 6.0}, "notes": [67, 71, 74, 79], "lv": 0.9, "att": 1, "rel": 2},
+        {"inst": "bell", "motif": "VOICE", "at": {"mark": "lastWord", "offset": 1.6}, "step": 0.8, "transpose": 24, "lv": 0.5, "pan": 0.5, "dec": 3}
+      ]
+    },
+
+    "ambience": {
+      "seed": 3232,
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2},
+      "events": [
+        {"scene": "half-a-log"},
+        {"inst": "wind", "at": 0, "to": "second", "lv": 0.3, "fc": 350},
+        {"inst": "flame", "at": {"word": "he burns", "offset": -0.2}, "to": "second", "lv": 0.8, "pan": 0.25},
+        {"inst": "scrape", "repeat": {"from": {"word": "into a statue", "offset": -0.3}, "to": {"word": "kneels down"}, "every": 0.5}, "lv": 0.45, "pan": 0.7},
+
+        {"scene": "second-word"},
+        {"inst": "wind", "at": "second", "to": "list", "lv": 0.4, "fc": 300},
+        {"inst": "shimmer", "at": {"word": "comes the second"}, "len": 2.5, "lv": 0.6},
+
+        {"scene": "list"},
+        {"inst": "bird", "at": [{"word": "sky", "offset": 0.1}, {"word": "sky", "offset": 0.6}], "lv": 0.5, "pan": 0.3},
+        {"inst": "ocean", "at": {"word": "and sea"}, "to": "sinai", "lv": 0.6, "pan": 0.5, "period": 4.2, "fc": 500},
+
+        {"scene": "sinai"},
+        {"inst": "wind", "at": "sinai", "to": "shelf", "lv": 0.7, "fc": 280},
+        {"inst": "rumble", "at": "sinai", "to": "spoke", "lv": 0.8},
+        {"inst": "flame", "at": "sinai", "to": "shelf", "lv": 1.0, "pan": 0.5},
+        {"inst": "shimmer", "at": {"word": "Just fire"}, "len": 3, "lv": 0.6},
+
+        {"scene": "shelf"},
+        {"inst": "wind", "at": "shelf", "to": {"word": "The God of Sinai"}, "lv": 0.3, "fc": 380},
+        {"inst": "wind", "at": {"word": "The God of Sinai", "offset": -0.2}, "to": "image", "lv": 0.9, "fc": 700, "pan": 0.6},
+
+        {"scene": "image"},
+        {"inst": "wind", "at": "image", "to": "carve", "lv": 0.5, "fc": 700, "pan": 0.6},
+        {"inst": "bird", "repeat": {"from": "image+0.5", "to": "carve", "every": 1.6, "jitter": 1}, "lv": 0.5, "pan": "random"},
+
+        {"scene": "carve"},
+        {"inst": "wind", "at": "carve", "to": "mercy", "lv": 0.3, "fc": 350},
+        {"inst": "scrape", "repeat": {"from": {"word": "we still carve"}, "to": {"word": "always agrees", "offset": 1}, "every": 0.45}, "lv": 0.45, "pan": 0.7},
+
+        {"scene": "mercy"},
+        {"inst": "wind", "at": "mercy", "to": {"mark": "lastWord", "offset": 6}, "lv": 0.45, "fc": 600, "pan": 0.5},
+        {"inst": "shimmer", "at": {"word": "steadfast love to thousands"}, "len": 3, "lv": 0.7},
+        {"inst": "shimmer", "at": {"word": "waiting to be heard"}, "len": 4, "lv": 0.7}
+      ]
+    },
+
+    "sfx": {
+      "seed": 5252,
+      "events": [
+        {"comment": "pieces landing: soft paper taps on the label words", "inst": "paperTap", "at": [
+          {"word": "is firewood"}, {"word": "is his god"}, {"word": "Same tree"}, {"word": "The prophet Isaiah"}, {"word": "What's actually wrong"},
+          {"word": "Right after"}, {"word": "comes the second"}, {"word": "about other"}, {"word": "first commandment's job"}, {"word": "which God you"}, {"word": "is about how"},
+          {"word": "Even the right God"}, {"word": "the wrong way"},
+          {"word": "Notice the list"}, {"word": "sky"}, {"word": "land and"}, {"word": "and sea"}, {"word": "the whole creation"}, {"word": "stand in for"},
+          {"word": "Go back to the mountain"}, {"word": "Moses later"}, {"word": "saw a shape", "offset": 0.2}, {"word": "Just fire"}, {"word": "something to look at"}, {"word": "someone to listen"},
+          {"word": "It makes God smaller"}, {"word": "it makes God quieter"}, {"word": "a feast to the LORD"}, {"word": "weren't replacing"}, {"word": "trying to hold him"},
+          {"word": "A god you can hold"}, {"word": "can control"}, {"word": "The God of Sinai"}, {"word": "rather not hear"},
+          {"word": "isn't gold or wood", "offset": 0.3}, {"word": "it's people"}, {"word": "Christians have long"}, {"word": "you don't carve"}, {"word": "You meet it"},
+          {"word": "We may never"}, {"word": "we still carve"}, {"word": "always agrees"}, {"word": "never says what"}, {"word": "easy to live with"}, {"word": "much too small"},
+          {"word": "third and fourth"}, {"word": "warning is heavy"}, {"word": "mercy is heavier"}, {"word": "put down the carving knife"}, {"word": "waiting to be made"}, {"word": "waiting to be heard"}],
+          "lv": 0.8, "pan": {"rand": [0.35, 0.65]}},
+        {"comment": "arrows, circles, Xs, strikes, highlights: soft swish", "inst": "swish", "at": [
+          {"word": "Same tree"}, {"word": "comes the second"}, {"word": "a carved image"}, {"word": "first commandment's job", "offset": -0.2},
+          {"word": "stand in for", "offset": 0.2}, {"word": "saw no form"}, {"word": "saw a shape"}, {"word": "someone to listen", "offset": -0.3},
+          {"word": "it makes God quieter", "offset": 0.3}, {"word": "trying to hold him", "offset": -0.3}, {"word": "isn't gold or wood", "offset": 0.3}, {"word": "steadfast love to thousands"}],
+          "len": 0.6, "lv": 0.5, "pan": 0.5},
+        {"comment": "sheet changes: whoosh 0.4 s before each", "inst": "whoosh", "at": ["second-0.4", "list-0.4", "sinai-0.4", "shelf-0.4", "image-0.4", "carve-0.4", "mercy-0.4"], "len": 0.8, "lv": 0.75, "pan": 0.5},
+        {"comment": "the axe splits the log", "inst": "thump", "at": {"word": "splits the log"}, "lv": 1.0},
+        {"comment": "the stone lands in the warning pan", "inst": "thump", "at": {"word": "third and fourth"}, "lv": 0.7},
+        {"comment": "the calf slides onto the shelf", "inst": "thump", "at": {"word": "Remember the golden calf", "offset": 0.7}, "lv": 0.7},
+        {"inst": "sparkle", "at": {"word": "comes the second"}, "len": 2, "lv": 0.9, "pan": 0.45},
+        {"comment": "the people appear", "inst": "chime", "at": {"word": "already has an image"}, "note": 81, "lv": 0.8},
+        {"inst": "sparkle", "at": {"word": "it's people"}, "len": 2, "lv": 1},
+        {"comment": "mercy pours into the pan", "inst": "sparkle", "at": {"word": "steadfast love to thousands"}, "len": 2.4, "lv": 1.1},
+        {"comment": "the end card", "inst": "chime", "at": {"mark": "lastWord", "offset": 1.6}, "note": 74, "lv": 0.7}
+      ]
+    }
+  },
+
+  "mix": {
+    "voice": {"volume": 1.25},
+    "buses": [
+      {"name": "music", "stem": "score.wav", "volume": 1.6,
+       "duck": {"threshold": 0.02, "ratio": 4, "attack": 30, "release": 500, "makeup": 1},
+       "envelope": [
+         {"comment": "silence before 'Then the LORD spoke', back after the thunder", "from": {"word": "Then the LORD spoke", "offset": -0.76}, "to": {"word": "Then the LORD spoke", "edge": "end", "offset": 1.1}, "mute": true, "in": 0.6, "out": 1.4},
+         {"comment": "end card: let the closing chord be heard", "from": {"mark": "lastWord", "offset": 0.4}, "to": {"mark": "lastWord", "offset": 7}, "db": 6, "in": 1.2, "out": 0.5}
+       ]},
+      {"name": "sfx", "stem": "sfx.wav", "volume": 0.2},
+      {"name": "ambience", "stem": "ambience.wav",
+       "compressor": {"threshold": 0.05, "ratio": 3.5, "attack": 10, "release": 300, "makeup": 2.8},
+       "duck": {"threshold": 0.02, "ratio": 6, "attack": 20, "release": 600, "makeup": 1.5}}
+    ],
+    "hits": [
+      {"name": "thunder", "sound": "thunder", "seed": 778, "len": 6, "at": {"word": "Then the LORD spoke", "offset": -0.04},
+       "compressor": {"threshold": 0.02, "ratio": 12, "attack": 0.5, "release": 400, "makeup": 10}, "volume": 2.5}
+    ],
+    "limiter": {"limit": 0.89, "attack": 1, "release": 60},
+    "loudnorm": {"I": -14, "TP": -1.0, "LRA": 18},
+    "tail": 7,
+    "checks": [
+      {"label": "opening music", "from": 3, "to": 6, "solo": "music"},
+      {"label": "music cut", "from": "spoke-0.15", "to": "spoke-0.05", "solo": "music"},
+      {"label": "thunder", "from": "spoke-0.04", "to": "spoke+0.96"},
+      {"label": "image music", "from": "image+1", "to": "carve-1.0", "solo": "music"},
+      {"label": "sinai ambience", "from": "sinai+1", "to": "spoke-1.0", "solo": "ambience"},
+      {"label": "end card", "from": {"mark": "lastWord", "offset": 2}, "to": {"mark": "lastWord", "offset": 5}}
+    ]
+  }
+}
