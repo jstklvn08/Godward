@@ -61,13 +61,17 @@ def main() -> int:
     scenes = render_styled.read_sections(set(args.sections))
     expected = " ".join(t for n, _, x in scenes for _, t in render_styled.passages(n, x))
 
-    import torch
-    from transformers import pipeline
+    import asr_fast
 
     audio, sr = librosa.load(str(args.wav), sr=16000, mono=True)
-    asr = pipeline("automatic-speech-recognition", model="openai/whisper-medium", device=args.device, dtype=torch.float32)
-    heard = asr({"raw": audio, "sampling_rate": 16000}, chunk_length_s=30, stride_length_s=5,
-                generate_kwargs={"language": "en", "task": "transcribe"})["text"]
+    if asr_fast.available():
+        heard = asr_fast.text(audio, "medium")
+    else:
+        import torch
+        from transformers import pipeline
+        asr = pipeline("automatic-speech-recognition", model="openai/whisper-medium", device=args.device, dtype=torch.float32)
+        heard = asr({"raw": audio, "sampling_rate": 16000}, chunk_length_s=30, stride_length_s=5,
+                    generate_kwargs={"language": "en", "task": "transcribe"})["text"]
 
     want, got = words(expected), words(heard)
     problems = []

@@ -70,6 +70,13 @@ def windows(audio: np.ndarray) -> list[tuple[int, int]]:
 
 
 def transcribe(audio: np.ndarray, model: str) -> list[tuple[str, float, float]]:
+    import asr_fast
+    if asr_fast.available():
+        heard = []
+        for a, b in windows(audio):
+            heard += [(w, a / SR + s, a / SR + e) for w, s, e in asr_fast.words(audio[a:b], model)]
+            print(f"  transcribed {a / SR:6.1f}-{b / SR:6.1f}s (faster-whisper)", flush=True)
+        return heard
     import torch
     from transformers import pipeline
 
