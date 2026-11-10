@@ -112,14 +112,40 @@ const vx=f=>960+(f-540)/.84, vy=f=>560+(f-1010)/.84;
 const X=(l,f)=>hv(l,vx(f)), Y=(l,f)=>hv(l,vy(f)), SZ=(l,f)=>hv(l,f/.84);
 const tag=(t,at,x,y,s,size,id,o={})=>piece(t,at,x,y,label(x,y-size*.81,s,Object.assign({size,anchor:'middle'},o)),id,1.3);
 const WIDE=[960,560,.84];
-const LO1=Y(900,1420), LO2=Y(990,1520);   // the two lower label rows
+const LO1=Y(900,1410), LO2=Y(990,1535);   // the two lower label rows (clear of each other and of the captions)
+// Frame position in the vertical cut to sheet coordinates (landscape gets a rough equivalent so the page still draws).
+const FX=f=>E.VERT?vx(f):960+(f-540)*1.5, FY=f=>E.VERT?vy(f):40+(f-170)*.9, FS=k=>E.VERT?k/.84:k*1.1;
+// Layered ground for the lower frame (frame y `from` to the bottom): three paper ridges, stones and tufts.
+function vGround(seed,cols,o={}){
+  if(!E.VERT)return '';
+  const from=o.from||1330,r=rng(seed+9);
+  let g=`<path d="${ridge(seed,FY(from),10,260)}" fill="${cols[0]}"/><path d="${ridge(seed+1,FY(from+170),14,220)}" fill="${cols[1]}"/><path d="${ridge(seed+2,FY(from+360),18,180)}" fill="${cols[2]}"/>`;
+  for(let i=0;i<(o.n||28);i++){const fy=from+40+Math.pow(r(),.8)*(1880-from-40),fx=r()*1120-20,s=lerp(.7,1.9,(fy-from)/(1920-from)),x=FX(fx),y=FY(fy),hh=r();
+    if(i%3===0)g+=Ell(x,y,24*s,13*s,o.stone||'#8A7A64',{stroke:'#4A3E30','stroke-width':3})+Ell(x-7*s,y-5*s,11*s,4*s,'#FFFFFF',{opacity:.2});
+    else for(let j=-1;j<=1;j++)g+=L(x+j*6*s,y,x+j*11*s,y-(18+hh*16+j*3)*s,o.tuft||cols[0],4*s);}
+  return g;
+}
 
 // ---------- 0. Cold open: four words ----------
+// Israel's tents at the foot of the mountain, each with a small fire, across the lower frame.
+function camp(t){
+  if(!E.VERT)return '';
+  let g=vGround(7,['#262032','#2E263C','#362C46'],{stone:'#4A4058',tuft:'#4A3E62',from:1300});
+  const r=rng(15);
+  [[1395,.45,6,.55],[1610,.75,4,.8],[1810,1.05,3,1]].forEach(([fy,s,n,op],row)=>{for(let i=0;i<n;i++){
+    const fx=(i+.5)*1080/n+(r()-.5)*80+(row%2?50:-30),x=FX(fx),y=FY(fy+(r()-.5)*40),k=s/.84;
+    const fl=.5+.25*Math.sin(t*7+i*2.1+row)+.15*Math.sin(t*11.3+i);
+    g+=G('',glow(x+70*k,y-6*k,90*k,'#FF9A40',.4*fl)+P(`M${x-90*k} ${y}L${x} ${y-95*k}L${x+90*k} ${y}Z`,'#5A4656',{stroke:'#241A26','stroke-width':4})+
+      P(`M${x} ${y-95*k}L${x-18*k} ${y}H${x+18*k}Z`,'#FFB860',{opacity:(.55+.3*fl).toFixed(2)})+L(x,y-95*k,x,y-122*k,'#241A26',4)+
+      C(x+70*k,y-6*k,7*k,'#FFC870',{opacity:(.7+.3*fl).toFixed(2)}),op);}});
+  return g;
+}
 function coldOpen(t){
   let g=stars(t,.4,300)+fireflies(t,0,-600,1920,700,'#FFE9A8',14,.4);
   const glowIn=ease.out(prog(t,0,AT.shortest+1)),eight=ease.inOut(prog(t,AT.four-.2,AT.four+.8));
   const lit=k=>k===7?glowIn*(.3+.9*eight)*(1+.15*Math.sin(t*3)):glowIn*(.45-.3*eight);
   g+=`<path d="${ridge(5,hv(930,vy(1250)),14,260)}" fill="#1E1A24"/>`;
+  g+=camp(t);
   // The tablets shrink up when the hands arrive.
   const up=ease.inOut(prog(t,AT.bigger-.3,AT.bigger+.6));
   const cy=Y(560,lerp(860,700,up)),s=hv(1,lerp(1.36,.86,up));
@@ -153,6 +179,7 @@ function homeArt(cx,cy){return P(`M${cx-90} ${cy+50}L${cx} ${cy-60}L${cx+90} ${c
 const PLOTS=[['A FIELD','field',wheat,'#D8B860'],['A VINEYARD','vineyard',vines,'#8FBF6A'],['A FLOCK','flock',flock,'#7CC27A'],['A HOME','family',homeArt,'#C9A060']];
 function land(t,lt){
   let g=sky(t,3)+`<path d="${ridge(21,hv(860,vy(1240)),12,240)}" fill="#3E7A3A"/>`;
+  g+=vGround(23,['#4A8A42','#3E7A3A','#356A32'],{stone:'#9C988C',tuft:'#2E5A2A',from:1300});
   const mapIn=ease.out(prog(t,AT.bringing-.2,AT.bringing+.6));
   // Before the land: a few freed slaves with nothing in their hands.
   const pre=1-ease.inOut(prog(t,AT.bringing-.3,AT.bringing+.2));
@@ -191,33 +218,60 @@ function goldBar(x,y,s){return G(`translate(${x} ${y}) scale(${s})`,P('M-60 20L-
 function silverPile(x,y,s){let g='';for(let i=0;i<7;i++)g+=coin(-40+i*14,-i%3*10,16,SILVER);return G(`translate(${x} ${y}) scale(${s})`,g);}
 function tentShape(x,y,s,lit){return G(`translate(${x} ${y}) scale(${s})`,glow(0,-40,200,'#FFC870',.35*lit)+P('M-150 60L0 -130L150 60Z','#8A5A3A',{stroke:'#5A3A22','stroke-width':5})+
   P('M0 -130L-30 60L30 60Z','#2A1810')+L(0,-130,0,-170,'#5A3A22',6));}
+// Jericho's broken walls: brick segments with ragged tops and a tower, rubble spilling through the gaps.
+function brickWall(x0,x1,top,base,seed){
+  const r=rng(seed);let d=`M${x0.toFixed(1)} ${base.toFixed(1)}V${(top+r()*20).toFixed(1)}`;
+  for(let x=x0;x<x1;x+=42)d+=`L${Math.min(x+42,x1).toFixed(1)} ${(top+r()*40).toFixed(1)}`;
+  let g=P(d+`V${base.toFixed(1)}Z`,'#C99C5E',{stroke:'#6A4424','stroke-width':5});
+  for(let y=base-36,row=0;y>top+46;y-=36,row++){g+=L(x0+4,y,x1-4,y,'#9A6A3A',3);for(let x=x0+(row%2?32:6);x<x1-12;x+=64)g+=L(x,y,x,y+36,'#9A6A3A',3);}
+  return g;
+}
+function rubble(cx,cy,w,n,seed){const r=rng(seed);let g='';
+  for(let i=0;i<n;i++){const u=r(),x=cx+(u-.5)*w,y=cy-Math.cos((u-.5)*Math.PI)*w*.28+r()*30;
+    g+=R(x-30,y-18,56+r()*24,34,4,['#B08048','#9A6A3A','#C2915A'][i%3],{stroke:'#6A4424','stroke-width':3,transform:`rotate(${((r()-.5)*50).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})`});}
+  return g;}
+function cityRuins(t,seedK){
+  let g='';
+  // Houses peeking over the wall, then the wall itself (frame coordinates in the vertical cut).
+  [[60,600,150],[240,640,120],[420,590,170],[700,610,140],[900,630,160]].forEach(([fx,fy,w],i)=>{const x=FX(fx),y=FY(fy),k=FS(1);
+    g+=R(x-w*k/2,y,w*k,FY(900)-y,3,['#B88A52','#C69A60'][i%2],{stroke:'#6A4424','stroke-width':4})+R(x-w*k/2-8,y-10,w*k+16,14,3,'#8A6038')+R(x-12*k,y+30*k,24*k,22*k,2,'#4A2E1A');});
+  [[-60,200,640],[300,470,700],[860,1140,660]].forEach(([a,b,top],i)=>g+=brickWall(FX(a),FX(b),FY(top),FY(905),seedK+i));
+  // A tower, still half standing.
+  g+=brickWall(FX(560),FX(770),FY(560),FY(905),seedK+5)+R(FX(640),FY(700),FS(40),FS(60),6,'#4A2E1A');
+  // Rubble where the wall fell.
+  g+=rubble(FX(250),FY(905),FS(170),9,seedK+7)+rubble(FX(515),FY(905),FS(130),7,seedK+8)+rubble(FX(815),FY(905),FS(150),8,seedK+9);
+  return g;
+}
 function jericho(t,lt){
   let g=sky(t,7,'#FFE0A0');
-  // Fallen walls: tumbled blocks on the far ridge.
-  const r=rng(77);
-  for(let i=0;i<22;i++){const x=hv(160,380)+r()*hv(1600,1160),y=hv(330,vy(720))+r()*50;g+=R(x,y,56+r()*30,32,3,['#B08048','#9A6A3A','#C2915A'][i%3],{stroke:'#6A4424','stroke-width':3,transform:`rotate(${(r()-.5)*30} ${x} ${y})`});}
-  g+=`<path d="${ridge(31,hv(820,vy(1160)),10,240)}" fill="#C99C5E"/><path d="${ridge(32,hv(900,vy(1230)),8,200)}" fill="#B0864A"/>`;
+  g+=cityRuins(t,70);
+  g+=`<path d="${ridge(31,FY(900),10,240)}" fill="#C99C5E"/><path d="${ridge(32,FY(1010),8,200)}" fill="#B88E52"/>`;
+  // Israel's camp behind Achan: two small tents.
+  [[90,1020,.55],[330,1000,.45]].forEach(([fx,fy,k])=>g+=tentShape(FX(fx),FY(fy)-60*k/.84,k/.84,.3));
+  // The rest of the ground: rubble stones, scrub and a worn path toward the tent.
+  g+=vGround(35,['#B0864A','#A07842','#90683A'],{stone:'#C2A070',tuft:'#8A6A3A',from:1300});
+  if(E.VERT)g+=P(`M${FX(300)} ${FY(1160)}Q${FX(560)} ${FY(1300)} ${FX(420)} ${FY(1920)}H${FX(760)}Q${FX(760)} ${FY(1300)} ${FX(560)} ${FY(1160)}Z`,'#D2AA6E',{opacity:.55});
   const gy=Y(820,1150);
   // The tent on the right; the treasure in the middle; Achan on the left.
   const hideP=ease.inOut(prog(t,AT.hidden,AT.hidden+1));
-  const tx=X(1450,800);
-  g+=tentShape(tx,gy-hv(30,40),hv(1,1.1),1-.8*hideP);
+  const tx=X(1450,770);
+  g+=tentShape(tx,gy-hv(30,82),hv(1,1.55),1-.8*hideP);
   const take=ease.inOut(prog(t,AT.tookThem,AT.tookThem+1.2));
-  const sink=hideP*hv(110,140);
-  const trx=lerp(X(1000,560),tx,take),tyy=gy-hv(70,90)+sink;
+  const sink=hideP*hv(110,210);
+  const trx=lerp(X(1000,530),tx,take),tyy=gy-hv(70,110)+sink;
   let tr='';
-  tr+=piece(t,AT.cloak,trx-hv(70,80),tyy,cloak(trx-hv(70,80),tyy,hv(.9,1.05)),5,1.4);
-  tr+=piece(t,AT.silver,trx+hv(40,50),tyy+hv(30,40),silverPile(trx+hv(40,50),tyy+hv(30,40),1),6,1.4);
-  tr+=piece(t,AT.gold,trx+hv(30,40),tyy-hv(30,40),goldBar(trx+hv(30,40),tyy-hv(30,40),hv(.9,1.05)),7,1.4);
-  if(t>=AT.cloak)tr=glow(trx,tyy,220,'#FFD86B',.5*(1-hideP))+tr;
+  tr+=piece(t,AT.cloak,trx-hv(70,110),tyy,cloak(trx-hv(70,110),tyy,hv(.9,1.45)),5,1.4);
+  tr+=piece(t,AT.silver,trx+hv(40,75),tyy+hv(30,55),silverPile(trx+hv(40,75),tyy+hv(30,55),hv(1,1.45)),6,1.4);
+  tr+=piece(t,AT.gold,trx+hv(30,55),tyy-hv(30,55),goldBar(trx+hv(30,55),tyy-hv(30,55),hv(.9,1.45)),7,1.4);
+  if(t>=AT.cloak)tr=glow(trx,tyy,hv(220,300),'#FFD86B',.5*(1-hideP))+tr;
   // The hole under the tent hides the treasure.
-  g+=`<clipPath id="achanAbove"><rect x="-200" y="-800" width="2400" height="${(gy+800+hv(10,10)).toFixed(0)}"/></clipPath><g clip-path="url(#achanAbove)">${tr}</g>`;
-  if(hideP>0)g+=Ell(tx,gy+hv(10,10),hv(110,130)*Math.min(1,hideP*3)*(1-.6*hideP),hv(16,20),'#3A2418');
-  const ax=lerp(X(640,250),tx-hv(160,180),take);
-  g+=E.chubby(ax,gy,hv(1.1,1.25),{tunic:'#7CD4FF',tunic2:'#2F6FD0',aura:'#FFE9A8',auraOp:.35,reach:t>AT.coveted&&take<1?.7:0,walk:take>0&&take<1?t*7:0,lean:t>AT.coveted&&t<AT.tookThem?10:0});
+  g+=`<clipPath id="achanAbove"><rect x="-200" y="-800" width="2400" height="${(gy+800+hv(10,14)).toFixed(0)}"/></clipPath><g clip-path="url(#achanAbove)">${tr}</g>`;
+  if(hideP>0)g+=Ell(tx,gy+hv(10,14),hv(110,180)*Math.min(1,hideP*3)*(1-.6*hideP),hv(16,26),'#3A2418');
+  const ax=lerp(X(640,230),tx-hv(160,250),take);
+  g+=E.chubby(ax,gy,hv(1.1,1.6),{tunic:'#7CD4FF',tunic2:'#2F6FD0',aura:'#FFE9A8',auraOp:.35,reach:t>AT.coveted&&take<1?.7:0,walk:take>0&&take<1?t*7:0,lean:t>AT.coveted&&t<AT.tookThem?10:0});
   // The heart: it started inside.
   const hp=ease.out(prog(t,AT.heart,AT.heart+.6));
-  if(hp>0)g+=glow(ax,gy-hv(150,170),120,CORAL,.6*hp)+P(`M${ax} ${gy-hv(120,140)}c-40 -30 -40 -70 0 -56c40 -14 40 26 0 56z`,'none',{stroke:CORAL,'stroke-width':8,opacity:hp.toFixed(2)});
+  if(hp>0)g+=glow(ax,gy-hv(150,215),hv(120,160),CORAL,.6*hp)+G(`translate(${ax} ${gy-hv(120,175)}) scale(${hv(1,1.3)})`,P('M0 0c-40 -30 -40 -70 0 -56c40 -14 40 26 0 56z','none',{stroke:CORAL,'stroke-width':8,opacity:hp.toFixed(2)}));
   g+=fade(t,AT.coveted-.3,tag(t,AT.jericho,960,Y(150,420),'JERICHO',SZ(48,56),1)+tag(t,AT.devoted,960,Y(240,520),'ALL OF IT DEVOTED TO GOD',SZ(32,40),2,{bg:CORAL}));
   g+=verse(t,AT.coveted-.15,300,40,['I coveted them and took them. And see, they are hidden','in the earth inside my tent, with the silver underneath.'],'JOSHUA 7:21 ESV',{size:44,hl:'I coveted them and took them.',hlAt:AT.coveted,hlDur:AT.hidden-AT.coveted-.4,seed:9,id:3});
   // SAW, WANTED, TOOK, HID.
@@ -234,22 +288,53 @@ function homework(cx,cy){let g=R(cx-70,cy-90,140,170,4,'#FFFFFF',{stroke:'#9AA6C
   return g+L(cx-50,cy-72,cx+40,cy-72,INK,5)+T(cx+30,cy+70,'A+',{size:40,font:'Georgia',weight:700,anchor:'middle',fill:CORAL});}
 function changeArt(cx,cy){let g='';[[-40,10],[0,-10],[40,10],[-20,40],[20,40]].forEach(([a,b],i)=>g+=coin(cx+a,cy+b,26,i%2?SILVER:GOLD));return g;}
 function star(cx,cy){let d='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?32:78;d+=(i?'L':'M')+(cx+Math.cos(a)*r).toFixed(1)+' '+(cy+Math.sin(a)*r).toFixed(1);}return P(d+'Z',GOLD,{stroke:'#8A5A12','stroke-width':4});}
-const HID=k=>E.VERT?[vx([300,780,540][k]),vy([700,700,1010][k])]:[[480,960,1440][k],560];
-function hidden(t,lt){
-  let g=glow(960,300,700,'#FFC870',.25);
-  // The tent's inside: a warm canvas roof and a rug floor.
-  g+=P(`M-200 ${hv(-40,-700)}L960 ${hv(-200,-760)}L2120 ${hv(-40,-700)}L2120 ${hv(160,-200)}L-200 ${hv(160,-200)}Z`,'#6A4630',{opacity:.6});
+const HID=k=>E.VERT?[vx([290,790,540][k]),vy([700,700,990][k])]:[[480,960,1440][k],560];
+// Inside Achan's tent: striped canvas walls, two poles, a hanging lamp.
+function tentWalls(t){
+  let g='';const fl=.85+.1*Math.sin(t*6.3)+.05*Math.sin(t*13.1);
+  for(let i=0;i<14;i++){const x=FX(-120+i*100);g+=R(x,-800,FS(100)+1,FY(1190)+800,0,i%2?'#5E3E2A':'#4E3222');}
+  for(let k=0;k<5;k++){const y=FY(250+k*210);g+=P(`M-200 ${y}Q960 ${y+FS(70)} 2120 ${y}`,'none',{stroke:'#2A180E','stroke-width':6,opacity:.35});}
+  g+=P(`M-200 ${FY(110)}L960 ${FY(40)}L2120 ${FY(110)}`,'none',{stroke:'#2A180E','stroke-width':FS(22)});
+  [40,1040].forEach(fx=>g+=R(FX(fx)-FS(13),FY(60),FS(26),FY(1200)-FY(60),5,'#3A2418',{stroke:'#1E120A','stroke-width':3}));
+  // The lamp: a clay oil lamp on a cord, flickering.
+  const lx=FX(540),ly=FY(285);
+  g+=L(lx,FY(60),lx,ly-FS(20),'#2A180E',4)+glow(lx,ly,FS(380),'#FFC870',.45*fl)+glow(lx,ly-FS(30),FS(60),'#FFF2C8',.8*fl)+
+    P(`M${lx-FS(46)} ${ly}Q${lx} ${ly+FS(40)} ${lx+FS(46)} ${ly}Z`,'#A86A3E',{stroke:'#5A3A22','stroke-width':4})+
+    P(`M${lx+FS(30)} ${ly-FS(2)}q${FS(8)} ${-FS(30)*fl} ${FS(2)} ${-FS(44)*fl}q${-FS(14)} ${FS(18)} ${-FS(10)} ${FS(44)}z`,'#FFD86B');
+  return g;
+}
+// The floor: earth, a patterned rug, jars and a rolled mat, and the dug patch where the silver lies.
+function tentFloor(t){
   const fy=Y(860,1190);
-  g+=R(-200,fy,2400,1200,0,'#5A3A22')+R(-200,fy,2400,18,0,'#8A5A3A');
-  for(let i=0;i<14;i++)g+=L(-200+i*170,fy+30,-120+i*170,fy+600,'#4A2E1A',6);
+  let g=R(-200,fy,2400,1200,0,'#5A3A22')+R(-200,fy,2400,18,0,'#8A5A3A');
+  if(!E.VERT){for(let i=0;i<14;i++)g+=L(-200+i*170,fy+30,-120+i*170,fy+600,'#4A2E1A',6);return g;}
+  for(let i=0;i<12;i++)g+=L(FX(-200+i*130),FY(1200),FX(-500+i*190),FY(1920),'#4A2E1A',5);
+  // Rug in perspective.
+  const q=(fx,fy)=>`${FX(540+(fx-540)*lerp(.62,1.15,(fy-1240)/680)).toFixed(1)} ${FY(fy).toFixed(1)}`;
+  g+=P(`M${q(60,1240)}L${q(1020,1240)}L${q(1020,1920)}L${q(60,1920)}Z`,'#8A2A24',{stroke:'#E8B53A','stroke-width':8});
+  g+=P(`M${q(110,1270)}L${q(970,1270)}L${q(970,1920)}L${q(110,1920)}Z`,'none',{stroke:'#E8B53A','stroke-width':4,opacity:.7});
+  for(let r=0;r<4;r++)for(let c=0;c<6;c++){const cx=180+c*144,cy=1330+r*160,w=48,h=44;
+    g+=P(`M${q(cx,cy-h)}L${q(cx+w,cy)}L${q(cx,cy+h)}L${q(cx-w,cy)}Z`,(r+c)%2?'#E8B53A':'#2E6A8A',{opacity:.85});}
+  // Jars on the left, a rolled sleeping mat and a basket on the right.
+  [[70,1215,1],[150,1225,.8],[230,1205,.6]].forEach(([fx,fy,k])=>{const x=FX(fx),y=FY(fy),s=FS(k);
+    g+=P(`M${x-34*s} ${y}Q${x-50*s} ${y-70*s} ${x-16*s} ${y-96*s}H${x+16*s}Q${x+50*s} ${y-70*s} ${x+34*s} ${y}Z`,'#B8703E',{stroke:'#5A3A22','stroke-width':4})+
+      R(x-22*s,y-110*s,44*s,16*s,4,'#9A5A30')+L(x-30*s,y-50*s,x+30*s,y-50*s,'#E8C090',3);});
+  {const x=FX(860),y=FY(1215),s=FS(1);g+=R(x-90*s,y-50*s,180*s,50*s,25*s,'#C8A070',{stroke:'#6A4630','stroke-width':4})+Ell(x+80*s,y-25*s,20*s,25*s,'#A88050',{stroke:'#6A4630','stroke-width':3})+
+    P(`M${x-60*s} ${y-50*s}V${y}M${x-20*s} ${y-50*s}V${y}M${x+20*s} ${y-50*s}V${y}`,'none',{stroke:'#8A6040','stroke-width':3});}
+  // The dug patch: earth turned over, a glint of silver now and then.
+  const dx=FX(800),dy=FY(1780),gl=Math.max(0,Math.sin(t*2.1))**8;
+  g+=Ell(dx,dy,FS(150),FS(40),'#3A2418')+Ell(dx-FS(30),dy-FS(12),FS(70),FS(16),'#6A4630',{opacity:.8})+glow(dx+FS(30),dy-FS(6),FS(60),'#E8F0FF',.7*gl)+C(dx+FS(30),dy-FS(6),FS(5),'#FFFFFF',{opacity:(.3+.7*gl).toFixed(2)});
+  return g;
+}
+function hidden(t,lt){
+  let g=tentWalls(t);
   const items=[['HOMEWORK','copying',homework],['EXTRA CHANGE','change',changeArt],['CREDIT','credit',star]];
   const tuck=Math.pow(prog(t,AT.sees,AT.sees+1.1),2);
   let it='';
-  items.forEach(([name,w,fn],k)=>{const [cx,cy]=HID(k);it+=cutout(t,AT[w],cx,cy,fn(cx,cy),name,40+k,{w:230,h:230});});
-  g+=G(`translate(0 ${(tuck*hv(500,700)).toFixed(1)})`,it,1-tuck*.0);
+  items.forEach(([name,w,fn],k)=>{const [cx,cy]=HID(k);it+=cutout(t,AT[w],cx,cy,G(`translate(${cx} ${cy}) scale(${hv(1,1.2)}) translate(${-cx} ${-cy})`,fn(cx,cy)),name,40+k,{w:hv(230,290),h:hv(230,290)});});
+  g+=G(`translate(0 ${(tuck*hv(500,800)).toFixed(1)})`,it);
   // The floor covers what slides under it.
-  g+=R(-200,fy+2,2400,1200,0,'#5A3A22',{opacity:(tuck>0?1:0)})+(tuck>0?R(-200,fy,2400,18,0,'#8A5A3A'):'');
-  if(tuck>0)for(let i=0;i<14;i++)g+=L(-200+i*170,fy+30,-120+i*170,fy+600,'#4A2E1A',6);
+  g+=tentFloor(t);
   // Not a robbery: a money bag, crossed out, gone before the small things arrive.
   const [bx,by]=E.VERT?[960,vy(860)]:[960,560];
   const bag=P(`M${bx-80} ${by+90}Q${bx-110} ${by-10} ${bx-40} ${by-60}L${bx-56} ${by-100}H${bx+56}L${bx+40} ${by-60}Q${bx+110} ${by-10} ${bx+80} ${by+90}Z`,'#A8865A',{stroke:'#5A3A22','stroke-width':5})+
@@ -263,34 +348,50 @@ function hidden(t,lt){
 }
 
 // ---------- 4. Leave the edges ----------
+// The field seen from a little above: rows of grain running back to the horizon. Its edges (both sides, the far row
+// and the near rows) stay standing; the middle is reaped row by row from the back, leaving stubble and sheaves.
+const sheaf=(x,y,k)=>{let s='';for(let m=-2;m<=2;m++)s+=L(x+m*1.5*k,y,x+m*4*k,y-30*k,'#C89A34',2.4*k)+Ell(x+m*4*k,y-35*k,3.2*k,7*k,GOLD);return s+L(x-6*k,y-13*k,x+6*k,y-13*k,'#8A5A22',3*k);};
+const FROW=20,FROWS=[...Array(FROW)].map((_,i)=>{const u=i/(FROW-1);return {u,y:690+1230*Math.pow(u,1.5),xl:lerp(170,-40,u),xr:lerp(910,1120,u),s:lerp(.35,2.6,u)};});
+function fieldBand(p0,p1,i0=0,i1=FROW-1){let d='',e='';for(let i=i0;i<=i1;i++){const q=FROWS[i],w=q.xr-q.xl;
+  d+=(i>i0?'L':'M')+FX(q.xl+p0*w).toFixed(1)+' '+FY(q.y-(i===i0?14*q.s:0)).toFixed(1);e=`L${FX(q.xl+p1*w).toFixed(1)} ${FY(q.y-(i===i0?14*q.s:0)).toFixed(1)}`+e;}return d+e+'Z';}
+function grapevine(t,fx,fy,gp){
+  const x=FX(fx),y=FY(fy),k=FS(1);
+  let g=R(x-8*k,y-210*k,16*k,210*k,4,'#6A4630')+R(x+150*k,y-190*k,14*k,190*k,4,'#6A4630')+L(x,y-190*k,x+157*k,y-175*k,'#6A4630',8);
+  for(let i=0;i<7;i++){const lx=x+i*26*k,ly=y-190*k+i*2*k;g+=Ell(lx,ly-10*k,20*k,13*k,['#3BBF7A','#2E9A62'][i%2]);}
+  // Bunches on the vine; three have fallen to the ground by "fallen grape".
+  [[30,0],[90,1],[140,0],[60,1],[115,0]].forEach(([dx,fall],i)=>{const k2=fall?ease.out(clamp(gp*1.4-i*.1)):0,bx=x+dx*k,by=lerp(y-150*k,y-14*k,k2);
+    for(let j=0;j<6;j++)g+=C(bx+[0,9,-9,5,-5,0][j]*k,by+[0,0,0,9,9,18][j]*k,7*k,'#7A3AB8',{stroke:'#4A1E70','stroke-width':2});
+    if(fall&&k2>.9)g+=glow(bx,by+8*k,30*k,'#FFE9A8',.5);});
+  return g;
+}
 function edges(t,lt){
   let g=sky(t,11);
-  g+=`<path d="${ridge(41,hv(860,vy(1230)),10,240)}" fill="#7A9A3A"/>`;
-  // The field from above: x0..x1, y0..y1 in sheet coordinates; the edge band is left standing.
-  const x0=X(360,100),x1=X(1560,980),y0=Y(80,560),y1=Y(700,1060),eb=hv(70,70);
-  g+=strip(x0-14,y0-14,x1-x0+28,y1-y0+28,51,'#6A5A2A',{shadow:true});
-  const reap=prog(t,AT.farmers,AT.grape),edgeGlow=ease.out(prog(t,AT.edges,AT.edges+.6));
-  for(let x=x0;x<x1;x+=26){
-    const inner=x>x0+eb&&x<x1-eb;
-    const cutTo=inner?lerp(y0+eb,y1-eb,ease.inOut(reap)):y0;
-    // standing grain (gold) and stubble (pale) per column
-    g+=R(x,y0,20,y1-y0,6,'#E8C25A');
-    if(inner&&cutTo>y0+eb)g+=R(x,y0+eb,20,cutTo-y0-eb,4,'#B8A27A');
-  }
-  if(edgeGlow>0){g+=P(`M${x0} ${y0}H${x1}V${y1}H${x0}Z M${x0+eb} ${y0+eb}V${y1-eb}H${x1-eb}V${y0+eb}Z`,'#FFE9A8',{opacity:(.35*edgeGlow).toFixed(2),'fill-rule':'evenodd'});
-    g+=glow(x0+eb/2,(y0+y1)/2,200,'#FFE9A8',.4*edgeGlow)+glow(x1-eb/2,(y0+y1)/2,200,'#FFE9A8',.4*edgeGlow);}
-  // The reaper's line moving down.
-  if(reap>0&&reap<1){const ry=lerp(y0+eb,y1-eb,ease.inOut(reap));g+=L(x0+eb,ry,x1-eb,ry,CORAL,6);}
-  // Grapes left on the ground below the field.
-  const gp=ease.out(prog(t,AT.grape,AT.grape+.8));
-  for(let i=0;i<9;i++){const x=x0+60+i*(x1-x0-120)/8,y=lerp(y1+hv(20,24),y1+hv(60,70)+hash(i,2)*30,gp);
-    g+=C(x,y,hv(12,14),'#7A3AB8',{stroke:'#4A1E70','stroke-width':3})+C(x+14,y+4,hv(10,12),'#8A4AC8',{stroke:'#4A1E70','stroke-width':3});}
+  g+=`<path d="${ridge(40,FY(600),18,320)}" fill="#7FA6B8" opacity=".85"/><path d="${ridge(41,FY(650),8,240)}" fill="#7A9A3A"/>`;
+  // Olive trees along the horizon.
+  {const r=rng(42);for(let i=0;i<10;i++){const x=FX(i*118+r()*50-20),y=FY(652+r()*10),k=FS(.7+r()*.5);g+=R(x-3*k,y-22*k,6*k,24*k,2,'#5A4630')+Ell(x,y-30*k,22*k,14*k,'#5A7A4A');}}
+  const reap=ease.inOut(prog(t,AT.farmers,AT.grape)),edgeGlow=ease.out(prog(t,AT.edges,AT.edges+.6));
+  const reapU=lerp(.04,.86,reap);
+  // Soil under the rows.
+  g+=P(fieldBand(-.02,1.02),'#8A6A3A');
+  if(edgeGlow>0){const o={opacity:(.38*edgeGlow).toFixed(2)};
+    g+=P(fieldBand(0,.11),'#FFE9A8',o)+P(fieldBand(.89,1),'#FFE9A8',o)+P(fieldBand(0,1,0,1),'#FFE9A8',o)+P(fieldBand(0,1,17,FROW-1),'#FFE9A8',o);}
+  FROWS.forEach((q,i)=>{const w=q.xr-q.xl,sp=10+9*q.s,n=Math.floor(w/sp),k=FS(q.s);
+    for(let j=0;j<=n;j++){const fx=q.xl+j*sp+(i%2)*sp/2,p=(fx-q.xl)/w;if(fx<-40||fx>1120||p>1)continue;
+      const edge=p<.11||p>.89||i===0||q.u>.86,x=FX(fx),y=FY(q.y);
+      if(!edge&&q.u<reapU&&reap>0){g+=L(x,y,x-2*k,y-9*k,'#E2CC92',2.4*k)+L(x+3*k,y,x+4*k,y-7*k,'#D2B880',2*k);if(j%5===2&&i%2===1)g+=sheaf(x,y,k*.9);continue;}
+      const sw=Math.sin(t*1.7+fx*.02+i)*3*k,h=(26+hash(i*97+j,3)*8)*k;
+      g+=L(x,y,x+sw,y-h,'#B8862C',2.2*k)+Ell(x+sw,y-h-4*k,3.2*k,8*k,edge&&edgeGlow>0?mix(GOLD,'#FFF2B0',edgeGlow*.6):GOLD);}
+  });
+  // The reaper's line moving forward.
+  if(reap>0&&reap<1){const q=FROWS[Math.min(FROW-1,Math.round(reapU*(FROW-1)))],w=q.xr-q.xl;g+=L(FX(q.xl+.11*w),FY(q.y),FX(q.xr-.11*w),FY(q.y),CORAL,6);}
+  // A vine at the field's corner; grapes fall and are left on the ground.
+  g+=grapevine(t,70,1090,ease.out(prog(t,AT.grape,AT.grape+1)));
   // Those who glean: the poor, a traveler, a child.
   const gl=ease.out(prog(t,AT.poor[0],AT.poor[0]+.8));
   if(gl>0){const gy=Y(820,1180);
-    g+=G('',person(lerp(X(200,30),X(330,200),gl),gy,hv(.85,.95),3,{reach:.6,auraOp:.5,walk:gl<1?t*7:0})+
-      person(lerp(X(1720,1050),X(1600,880),gl),gy,hv(.85,.95),0,{flip:-1,reach:.6,auraOp:.5,walk:gl<1?t*7:0})+
-      person(lerp(X(1720,1050),X(1450,700),gl),gy+hv(6,8),hv(.6,.66),4,{flip:-1,reach:.5,auraOp:.5,walk:gl<1?t*7:0}),gl);}
+    g+=G('',person(lerp(X(200,20),X(330,250),gl),gy,hv(.85,1.1),3,{reach:.6,auraOp:.5,walk:gl<1?t*7:0})+
+      person(lerp(X(1720,1060),X(1600,860),gl),gy,hv(.85,1.1),0,{flip:-1,reach:.6,auraOp:.5,walk:gl<1?t*7:0})+
+      person(lerp(X(1720,1060),X(1450,680),gl),gy+hv(6,8),hv(.6,.78),4,{flip:-1,reach:.5,auraOp:.5,walk:gl<1?t*7:0}),gl);}
   g+=fade(t,AT.leave-.3,tag(t,AT.stopAt,960,Y(150,400),'NOT JUST "DON\'T TAKE"',SZ(38,46),1,{bg:CORAL})+
     tag(t,AT.edges+.2,960,Y(240,500),'LEAVE THE EDGES',SZ(36,44),2));
   g+=verse(t,AT.leave-.15,300,40,['You shall leave them for the poor and for the sojourner:','I am the LORD your God.'],'LEVITICUS 19:10 ESV',{size:46,hl:'for the poor',hlAt:AT.poor[0],hlDur:AT.poor[1]-AT.poor[0],seed:13,id:3});
@@ -303,30 +404,54 @@ function edges(t,lt){
 function sycamore(x,y,s){const r=rng(5);let g=P(`M-40 0L-24 -260Q-60 -330 -150 -360M-24 -260Q10 -340 120 -380M-10 -200Q60 -240 150 -250`,'none',{stroke:'#5A3A22','stroke-width':34,'stroke-linecap':'round'})+R(-44,-270,48,270,14,'#6A4630');
   for(let i=0;i<16;i++)g+=Ell(-180+r()*360,-480+r()*230,70+r()*30,46+r()*20,['#3BBF7A','#2E9A62','#5AD890'][i%3],{opacity:.95});
   return G(`translate(${x} ${y}) scale(${s})`,g);}
+function palm(x,y,k,t){let g=P(`M${x-8*k} ${y}Q${x-22*k} ${y-120*k} ${x+6*k} ${y-230*k}L${x+18*k} ${y-226*k}Q${x} ${y-120*k} ${x+10*k} ${y}Z`,'#7A5634');
+  for(let i=0;i<7;i++){const a=-Math.PI+i*Math.PI/6+Math.sin(t*1.2+i)*.04,len=(90+(i%2)*24)*k,ex=x+12*k+Math.cos(a)*len,ey=y-228*k+Math.sin(a)*len*.55+34*k;
+    g+=P(`M${x+12*k} ${y-228*k}Q${(x+12*k+ex)/2} ${y-262*k} ${ex} ${ey}`,'none',{stroke:['#3B9F5A','#2E8A4A'][i%2],'stroke-width':15*k,'stroke-linecap':'round'});}
+  return g;}
+function house(x,y,w,h,col){return R(x-w/2,y-h,w,h,3,col,{stroke:'#6A4424','stroke-width':4})+R(x-w/2-8,y-h-10,w+16,14,3,'#8A6038')+
+  R(x-w*.12,y-h*.5,w*.24,h*.5,w*.1,'#4A2E1A')+R(x+w*.2,y-h*.82,w*.16,w*.14,2,'#4A2E1A');}
+// Rebuilt Jericho, the city of palms: houses, a gate, palms, and the road the crowd lines.
+function cityOfPalms(t){
+  let g='';const k=FS(1);
+  [[40,770,170,150],[200,760,140,190],[350,775,160,130],[700,770,150,170],[860,765,170,140],[1020,775,150,160]].forEach(([fx,fy,w,h],i)=>g+=house(FX(fx),FY(fy),w*k,h*k,['#D2A468','#C69A60','#DDB27A'][i%3]));
+  // The gate the road comes through.
+  {const x=FX(530),y=FY(780);g+=R(x-110*k,y-230*k,220*k,230*k,4,'#C99C5E',{stroke:'#6A4424','stroke-width':5})+P(`M${x-55*k} ${y}V${y-110*k}Q${x} ${y-170*k} ${x+55*k} ${y-110*k}V${y}Z`,'#4A2E1A');
+    for(let i=0;i<5;i++)g+=R(x-110*k+i*48*k,y-254*k,30*k,26*k,2,'#C99C5E',{stroke:'#6A4424','stroke-width':3});}
+  [[130,800,1.05],[440,790,.8],[640,795,.85],[960,800,1.1]].forEach(([fx,fy,s])=>g+=palm(FX(fx),FY(fy),s*k,t));
+  return g;
+}
 function zacchaeus(t,lt){
   let g=sky(t,13,'#FFE0A0');
-  const r=rng(78);
-  for(let i=0;i<10;i++){const x=hv(160,380)+r()*hv(1600,1160),y=hv(330,vy(700))+r()*40;g+=R(x,y,90,60+r()*40,3,['#C2915A','#B08048'][i%2],{stroke:'#6A4424','stroke-width':3});}
-  g+=`<path d="${ridge(33,hv(820,vy(1160)),10,240)}" fill="#C99C5E"/><path d="${ridge(34,hv(900,vy(1230)),8,200)}" fill="#B0864A"/>`;
+  g+=cityOfPalms(t);
+  g+=`<path d="${ridge(33,FY(790),8,240)}" fill="#C99C5E"/><path d="${ridge(34,FY(960),8,200)}" fill="#B88E52"/>`;
+  g+=vGround(37,['#B0864A','#A07842','#90683A'],{stone:'#C2A070',tuft:'#7A8A3A',from:1300});
+  // The road from the gate down through the frame, paved with flat stones.
+  if(E.VERT){g+=P(`M${FX(480)} ${FY(790)}H${FX(580)}Q${FX(700)} ${FY(1250)} ${FX(1000)} ${FY(1920)}H${FX(160)}Q${FX(420)} ${FY(1250)} ${FX(480)} ${FY(790)}Z`,'#DDBB84');
+    const r=rng(36);for(let i=0;i<34;i++){const v=Math.pow(r(),.7),fy=lerp(820,1900,v),half=lerp(50,420,v),c=lerp(530,580,v),fx=c+(r()-.5)*2*half*.85,s=lerp(.4,1.8,v);
+      g+=Ell(FX(fx),FY(fy),FS(26*s),FS(10*s),'#C8A46C',{stroke:'#A88048','stroke-width':2});}}
+  if(E.VERT){g+=palm(FX(-30),FY(1960),FS(1.9),t);
+    [[860,1880,1.6],[1010,1760,1.2],[250,1700,1.0]].forEach(([fx,fy,k2])=>{const x=FX(fx),y=FY(fy),k=FS(k2);for(let j=0;j<5;j++)g+=Ell(x+(j-2)*26*k,y-20*k-Math.abs(j-2)*-8*k,30*k,22*k,['#5A8A3A','#4A7A32','#6A9A42'][j%3]);});}
   const gy=Y(820,1160);
   // The tree scene leaves when the two hands arrive.
   const out=ease.inOut(prog(t,AT.tookHid-.3,AT.tookHid+.4));
   let sc='';
-  const tx=X(760,380);
-  sc+=sycamore(tx,gy,hv(1,1.1));
+  const tx=X(760,330);
+  sc+=sycamore(tx,gy,hv(1,1.35));
   // Zacchaeus up the tree, then down on the ground with his coins.
   const down=ease.inOut(prog(t,AT.stood-.6,AT.stood+.6));
-  const zx=lerp(tx+hv(70,80),X(1000,560),down),zy=lerp(gy-hv(330,360),gy,down);
+  const zx=lerp(tx+hv(70,90),X(1000,540),down),zy=lerp(gy-hv(330,430),gy,down);
   const crowdIn=ease.out(prog(t,AT.walked,AT.walked+.8));
-  for(let i=0;i<3;i++)sc+=G('',person(X(1260+i*150,700+i*120),gy+(i%2)*10,hv(.8,.85),i+1,{flip:-1,auraOp:.3,reach:t>AT.giveToPoor?.6:0}),crowdIn);
+  const CR=[[640,0,1],[760,14,2],[880,0,3],[700,-60,4],[830,-70,0]];
+  CR.slice(3).forEach(([fx,dy,c])=>sc+=G('',person(X(1260,fx),gy+hv(0,dy),hv(.8,.78),c,{flip:-1,auraOp:.3,reach:t>AT.giveToPoor?.5:0}),crowdIn));
+  CR.slice(0,3).forEach(([fx,dy,c],i)=>sc+=G('',person(X(1260+i*150,fx),gy+hv((i%2)*10,dy),hv(.8,1.0),c,{flip:-1,auraOp:.3,reach:t>AT.giveToPoor?.6:0}),crowdIn));
   // The warm light of Jesus' coming (never a figure): it travels in and rests under the tree.
   const lt2=ease.inOut(prog(t,AT.walked,AT.jesusSaid+.5));
   if(t>AT.walked){const lx=lerp(X(2000,1300),tx+hv(120,140),lt2),ly=gy-hv(120,140);sc+=glow(lx,ly,260,'#FFF6DA',.85)+glow(lx,ly,120,'#FFFFFF',.6);}
-  sc+=E.chubby(zx,zy,hv(.75,.85),{tunic:'#FFC24C',tunic2:'#E0623C',aura:'#FFE9A8',auraOp:t>AT.house?.7:.3,reach:t>AT.giveToPoor?.8:0,flip:1,
+  sc+=E.chubby(zx,zy,hv(.75,1.0),{tunic:'#FFC24C',tunic2:'#E0623C',aura:'#FFE9A8',auraOp:t>AT.house?.7:.3,reach:t>AT.giveToPoor?.8:0,flip:1,
     walk:down>0&&down<1?t*7:0});
   // Coins pour out toward the crowd: four for one.
   const cp=prog(t,AT.giveToPoor,AT.fourfold+1.5);
-  if(cp>0)for(let i=0;i<14;i++){const k=clamp(cp*1.6-i*.05);if(k<=0)continue;const x=lerp(zx+40,X(1260+(i%3)*150,700+(i%3)*120),k),y=lerp(zy-hv(120,130),gy-hv(160,170),k)-Math.sin(k*Math.PI)*hv(90,110);sc+=coin(x,y,hv(14,16));}
+  if(cp>0)for(let i=0;i<14;i++){const k=clamp(cp*1.6-i*.05);if(k<=0)continue;const x=lerp(zx+40,X(1260+(i%3)*150,CR[i%3][0]),k),y=lerp(zy-hv(120,150),gy-hv(160,200),k)-Math.sin(k*Math.PI)*hv(90,110);sc+=coin(x,y,hv(14,16));}
   sc+=fade(t,AT.behold-.3,tag(t,AT.centuries,960,Y(130,400),'JERICHO · CENTURIES LATER',SZ(38,44),1)+
     tag(t,AT.taxman,960,Y(220,500),'A RICH TAX COLLECTOR',SZ(32,40),2,{bg:CORAL}));
   sc+=fade(t,AT.tookHid-.3,tag(t,AT.fourfold,X(1460,780),Y(420,760),'×4',SZ(70,80),3,{bg:CORAL,rot:-6}));
@@ -346,32 +471,65 @@ function saw(cx,cy){let d=`M${cx-90} ${cy+20}L${cx+70} ${cy-10}`;for(let i=0;i<1
   return P(`M${cx-90} ${cy+20}L${cx+70} ${cy-10}L${cx+70} ${cy-40}L${cx-90} ${cy-6}Z`,'#C8D0DA',{stroke:'#5E6470','stroke-width':3})+R(cx+60,cy-56,50,56,10,'#A86A3E');}
 function loaf(cx,cy,split){return P(`M${cx-80-split} ${cy+30}Q${cx-90-split} ${cy-40} ${cx-split} ${cy-44}V${cy+30}Z`,'#D9963E',{stroke:'#8A5A22','stroke-width':4})+
   P(`M${cx+split} ${cy-44}Q${cx+90+split} ${cy-40} ${cx+80+split} ${cy+30}H${cx+split}Z`,'#D9963E',{stroke:'#8A5A22','stroke-width':4});}
+// A tentmaker's workshop at the front of a house: brick wall, striped awning, shelves, cloth hung to dry.
+function workshop(t){
+  const k=FS(1);
+  let g=R(-200,-800,2400,FY(800)+800,0,'#A8D2EA')+sky(t,19);
+  g+=`<path d="${ridge(62,FY(760),18,300)}" fill="#C8B488"/><path d="${ridge(63,FY(800),8,240)}" fill="#D8BC86"/>`;
+  [[60,780,90,70],[210,775,110,90],[900,780,100,80],[1030,785,90,60]].forEach(([fx,fy,w,h],i)=>g+=house(FX(fx),FY(fy),w*k,h*k,['#EADCC0','#E2CFAE'][i%2]));
+  // The house front.
+  const x0=FX(70),x1=FX(1010),y0=FY(560),y1=FY(1000);
+  g+=R(x0,y0,x1-x0,y1-y0,4,'#D8B07A',{stroke:'#8A6038','stroke-width':5});
+  for(let y=y1-40,row=0;y>y0+20;y-=40,row++){g+=L(x0+4,y,x1-4,y,'#B88A52',3);for(let x=x0+(row%2?36:8);x<x1-10;x+=72)g+=L(x,y,x,y+40,'#B88A52',3);}
+  g+=P(`M${FX(120)} ${y1}V${FY(700)}Q${FX(190)} ${FY(630)} ${FX(260)} ${FY(700)}V${y1}Z`,'#4A2E1A');
+  // Shelves with jars and rolled cloth.
+  [[690,1],[810,0]].forEach(([fy,j])=>{const y=FY(fy);g+=R(FX(700),y,FX(960)-FX(700),FS(12),2,'#6A4630');
+    for(let i=0;i<4;i++){const x=FX(725+i*62);g+=(i+j)%2?R(x-22*k,y-56*k,44*k,56*k,10*k,['#B8703E','#8A5A3A'][i%2],{stroke:'#5A3A22','stroke-width':3}):
+      R(x-28*k,y-34*k,56*k,34*k,17*k,['#E8D8B0','#C8302A','#3A7AB8'][i%3],{stroke:'#5A3A22','stroke-width':3});}});
+  // A half-sewn tent cloth on a line.
+  {const y=FY(600),sw=Math.sin(t*1.3)*FS(6);g+=L(FX(300),y,FX(650),y,'#5A3A22',4)+P(`M${FX(320)} ${y}H${FX(630)}L${FX(620)+sw} ${FY(830)}Q${FX(475)} ${FY(800)} ${FX(330)+sw} ${FY(830)}Z`,'#C8A070',{stroke:'#7A5634','stroke-width':4})+
+    P(`M${FX(475)} ${y+FS(10)}V${FY(800)}`,'none',{stroke:'#7A5634','stroke-width':3,'stroke-dasharray':'10 8'});}
+  // The awning.
+  let aw=`M${FX(30)} ${FY(520)}H${FX(1050)}V${FY(580)}`;for(let i=0;i<12;i++){const xa=FX(1050-i*85);aw+=`Q${xa-FS(42)} ${FY(615)} ${xa-FS(85)} ${FY(580)}`;}
+  g+=P(aw+'Z','#C8302A',{stroke:'#7A1E1A','stroke-width':4});
+  for(let i=0;i<6;i++)g+=R(FX(30+i*170+40),FY(520),FS(55),FY(585)-FY(520),0,'#F2E2C0',{opacity:.85});
+  [40,1030].forEach(fx=>g+=R(FX(fx)-FS(10),FY(520),FS(20),y1-FY(520),4,'#6A4630'));
+  // The courtyard: paving stones, then the ground.
+  g+=`<path d="${ridge(61,FY(1000),4,240)}" fill="#C9A060"/>`;
+  if(E.VERT){for(let r=0;r<4;r++){const fy=1030+r*r*22+r*60;g+=L(-200,FY(fy),2120,FY(fy),'#A88048',3);for(let c=-6;c<8;c++){const fx=540+(c+(r%2)*.5)*lerp(130,230,r/3);g+=L(FX(fx),FY(fy),FX(fx+(fx-540)*.15),FY(fy+50+r*20),'#A88048',3);}}}
+  g+=vGround(65,['#B89058','#A88048','#987040'],{stone:'#D8C090',tuft:'#8A7A40',from:1330});
+  return g;
+}
 function share(t,lt){
-  let g=glow(960,520,1000,'#FFE9B0',.5)+fireflies(t,0,-600,1920,2300,'#FFF6DA',16,.5);
-  g+=`<path d="${ridge(61,hv(880,vy(1240)),8,240)}" fill="#C9A060"/>`;
+  let g=workshop(t)+fireflies(t,0,-600,1920,2300,'#FFF6DA',10,.4);
   // The bench and its tools ("honest work"), then a loaf broken to share.
   const by=Y(640,1000);
   const bench=R(X(560,180),by,hv(800,720)/(E.VERT?.84:1),hv(36,40),6,'#8A5A3A')+R(X(600,220),by+hv(36,40),26,hv(140,160),4,'#6A4630')+R(X(1300,850),by+hv(36,40),26,hv(140,160),4,'#6A4630');
   const benchOut=ease.inOut(prog(t,AT.oppositeOf-.3,AT.oppositeOf+.3));
-  let b=piece(t,AT.paul,960,by,bench,1,1.2);
+  // The worker behind the bench, his hands busy while "honest work with his own hands" is read.
+  const busy=t>AT.honest&&t<AT.shareW[0];
+  let b=G('',person(X(960,540),by+hv(110,120),hv(.9,1.05),0,{reach:busy?.4+.3*Math.abs(Math.sin(E.held(t,8)*7)):0,auraOp:.35}),ease.out(prog(t,AT.paul,AT.paul+.6)));
+  b+=piece(t,AT.paul,960,by,bench,1,1.2);
   b+=piece(t,AT.honest,X(760,350),by-hv(60,70),hammer(X(760,350),by-hv(60,70)),2,1.4);
-  b+=piece(t,AT.honest+.3,X(1120,700),by-hv(30,40),saw(X(1120,700),by-hv(30,40)),3,1.4);
+  b+=piece(t,AT.honest+.3,X(1120,730),by-hv(30,40),saw(X(1120,730),by-hv(30,40)),3,1.4);
   const sp=ease.inOut(prog(t,AT.shareW[0],AT.shareW[0]+.8));
-  if(t>=AT.honest+.6)b+=piece(t,AT.honest+.6,960,by-hv(50,60),loaf(960,by-hv(50,60),sp*hv(60,80)),4,1.4);
-  // Small figures come to take a share.
-  if(sp>0)b+=G('',person(X(480,170),Y(830,1180),hv(.7,.8),2,{reach:.6,auraOp:.5})+person(X(1440,900),Y(830,1180),hv(.7,.8),3,{flip:-1,reach:.6,auraOp:.5}),sp);
+  if(t>=AT.honest+.6)b+=piece(t,AT.honest+.6,X(960,560),by-hv(50,60),loaf(X(960,560),by-hv(50,60),sp*hv(60,80)),4,1.4);
+  // Neighbours come to take a share.
+  if(sp>0)b+=G('',person(X(480,150),Y(830,1180),hv(.7,1.0),2,{reach:.6,auraOp:.5})+person(X(1440,870),Y(830,1180),hv(.7,1.0),3,{flip:-1,reach:.6,auraOp:.5})+
+    person(X(1400,760),Y(840,1200),hv(.5,.7),4,{flip:-1,reach:.5,auraOp:.5}),sp);
   g+=G('',b,1-benchOut);
   g+=verse(t,AT.thief-.15,280,40,['Let the thief no longer steal, but rather let him labor,','doing honest work with his own hands,','so that he may have something to share with anyone in need.'],'EPHESIANS 4:28 ESV',{size:42,hl:'share with anyone in need.',hlAt:AT.shareW[0],hlDur:AT.shareW[1]-AT.shareW[0],seed:19,id:5});
   g+=fade(t,AT.thief-.3,tag(t,AT.paul,960,Y(150,420),'PAUL, TO THE CHURCH IN EPHESUS',SZ(32,38),6));
   // Not "stop taking", but "share".
   g+=fade(t,AT.oppositeOf-.3,(()=>{const y=LO1,x=960;return tag(t,AT.stopTaking,x,y,'STOP TAKING',SZ(36,44),7)+strike(x-hv(150,200),y,x+hv(150,200),ease.inOut(prog(t,AT.withShare-.3,AT.withShare+.1)));})()+
     tag(t,AT.withShare,960,LO2,'SHARE',SZ(52,62),8,{bg:CORAL,rot:-3}));
-  // The opposite of stealing: hands that open, and lights that drift out of them.
+  // The opposite of stealing: the workshop dims, two big hands rise and open, and lights drift out of them.
   const ho=ease.inOut(prog(t,AT.opening-.2,AT.opening+.5));
-  if(benchOut>0){const hy=Y(760,1080),hs=hv(1.1,1.3);
-    let h=hand(X(760,330),hy,hs,ho,{rot:-10,aura:'#FFD86B',auraOp:.4+.4*ho})+hand(X(1160,750),hy,hs,ho,{flip:-1,rot:10,aura:'#FFD86B',auraOp:.4+.4*ho});
-    for(let i=0;i<10;i++){const k=(prog(t,AT.opening+.2,AT.opening+6)*1.4+i*.11)%1;if(t<AT.opening+.2)break;const a=-Math.PI/2+(i-4.5)*.28;
-      h+=glow(960+Math.cos(a)*k*hv(500,420),hy-hv(160,200)+Math.sin(a)*k*hv(500,520),40,'#FFE9A8',.9*(1-k));}
+  if(benchOut>0){const hy=Y(760,1060),hs=hv(1.1,1.75);
+    g+=R(-200,-800,2400,2700,0,'#2A1608',{opacity:(.55*benchOut).toFixed(2)})+glow(960,hy-hv(120,200),hv(600,620),'#FFD86B',(.35+.35*ho)*benchOut);
+    let h=hand(X(760,320),hy,hs,ho,{rot:-10,aura:'#FFD86B',auraOp:.4+.4*ho})+hand(X(1160,760),hy,hs,ho,{flip:-1,rot:10,aura:'#FFD86B',auraOp:.4+.4*ho});
+    for(let i=0;i<12;i++){const k=(prog(t,AT.opening+.2,AT.opening+6)*1.4+i*.09)%1;if(t<AT.opening+.2)break;const a=-Math.PI/2+(i-5.5)*.26;
+      h+=glow(960+Math.cos(a)*k*hv(500,460),hy-hv(160,300)+Math.sin(a)*k*hv(500,560),hv(40,50),'#FFE9A8',.9*(1-k));}
     g+=G('',h,benchOut);
     g+=tag(t,AT.yourself,960,LO1,'NOT JUST HANDS KEPT TO YOURSELF',SZ(30,36),9);
     g+=tag(t,AT.opening,960,LO2,'HANDS THAT OPEN',SZ(42,50),10,{bg:CORAL});}
@@ -379,10 +537,23 @@ function share(t,lt){
 }
 
 // ---------- 7. What are your hands for, then the end card ----------
+function valley(t){
+  if(!E.VERT)return `<path d="${ridge(71,900,12,240)}" fill="#3BBF7A"/>`;
+  let g=`<path d="${ridge(70,FY(1290),20,340)}" fill="#A8C890" opacity=".8"/><path d="${ridge(71,FY(1330),10,260)}" fill="#7AB060"/>`;
+  const cols=['#E8C25A','#8FBF6A','#5AA850','#D8B060','#A8D070'],r=rng(73),Y0=[1350,1440,1560,1720,1960],F=[1,1.3,1.75,2.4,3.3];
+  const px=(x,row)=>FX(540+(x-540)*F[row]);
+  for(let row=0;row<4;row++){let x=-260-r()*80;
+    while(x<1340){const w=150+r()*110,c=cols[Math.floor(r()*cols.length)],ya=FY(Y0[row]),yb=FY(Y0[row+1]);
+      g+=P(`M${px(x,row)} ${ya}L${px(x+w,row)} ${ya}L${px(x+w,row+1)} ${yb}L${px(x,row+1)} ${yb}Z`,c,{stroke:'#3E6A30','stroke-width':4});
+      for(let m=1;m<4;m++){const f=m/4;g+=L(lerp(px(x,row),px(x,row+1),f)+6,lerp(ya,yb,f),lerp(px(x+w,row),px(x+w,row+1),f)-6,lerp(ya,yb,f),'#000',2.5,{opacity:.12});}
+      if(r()<.3){const hx=lerp(px(x,row),px(x+w,row),.5),hy=lerp(ya,yb,.55),k=FS(.5*F[row]);g+=house(hx,hy,90*k,60*k,'#EADCC0');}
+      x+=w;}}
+  return g;
+}
 function closing(t,lt){
-  let g=glow(960,560,1200,'#FFE9B0',.5)+fireflies(t,0,-600,1920,2300,'#FFF6DA',20,.7);
-  // Low green ground under the labels (no grass layer, so nothing covers the lower labels).
-  g+=`<path d="${ridge(71,hv(900,vy(1600)),12,240,-120,2040,1800)}" fill="#3BBF7A"/><path d="${ridge(72,hv(960,vy(1680)),10,200,-120,2040,1800)}" fill="#2E9A62"/>`;
+  let g=sky(t,23,'#FFF2C8')+glow(960,560,1200,'#FFE9B0',.5)+fireflies(t,0,-600,1920,2300,'#FFF6DA',20,.7);
+  // A valley of family plots under the labels (a callback to every family's field).
+  g+=valley(t);
   const tb=ease.out(prog(t,AT.givingGod-.2,AT.givingGod+1)),nine=ease.inOut(prog(t,AT.ninth,AT.ninth+1));
   const lit=k=>k===7?1.2:k===8?.3+.8*nine:.4;
   const ty=Y(420,640),s=hv(.62,.86);
@@ -413,16 +584,16 @@ E.start({
   sheets:[
     {name:'cold open',draw:coldOpen,bg:['#1A1622','#07060C'],cam:wide(0,AT.heard-.3)},
     {name:'the land',at:AT.heard-.1,draw:land,bg:['#2E5A7A','#7AA85A'],stars:false,
-      fore:{grass:['#3E7A3A','#356A32','#4A8A42'],flowers:['#FFD45E','#FFFFFF']},cam:wide(AT.heard,AT.firstTime-.3)},
+      fore:{grass:['#3E7A3A','#356A32','#4A8A42'],flowers:['#FFD45E','#FFFFFF'],top:1300},cam:wide(AT.heard,AT.firstTime-.3)},
     {name:'jericho',at:AT.firstTime-.1,draw:jericho,bg:['#E2B07A','#A9683E'],stars:false,
-      fore:{grass:['#B0864A','#9A7440','#C99C5E'],flowers:[]},cam:wide(AT.firstTime,AT.most-.3)},
+      fore:{grass:['#B0864A','#9A7440','#C99C5E'],flowers:[],top:1300},cam:wide(AT.firstTime,AT.most-.3)},
     {name:'the tent',at:AT.most-.1,draw:hidden,bg:['#3A2418','#140C08'],cam:wide(AT.most,AT.surprising-.3)},
     {name:'the edges',at:AT.surprising-.1,draw:edges,bg:['#8AC0E0','#E8D08A'],stars:false,vIn:'cut',
-      fore:{grass:['#7A9A3A','#6A8A32','#8AAA4A'],flowers:['#FFD45E','#FFFFFF']},cam:wide(AT.surprising,AT.centuries-.3)},
+      cam:wide(AT.surprising,AT.centuries-.3)},
     {name:'same city',at:AT.centuries-.1,draw:zacchaeus,bg:['#F0C88A','#B0703E'],stars:false,
-      fore:{grass:['#B0864A','#9A7440','#C99C5E'],flowers:[]},cam:wide(AT.centuries,AT.paul-.3)},
+      fore:{grass:['#B0864A','#9A7440','#C99C5E'],flowers:[],top:1300},cam:wide(AT.centuries,AT.paul-.3)},
     {name:'share',at:AT.paul-.1,draw:share,bg:['#FFF0C8','#E8B070'],stars:false,
-      fore:{grass:['#C9A060','#B08848','#D8B070'],flowers:[]},cam:wide(AT.paul,AT.givingGod-.3)},
+      fore:{grass:['#B89058','#A88048','#C9A060'],flowers:[],top:1300},cam:wide(AT.paul,AT.givingGod-.3)},
     {name:'hands',at:AT.givingGod-.1,draw:closing,bg:['#FFE9B0','#E8A060'],stars:false,vIn:'cut',cam:wide(AT.givingGod,AT.last+6)},
   ],
   talk:[],
