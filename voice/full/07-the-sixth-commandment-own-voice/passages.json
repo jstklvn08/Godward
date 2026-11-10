@@ -1,0 +1,516 @@
+{
+ "s00-01-story-36e3ac.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Two brothers walk out into a field.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true
+ },
+ "s00-02-story-66e71d.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Only one of them walks back.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s00-03-talk-0e3130.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It is the first death in the Bible.",
+  "seed": 2,
+  "words_per_second": 4.04,
+  "in_range": false
+ },
+ "s00-04-story-97d727.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And it didn't start with a weapon.",
+  "seed": 1,
+  "words_per_second": 3.41,
+  "in_range": true
+ },
+ "s00-05-story-2a7b76.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "It started with a feeling.",
+  "seed": 2,
+  "words_per_second": 3.05,
+  "in_range": true
+ },
+ "s00-06-grave-1c7e63.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "You shall not murder.",
+  "seed": 1,
+  "words_per_second": 2.4,
+  "in_range": true
+ },
+ "s00-07-talk-7973e5.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It sounds like the easy commandment.",
+  "seed": 1,
+  "words_per_second": 3.09,
+  "in_range": true
+ },
+ "s00-08-story-31e759.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Most of us will never hurt anyone.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true
+ },
+ "s00-09-pivot-ad6d7b.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But Jesus said it reaches much further than our hands.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s01-01-story-cfec47.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Cain and Abel were the first brothers.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s01-02-story-aba78f.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Cain worked the ground, and Abel kept the sheep.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s01-03-story-32cfcd.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Both brought an offering to God.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s01-04-story-f8cdbc.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "God accepted Abel's offering, but not Cain's.",
+  "seed": 2,
+  "words_per_second": 2.02,
+  "in_range": false
+ },
+ "s01-05-talk-5439af.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "And Cain burned with anger.",
+  "seed": 1,
+  "words_per_second": 3.55,
+  "in_range": true
+ },
+ "s01-06-story-7077b5.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "His face fell.",
+  "seed": 25,
+  "words_per_second": 2.65,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s01-07-story-21bd18.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "So God warned him, the way you would warn a friend.",
+  "seed": 1,
+  "words_per_second": 3.63,
+  "in_range": false
+ },
+ "s01-08-grave-9e3c21.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "And if you do not do well, sin is crouching at the door.",
+  "seed": 2,
+  "words_per_second": 3.16,
+  "in_range": false
+ },
+ "s01-09-grave-9e3886.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Its desire is for you, and you must rule over it.",
+  "seed": 3,
+  "words_per_second": 2.99,
+  "in_range": false
+ },
+ "s01-10-talk-faaf0a.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Anger was crouching at the door, like an animal.",
+  "seed": 2,
+  "words_per_second": 3.75,
+  "in_range": true
+ },
+ "s01-11-story-56f139.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Cain could still close that door.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s02-01-pivot-e73344.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "But Cain didn't rule over it.",
+  "seed": 1,
+  "words_per_second": 2.83,
+  "in_range": true
+ },
+ "s02-02-story-a7e34b.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "He asked his brother to come out to the field.",
+  "seed": 2,
+  "words_per_second": 4.08,
+  "in_range": false
+ },
+ "s02-03-story-13a1a8.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And there, Cain rose up against Abel and took his life.",
+  "seed": 1,
+  "words_per_second": 3.25,
+  "in_range": true
+ },
+ "s02-04-talk-b22e08.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "The Bible tells it in one short sentence.",
+  "seed": 1,
+  "words_per_second": 3.49,
+  "in_range": true
+ },
+ "s02-05-story-c15e6f.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "There are no details. Just a life that is gone.",
+  "seed": 1,
+  "words_per_second": 2.94,
+  "in_range": true
+ },
+ "s03-01-story-4225ab.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then God came to Cain and asked where his brother was.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s03-02-story-70964e.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Cain said he didn't know.",
+  "seed": 1,
+  "words_per_second": 3.12,
+  "in_range": true
+ },
+ "s03-03-story-b4caba.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Was he supposed to look after his brother?",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": true
+ },
+ "s03-04-grave-3f70ac.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "The voice of your brother's blood is crying to me from the ground.",
+  "seed": 2,
+  "words_per_second": 3.81,
+  "in_range": false
+ },
+ "s03-05-talk-df3488.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Nobody else saw it happen.",
+  "seed": 1,
+  "words_per_second": 3.38,
+  "in_range": true
+ },
+ "s03-06-story-691a5e.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "But God did.",
+  "seed": 25,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s03-07-story-12d435.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Abel's life mattered to him, even when no one was left to speak for it.",
+  "seed": 1,
+  "words_per_second": 2.8,
+  "in_range": true
+ },
+ "s04-01-pivot-1270d6.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "Why does one life matter that much?",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s04-02-story-152f3e.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "After the flood, God gives the reason.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true
+ },
+ "s04-03-grave-4761cd.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "God made man in his own image.",
+  "seed": 2,
+  "words_per_second": 2.94,
+  "in_range": false
+ },
+ "s04-04-talk-2ffd58.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Every person carries something of God, like a reflection in a mirror.",
+  "seed": 1,
+  "words_per_second": 3.23,
+  "in_range": true
+ },
+ "s04-05-talk-d0ee58.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "To take a person's life is to strike at the one whose image they carry.",
+  "seed": 1,
+  "words_per_second": 4.1,
+  "in_range": false
+ },
+ "s05-01-story-9cc535.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "So when God spoke from the mountain, the sixth word was short.",
+  "seed": 1,
+  "words_per_second": 3.53,
+  "in_range": true
+ },
+ "s05-02-grave-1c7e63.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "You shall not murder.",
+  "seed": 1,
+  "words_per_second": 2.4,
+  "in_range": true
+ },
+ "s05-03-talk-b91c97.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Older Bibles say kill.",
+  "seed": 3,
+  "words_per_second": 2.53,
+  "in_range": false
+ },
+ "s05-04-story-51d6b5.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "But the Hebrew word points to taking an innocent life.",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": true
+ },
+ "s05-05-story-4f8df9.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "That's why most modern Bibles say murder.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true
+ },
+ "s05-06-talk-df31f9.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "It sounds like a rule most of us keep without trying.",
+  "seed": 2,
+  "words_per_second": 4.28,
+  "in_range": false
+ },
+ "s06-01-pivot-f388da.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "Then Jesus opened it up.",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true
+ },
+ "s06-02-story-a704c9.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "On a hillside, he quoted the old command.",
+  "seed": 1,
+  "words_per_second": 3.12,
+  "in_range": true
+ },
+ "s06-03-story-ac8ca0.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Then he went underneath it.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true
+ },
+ "s06-04-grave-04fc33.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "But I say to you that everyone who is angry with his brother will be liable to judgment.",
+  "seed": 2,
+  "words_per_second": 3.22,
+  "in_range": false
+ },
+ "s06-05-talk-80573a.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Jesus goes back to where Cain started.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true
+ },
+ "s06-06-story-36f3d2.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Not the field. The feeling.",
+  "seed": 1,
+  "words_per_second": 2.0,
+  "in_range": false
+ },
+ "s06-07-talk-21474e.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "The angry word, the cruel name, the cold silence.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true
+ },
+ "s06-08-story-1b573f.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "They all grow from the same root.",
+  "seed": 1,
+  "words_per_second": 3.38,
+  "in_range": true
+ },
+ "s06-09-story-1a392f.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "This commandment isn't only about our hands.",
+  "seed": 2,
+  "words_per_second": 2.44,
+  "in_range": true
+ },
+ "s06-10-story-542dc9.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "It's about our hearts.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s07-01-pivot-22527f.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "But there's a flip side too.",
+  "seed": 1,
+  "words_per_second": 3.61,
+  "in_range": true
+ },
+ "s07-02-talk-be6f03.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Christians have long read this commandment as a call to protect life, not just to avoid taking it.",
+  "seed": 1,
+  "words_per_second": 3.79,
+  "in_range": true
+ },
+ "s07-03-story-700936.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Jesus said that if your brother has something against you, go and make peace with him first.",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": true
+ },
+ "s07-04-grave-045ee3.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "For this is the message that you have heard from the beginning, that we should love one another.",
+  "seed": 3,
+  "words_per_second": 3.36,
+  "in_range": false
+ },
+ "s07-05-talk-bdc394.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "And the very next verse names Cain.",
+  "seed": 1,
+  "words_per_second": 3.47,
+  "in_range": true
+ },
+ "s07-06-talk-10b3cb.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Cain asked if he was his brother's keeper.",
+  "seed": 1,
+  "words_per_second": 3.83,
+  "in_range": true
+ },
+ "s07-07-story-5c82f2.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "The answer, all along, was yes.",
+  "seed": 3,
+  "words_per_second": 2.55,
+  "in_range": true
+ },
+ "s08-01-story-b08399.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "So guard your anger before it grows. Speak kindly.",
+  "seed": 2,
+  "words_per_second": 2.64,
+  "in_range": true
+ },
+ "s08-02-story-bd11c6.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Help the weak. Make peace quickly.",
+  "seed": 3,
+  "words_per_second": 1.62,
+  "in_range": false
+ },
+ "s08-03-grave-9d25f4.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "Every person you meet carries the image of God.",
+  "seed": 2,
+  "words_per_second": 3.16,
+  "in_range": false
+ },
+ "s08-04-talk-9b9764.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "Next time, the seventh commandment, and why God guards the promise of marriage.",
+  "seed": 1,
+  "words_per_second": 3.51,
+  "in_range": true
+ }
+}
