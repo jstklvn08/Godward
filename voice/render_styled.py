@@ -4,6 +4,7 @@
     .venv\\Scripts\\python.exe render_styled.py                # every section
     .venv\\Scripts\\python.exe render_styled.py --voice bm_daniel --scenes 9 10   # another voice
     .venv\\Scripts\\python.exe render_styled.py --ref-dir reference\\own-voice    # the narrator's own voice
+    .venv\\Scripts\\python.exe render_styled.py --ref-dir reference\\own-voice --natural   # slower, more human edit
 
 Each sentence gets a mode with its own Chatterbox setting:
   grave   low and slow, for the heaviest lines
@@ -73,9 +74,11 @@ def use_voice(voice: str) -> None:
 
 # With the narrator's own clips the reference already has a natural pace and the right
 # delivery for each mode, so standard Chatterbox settings are used and pitch is not shaped.
+# Tested on sections 9-10: grave at 0.40/0.40 gave 3.2-3.8 words/s and talk at 0.50/0.50
+# gave 4.4-5.1 words/s (its clip is the demo's quickest line), both too fast, so both are lower.
 OWN_MODES = {
-    "grave": VoiceSetting(0.40, 0.40, 0.7),
-    "talk": VoiceSetting(0.50, 0.50, 0.8),
+    "grave": VoiceSetting(0.35, 0.30, 0.7),
+    "talk": VoiceSetting(0.40, 0.30, 0.8),
     "story": VoiceSetting(0.50, 0.50, 0.8),
     "pivot": VoiceSetting(0.60, 0.50, 0.8),
 }
@@ -133,7 +136,10 @@ OVERRIDES = {
 # drops for grave lines and lifts for storytelling. So each passage is moved to its mode's
 # pitch with Praat (PSOLA, formants kept), and the range is widened for livelier modes.
 # (target median Hz, range factor). Demo: grave 97-118 Hz, story 142-159 Hz, overall 123 Hz.
-PITCH = {"grave": (108, 1.0), "talk": (122, 1.15), "story": (145, 1.3), "pivot": (150, 1.3)}
+# Measured against the demo, the first settings (108/1.0, 122/1.15, 145/1.3, 150/1.3) left the
+# range at about 62% of the demo's (11.1 vs 17.9 semitones) and made 4.8-5.7 semitone jumps
+# where the mode changed. So the ranges are wider and the mode pitches sit closer together.
+PITCH = {"grave": (112, 1.35), "talk": (124, 1.5), "story": (138, 1.6), "pivot": (142, 1.6)}
 
 MERGE_CHARS = 60  # Only very short sentences in the same mode are joined.
 INNER_PAUSE_MAX = 0.12  # Pauses inside a passage longer than this ...
@@ -142,6 +148,20 @@ SENTENCE_GAP = 0.08
 SECTION_GAP = 0.5
 TARGET_LUFS = -14.0
 PEAK = 10 ** (-1.0 / 20)
+
+# --natural: a slower, more human edit instead of the demo's tight one. Every take is reused;
+# only the stretching and spacing change. Each line is lengthened with Praat's overlap-add
+# (pitch and voice kept), commas keep a real breath, gaps between sentences depend on the
+# line before and vary slightly, sections get a full pause, and silence is filled with a
+# faint room tone instead of digital zero.
+NATURAL = False
+STRETCH = {"grave": 1.15, "talk": 1.06, "story": 1.06, "pivot": 1.0}
+GAP_AFTER = {"grave": 0.65, "talk": 0.42, "story": 0.45, "pivot": 0.5}
+PIVOT_BEAT = 0.15  # Extra pause before a pivot line.
+GAP_JITTER = 0.08
+NATURAL_SECTION_GAP = 1.1
+NATURAL_PAUSE_MAX, NATURAL_PAUSE_KEEP = 0.45, 0.35
+ROOM_TONE_DB = -50  # Relative to the speech level.
 
 
 def mode_of(section: int, sentence: str) -> str:
@@ -164,20 +184,22 @@ def passages(section: int, text: str) -> list[tuple[str, str]]:
     return out
 
 
-def tighten(audio: np.ndarray, sr: int) -> np.ndarray:
+def tighten(audio: np.ndarray, sr: int, max_pause: float | None = None, keep_pause: float | None = None) -> np.ndarray:
     """Cut breaths and long pauses inside a passage down to a short gap."""
+    max_pause = INNER_PAUSE_MAX if max_pause is None else max_pause
+    keep_pause = INNER_PAUSE_KEEP if keep_pause is None else keep_pause
     frame = int(0.01 * sr)
     count = len(audio) // frame
     rms = np.sqrt(np.mean(audio[: count * frame].reshape(count, frame) ** 2, axis=1))
     quiet = 20 * np.log10(np.maximum(rms, 1e-9)) < 20 * np.log10(np.abs(audio).max() + 1e-9) - 35
-    keep = int(INNER_PAUSE_KEEP / 0.01)
+    keep = int(keep_pause / 0.01)
     pieces, start, i = [], 0, 0
     while i < count:
         if quiet[i]:
             j = i
             while j < count and quiet[j]:
                 j += 1
-            if (j - i) * 0.01 > INNER_PAUSE_MAX and i > 0 and j < count:
+            if (j - i) * 0.01 > max_pause and i > 0 and j < count:
                 cut_from = (i + keep // 2) * frame
                 cut_to = (j - keep // 2) * frame
                 pieces.append(audio[start:cut_from])
@@ -200,6 +222,21 @@ def shape_pitch(audio: np.ndarray, sr: int, mode: str) -> np.ndarray:
     sound = parselmouth.Sound(audio.astype(np.float64), sampling_frequency=sr)
     shifted = call(sound, "Change gender", 60, 400, 1.0, target, spread, 1.0)
     return shifted.values[0].astype(np.float32)
+
+
+def lengthen(audio: np.ndarray, sr: int, factor: float) -> np.ndarray:
+    """Slow a passage down by factor, keeping pitch and voice (Praat overlap-add)."""
+    if abs(factor - 1.0) < 1e-3:
+        return audio
+    sound = parselmouth.Sound(audio.astype(np.float64), sampling_frequency=sr)
+    return call(sound, "Lengthen (overlap-add)", 60, 400, factor).values[0].astype(np.float32)
+
+
+def room_tone(length: int, level: float) -> np.ndarray:
+    """Soft low-weighted noise, like the quiet of a room, at the given RMS level."""
+    noise = np.random.default_rng(7).standard_normal(length)
+    noise = lfilter([1.0], [1.0, -0.9], noise)
+    return (noise / noise.std() * level).astype(np.float32)
 
 
 def render_passage(narrator: Narrator, mode: str, text: str, path: Path) -> dict:
@@ -259,7 +296,10 @@ def main() -> int:
     parser.add_argument("--voice", default="am_michael", help="Kokoro voice id with a clip in voice-tests/section-10/references.")
     parser.add_argument("--ref-dir", type=Path, help="Folder with the narrator's own grave/talk/story clips. Overrides --voice.")
     parser.add_argument("--name", default="genesis-1-3-own-voice", help="Output folder name under full/ when --ref-dir is used.")
+    parser.add_argument("--natural", action="store_true", help="Slower, more human edit: real pauses, varied spacing, room tone.")
     args = parser.parse_args()
+    global NATURAL
+    NATURAL = args.natural
 
     if args.ref_dir:
         use_ref_dir(args.ref_dir.resolve(), args.name)
@@ -288,15 +328,25 @@ def main() -> int:
                 report[path.name] = {"section": number, "mode": mode, "text": text, **render_passage(narrator, mode, text, path)}
                 report_path.write_text(json.dumps(report, indent=1), encoding="utf-8")
             audio, sr = sf.read(str(path), dtype="float32")
-            piece = tighten(render_full.trim(audio, sr), sr)
+            if NATURAL:
+                piece = tighten(render_full.trim(audio, sr), sr, NATURAL_PAUSE_MAX, NATURAL_PAUSE_KEEP)
+                piece = lengthen(piece, sr, STRETCH[mode])
+            else:
+                piece = tighten(render_full.trim(audio, sr), sr)
             pieces.append(shape_pitch(piece, sr, mode) if SHAPE else piece)
-        gap = np.zeros(int(SENTENCE_GAP * sr), dtype=np.float32)
+        modes = [mode for mode, _ in parts]
+        rng = np.random.default_rng(number)
         joined = pieces[0]
-        for piece in pieces[1:]:
-            joined = np.concatenate([joined, gap, piece])
+        for k, piece in enumerate(pieces[1:], 1):
+            if NATURAL:
+                seconds = GAP_AFTER[modes[k - 1]] + (PIVOT_BEAT if modes[k] == "pivot" else 0.0)
+                seconds += rng.uniform(-GAP_JITTER, GAP_JITTER)
+            else:
+                seconds = SENTENCE_GAP
+            joined = np.concatenate([joined, np.zeros(int(seconds * sr), dtype=np.float32), piece])
         built.append((number, title, joined))
 
-    section_gap = np.zeros(int(SECTION_GAP * sr), dtype=np.float32)
+    section_gap = np.zeros(int((NATURAL_SECTION_GAP if NATURAL else SECTION_GAP) * sr), dtype=np.float32)
     full, timings, cursor = [], [], 0
     for i, (number, title, audio) in enumerate(built):
         timings.append({"section": number, "title": title, "start": round(cursor / sr, 2), "end": round((cursor + len(audio)) / sr, 2)})
@@ -305,10 +355,16 @@ def main() -> int:
         if i < len(built) - 1:
             full.append(section_gap)
             cursor += len(section_gap)
-    mastered = master(np.concatenate(full), sr)
+    joined_all = np.concatenate(full)
+    if NATURAL:
+        speech_rms = float(np.sqrt(np.mean(joined_all[np.abs(joined_all) > 1e-4] ** 2)))
+        joined_all = joined_all + room_tone(len(joined_all), speech_rms * 10 ** (ROOM_TONE_DB / 20))
+    mastered = master(joined_all, sr)
 
     name = OUT.name if not args.scenes else "test-sections-" + "-".join(str(s) for s in args.scenes)
-    scenes_dir = OUT / "scenes"
+    if NATURAL:
+        name += "-natural"
+    scenes_dir = OUT / ("scenes-natural" if NATURAL else "scenes")
     scenes_dir.mkdir(exist_ok=True)
     for t in timings:
         a, b = int(t["start"] * sr), int(t["end"] * sr)

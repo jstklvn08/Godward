@@ -1,0 +1,524 @@
+{
+ "s09-01-story-de95d4.wav": {
+  "section": 9,
+  "mode": "story",
+  "text": "Then they heard the Lord God walking in the garden, in the cool of the day, and they hid among the trees.",
+  "seed": 3,
+  "words_per_second": 3.4,
+  "in_range": true
+ },
+ "s09-02-story-69326e.wav": {
+  "section": 9,
+  "mode": "story",
+  "text": "God called out.",
+  "seed": 5,
+  "words_per_second": 1.88,
+  "in_range": false,
+  "word_check": "match"
+ },
+ "s09-03-grave-c8fa63.wav": {
+  "section": 9,
+  "mode": "grave",
+  "text": "Where are you?",
+  "seed": 1,
+  "words_per_second": 2.5,
+  "in_range": true
+ },
+ "s09-04-story-456071.wav": {
+  "section": 9,
+  "mode": "story",
+  "text": "The man admitted that he had hidden in fear.",
+  "seed": 2,
+  "words_per_second": 3.44,
+  "in_range": true
+ },
+ "s09-05-pivot-f27c6e.wav": {
+  "section": 9,
+  "mode": "pivot",
+  "text": "And then came the blame.",
+  "seed": 1,
+  "words_per_second": 3.47,
+  "in_range": true
+ },
+ "s09-06-talk-964bb5.wav": {
+  "section": 9,
+  "mode": "talk",
+  "text": "He pointed to the woman, and to God for giving her to him.",
+  "seed": 1,
+  "words_per_second": 4.36,
+  "in_range": false
+ },
+ "s09-07-talk-dd90e8.wav": {
+  "section": 9,
+  "mode": "talk",
+  "text": "She pointed to the serpent.",
+  "seed": 1,
+  "words_per_second": 3.01,
+  "in_range": true
+ },
+ "s10-01-grave-c13f0a.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "The serpent was cursed to crawl on its belly.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": false
+ },
+ "s10-02-grave-88c6bf.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "God put hostility between it and the woman, and between their offspring.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true
+ },
+ "s10-03-grave-7e71a3.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "He will crush your head, and you will strike his heel.",
+  "seed": 1,
+  "words_per_second": 3.29,
+  "in_range": false
+ },
+ "s10-04-talk-6a06ee.wav": {
+  "section": 10,
+  "mode": "talk",
+  "text": "Christians have long read this as the first hint of a Savior.",
+  "seed": 2,
+  "words_per_second": 4.51,
+  "in_range": false
+ },
+ "s01-01-grave-8b3b4b.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "In the beginning, God created the heavens and the earth.",
+  "seed": 2,
+  "words_per_second": 2.85,
+  "in_range": true
+ },
+ "s01-02-grave-30180a.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "The earth was formless and empty, and darkness covered the deep.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s01-03-pivot-f7610d.wav": {
+  "section": 1,
+  "mode": "pivot",
+  "text": "Then God spoke.",
+  "seed": 2,
+  "words_per_second": 2.34,
+  "in_range": true
+ },
+ "s02-01-story-a55daf.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "On the first day, there was light, separated from the darkness.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s02-02-story-aac308.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "On the second, the sky, dividing the waters.",
+  "seed": 2,
+  "words_per_second": 2.4,
+  "in_range": false
+ },
+ "s02-03-story-3e4207.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "On the third, dry land, seas and plants.",
+  "seed": 1,
+  "words_per_second": 2.77,
+  "in_range": true
+ },
+ "s02-04-story-32d59d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "On the fourth, the sun, the moon and the stars.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true
+ },
+ "s02-05-story-0609f0.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "On the fifth, creatures filled the seas and birds filled the sky.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true
+ },
+ "s02-06-story-513e9d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And on the sixth, animals walked the land.",
+  "seed": 1,
+  "words_per_second": 2.77,
+  "in_range": true
+ },
+ "s02-07-pivot-3cb7a6.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "But God wasn't finished.",
+  "seed": 1,
+  "words_per_second": 2.26,
+  "in_range": true
+ },
+ "s03-01-talk-87975b.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "The climax of creation was humanity.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true
+ },
+ "s03-02-story-2ca0b9.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "God made human beings, male and female, in his own image.",
+  "seed": 1,
+  "words_per_second": 2.81,
+  "in_range": true
+ },
+ "s03-03-story-7c69ee.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He blessed them, and gave them charge over the earth.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true
+ },
+ "s03-04-story-b2b17b.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then he looked at everything he had made, and it was very good.",
+  "seed": 1,
+  "words_per_second": 2.87,
+  "in_range": true
+ },
+ "s03-05-grave-3aaea4.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "On the seventh day, God rested, and he made that day holy.",
+  "seed": 1,
+  "words_per_second": 3.18,
+  "in_range": false
+ },
+ "s04-01-talk-df9d6f.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Genesis then moves in closer.",
+  "seed": 1,
+  "words_per_second": 2.98,
+  "in_range": true
+ },
+ "s04-02-story-ed4469.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "The Lord God formed the man from the dust of the ground, and breathed into his nostrils the breath of life.",
+  "seed": 2,
+  "words_per_second": 3.27,
+  "in_range": true
+ },
+ "s04-03-story-e6ebf5.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "He placed him in a garden in Eden, to work it and take care of it.",
+  "seed": 3,
+  "words_per_second": 3.76,
+  "in_range": false
+ },
+ "s05-01-story-254023.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "In the middle of the garden stood two trees: the tree of life, and the tree of the knowledge of good and evil.",
+  "seed": 3,
+  "words_per_second": 3.22,
+  "in_range": true
+ },
+ "s05-02-story-271a2e.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "The man could eat freely from any tree except the second one.",
+  "seed": 2,
+  "words_per_second": 3.58,
+  "in_range": true
+ },
+ "s05-03-grave-37e923.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "If he ate from that tree, God warned, he would certainly die.",
+  "seed": 3,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s06-01-pivot-bebc38.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "Then God said something new.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s06-02-grave-4ea21c.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "It is not good for the man to be alone.",
+  "seed": 1,
+  "words_per_second": 3.98,
+  "in_range": false
+ },
+ "s06-03-story-0552d9.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He brought the animals to the man to be named, but not one was a suitable helper.",
+  "seed": 1,
+  "words_per_second": 3.51,
+  "in_range": true
+ },
+ "s06-04-story-c04685.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "So God put the man into a deep sleep, took one of his ribs, and made a woman.",
+  "seed": 1,
+  "words_per_second": 3.51,
+  "in_range": true
+ },
+ "s06-05-story-62beb6.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "When the man saw her, he said she was bone of my bones and flesh of my flesh.",
+  "seed": 1,
+  "words_per_second": 2.79,
+  "in_range": true
+ },
+ "s06-06-story-5d164b.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "The two became one flesh, naked and without shame.",
+  "seed": 2,
+  "words_per_second": 2.62,
+  "in_range": true
+ },
+ "s07-01-story-940df8.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Then came the serpent, craftier than any other wild animal.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true
+ },
+ "s07-02-story-2e46b2.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "It asked the woman a question. Did God really say?",
+  "seed": 2,
+  "words_per_second": 2.58,
+  "in_range": true
+ },
+ "s07-03-story-77aa9b.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "She explained God's command, adding that they must not even touch the fruit.",
+  "seed": 1,
+  "words_per_second": 3.22,
+  "in_range": true
+ },
+ "s07-04-pivot-419b94.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "And the serpent contradicted God directly.",
+  "seed": 1,
+  "words_per_second": 2.11,
+  "in_range": true
+ },
+ "s07-05-grave-98a1f8.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "You will not certainly die.",
+  "seed": 2,
+  "words_per_second": 2.66,
+  "in_range": true
+ },
+ "s07-06-story-97d94e.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Eat it, the serpent claimed, and your eyes will be opened.",
+  "seed": 1,
+  "words_per_second": 3.47,
+  "in_range": true
+ },
+ "s07-07-story-6ed340.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "You will be like God, knowing good and evil.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true
+ },
+ "s08-01-story-467444.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "The woman saw that the fruit looked good, and that it was desirable for gaining wisdom.",
+  "seed": 1,
+  "words_per_second": 3.54,
+  "in_range": true
+ },
+ "s08-02-story-783af1.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "She ate some.",
+  "seed": 11,
+  "words_per_second": 1.63,
+  "in_range": false,
+  "word_check": "match"
+ },
+ "s08-03-story-5b78f1.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "She gave some to her husband, who was with her, and he ate too.",
+  "seed": 3,
+  "words_per_second": 3.65,
+  "in_range": false
+ },
+ "s08-04-story-74eeaf.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Their eyes were opened, just as promised.",
+  "seed": 2,
+  "words_per_second": 2.71,
+  "in_range": true
+ },
+ "s08-05-grave-e4e29a.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "But all they discovered was their nakedness and their shame.",
+  "seed": 1,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s08-06-story-c2fb0d.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "So they sewed fig leaves together to cover themselves.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true
+ },
+ "s09-03-grave-3a28b1.wav": {
+  "section": 9,
+  "mode": "grave",
+  "text": "Where are you?",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": false
+ },
+ "s09-06-talk-afc8b3.wav": {
+  "section": 9,
+  "mode": "talk",
+  "text": "He pointed to the woman, and to God for giving her to him.",
+  "seed": 3,
+  "words_per_second": 3.98,
+  "in_range": false
+ },
+ "s09-07-talk-b218a2.wav": {
+  "section": 9,
+  "mode": "talk",
+  "text": "She pointed to the serpent.",
+  "seed": 1,
+  "words_per_second": 3.62,
+  "in_range": true
+ },
+ "s10-01-grave-1d04ef.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "The serpent was cursed to crawl on its belly.",
+  "seed": 2,
+  "words_per_second": 3.03,
+  "in_range": false
+ },
+ "s10-02-grave-852101.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "God put hostility between it and the woman, and between their offspring.",
+  "seed": 1,
+  "words_per_second": 2.39,
+  "in_range": true
+ },
+ "s10-03-grave-58a870.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "He will crush your head, and you will strike his heel.",
+  "seed": 3,
+  "words_per_second": 3.05,
+  "in_range": false
+ },
+ "s10-04-talk-ffad05.wav": {
+  "section": 10,
+  "mode": "talk",
+  "text": "Christians have long read this as the first hint of a Savior.",
+  "seed": 1,
+  "words_per_second": 3.55,
+  "in_range": true
+ },
+ "s10-05-grave-8bcefb.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "The woman would have greatly increased pain in childbearing, and conflict in her marriage.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true
+ },
+ "s10-06-grave-4848ff.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "The man would work cursed ground through painful toil, among thorns and thistles, until death.",
+  "seed": 1,
+  "words_per_second": 2.29,
+  "in_range": true
+ },
+ "s10-07-grave-1c517f.wav": {
+  "section": 10,
+  "mode": "grave",
+  "text": "For dust you are and to dust you will return.",
+  "seed": 2,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s11-01-story-a8bb4e.wav": {
+  "section": 11,
+  "mode": "story",
+  "text": "Adam named his wife Eve, because she would become the mother of all the living.",
+  "seed": 1,
+  "words_per_second": 3.59,
+  "in_range": true
+ },
+ "s11-02-story-025706.wav": {
+  "section": 11,
+  "mode": "story",
+  "text": "And in an act of mercy, God made garments of skin and clothed them.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": true
+ },
+ "s11-03-grave-f03584.wav": {
+  "section": 11,
+  "mode": "grave",
+  "text": "Then he banished them from Eden, so they would not eat from the tree of life and live forever.",
+  "seed": 2,
+  "words_per_second": 4.21,
+  "in_range": false
+ },
+ "s11-04-grave-3efb0b.wav": {
+  "section": 11,
+  "mode": "grave",
+  "text": "On the east side of the garden, he placed cherubim and a flaming sword, to guard the way back to that tree.",
+  "seed": 3,
+  "words_per_second": 3.41,
+  "in_range": false
+ }
+}
