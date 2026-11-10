@@ -1,0 +1,408 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Godward: The Ninth Commandment</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="words.js"></script>
+<script src="../_kit/episode-engine.js"></script>
+<script>
+// The Ten Commandments, part 9: the ninth commandment. Script: scripts/10-the-ninth-commandment.md (ESV fill).
+// Every time below comes from the spoken words (words.js), so a new narration re-times the episode.
+// Guide: .claude/skills/godward-episode/reference/engine.md. K.E is the ellipse helper (Ell), window.E the engine.
+// Vertical-first: every sheet is filmed wide (zoom .84 on 960,560) and draws its art inside FR(), in FRAME
+// coordinates (1080x1920: verse cards 170-~600, art 560-1180, captions 1220-1340, lower labels 1380-1560).
+const {G,R,C,L,P,T,prog,ease,lerp,mix,clamp,rng}=K, Ell=K.E;
+const {hash,piece,glow,label,mark,scribble,arrow,strip,tape,torn}=S;
+const {cue,end,span,shot,ridge,verse,fade,hv,stars,fireflies,INK,YEL,CORAL}=E;
+const GOLD='#E8B53A', NEON='#2BF0FF';
+
+const AT={
+  quiet:cue('A courtroom goes quiet'), standsUp:cue('A witness stands up'), points:cue('points at'),
+  everyWord:cue('Every word he says'), lie1:cue('is a lie'), innocent:cue('innocent'), dies:cue('man dies'),
+  really:cue('That really happened'), v2016:cue('You shall not bear'), neighborV:span('against your neighbor',1),
+  justDont:cue("just don't lie"), readAgain:cue('read it again'), aboutNeighbor:cue("It's about your neighbor"), wordsDo:cue('what your words do'),
+  ancient:cue('In ancient Israel'), cameras:cue('no cameras'), finger:cue('no fingerprints'), video:cue('no video'),
+  trials:cue('Trials happened'), gate:cue('the city gate',1), oneThing:cue('rested on one thing'), safeguard:cue('safeguard'),
+  only:cue('Only on the evidence'), twoW:cue('of two witnesses'), threeW:cue('of three witnesses'), established:end('be established'),
+  oneVoice:cue('One voice'), partner1:cue('would need a partner'),
+  butEven:cue('But even two'), bought:cue('can be bought'), ahab:cue('King Ahab'), naboth1:cue('named Naboth'), wouldnt:cue("wouldn't sell"),
+  family:cue("family's land"), jezebel:cue('Queen Jezebel'), letters:cue('wrote letters'), worthless:cue('two worthless men'), accuse:cue('accuse him'),
+  charge:cue('And the worthless men'), cursed:span('cursed God and the king'), itWasALie:cue('It was a lie'), onThatLie:cue('on that lie'),
+  death:cue('put to death'), took:cue('took his vineyard'), ruleKept:cue('was kept'), foundPartner:cue('found a partner'),
+  thatsWhy:cue("That's why the commandment"), againstN2:span('against your neighbor',2), bend:cue('bend the truth'), takes:cue('He takes something'),
+  aName:cue('A name'), aHome:cue('A home'), aLife:cue('Sometimes a life'), christians:cue('Christians have long'), goodName:cue('good name'),
+  centuries:cue('And centuries later'), night:cue('On the night'), looking:cue('looking for witnesses'), many:cue('For many bore'),
+  notAgree:cue('did not agree'), match:cue('lies to match'), calledTruth:cue('called himself the truth'), silent:cue('stood silent'),
+  dontStand:cue("We don't stand"), courtroom:cue("courtroom hasn't gone away"), chat:cue('group chat'), screenshot:cue('A screenshot'),
+  comment:cue('A comment under'), rumour:cue('A rumour'), interesting:cue("because it's interesting"), justSaying:cue("I'm just saying"),
+  fwToday:cue("That's false witness"), half:cue('half the story'), cropped:cue('cropped'), shared:cue("once it's shared"), takeBack:cue('take it back'),
+  instead:cue('So what does God want'), therefore:cue('Therefore, having put'), speakTruth:span('speak the truth'), members:cue('Members of one'),
+  tearDown:cue('Tear down'), body:cue('the body you belong'), ties:cue('Paul ties'), rather:cue('Rather, speaking'), inLove:span('speaking the truth in love'),
+  opposite:cue('The opposite of false'), keepingQuiet:cue('keeping quiet'), speakingUp:cue('speaking up for someone'), notRoom:cue('not in the room'),
+  before:cue('Before you pass'), isTrue:cue('Is it true'), isFair:cue('Is it fair'), toFace:cue('Would I say'),
+  yourWords:cue('Your words are a witness'), makeSure:cue('Make sure'),
+  remember:cue('And remember how'), notWithLie:cue('Not with a lie'), kingWanted:cue('With a king who wanted'), wasntHis:cue("wasn't his"),
+  lastCmd:cue("That's the last commandment"), next:cue("and it's next"),
+};
+AT.last=WORDS[WORDS.length-1][2];
+
+// ---------- frame-coordinate drawing ----------
+// Vertical: the camera films every sheet wide (960,560 at .84), so this transform puts frame (x,y) exactly on screen.
+// Landscape (not delivered): the same 1080x1920 drawing, scaled into the middle of the sheet.
+const FR=inner=>G(E.VERT?`translate(960 560) scale(${(1/.84).toFixed(5)}) translate(-540 -1010)`:'translate(960 0) scale(.5625) translate(-540 0)',inner);
+const tag=(t,at,x,y,s,size,id,o={})=>piece(t,at,x,y,label(x,y-size*.81,s,Object.assign({size,anchor:'middle'},o)),id,1.3);
+const LO1=1420, LO2=1510;   // lower label rows (below the captions)
+const WIDE=[960,560,.84];
+
+// ---------- shared pieces (from part 1) ----------
+const slab=(w,h)=>`M${-w/2} ${h/2}V${-h/2+w*.32}Q${-w/2} ${-h/2} 0 ${-h/2}Q${w/2} ${-h/2} ${w/2} ${-h/2+w*.32}V${h/2}Z`;
+const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+function tablet(x,y,w,h,first,lit,seed){
+  const r=rng(seed);let g=G(`translate(${x} ${y})`,P(slab(w,h),'#7E7A70')+P(slab(w-24,h-24),'#9C988C')+
+    P(slab(w-24,h-24),'none',{stroke:'#5E5A52','stroke-width':3,opacity:.5}));
+  for(let i=0;i<5;i++){
+    const k=first+i,ly=y-h/2+w*.46+i*(h-w*.5)/5.2,x0=x-w/2+92,x1=x+w/2-34-r()*40,on=lit(k);
+    let d=`M${x0} ${ly}`;for(let xx=x0;xx<x1;xx+=18)d+=`L${xx+9} ${ly+(r()-.5)*6}L${xx+18} ${ly}`;
+    g+=glow((x0+x1)/2,ly,(x1-x0)*.6,'#FFD86B',.35*on);
+    g+=T(x-w/2+60,ly+12,NUM[k],{size:34,font:'Georgia',weight:700,anchor:'middle',fill:mix('#4A4740','#FFF4C8',on)});
+    g+=P(d,'none',{stroke:'#4A4740','stroke-width':5,opacity:.8})+P(d,'none',{stroke:'#FFE9A8','stroke-width':3,opacity:(.12+.88*on).toFixed(3)});
+  }
+  return g;
+}
+const tablets=(cx,cy,s,lit)=>G(`translate(${cx} ${cy}) scale(${s}) translate(-960 -560)`,
+  glow(960,560,560,'#FFD86B',.12)+tablet(755,560,380,560,0,lit,21)+tablet(1165,560,380,560,5,lit,33));
+const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,10)+mark(`M${cx+r} ${cy-r}L${cx-r} ${cy+r}`,p*2-1,CORAL,10);
+const strike=(x0,y,x1,p)=>mark(`M${x0} ${y+6}L${x1} ${y-6}`,p,CORAL,9);
+let foilN=0;
+const foil=(t)=>{const id='foil'+(foilN++),sh=.5+.5*Math.sin(t*1.7);
+  return [`url(#${id})`,`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B0"/><stop offset="${(.3+.2*sh).toFixed(2)}" stop-color="${GOLD}"/><stop offset="1" stop-color="#8A5A12"/></linearGradient>`];};
+const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
+const SKIN=[['#F5BE8E','#C4835E'],['#D9965E','#A86A3E'],['#B87444','#8A5230']];
+// One glowing person (modest tunic). k picks colours.
+const person=(x,y,s,k,o={})=>E.chubby(x,y,s,Object.assign({f:k%2===1,tunic:TUN[k%5][0],tunic2:TUN[k%5][1],skin:SKIN[k%3][0],shade:SKIN[k%3][1],
+  hair:['#2E1C52','#4A2A16','#1A1A2A'][k%3],aura:'#7CFFE6',auraOp:.35,phase:k*.7},o));
+// A false witness: grey, no glow of its own, small and not frightening.
+const grey=(x,y,s,o={})=>E.chubby(x,y,s,Object.assign({tunic:'#A4A4AE',tunic2:'#62626E',skin:'#C9B8A8',shade:'#9A8878',hair:'#3A3A44',eye:'#22222A',aura:null},o));
+function crowd(t,x0,y,n,gap,s,o={}){let g='';for(let i=0;i<n;i++)g+=person(x0+i*gap+(i%2)*10,y+(i%3)*12,s*(.92+.16*hash(i,4)),i,Object.assign({flip:o.flip||1},o.p||{}));return g;}
+function cutout(t,at,cx,cy,inner,name,id,o={}){
+  const w=o.w||200,h=o.h||200;
+  return piece(t,at,cx,cy,strip(cx-w/2,cy-h/2,w,h,id*7,o.paper||'#F6EFDC')+tape(cx,cy-h/2+4,80,-4)+inner+
+    (name?label(cx,cy+h/2+14,name,{size:30,anchor:'middle',bg:o.bg||'#101014'}):''),id,1.4);
+}
+// A rubber-stamp word (coral box, slight rotation) that thumps on.
+const stamp=(t,at,x,y,s,size,id,rot=-8)=>t<at?'':piece(t,at,x,y,G(`rotate(${rot} ${x} ${y})`,
+  R(x-S.labelW(s,size)/2-8,y-size*.9,S.labelW(s,size)+16,size*1.8,6,'none',{stroke:CORAL,'stroke-width':7})+
+  T(x,y+size*.36,s,{size,font:'Segoe UI Black',weight:900,anchor:'middle',fill:CORAL})),id,1.2);
+// Speech bubble with scribbled (illegible) words.
+function bubble(x,y,w,h,seed,fill='#F6EFDC',tailX=-1){
+  const r=rng(seed);let g=P(`M${x-w/2+30} ${y+h/2}L${x+tailX*w*.25} ${y+h/2+44}L${x-w/2+90} ${y+h/2}Z`,fill)+R(x-w/2,y-h/2,w,h,h*.4,fill,{stroke:'#141416','stroke-width':4});
+  for(let i=0;i<3;i++){const ly=y-h/2+h*(.3+i*.22);let d=`M${x-w/2+34} ${ly}`;for(let xx=x-w/2+34;xx<x+w/2-40-r()*50;xx+=16)d+=`L${xx+8} ${ly+(r()-.5)*7}L${xx+16} ${ly}`;g+=P(d,'none',{stroke:'#6A6458','stroke-width':4});}
+  return g;
+}
+// A gold-foil crown: King Ahab is shown only as a crown.
+function crown(t,x,y,s){
+  const [F,def]=foil(t);
+  return G(`translate(${x} ${y}) scale(${s})`,def+glow(0,-10,120,'#FFD86B',.25)+
+    P('M-80 40L-92 -50L-46 -6L0 -70L46 -6L92 -50L80 40Z',F,{stroke:'#8A5A12','stroke-width':5})+R(-84,30,168,26,4,F,{stroke:'#8A5A12','stroke-width':4})+
+    C(0,-6,11,CORAL)+C(-46,18,8,'#3FB0FF')+C(46,18,8,'#3FB0FF')+C(-92,-50,8,'#FFF1B0')+C(0,-70,8,'#FFF1B0')+C(92,-50,8,'#FFF1B0'));
+}
+// A sealed letter.
+const letter=(x,y,rot)=>G(`rotate(${rot} ${x} ${y})`,R(x-70,y-46,140,92,4,'#F6EFDC',{stroke:'#8A7A5A','stroke-width':3})+
+  P(`M${x-70} ${y-46}L${x} ${y+6}L${x+70} ${y-46}`,'none',{stroke:'#8A7A5A','stroke-width':3})+C(x,y+6,15,'#C0392B')+C(x,y+6,8,'#E35A4A'));
+// Grass tufts and glow-flowers in the bottom band, drawn under the labels (the engine's fore layer would cover them).
+function tufts(t,cols,seed,flowers=[]){
+  let g='';for(let k=0;k<70;k++){const x=hash(k,seed)*1160-40,y=1560+Math.pow(hash(k,seed+1),.8)*380,sz=lerp(1,2.6,(y-1560)/380),sw=Math.sin(t*1.5+k)*3*sz,c=cols[k%3];
+    for(let j=-1;j<=1;j++)g+=L(x+j*5*sz,y,x+j*9*sz+sw,y-(14+hash(k,j+5)*16)*sz,c,3*sz);
+    if(flowers.length&&k%6===0){const fy=y-30*sz,col=flowers[k%flowers.length];g+=glow(x+sw,fy,14*sz,col,.6)+C(x+sw,fy,4*sz,col);}}
+  return g;
+}
+// Vineyard: a low stone wall and rows of vines, in frame coordinates.
+function vineyard(t,y0,o={}){
+  let g=`<path d="M-40 ${y0}Q300 ${y0-30} 540 ${y0-10}T1120 ${y0-20}V2000H-40Z" fill="#2E7A3A"/>`;
+  for(let r=0;r<5;r++){const y=y0+60+r*110,sc=.7+r*.12;
+    g+=P(`M-40 ${y+40}Q540 ${y+20} 1120 ${y+40}`,'none',{stroke:'#1E5A2A','stroke-width':10});
+    for(let i=0;i<7;i++){const x=40+i*170+(r%2)*85;if(x>1100)continue;
+      g+=L(x,y+40,x,y-30*sc,'#6A4A2A',6)+C(x-20*sc,y-30*sc,30*sc,'#3FA04A')+C(x+22*sc,y-38*sc,28*sc,'#4CB858')+C(x,y-56*sc,26*sc,'#3A9A44');
+      if(o.grapes!==false)for(let k=0;k<5;k++)g+=C(x-6*sc+(k%2)*12*sc,y-6*sc+Math.floor(k/2)*11*sc,7*sc,k%2?'#7A3AA8':'#9A4ACB');}}
+  // the wall across the top
+  for(let i=0;i<12;i++)g+=R(-40+i*100+(i%2)*10,y0-70,96,44,6,i%2?'#9C9488':'#B0A898',{stroke:'#6A6458','stroke-width':3})+R(-90+i*100,y0-28,96,40,6,i%2?'#B0A898':'#A49C90',{stroke:'#6A6458','stroke-width':3});
+  return g;
+}
+
+// ---------- 0. Cold open: a witness stands up ----------
+function coldOpen(t){
+  let g=stars(t,.4,300);
+  let f=R(-60,1180,1200,800,0,'#231C2C');
+  for(let i=0;i<9;i++)f+=L(-60+i*150,1180,-300+i*210,1960,'#2E2638',4);
+  f+=R(30,330,120,860,8,'#3A3346')+R(10,310,160,40,6,'#4A4258')+R(930,330,120,860,8,'#3A3346')+R(910,310,160,40,6,'#4A4258');
+  f+=glow(540,300,320,'#FFD86B',.3)+L(540,0,540,250,'#4A4258',4)+Ell(540,270,50,20,'#FFE9A8');
+  // The courtroom: elders at a bench, a witness pointing, the accused.
+  let c='';
+  c+=person(400,700,.55,2,{auraOp:.15})+person(540,700,.55,4,{auraOp:.15})+person(680,700,.55,0,{auraOp:.15});
+  c+=R(300,640,480,110,10,'#5A4636',{stroke:'#3A2A20','stroke-width':4})+R(290,630,500,22,6,'#6E5644');
+  const pt=ease.inOut(prog(t,AT.points-.2,AT.points+.4)),dim=1-ease.inOut(prog(t,AT.dies-.2,AT.dies+1.2));
+  c+=piece(t,AT.standsUp-.2,250,1060,grey(250,1180,1.4,{reach:pt}),3,.8);
+  c+=person(700,1180,1.45,1,{flip:-1,aura:'#7CFFE6',auraOp:.05+.4*dim});
+  if(t>AT.everyWord-.1)c+=piece(t,AT.everyWord-.1,300,800,bubble(300,800,320,150,4),4,1.2);
+  c+=stamp(t,AT.lie1,300,800,'LIE',72,5,-10);
+  c+=tag(t,AT.innocent,700,LO1,'INNOCENT',44,6,{bg:CORAL,rot:-2});
+  f+=fade(t,AT.really-.15,c);
+  // Then the tablets, the ninth line glowing.
+  const glowIn=ease.out(prog(t,AT.really,AT.really+1.2));
+  const lit=k=>k===8?glowIn*(1+.2*Math.sin(t*3)):.12*glowIn;
+  if(t>=AT.really)f+=piece(t,AT.really,540,880,tablets(540,880,.85,lit)+mark(scribble(738,972,150,40,9),ease.inOut(prog(t,AT.v2016+.2,AT.v2016+1)),CORAL,8),7,1.2);
+  f+=fade(t,AT.wordsDo-.2,tag(t,AT.justDont,540,LO1,`"JUST DON'T LIE"?`,46,8)+strike(340,LO1,740,ease.inOut(prog(t,AT.readAgain-.2,AT.readAgain+.3))));
+  f+=tag(t,AT.aboutNeighbor,540,LO2,'AGAINST YOUR NEIGHBOR',48,9,{bg:CORAL,rot:-2});
+  f+=tag(t,AT.wordsDo,540,LO1,'WHAT YOUR WORDS DO',46,10);
+  g+=FR(f);
+  g+=verse(t,AT.v2016-.15,380,40,['You shall not bear false witness against your neighbor.'],'EXODUS 20:16 ESV',{size:52,hl:'against your neighbor.',hlAt:AT.neighborV[0],hlDur:AT.neighborV[1]-AT.neighborV[0]+.2,seed:5,id:4});
+  return g;
+}
+
+// ---------- 1. The city gate: no cameras, only witnesses ----------
+const camIcon=(cx,cy)=>R(cx-60,cy-34,120,76,10,'#3A3A44')+R(cx-24,cy-48,48,18,4,'#3A3A44')+C(cx,cy+4,26,'#7CD4FF',{stroke:'#1A1A22','stroke-width':6})+C(cx+38,cy-18,6,'#FFE36B');
+const printIcon=(cx,cy)=>[0,1,2,3,4].map(i=>P(`M${cx-12-i*12} ${cy+40}Q${cx-14-i*12} ${cy-30-i*6} ${cx} ${cy-34-i*10}Q${cx+14+i*12} ${cy-30-i*6} ${cx+12+i*12} ${cy+30}`,'none',{stroke:'#8A5A3A','stroke-width':5})).join('');
+const vidIcon=(cx,cy)=>R(cx-66,cy-46,132,92,10,'#3A3A44')+P(`M${cx-16} ${cy-24}L${cx+24} ${cy}L${cx-16} ${cy+24}Z`,'#FF5A48');
+function gate(t){
+  let f=glow(540,420,500,'#FFE2A0',.5)+R(-60,1150,1200,900,0,'#C99C5E');
+  // two towers of stones and a lintel
+  const r=rng(77);
+  for(const [x0,x1] of [[110,370],[710,970]])for(let row=0;row<12;row++)for(let x=x0+(row%2)*30-30;x<x1;x+=60){const w=Math.min(58,x1-x);if(x+w<=x0)continue;
+    const xs=Math.max(x,x0);f+=R(xs,560+row*50,Math.min(x+58,x1)-xs,46,5,mix('#B49A74','#D8C49C',r()),{stroke:'#7A6448','stroke-width':3});}
+  f+=R(90,520,900,60,6,'#A88C64',{stroke:'#6A5236','stroke-width':4})+R(370,580,340,570,0,'#3A2A1C');
+  f+=glow(540,900,240,'#FFB04C',.25);
+  // elders on a bench inside the gateway
+  f+=person(450,1000,.55,2,{auraOp:.2})+person(540,1000,.55,4,{auraOp:.2})+person(630,1000,.55,0,{auraOp:.2})+R(390,960,300,40,6,'#6A4A2E');
+  // the crowd watching (foreground)
+  f+=crowd(t,60,1790,5,240,.6,{p:{auraOp:.25}})+tufts(t,['#B0864A','#C99C5E','#9A7440'],11);
+  // no cameras, no fingerprints, no video
+  f+=fade(t,AT.trials-.15,
+    cutout(t,AT.cameras,190,330,camIcon(190,320)+xMark(190,320,64,ease.inOut(prog(t,AT.cameras+.4,AT.cameras+.8))),'CAMERAS',1,{w:180,h:180})+
+    cutout(t,AT.finger,540,330,printIcon(540,330)+xMark(540,320,64,ease.inOut(prog(t,AT.finger+.4,AT.finger+.8))),'FINGERPRINTS',2,{w:180,h:180})+
+    cutout(t,AT.video,890,330,vidIcon(890,320)+xMark(890,320,64,ease.inOut(prog(t,AT.video+.3,AT.video+.7))),'VIDEO',3,{w:180,h:180}));
+  f+=fade(t,AT.only-.3,tag(t,AT.gate,540,330,'TRIALS AT THE CITY GATE',46,4));
+  f+=fade(t,AT.oneVoice-.2,tag(t,AT.oneThing+.6,540,LO1,'EVERYTHING RESTED ON WITNESSES',40,5,{bg:CORAL}));
+  // two (then three) witnesses step forward with number badges
+  [[AT.twoW,300,'1'],[AT.twoW+.35,540,'2'],[AT.threeW,780,'3']].forEach(([a,x,n],k)=>{
+    if(t<a)return;f+=piece(t,a,x,1080,person(x,1180,1.0,k+1,{auraOp:.3})+C(x,980-130,30,INK)+T(x,980-118,n,{size:36,font:'Segoe UI Black',weight:900,anchor:'middle',fill:YEL}),6+k,1);});
+  f+=tag(t,AT.oneVoice,540,LO1,'ONE VOICE: NEVER ENOUGH',42,9);
+  f+=tag(t,AT.partner1,540,LO2,'A LIE WOULD NEED A PARTNER',42,10,{bg:CORAL,rot:-2});
+  let g=FR(f);
+  g+=verse(t,AT.only-.15,330,40,['Only on the evidence of two witnesses or of three witnesses shall a charge be established.'],'DEUTERONOMY 19:15 ESV',{size:46,hl:'two witnesses or of three witnesses',hlAt:AT.twoW,hlDur:AT.threeW-AT.twoW+.8,seed:9,id:11});
+  return g;
+}
+
+// ---------- 2. Naboth's vineyard ----------
+function nabothSheet(t){
+  let f=glow(540,300,600,'#FFE9A8',.4);
+  f+=vineyard(t,720)+tufts(t,['#256A30','#3FA04A','#2E7A3A'],21,['#9A4ACB','#FFD45E']);
+  // Ahab: a crown peering over the wall; at "took his vineyard" it comes over and settles.
+  if(t>AT.ahab-.2){const up=ease.out(prog(t,AT.ahab-.2,AT.ahab+.6)),tk=ease.inOut(prog(t,AT.took-.2,AT.took+1));
+    f+=G(`translate(0 ${((1-up)*90).toFixed(1)})`,crown(t,lerp(820,520,tk),lerp(620,770,tk),lerp(.8,1.05,tk)));
+    f+=vineyardWallFront(720,up<1);}
+  f+=fade(t,AT.worthless-.2,tag(t,AT.ahab+.3,820,500,'KING AHAB',40,1)+
+    tag(t,AT.naboth1,380,LO1,'NABOTH',44,2)+tag(t,AT.family,540,LO2,"HIS FAMILY'S LAND",44,3,{bg:CORAL,rot:-2}));
+  // Naboth among his vines; after "put to death" he fades to a faint outline.
+  const gone=ease.inOut(prog(t,AT.death,AT.death+1.4));
+  f+=G('',person(360,1180,1.4,3,{aura:'#FFE36B',auraOp:.4*(1-gone)}),(1-.8*gone).toFixed(3));
+  // Letters with the king's seal flutter down.
+  [[200,560,-12],[540,600,8],[860,560,-6]].forEach(([x,y,r],k)=>{const a=AT.letters+k*.25,p=ease.out(prog(t,a,a+.8));
+    if(p>0)f+=fade(t,AT.charge-.3,G(`translate(0 ${((p-1)*500).toFixed(1)})`,letter(x,y,r+(1-p)*30)));});
+  // Two worthless men slide in and point.
+  const wi=ease.out(prog(t,AT.worthless,AT.worthless+.8)),pt=ease.inOut(prog(t,AT.charge,AT.charge+.5))*(1-prog(t,AT.ruleKept,AT.ruleKept+.6));
+  if(wi>0)f+=G(`translate(${((1-wi)*500).toFixed(1)} 0)`,grey(720,1180,1.25,{flip:-1,reach:pt})+grey(880,1180,1.2,{flip:-1,reach:pt*.7,phase:1.3}));
+  f+=fade(t,AT.ruleKept-.2,tag(t,AT.worthless+.4,540,LO1,'TWO WORTHLESS MEN',40,4));
+  f+=stamp(t,AT.itWasALie,810,830,'LIE',64,5,8);
+  f+=tag(t,AT.ruleKept,540,LO1,'TWO WITNESSES: RULE KEPT',40,6);
+  f+=tag(t,AT.foundPartner,540,LO2,'THE LIE FOUND A PARTNER',44,7,{bg:CORAL,rot:-2});
+  let g=FR(f);
+  g+=verse(t,AT.charge-.15,330,40,['And the worthless men brought a charge against Naboth in the presence of the people, saying, Naboth cursed God and the king.'],'1 KINGS 21:13 ESV',{size:44,hl:'Naboth cursed God and the king.',hlAt:AT.cursed[0],hlDur:AT.cursed[1]-AT.cursed[0],seed:12,id:12});
+  return g;
+}
+// The front course of the wall, redrawn over the crown so it peers from behind.
+function vineyardWallFront(y0,on){if(!on)return '';let g='';for(let i=0;i<12;i++)g+=R(-90+i*100,y0-28,96,40,6,i%2?'#B0A898':'#A49C90',{stroke:'#6A6458','stroke-width':3});return g;}
+
+// ---------- 3. Against your neighbor: a name, a home, a life ----------
+const nameIcon=(cx,cy)=>R(cx-70,cy-44,140,88,10,'#FF5A48')+R(cx-60,cy-10,120,46,6,'#fff')+T(cx,cy-16,'NAME',{size:22,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#fff'})+P(`M${cx-44} ${cy+14}q14 -12 28 0t28 0t28 0`,'none',{stroke:INK,'stroke-width':4});
+const homeIcon=(cx,cy)=>P(`M${cx-70} ${cy-6}L${cx} ${cy-70}L${cx+70} ${cy-6}Z`,'#C0392B')+R(cx-54,cy-8,108,74,4,'#F0C890',{stroke:'#8A5A3A','stroke-width':4})+R(cx-14,cy+22,28,44,3,'#8A5A3A')+R(cx+22,cy+6,22,20,2,'#7CD4FF');
+const lifeIcon=(t,cx,cy)=>glow(cx,cy,90,'#FF8FB1',.6+.2*Math.sin(t*4))+P(`M${cx} ${cy+50}C${cx-90} ${cy-10} ${cx-50} ${cy-80} ${cx} ${cy-34}C${cx+50} ${cy-80} ${cx+90} ${cy-10} ${cx} ${cy+50}Z`,'#FF5A78');
+function neighborSheet(t){
+  let g=stars(t,.4,500);
+  let f=glow(540,900,600,'#6A4CD8',.35);
+  f+=`<path d="M-40 1150Q540 1110 1120 1150V2000H-40Z" fill="#2A2050"/>`+tufts(t,['#3A2C6A','#4A3A80','#2E2458'],41,['#B98CFF','#7CD4FF']);
+  const guard=ease.out(prog(t,AT.goodName-.2,AT.goodName+.8));
+  f+=glow(540,1060,320,'#FFE36B',.55*guard)+(guard>0?Ell(540,1060,230*guard,260*guard,'none',{stroke:'#FFE9A8','stroke-width':8,opacity:guard.toFixed(2)}):'');
+  f+=person(540,1180,1.35,4,{auraOp:.4});
+  const ic=[[AT.aName,190,700,nameIcon(190,690),'A NAME'],[AT.aHome,540,640,homeIcon(540,630),'A HOME'],[AT.aLife,870,700,lifeIcon(t,870,690),'A LIFE']];
+  ic.forEach(([a,x,y,art,n],k)=>{f+=cutout(t,a,x,y,art,n,20+k,{w:200,h:180,bg:CORAL});});
+  f+=fade(t,AT.christians-.2,tag(t,AT.bend,540,LO1,'NOT JUST BENDING THE TRUTH',40,1)+tag(t,AT.takes,540,LO2,'IT TAKES SOMETHING',46,2,{bg:CORAL,rot:-2}));
+  f+=tag(t,AT.christians+.4,540,LO1,"GUARD YOUR NEIGHBOR'S",42,3);
+  f+=tag(t,AT.goodName,540,LO2,'GOOD NAME',58,4,{bg:CORAL,rot:-2});
+  g+=FR(f);
+  g+=verse(t,AT.thatsWhy-.15,380,40,['You shall not bear false witness against your neighbor.'],'EXODUS 20:16 ESV',{size:52,hl:'against your neighbor.',hlAt:AT.againstN2[0],hlDur:AT.againstN2[1]-AT.againstN2[0]+.2,seed:5,id:13,end:AT.centuries-.4});
+  return g;
+}
+
+// ---------- 4. False witness against Jesus (Jesus shown only as light) ----------
+function trial(t){
+  let g=stars(t,.5,400);
+  let f=R(-60,1150,1200,900,0,'#1E1830')+tufts(t,['#2E2640','#3A3050','#262036'],51);
+  for(const x of [40,250,750,960])f+=R(x-45,470,90,690,6,'#3A3350')+R(x-60,450,120,30,4,'#4A4266')+R(x-60,1140,120,26,4,'#4A4266');
+  // torches
+  for(const x of [145,935]){f+=glow(x,520,180,'#FFB04C',.5);for(let i=0;i<3;i++){const s=Math.sin(t*9+i*2+x);f+=P(`M${x-14+i*12} 540Q${x-20+i*12+s*6} 500 ${x-6+i*12} ${470+s*8}Q${x+8+i*12} 510 ${x+2+i*12} 540Z`,['#FF5A2C','#FFB04C','#FFE36B'][i]);}f+=R(x-8,540,16,60,3,'#5A3A20');}
+  // the light in the centre: no figure, only light
+  const br=1+.6*ease.out(prog(t,AT.calledTruth-.2,AT.calledTruth+1));
+  f+=P('M470 300L610 300L700 1180L380 1180Z','#FFF6DA',{opacity:(.12*br).toFixed(3)})+glow(540,920,280*br,'#FFF2C8',.55)+glow(540,920,120*br,'#FFFFFF',.5);
+  // grey witnesses come and go; their stories are torn halves that don't line up
+  const ws=[[AT.looking,150,1],[AT.looking+.4,320,1],[AT.many,740,-1],[AT.many+.3,900,-1]];
+  ws.forEach(([a,x,fl],k)=>{if(t>=a)f+=piece(t,a,x,1080,grey(x,1180,1.05,{flip:fl,reach:t>AT.many&&t<AT.match+1?.4:0,phase:k*.9}),30+k,1);});
+  const mp=ease.inOut(prog(t,AT.match-.4,AT.match+.4)),bounce=prog(t,AT.match+.4,AT.match+1.1),bx=Math.sin(bounce*Math.PI)*40;
+  if(t>AT.many+.4){
+    const l=fade(t,AT.calledTruth-.2,piece(t,AT.many+.4,lerp(250,330,mp)-bx,700,strip(lerp(70,150,mp)-bx,640,360,120,41,'#E8E0CC',{ax:4,ay:3})+bubbleLines(lerp(100,180,mp)-bx,680,300,51),34,1));
+    const r=fade(t,AT.calledTruth-.2,piece(t,AT.notAgree-.3,lerp(830,750,mp)+bx,800,strip(lerp(650,570,mp)+bx,740,360,120,47,'#E8E0CC',{ax:4,ay:3})+bubbleLines(lerp(680,600,mp)+bx,780,300,57),35,1));
+    f+=l+r;
+  }
+  f+=fade(t,AT.calledTruth-.2,tag(t,AT.match,540,LO1,"THE LIES DIDN'T MATCH",46,36,{bg:CORAL,rot:-2}));
+  f+=tag(t,AT.calledTruth+.3,540,LO1,'THE TRUTH, ON TRIAL',46,37);
+  f+=tag(t,AT.silent,540,LO2,'HE STOOD SILENT',42,38,{bg:CORAL});
+  g+=FR(f);
+  g+=verse(t,AT.many-.15,330,40,['For many bore false witness against him, but their testimony did not agree.'],'MARK 14:56 ESV',{size:50,hl:'did not agree.',hlAt:AT.notAgree,hlDur:.8,seed:15,id:14});
+  return g;
+}
+const bubbleLines=(x,y,w,seed)=>{const r=rng(seed);let g='';for(let i=0;i<3;i++){const ly=y+i*24;let d=`M${x} ${ly}`;for(let xx=x;xx<x+w-r()*80;xx+=16)d+=`L${xx+8} ${ly+(r()-.5)*7}L${xx+16} ${ly}`;g+=P(d,'none',{stroke:'#4A4440','stroke-width':4});}return g;};
+
+// ---------- 5. The courtroom now: chats, screenshots, rumours ----------
+function phoneSheet(t){
+  let g=stars(t,.3,300);
+  let f=glow(540,800,600,'#2F6FD0',.35)+`<path d="M-40 1170Q540 1140 1120 1170V2000H-40Z" fill="#0E2450"/>`+tufts(t,['#16346A','#1E447E','#122C5C'],61,['#7CD4FF','#FFE36B']);
+  // the phone (leaves as the rumour starts)
+  let ph=R(250,420,580,780,64,'#141420',{stroke:'#3A3A50','stroke-width':6})+R(282,470,516,670,24,'#1E2C5A')+R(480,440,120,12,6,'#3A3A50');
+  const bub=[[0,'#F6EFDC',-1],[1,'#3FB0FF',1],[2,'#F6EFDC',-1],[3,'#3FB0FF',1],[4,'#F6EFDC',-1],[5,'#3FB0FF',1]];
+  bub.forEach(([i,c,s])=>{const a=AT.chat+i*.42;if(t<a)return;const p=ease.back(prog(t,a,a+.3)),n=bub.filter(b=>t>=AT.chat+b[0]*.42).length;
+    const y=1080-(n-1-i)*96;if(y<500)return;const x=s<0?310:470;ph+=G(`translate(${x+150} ${y}) scale(${p.toFixed(3)}) translate(${-x-150} ${-y})`,R(x,y-36,300,72,30,c)+bubbleLines(x+28,y-14,240,60+i));});
+  // screenshot: a white flash and corner brackets
+  const sp=prog(t,AT.screenshot,AT.screenshot+.5);
+  if(sp>0&&sp<1)ph+=R(282,470,516,670,24,'#FFFFFF',{opacity:(1-sp).toFixed(2)});
+  if(t>AT.screenshot)ph+=[[300,490,1,1],[780,490,-1,1],[300,1120,1,-1],[780,1120,-1,-1]].map(([x,y,a,b])=>P(`M${x} ${y+b*50}V${y}H${x+a*50}`,'none',{stroke:YEL,'stroke-width':8})).join('');
+  // a comment row with hearts
+  if(t>AT.comment)ph+=piece(t,AT.comment,540,1020,R(300,980,480,80,16,'#2A3A6A')+C(340,1020,20,'#FFC24C')+bubbleLines(380,1006,280,71)+P('M740 1030c-8 -10 -20 0 0 14c20 -14 8 -24 0 -14z',CORAL),40,1);
+  f+=fade(t,AT.rumour-.2,ph);
+  f+=fade(t,AT.rumour-.2,tag(t,AT.courtroom,540,300,'THE COURTROOM NOW',44,41,{bg:CORAL})+
+    tag(t,AT.chat,300,LO1,'GROUP CHAT',40,42)+tag(t,AT.screenshot,780,LO1,'SCREENSHOT',40,43,{rot:2})+tag(t,AT.comment,540,LO2,'COMMENTS',40,44));
+  // the rumour passes from one person to the next, growing each time
+  if(t>AT.rumour-.2){
+    const xs=[190,540,820];
+    f+=piece(t,AT.rumour-.2,540,1060,xs.map((x,k)=>person(x,1180,1.15,k,{flip:k===2?-1:1,auraOp:.3})).join(''),45,.8);
+    const hop=clamp((t-AT.rumour)/1.4,0,2),i=Math.floor(Math.min(hop,1.999)),fr=hop-i,x=lerp(xs[i],xs[i+1],ease.inOut(fr)),y=800-Math.sin(fr*Math.PI)*80;
+    const sc=.6+.35*hop;
+    f+=fade(t,AT.half-.2,G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${sc.toFixed(3)}) translate(${-x.toFixed(1)} ${-y.toFixed(1)})`,bubble(x,y,260,120,8,'#C9C9D6',1)));
+    f+=fade(t,AT.half-.2,tag(t,AT.rumour+.2,540,330,'A RUMOUR, PASSED ON',46,51,{bg:CORAL}));
+  }
+  f+=fade(t,AT.half-.2,tag(t,AT.justSaying,540,LO1,`"I'M JUST SAYING..."`,46,46)+tag(t,AT.fwToday,540,LO2,'FALSE WITNESS, TODAY',44,47,{bg:CORAL,rot:-2}));
+  // half the story: a photo, cropped by a coral cut
+  if(t>AT.half-.2){
+    const cp=ease.inOut(prog(t,AT.cropped-.1,AT.cropped+.5)),fall=ease.out(prog(t,AT.cropped+.4,AT.cropped+1.4));
+    let pic=strip(260,240,560,340,61,'#F6EFDC')+tape(540,244,110,3);
+    pic+=R(290,270,500,280,6,'#7CD4FF');
+    const left=person(410,520,.9,1,{auraOp:.2,reach:.5}),right=person(670,520,.9,4,{flip:-1,auraOp:.2,reach:.5});
+    pic+=left+G(`translate(${(fall*260).toFixed(1)} ${(fall*500).toFixed(1)}) rotate(${(fall*30).toFixed(1)} 670 420)`,right,(1-fall).toFixed(2));
+    pic+=mark('M540 230L540 600',cp,CORAL,8);
+    f+=piece(t,AT.half-.2,540,410,pic,48,1);
+    f+=tag(t,AT.half+.3,540,LO1,'HALF THE STORY',46,49);
+  }
+  // shared: an arrow flies off and can't be pulled back
+  if(t>AT.shared){const q=prog(t,AT.shared,AT.shared+1.2),x=lerp(540,1300,q*q),y=lerp(820,-200,q*q);
+    f+=G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(-35)`,P('M-90 -20H30V-50L100 0L30 50V20H-90Z',CORAL)+T(-30,10,'SHARE',{size:26,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#fff'}));
+    f+=tag(t,AT.takeBack,540,LO2,"CAN'T TAKE IT BACK",48,50,{bg:CORAL,rot:-2});}
+  g+=FR(f);
+  return g;
+}
+
+// ---------- 6. Truth in love: members of one another ----------
+function truthSheet(t){
+  let f=glow(540,700,700,'#FFF2C8',.6)+fireflies(t,0,-600,1920,2300,'#FFF6DA',16,.6);
+  f+=`<path d="M-40 1150Q540 1120 1120 1150V2000H-40Z" fill="#3BAF6A"/>`+tufts(t,['#2E9A62','#5AD890','#258A52'],31,['#FF7BD5','#FFD45E','#FFFFFF']);
+  const xs=[130,300,470,640,810];
+  const mem=ease.out(prog(t,AT.members-.2,AT.members+1)),hit=prog(t,AT.tearDown,AT.tearDown+.4)*(1-prog(t,AT.ties,AT.ties+.8));
+  f+=glow(470,1050,520*mem,'#FFE36B',.45*mem*(1-.7*hit));
+  // one figure steps in front of another to shield him
+  const st=ease.inOut(prog(t,AT.speakingUp-.2,AT.speakingUp+.6));
+  if(mem>0)for(let k=0;k<4;k++)f+=L(xs[k]+30,1040,xs[k+1]-30,1040,'#FFE36B',10*mem,{opacity:(.8*mem*(1-.7*hit)).toFixed(2)})+glow((xs[k]+xs[k+1])/2,1040,60,'#FFF6DA',.6*mem*(1-.7*hit));
+  xs.forEach((x,k)=>{const xx=k===1?lerp(x,410,st):x;
+    f+=person(xx,1180,k===2?1.0:.95,k,{flip:k>2?-1:1,reach:k===1?lerp(.3,.9,st):.3,auraOp:(.3+.25*mem)*(1-.8*hit),aura:'#FFE36B'});});
+  // a grey rumour bubble flies at the middle figure; later it bounces off the friend
+  const rb=prog(t,AT.tearDown-.4,AT.tearDown+.1);
+  if(rb>0&&rb<1||t>AT.tearDown&&t<AT.ties)f+=bubble(lerp(1100,560,rb),880,180,90,3,'#9A9AA6',-1);
+  const sb=prog(t,AT.speakingUp+.3,AT.speakingUp+1.4);
+  if(sb>0&&sb<1)f+=G('',bubble(lerp(1100,520,Math.min(1,sb*2))+(sb>.5?(sb-.5)*1200:0),880-(sb>.5?(sb-.5)*700:0),180,90,3,'#9A9AA6',-1),(1-Math.max(0,sb-.5)*2).toFixed(2));
+  f+=fade(t,AT.therefore-.2,tag(t,AT.instead+.3,540,700,'SO WHAT INSTEAD?',50,1));
+  f+=fade(t,AT.ties-.2,tag(t,AT.members,540,LO1,'MEMBERS OF ONE ANOTHER',42,2)+tag(t,AT.body,540,LO2,'TEAR ONE, TEAR ALL',44,3,{bg:CORAL,rot:-2}));
+  f+=fade(t,AT.opposite-.2,tag(t,AT.ties+.2,540,LO1,'TRUTH + LOVE',50,4,{bg:CORAL}));
+  f+=tag(t,AT.opposite,540,LO1,'NOT ONLY KEEPING QUIET',40,5);
+  f+=tag(t,AT.speakingUp,540,LO2,'STAND UP FOR THEIR NAME',44,6,{bg:CORAL,rot:-2});
+  let g=FR(f);
+  g+=verse(t,AT.therefore-.15,330,40,['Therefore, having put away falsehood, let each one of you speak the truth with his neighbor, for we are members one of another.'],'EPHESIANS 4:25 ESV',{size:44,hl:'speak the truth',hlAt:AT.speakTruth[0],hlDur:AT.speakTruth[1]-AT.speakTruth[0],seed:18,id:15,end:AT.ties-.3});
+  g+=verse(t,AT.rather-.15,330,40,['Rather, speaking the truth in love, we are to grow up in every way into him who is the head, into Christ.'],'EPHESIANS 4:15 ESV',{size:44,hl:'speaking the truth in love,',hlAt:AT.inLove[0],hlDur:AT.inLove[1]-AT.inLove[0],seed:20,id:16});
+  return g;
+}
+
+// ---------- 7. Your words are a witness ----------
+function wordsSheet(t){
+  let g=stars(t,.4,700);
+  let f=glow(540,860,600,'#6A4CD8',.3)+`<path d="M-40 1150Q540 1120 1120 1150V2000H-40Z" fill="#1E1830"/>`+tufts(t,['#2E2640','#3A3050','#262036'],71,['#FFE9A8']);
+  let ck=tag(t,AT.before,540,330,'BEFORE YOU PASS IT ON',46,1,{bg:CORAL});
+  [[AT.isTrue,640,'IS IT TRUE?'],[AT.isFair,800,'IS IT FAIR?'],[AT.toFace,960,'TO THEIR FACE?']].forEach(([a,y,s],k)=>{
+    const b0=AT.before+.6+k*.25;if(t<b0)return;const tk=ease.inOut(prog(t,a+.5,a+.9));
+    ck+=piece(t,b0,200,y,R(150,y-50,100,100,10,'#F6EFDC',{stroke:INK,'stroke-width':6}),2+k,1.2);
+    if(t>=a)ck+=piece(t,a,540,y,T(290,y+22,s,{size:62,font:'Segoe UI Black',weight:900,fill:'#F6EFDC'})+mark(`M168 ${y-2}L192 ${y+28}L240 ${y-46}`,tk,CORAL,14),12+k,1.2);});
+  f+=fade(t,AT.yourWords-.2,ck);
+  const glowIn=ease.out(prog(t,AT.yourWords,AT.yourWords+1.2)),lit=k=>k===8?1.2*glowIn:.35*glowIn;
+  if(t>=AT.yourWords)f+=piece(t,AT.yourWords,540,820,tablets(540,820,.85,lit),6,1.2);
+  f+=tag(t,AT.yourWords+.3,540,LO1,'YOUR WORDS ARE A WITNESS',44,7,{bg:CORAL});
+  f+=tag(t,AT.makeSure+.6,540,LO2,'TELL THE TRUTH ABOUT YOUR NEIGHBOR',34,8);
+  return g+FR(f);
+}
+
+// ---------- 8. How Naboth's story began, then the end card ----------
+function wantingSheet(t){
+  let f=glow(540,300,600,'#FFE9A8',.35)+vineyard(t,760)+tufts(t,['#256A30','#3FA04A','#2E7A3A'],23,['#9A4ACB','#FFD45E']);
+  const up=ease.out(prog(t,AT.kingWanted-.2,AT.kingWanted+.8));
+  f+=G(`translate(0 ${((1-up)*120).toFixed(1)})`,crown(t,720,700,.95))+vineyardWallFront(760,true);
+  // a coral dotted look-line from the crown to the vines
+  f+=arrow(680,640,460,540,320,860,ease.inOut(prog(t,AT.wasntHis-.4,AT.wasntHis+.4)),CORAL,7);
+  f+=fade(t,AT.last+.5,tag(t,AT.notWithLie,540,330,'NOT WITH A LIE',46,1)+strike(360,330,720,ease.inOut(prog(t,AT.kingWanted-.4,AT.kingWanted)))+
+    tag(t,AT.kingWanted+.4,540,LO1,'IT BEGAN WITH WANTING',46,2,{bg:CORAL,rot:-2}));
+  // End card after the last word.
+  const ec=prog(t,AT.last+.6,AT.last+1.2);
+  if(ec>0){f+=G('',R(-200,-200,1500,2400,0,'#08060F',{opacity:.86})+
+    T(540,700,'THE TEN COMMANDMENTS · PART 9',{size:40,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
+    T(540,810,'NO FALSE WITNESS',{size:84,font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
+    f+=tag(t,AT.last+1.6,540,960,'NEXT: THE TENTH COMMANDMENT',42,5,{bg:CORAL});
+    if(t>AT.last+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
+      .forEach((ln,i)=>{f+=T(540,1080+i*36,ln,{size:26,font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});}
+  return FR(f);
+}
+
+const wide=(a,b)=>[shot(a,b,...WIDE)];
+E.start({
+  cast:{},
+  sheets:[
+    {name:'cold open',draw:coldOpen,bg:['#1A1622','#07060C'],cam:wide(0,AT.ancient-.3)},
+    {name:'city gate',at:AT.ancient-.1,draw:gate,bg:['#F2D49A','#C98E4E'],stars:false,cam:wide(AT.ancient,AT.butEven-.3)},
+    {name:'vineyard',at:AT.butEven-.1,draw:nabothSheet,bg:['#BFE3F0','#7CC4A0'],stars:false,cam:wide(AT.butEven,AT.thatsWhy-.3)},
+    {name:'neighbor',at:AT.thatsWhy-.1,draw:neighborSheet,bg:['#241A4A','#0C0820'],cam:wide(AT.thatsWhy,AT.centuries-.3)},
+    {name:'trial',at:AT.centuries-.1,draw:trial,bg:['#120E22','#05040C'],vIn:'cut',cam:wide(AT.centuries,AT.dontStand-.3)},
+    {name:'phone',at:AT.dontStand-.1,draw:phoneSheet,bg:['#0B1E4A','#050A1E'],cam:wide(AT.dontStand,AT.instead-.3)},
+    {name:'truth in love',at:AT.instead-.1,draw:truthSheet,bg:['#FFE2A8','#E89A5C'],stars:false,vIn:'cut',cam:wide(AT.instead,AT.before-.3)},
+    {name:'your words',at:AT.before-.1,draw:wordsSheet,bg:['#141026','#06050E'],cam:wide(AT.before,AT.remember-.3)},
+    {name:'wanting',at:AT.remember-.1,draw:wantingSheet,bg:['#BFE3F0','#7CC4A0'],stars:false,cam:wide(AT.remember,AT.last+6)},
+  ],
+  talk:[],
+  focus:[[AT.lie1,.9],[AT.dies,.8],[AT.bought,.8],[AT.itWasALie,1.1],[AT.takes,.7],[AT.match,.9],[AT.takeBack,.8],[AT.inLove[0],.7],[AT.yourWords,1.0],[AT.kingWanted,.7]],
+  flashes:[[AT.centuries-.1,.9,'#FFFBEC'],[AT.instead-.1,.9,'#FFFBEC']],
+  tail:7,
+  fadeOut:1.2,
+});
+</script>
