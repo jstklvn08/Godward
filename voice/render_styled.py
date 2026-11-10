@@ -128,7 +128,8 @@ def use_script(script: Path) -> None:
 def quote_tag(line: str) -> str:
     """A tagged line that is one quotation (scripture) keeps its tag for every sentence in it."""
     tag = TAG.match(line)
-    if not tag or not line[tag.end():].startswith("“"):
+    body = re.sub(r"(\s*\[(?:beat|pause|hold)\])+$", "", line[tag.end():]) if tag else ""
+    if not tag or not (body.startswith("“") and body.endswith("”") and body.count("“") == 1):
         return line
     head, body = line[: tag.end()], line[tag.end():]
     return head + re.sub(r"(?<=[.?!])\s+(?=[^\[])", " " + head.strip() + " ", body)

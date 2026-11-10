@@ -57,3 +57,24 @@ def words(audio: np.ndarray, name: str = "small.en") -> list[tuple[str, float, f
     segments, _ = model(short(name)).transcribe(audio.astype(np.float32), beam_size=1, word_timestamps=True,
                                                 vad_filter=False, condition_on_previous_text=False, **kw)
     return [(w.word.strip(), float(w.start), float(w.end)) for s in segments for w in (s.words or []) if w.word.strip()]
+
+
+_ONES = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split()
+_TENS = "_ _ twenty thirty forty fifty sixty seventy eighty ninety".split()
+
+
+def _say(n: int) -> str:
+    if n < 20:
+        return _ONES[n]
+    if n < 100:
+        return _TENS[n // 10] + ("" if n % 10 == 0 else " " + _ONES[n % 10])
+    if n < 1000:
+        return _ONES[n // 100] + " hundred" + ("" if n % 100 == 0 else " " + _say(n % 100))
+    return str(n)
+
+
+def squash(text: str) -> str:
+    """Letters only, numerals spelled out: 'stayed 40 days' == 'stayed forty days', 'anymore' == 'any more'."""
+    import re
+    text = re.sub(r"\d+", lambda m: _say(int(m.group())), text.lower().replace("-", " "))
+    return re.sub(r"[^a-z]", "", text)
