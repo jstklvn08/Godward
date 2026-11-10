@@ -1,0 +1,207 @@
+{
+  "_doc": "Soundtrack for 'The Fifth Commandment' (Ten Commandments part 5). Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue, so re-voicing re-times the sound.",
+  "episode": "the-fifth-commandment",
+  "words": "words.js",
+  "duration": {"word": "God", "n": -1, "edge": "end", "offset": 7},
+  "marks": {
+    "hinge": {"word": "Many readers", "offset": -0.1},
+    "heavy": {"word": "So what does honor actually", "offset": -0.1},
+    "promise": {"word": "And this command comes", "offset": -0.1},
+    "hard": {"word": "But what if your parents", "offset": -0.1},
+    "taken": {"word": "And if a father", "offset": -0.1},
+    "cross": {"word": "And then there's the cross", "offset": -0.1},
+    "now": {"word": "So what does honor look", "offset": -0.1},
+    "door": {"word": "The fifth commandment is a doorway", "offset": -0.1},
+    "lastWord": {"word": "God", "n": -1, "edge": "end"}
+  },
+  "motifs": {
+    "HONOR": [65, 69, 72, 70, 69],
+    "HONORm": [65, 68, 72, 70, 68]
+  },
+  "scenes": [
+    {"name": "cold-open", "start": 0, "screen": "the tablets; lines I-IV glow gold, then line V lights warm and is circled", "music": "angelic choir + high bells, loud swell; HONOR motif on bells as line V lights", "sound": "low wind, shimmer as the lines glow"},
+    {"name": "hinge", "start": "hinge", "screen": "both tablets, GOD-WARD and NEIGHBOR-WARD, line V the hinge; a small glowing house and family", "music": "warm pad cycle, piano HONOR motif at 'the people you came from'", "sound": "night crickets, soft warm wind"},
+    {"name": "heavy", "start": "heavy", "screen": "parchment: a balance scale, the parent's pan sinks; HONOR = GIVE WEIGHT, root of GLORY", "music": "low drone that settles, choir on 'glory', a low glide as the pan sinks", "sound": "warm wind (glory), a wooden creak-thump as the scale tips"},
+    {"name": "promise", "start": "promise", "screen": "deep blue: Ephesians 6:2-3, generations walking a glowing path", "music": "harp arpeggios, flute HONOR motif, bells on 'a promise'", "sound": "steps of many walkers, gentle wind"},
+    {"name": "hard", "start": "hard", "screen": "grey rain: a lone figure, three empty or broken frames; HONOR is not PRETENDING; Ephesians 6:4; the arrows both ways", "music": "sparse minor piano (HONORm), cold pad; resolves a little at 'both ways'", "sound": "rain (bright noise + drips), cold wind"},
+    {"name": "taken", "start": "taken", "screen": "the rain stops; a column of light takes the lone figure in; Psalm 27:10", "music": "choir swell on 'the LORD will take me in', bell on 'God does not'", "sound": "rain fading, shimmer as the light comes"},
+    {"name": "cross", "start": "cross", "screen": "red-dark sky, the empty paper cross; Mary and the disciple; they walk to a glowing house", "music": "music drops away at 'the cross', low pad returns; flute HONOR motif slow at 'had a home'", "sound": "low wind, steps as they walk home"},
+    {"name": "now", "start": "now", "screen": "bright cut-outs: CALL, PATIENCE, FORGIVE, GIVE WEIGHT", "music": "light plucks and piano, warm", "sound": "birds by day"},
+    {"name": "door", "start": "door", "screen": "the tablets again; light flows through line V to the neighbour tablet; line VI flickers; end card", "music": "warm pad, choir, HONOR motif on flute; held chord under the end card", "sound": "warm wind, shimmer"}
+  ],
+
+  "stems": {
+    "score": {
+      "seed": 5050,
+      "reverb": {"room": 0.87, "damp": 0.32, "wet": 0.38},
+      "autoLevel": {"window": 0.1, "smooth": 15, "min": 0.35, "max": 4},
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2.5},
+      "events": [
+        {"scene": "cold-open"},
+        {"inst": "pad", "at": 0, "to": "hinge", "notes": [41, 53, 60, 65], "lv": 0.35, "bright": 0.3, "a": 3, "r": 2},
+        {"inst": "choir", "at": 0, "to": 7.4, "notes": [65, 69, 72, 77], "lv": 1.0, "att": 2.5},
+        {"inst": "bell", "repeat": {"from": 0.4, "to": 7.2, "every": 0.32, "shift": 0.2}, "seq": [89, 93, 96, 101], "lv": 0.55, "pan": "random", "dec": 3},
+        {"inst": "bell", "motif": "HONOR", "at": {"word": "about your mother"}, "step": 0.6, "transpose": 12, "lv": 0.7, "pan": 0.5, "dec": 3},
+        {"inst": "pad", "repeat": {"from": 7.4, "to": "hinge", "every": 4}, "chords": [[41, 53, 60, 65], [38, 50, 57, 62], [46, 53, 58, 62], [48, 55, 60, 64]], "hold": 4.3, "lv": 0.7, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "choir", "at": {"word": "Honor your father and your mother", "offset": -0.3}, "to": {"word": "is giving you", "edge": "end", "offset": 1.2}, "notes": [65, 69, 72, 77], "lv": 0.8, "att": 0.8, "rel": 1.5},
+
+        {"scene": "hinge"},
+        {"inst": "pad", "repeat": {"from": "hinge", "to": "heavy", "every": 4}, "chords": [[41, 53, 57, 60, 65], [38, 50, 57, 62], [46, 53, 58, 62], [48, 52, 55, 60]], "hold": 4.3, "lv": 0.7, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "bell", "at": [{"word": "loving God"}, {"word": "loving your neighbor"}], "note": 84, "lv": 0.5, "pan": [0.35, 0.65], "dec": 3},
+        {"inst": "piano", "motif": "HONOR", "at": {"word": "The people you came from"}, "step": 0.75, "lv": 0.85, "pan": 0.5, "dec": 3},
+
+        {"scene": "heavy"},
+        {"inst": "pad", "at": "heavy", "to": {"word": "word for glory", "offset": -0.3}, "notes": [29, 41, 48, 53], "lv": 0.8, "bright": 0.3, "a": 1.5, "r": 1},
+        {"inst": "glide", "at": {"word": "means heavy", "offset": -0.2}, "len": 2.4, "from": 41, "toNote": 36, "lv": 0.8, "pan": 0.5},
+        {"inst": "choir", "at": {"word": "word for glory", "offset": -0.3}, "to": {"word": "give them weight", "offset": 1.5}, "notes": [65, 69, 72, 77], "lv": 0.9, "att": 0.8, "rel": 1.5},
+        {"inst": "pad", "repeat": {"from": {"word": "word for glory"}, "to": "promise", "every": 3.8}, "chords": [[41, 53, 60, 65], [45, 52, 57, 60], [46, 53, 58, 62], [48, 55, 60, 64]], "hold": 4.1, "lv": 0.7, "bright": 0.55, "a": 1.2, "r": 0.6},
+        {"inst": "piano", "at": [{"word": "A small child"}, {"word": "But a grown adult"}], "notes": [65, 69, 72], "strum": 0.09, "lv": 0.6, "pan": 0.5, "dec": 2.5},
+
+        {"scene": "promise"},
+        {"inst": "pad", "at": "promise", "to": "hard", "notes": [46, 53, 58, 62, 65], "lv": 0.7, "bright": 0.5, "a": 1.2, "r": 1},
+        {"inst": "pluck", "repeat": {"from": "promise", "to": {"word": "For Israel"}, "every": 0.25}, "seq": [70, 74, 77, 82, 77, 74, 70, 65], "lv": 0.28, "pan": [0.3, 0.7], "len": 1.2, "bright": 0.8},
+        {"inst": "choir", "at": {"word": "Honor your father and mother", "offset": -0.2}, "to": {"word": "live long in the land", "edge": "end", "offset": 1.2}, "notes": [62, 65, 70, 74], "lv": 0.85, "att": 1, "rel": 1.5},
+        {"inst": "bell", "at": {"word": "first commandment with a promise"}, "notes": [77, 81, 84], "strum": 0.12, "lv": 0.6, "pan": 0.5, "dec": 3},
+        {"inst": "flute", "motif": "HONOR", "at": {"word": "homes where parents"}, "step": 0.7, "transpose": 12, "len": 0.6, "lv": 0.85, "pan": 0.55},
+
+        {"scene": "hard"},
+        {"inst": "pad", "at": "hard", "to": {"word": "runs both ways", "offset": -0.3}, "notes": [29, 41, 48, 53, 56], "lv": 0.55, "bright": 0.25, "a": 1.5, "r": 1},
+        {"inst": "piano", "repeat": {"from": "hard+0.6", "to": {"word": "Then Paul turns"}, "every": 1.8, "jitter": 1.0}, "pick": "random", "seq": [60, 63, 65, 68, 72], "lv": 0.6, "pan": "random", "dec": 2.5, "detune": {"rand": [-0.005, 0.005]}},
+        {"inst": "piano", "motif": "HONORm", "at": {"word": "Many Christian teachers"}, "step": 0.9, "lv": 0.75, "pan": 0.5, "dec": 3},
+        {"inst": "pad", "at": {"word": "Then Paul turns"}, "to": "taken", "notes": [41, 48, 53, 56, 60], "lv": 0.6, "bright": 0.35, "a": 1.2, "r": 1},
+        {"inst": "pad", "at": {"word": "runs both ways", "offset": -0.3}, "to": "taken+0.5", "notes": [41, 53, 57, 60, 65], "lv": 0.7, "bright": 0.5, "a": 0.6, "r": 1.2},
+
+        {"scene": "taken"},
+        {"inst": "pad", "at": "taken", "to": "cross-0.6", "notes": [41, 53, 60, 65], "lv": 0.6, "bright": 0.45, "a": 1.5, "r": 1},
+        {"inst": "choir", "at": {"word": "the LORD will take me in", "offset": -0.4}, "to": {"word": "God does not", "edge": "end", "offset": 1.0}, "notes": [65, 69, 72, 77, 81], "lv": 1.0, "att": 1.0, "rel": 1.8},
+        {"inst": "bell", "at": {"word": "God does not"}, "notes": [77, 81, 84, 89], "strum": 0.1, "lv": 0.6, "pan": 0.5, "dec": 3},
+
+        {"scene": "cross"},
+        {"inst": "pad", "at": "cross+1.2", "to": "now", "notes": [26, 38, 45, 50, 53], "lv": 0.7, "bright": 0.25, "a": 2, "r": 1},
+        {"inst": "noiseBed", "at": "cross+1.2", "to": {"word": "from that hour"}, "fc": 140, "lv": 0.8, "q": 0.8, "mod": 0.4},
+        {"inst": "choir", "at": {"word": "Behold, your mother", "offset": -0.3}, "to": {"word": "to his own home", "edge": "end", "offset": 1.2}, "notes": [62, 65, 69, 74], "lv": 0.8, "att": 1.0, "rel": 1.5},
+        {"inst": "pad", "at": {"word": "from that hour"}, "to": "now", "notes": [41, 53, 57, 60, 65], "lv": 0.65, "bright": 0.45, "a": 1.5, "r": 1},
+        {"inst": "flute", "motif": "HONOR", "at": {"word": "had a home", "offset": 0.4}, "step": 0.9, "len": 0.8, "lv": 0.85, "pan": 0.5},
+
+        {"scene": "now"},
+        {"inst": "pad", "repeat": {"from": "now", "to": "door", "every": 3.6}, "chords": [[41, 53, 57, 60, 65], [46, 53, 58, 62], [43, 50, 55, 58, 62], [48, 55, 60, 64]], "hold": 3.9, "lv": 0.7, "bright": 0.55, "a": 1.0, "r": 0.6},
+        {"inst": "pluck", "at": [{"word": "A phone call"}, {"word": "Patience with"}, {"word": "forgiveness"}, {"word": "Giving weight"}], "notes": [65, 69, 72], "strum": 0.08, "lv": 0.55, "pan": 0.5, "len": 1.2, "bright": 0.6},
+
+        {"scene": "door"},
+        {"inst": "pad", "repeat": {"from": "door", "to": {"mark": "lastWord", "offset": 0.5}, "every": 3.6}, "chords": [[41, 53, 57, 60, 65], [38, 50, 57, 62], [46, 53, 58, 62], [48, 55, 60, 64]], "hold": 3.9, "holdClip": false, "lv": 0.8, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "flute", "motif": "HONOR", "at": {"word": "walks through it", "offset": 0.2}, "step": 0.75, "transpose": 12, "len": 0.6, "lv": 1.0, "pan": 0.5},
+        {"inst": "choir", "at": {"word": "arrives at home", "offset": -0.3}, "to": {"mark": "lastWord", "offset": 6.0}, "notes": [65, 69, 72, 77], "lv": 0.9, "att": 1, "rel": 2},
+        {"comment": "the warmest chord, held under the end card", "inst": "pad", "at": {"word": "every human life"}, "to": {"mark": "lastWord", "offset": 6.5}, "notes": [41, 53, 57, 60, 65, 69, 72], "lv": 1, "bright": 0.6, "a": 0.8, "r": 2},
+        {"inst": "bell", "motif": "HONOR", "at": {"mark": "lastWord", "offset": 1.6}, "step": 0.8, "transpose": 24, "lv": 0.5, "pan": 0.5, "dec": 3}
+      ]
+    },
+
+    "ambience": {
+      "seed": 5252,
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2},
+      "events": [
+        {"scene": "cold-open"},
+        {"inst": "wind", "at": 0, "to": "hinge", "lv": 0.4, "fc": 300},
+        {"inst": "shimmer", "at": 0.6, "to": 4.5, "lv": 0.5},
+        {"inst": "shimmer", "at": {"word": "about your mother"}, "len": 2.5, "lv": 0.5},
+
+        {"scene": "hinge"},
+        {"inst": "crickets", "at": "hinge", "to": "heavy", "lv": 0.4},
+        {"inst": "wind", "at": "hinge", "to": "heavy", "lv": 0.4, "fc": 650},
+
+        {"scene": "heavy"},
+        {"inst": "wind", "at": "heavy", "to": "promise", "lv": 0.6, "fc": 680, "pan": 0.6},
+
+        {"scene": "promise"},
+        {"inst": "wind", "at": "promise", "to": "hard", "lv": 0.4, "fc": 550},
+        {"inst": "step", "repeat": {"from": {"word": "go well"}, "to": "hard", "every": 0.45}, "lv": 0.35, "pan": {"rand": [0.35, 0.65]}, "soft": 0.8},
+
+        {"scene": "hard"},
+        {"inst": "noiseBed", "at": "hard", "to": "taken+2", "fc": 2600, "lv": 0.5, "q": 0.6, "mod": 0.3},
+        {"inst": "drip", "repeat": {"from": "hard+0.3", "to": "taken+1.5", "every": 0.7, "jitter": 0.6}, "lv": 0.4, "pan": "random"},
+        {"inst": "wind", "at": "hard", "to": "taken", "lv": 0.5, "fc": 380},
+
+        {"scene": "taken"},
+        {"inst": "shimmer", "at": {"word": "the LORD will take me in", "offset": -0.3}, "len": 5, "lv": 0.8},
+        {"inst": "wind", "at": {"word": "the LORD will take me in"}, "to": "cross", "lv": 0.6, "fc": 680, "pan": 0.5},
+
+        {"scene": "cross"},
+        {"inst": "wind", "at": "cross", "to": "now", "lv": 0.5, "fc": 300},
+        {"inst": "step", "repeat": {"from": {"word": "from that hour"}, "to": {"word": "had a home", "offset": 1.5}, "every": 0.5}, "lv": 0.35, "pan": {"ramp": [0.35, 0.7]}, "soft": 0.8},
+
+        {"scene": "now"},
+        {"inst": "bird", "repeat": {"from": "now+0.5", "to": "door", "every": 1.8, "jitter": 1}, "lv": 0.5, "pan": "random"},
+        {"inst": "wind", "at": "now", "to": "door", "lv": 0.3, "fc": 650},
+
+        {"scene": "door"},
+        {"inst": "wind", "at": "door", "to": {"mark": "lastWord", "offset": 6}, "lv": 0.6, "fc": 700, "pan": 0.6},
+        {"inst": "shimmer", "at": {"word": "walks through it"}, "len": 3, "lv": 0.6}
+      ]
+    },
+
+    "sfx": {
+      "seed": 5353,
+      "events": [
+        {"comment": "pieces landing: soft paper taps on the label words", "inst": "paperTap", "at": [
+          0.05, {"word": "The first four"}, {"word": "before murder"}, {"word": "about your mother"}, {"word": "little kids"}, {"word": "It's much bigger"},
+          {"word": "loving God"}, {"word": "loving your neighbor"}, {"word": "right on the hinge"}, {"word": "The people you came from"}, {"word": "Between heaven"},
+          {"word": "means heavy"}, {"word": "word for glory"}, {"word": "take them seriously"}, {"word": "A small child"}, {"word": "But a grown adult"},
+          {"word": "comes with something"}, {"word": "For Israel"}, {"word": "homes where parents"},
+          {"word": "But what if your parents"}, {"word": "who hurt them"}, {"word": "A parent who left"}, {"word": "never knew"},
+          {"word": "the same as pretending"}, {"word": "calling wrong things right"}, {"word": "staying in harm's way"}, {"word": "respect the place"}, {"word": "while grieving"},
+          {"word": "runs both ways"}, {"word": "And if a father"}, {"word": "Whoever let you go"}, {"word": "God does not"},
+          {"word": "had a home"}, {"word": "to the very end"},
+          {"word": "look like now"}, {"word": "A phone call"}, {"word": "Patience with"}, {"word": "forgiveness"}, {"word": "safe distance"}, {"word": "Giving weight"}, {"word": "gave you a start"},
+          {"word": "is a doorway"}, {"word": "walks through it"}, {"word": "the sixth commandment"}],
+          "lv": 0.8, "pan": {"rand": [0.35, 0.65]}},
+        {"comment": "strikes, scribbles, highlights, arrows: soft swish", "inst": "swish", "at": [
+          {"word": "about your mother", "offset": -0.3}, {"word": "It's much bigger", "offset": -0.3}, {"word": "the very first neighbor"}, {"word": "closest to you", "offset": -0.2},
+          {"word": "first commandment with a promise"}, {"word": "do not provoke"}, {"word": "runs both ways", "offset": -0.2}, {"word": "will take me in"},
+          {"word": "Behold, your mother"}, {"word": "walks through it", "offset": -0.2}, {"word": "the sixth commandment", "offset": 0.1}],
+          "len": 0.6, "lv": 0.5, "pan": 0.5},
+        {"comment": "sheet changes: whoosh 0.4 s before each", "inst": "whoosh", "at": ["hinge-0.4", "heavy-0.4", "promise-0.4", "hard-0.4", "taken-0.4", "cross-0.4", "now-0.4", "door-0.4"], "len": 0.8, "lv": 0.75, "pan": 0.5},
+        {"comment": "line V lights", "inst": "sparkle", "at": {"word": "about your mother"}, "len": 2, "lv": 1, "pan": 0.45},
+        {"comment": "the parent's pan sinks", "inst": "thump", "at": {"word": "give them weight", "offset": 0.4}, "lv": 0.8},
+        {"inst": "swell", "at": {"word": "word for glory", "offset": -1}, "len": 3, "note": 41, "lv": 0.6},
+        {"comment": "the light takes the lone figure in", "inst": "sparkle", "at": {"word": "the LORD will take me in"}, "len": 2.4, "lv": 1.1},
+        {"inst": "chime", "at": {"word": "God does not"}, "note": 81, "lv": 0.8},
+        {"comment": "the cross: a low arrival under the music drop", "inst": "swell", "at": {"word": "And then there's the cross", "offset": -1.5}, "len": 3, "note": 38, "lv": 0.8},
+        {"inst": "thump", "at": {"word": "the cross", "offset": 0.1}, "lv": 0.7},
+        {"comment": "the house lights", "inst": "sparkle", "at": {"word": "from that hour", "offset": 0.3}, "len": 1.6, "lv": 0.8},
+        {"comment": "the end card", "inst": "chime", "at": {"mark": "lastWord", "offset": 1.6}, "note": 77, "lv": 0.7}
+      ]
+    }
+  },
+
+  "mix": {
+    "voice": {"volume": 1.25},
+    "buses": [
+      {"name": "music", "stem": "score.wav", "volume": 1.6,
+       "duck": {"threshold": 0.02, "ratio": 4, "attack": 30, "release": 500, "makeup": 1},
+       "envelope": [
+         {"comment": "opening choir swell", "from": 1.4, "to": 7.5, "db": 8.3, "in": 1.3, "out": 2.5},
+         {"comment": "music drops away for 'And then there's the cross', back as the story begins", "from": {"word": "And then there's the cross", "offset": -0.7}, "to": {"word": "Jesus is dying", "offset": 0.2}, "mute": true, "in": 0.6, "out": 1.6},
+         {"comment": "end card: let the closing chord be heard", "from": {"mark": "lastWord", "offset": 0.4}, "to": {"mark": "lastWord", "offset": 7}, "db": 6, "in": 1.2, "out": 0.5}
+       ]},
+      {"name": "sfx", "stem": "sfx.wav", "volume": 0.2},
+      {"name": "ambience", "stem": "ambience.wav",
+       "compressor": {"threshold": 0.05, "ratio": 3.5, "attack": 10, "release": 300, "makeup": 2.8},
+       "duck": {"threshold": 0.02, "ratio": 6, "attack": 20, "release": 600, "makeup": 1.5}}
+    ],
+    "hits": [
+      {"comment": "a distant, soft thunder roll as the cross appears (quieter than part 1's)", "name": "thunder", "sound": "thunder", "seed": 505, "len": 6, "at": {"word": "And then there's the cross", "offset": -0.3},
+       "compressor": {"threshold": 0.02, "ratio": 12, "attack": 0.5, "release": 400, "makeup": 6}, "volume": 1.2}
+    ],
+    "limiter": {"limit": 0.89, "attack": 1, "release": 60},
+    "loudnorm": {"I": -14, "TP": -1.0, "LRA": 18},
+    "tail": 7,
+    "checks": [
+      {"label": "choir swell peak", "from": 3, "to": 5, "solo": "music"},
+      {"label": "music drop before the cross", "from": "cross-0.1", "to": "cross+0.1", "solo": "music"},
+      {"label": "thunder", "from": "cross-0.2", "to": "cross+0.8"},
+      {"label": "hard-to-honor ambience (rain)", "from": "hard+1", "to": "taken-1.0", "solo": "ambience"},
+      {"label": "now music", "from": "now+1", "to": "door-1.0", "solo": "music"},
+      {"label": "end card", "from": {"mark": "lastWord", "offset": 2}, "to": {"mark": "lastWord", "offset": 5}}
+    ]
+  }
+}

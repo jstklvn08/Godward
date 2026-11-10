@@ -1,0 +1,379 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Godward: The Fourth Commandment</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="words.js"></script>
+<script src="../_kit/episode-engine.js"></script>
+<script>
+// The Ten Commandments, part 4: the fourth commandment. Script: scripts/05-the-fourth-commandment.md (ESV fill).
+// Every time below comes from the spoken words (words.js), so a new narration re-times the episode.
+// Guide: .claude/skills/godward-episode/reference/engine.md. K.E is the ellipse helper (Ell), window.E the engine.
+const {G,R,C,L,P,T,prog,ease,lerp,mix,clamp,rng}=K, Ell=K.E;
+const {hash,piece,glow,label,mark,scribble,arrow,strip,tape,torn}=S;
+const {cue,end,span,shot,ridge,verse,fade,hv,stars,fireflies,INK,YEL,CORAL}=E;
+const GOLD='#E8B53A', NEON='#2BF0FF';
+
+const AT={
+  boss:cue('Imagine a boss'), stopWorking:cue('stop working'), holiday:cue('Not for a holiday'), oneDay:cue('One whole day'),
+  fourth:cue("That's the fourth"), remember:cue('Remember the Sabbath'), keepHoly:span('to keep it holy'),
+  most:cue('Most people hear'), sunday:cue("can't do on Sunday"), gift:cue('a gift'),
+  israel:cue('Israel had just'), nobody:cue('nobody ever rested'), bricks:cue('Bricks today'), more:cue('more bricks'), noEnd:cue('no end in sight'),
+  now:cue('Now God gives'), rhythm:cue('new rhythm'), fullStop:cue('a full stop'),
+  six:cue('Six days you shall'), seventh1:span('the seventh day is a Sabbath'), onIt:cue('On it you shall'),
+  you:cue('you, or your son'), son:cue('your son'), daughter:cue('your daughter'), male:cue('your male servant'), female:cue('your female servant'),
+  livestock:cue('your livestock'), sojourner:cue('the sojourner'), gates:end('within your gates'),
+  look:cue("Look who's"), sons:cue('Sons, daughters'), animals:cue('even the animals'), nobodyLeft:cue('Nobody is left'),
+  why:cue('And why the seventh'), inSix:cue('In six days God'), heavens:cue('the heavens and the earth'), sea:cue('the sea, and'),
+  everything:cue('everything in them'), onSeventh:cue('And on the seventh'), heRested:cue('he rested'),
+  blessed:cue('So God blessed'), restedFrom:span('rested from all his work'),
+  tired:cue("God wasn't tired"), finished:cue('a finished work'), invites:cue('The Sabbath invites'), hang:cue("the world doesn't hang"),
+  forty:cue('Forty years later'), second:cue('a second reason'), youShall:cue('You shall remember'), slave1:span('you were a slave'),
+  brought:cue('brought you out from there'), therefore:cue('Therefore the LORD'),
+  slaves:cue("Slaves don't"), worth:cue('Their worth'), produce:cue('they produce'), saidIt:cue('So every Sabbath said'), notSlave:cue('not a slave any more'),
+  buried:cue('But over time'), giftBuried:cue('the gift got buried'), teachers:cue('By the time of Jesus'), piled:cue('piled careful rules'),
+  hungry:cue('hungry disciples'), picked:cue('picked some grain'), critics:cue('critics called it work'),
+  answered:cue('Jesus answered'), rightSide:cue('right side up'), madeFor:cue('The Sabbath was made for man'), notMan:cue('not man for the Sabbath'),
+  serve:cue('It was made to serve'), crush:cue('not to crush'),
+  how:cue('So how do Christians'), disagree:cue('they disagree'), adventists:cue('Seventh-day Adventists'), saturday:cue('keep Saturday'),
+  jewish:cue('Jewish families'), churches:cue('Many churches'), onSunday:cue('on Sunday, the day'), rose:cue('Jesus rose'),
+  others:cue('Others believe'), fulfilled:cue('fulfilled it'), matters:cue('rest still matters'), agree:cue('But almost all'), madeToStop:cue('made to stop'),
+  further:cue('And Jesus went further'), offered:cue('He offered the rest'), come:cue('Come to me'), giveRest:cue('give you rest'), laden:span('heavy laden'),
+  deepest:cue('the deepest Sabbath'), dayOff:cue('Not just a day off'), soul:cue('rest for the soul'),
+  earn:cue("You don't have to earn"), canStop:cue('You can stop'), never:cue('God never does'), next:cue('Next time'),
+};
+AT.last=WORDS[WORDS.length-1][2];
+
+// ---------- shared pieces (as in part 1) ----------
+const slab=(w,h)=>`M${-w/2} ${h/2}V${-h/2+w*.32}Q${-w/2} ${-h/2} 0 ${-h/2}Q${w/2} ${-h/2} ${w/2} ${-h/2+w*.32}V${h/2}Z`;
+const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+// One tablet with five carved lines (numerals + illegible carving, never a quotation). lit(i) 0..1 per line.
+function tablet(x,y,w,h,first,lit,seed){
+  const r=rng(seed);let g=G(`translate(${x} ${y})`,P(slab(w,h),'#7E7A70')+P(slab(w-24,h-24),'#9C988C')+
+    P(slab(w-24,h-24),'none',{stroke:'#5E5A52','stroke-width':3,opacity:.5}));
+  for(let i=0;i<5;i++){
+    const k=first+i,ly=y-h/2+w*.46+i*(h-w*.5)/5.2,x0=x-w/2+92,x1=x+w/2-34-r()*40,on=lit(k);
+    let d=`M${x0} ${ly}`;for(let xx=x0;xx<x1;xx+=18)d+=`L${xx+9} ${ly+(r()-.5)*6}L${xx+18} ${ly}`;
+    g+=glow((x0+x1)/2,ly,(x1-x0)*.6,'#FFD86B',.35*on);
+    g+=T(x-w/2+60,ly+12,NUM[k],{size:34,font:'Georgia',weight:700,anchor:'middle',fill:mix('#4A4740','#FFF4C8',Math.min(1,on))});
+    g+=P(d,'none',{stroke:'#4A4740','stroke-width':5,opacity:.8})+P(d,'none',{stroke:'#FFE9A8','stroke-width':3,opacity:Math.min(1,.12+.88*on).toFixed(3)});
+  }
+  return g;
+}
+const tablets=(cx,cy,s,lit)=>G(`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`,
+  glow(cx,cy,560,'#FFD86B',.12)+tablet(cx-205,cy,380,560,0,lit,21)+tablet(cx+205,cy,380,560,5,lit,33));
+const strike=(x0,y,x1,p)=>mark(`M${x0} ${y+6}L${x1} ${y-6}`,p,CORAL,9);
+// Gold foil fill (hard shine, no glow of its own). Unique id per use.
+let foilN=0;
+const foil=(t)=>{const id='foil'+(foilN++),sh=.5+.5*Math.sin(t*1.7);
+  return [`url(#${id})`,`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B0"/><stop offset="${(.3+.2*sh).toFixed(2)}" stop-color="${GOLD}"/><stop offset="1" stop-color="#8A5A12"/></linearGradient>`];};
+// A crowd of small glowing people (modest tunics). tremble = jitter amount.
+const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
+const person=(t,x,y,s,i,o={})=>{const [a,b]=TUN[i%5];return E.chubby(x,y,s,Object.assign({f:i%2===1,flip:1,tunic:a,tunic2:b,aura:'#7CFFE6',auraOp:.35,phase:i*.7,
+  hair:['#2E1C52','#4A2A16','#1A1A2A'][i%3],skin:['#F5BE8E','#D9965E','#B87444'][i%3],shade:['#C4835E','#A86A3E','#8A5230'][i%3]},o));};
+function crowd(t,x0,y,n,gap,s,o={}){
+  let g='';
+  for(let i=0;i<n;i++){
+    const tr=o.tremble?(hash(Math.floor(t*12),i)-.5)*o.tremble:0;
+    g+=person(t,x0+i*gap+tr+(i%2)*10,y+(i%3)*14,s*(.92+.16*hash(i,4)),i,{flip:o.flip||1,aura:o.aura||'#7CFFE6',auraOp:o.auraOp??.35,
+      walk:o.walk?t*7+i:0,lean:o.lean||0,reach:o.reach||0});
+  }
+  return g;
+}
+// A small cut-out on torn paper with a label underneath.
+function cutout(t,at,cx,cy,inner,name,id,o={}){
+  const w=o.w||250,h=o.h||250;
+  return piece(t,at,cx,cy,strip(cx-w/2,cy-h/2,w,h,id*7,o.paper||'#F6EFDC')+tape(cx,cy-h/2+4,90,-4)+inner+
+    label(cx,cy+h/2+14,name,{size:hv(26,34),anchor:'middle'}),id,1.4);
+}
+// Brick stack (Egypt). n = bricks shown.
+function bricks(x,y,n){let g='';let k=0;for(let i=0;i<6&&k<n;i++)for(let j=0;j<4-(i%2)&&k<n;j++,k++)g+=R(x+j*62+(i%2)*31,y-i*30,58,26,3,'#C2703A',{stroke:'#6A2E14','stroke-width':3});return g;}
+// Animals: an ox and a donkey, paper-cut, feet at (x, y).
+function ox(t,x,y,s,o={}){
+  const br=Math.sin(t*2.2)*2;
+  let g=glow(0,-90,150,o.aura||'#FFD86B',o.auraOp??0);
+  g+=R(-92,-70,22,72,8,'#5A3418')+R(52,-70,22,72,8,'#5A3418')+R(-62,-70,22,72,8,'#6E4020')+R(78,-70,22,72,8,'#6E4020');
+  g+=P(`M-110 -${100+br}Q-118 -60 -96 -58Q-40 -50 60 -56Q108 -60 110 -96Q112 -150 60 -156Q-40 -164 -96 -150Q-118 -140 -110 -${100+br}Z`,'#8A5228',{stroke:'#4A2A10','stroke-width':4});
+  g+=Ell(10,-110,40,22,'#A86A3E',{opacity:.6});
+  g+=P('M-110 -120Q-140 -110 -138 -70','none',{stroke:'#4A2A10','stroke-width':6})+Ell(-138,-66,7,11,'#3A2010');
+  g+=P('M96 -140Q140 -170 172 -136Q186 -110 176 -86Q160 -66 136 -74Q108 -86 96 -140Z','#9A5E30',{stroke:'#4A2A10','stroke-width':4});
+  g+=P('M120 -150Q104 -190 128 -196Q124 -176 136 -158Z','#F3E6C8',{stroke:'#8A7A5A','stroke-width':2})+P('M160 -150Q182 -186 160 -198Q168 -176 150 -156Z','#F3E6C8',{stroke:'#8A7A5A','stroke-width':2});
+  g+=Ell(166,-86,18,13,'#C89A72')+C(160,-88,3,'#3A2010')+C(172,-88,3,'#3A2010')+C(146,-122,5,'#1A0A04');
+  return G(`translate(${x} ${y}) scale(${s*(o.flip||1)} ${s})`,g);
+}
+function donkey(t,x,y,s,o={}){
+  const ear=Math.sin(t*1.7)*4;
+  let g=glow(0,-90,140,o.aura||'#FFD86B',o.auraOp??0);
+  g+=R(-74,-64,16,66,6,'#5E5A60')+R(46,-64,16,66,6,'#5E5A60')+R(-52,-64,16,66,6,'#77737A')+R(64,-64,16,66,6,'#77737A');
+  g+=P('M-88 -96Q-92 -56 -70 -56H70Q92 -60 92 -96Q92 -138 50 -140H-56Q-90 -138 -88 -96Z','#8E8A92',{stroke:'#3E3A42','stroke-width':4});
+  g+=Ell(0,-70,60,12,'#D8D2DA',{opacity:.6});
+  g+=P('M-88 -110Q-106 -90 -100 -64','none',{stroke:'#3E3A42','stroke-width':5});
+  g+=P('M70 -128Q96 -176 128 -170Q146 -150 140 -118Q132 -100 112 -106Q92 -112 70 -128Z','#9A96A0',{stroke:'#3E3A42','stroke-width':4});
+  g+=P(`M104 -166Q${92+ear} -224 ${104+ear} -230Q116 -206 114 -168Z`,'#8E8A92',{stroke:'#3E3A42','stroke-width':3})+P(`M120 -168Q${124+ear} -226 ${136+ear} -224Q138 -200 128 -166Z`,'#8E8A92',{stroke:'#3E3A42','stroke-width':3});
+  g+=Ell(136,-112,14,11,'#C8C2CA')+C(118,-146,4.5,'#1A1A1E');
+  return G(`translate(${x} ${y}) scale(${s*(o.flip||1)} ${s})`,g);
+}
+// A pickaxe, head at (0,0) end, handle down to the right before rotation.
+const pickaxe=(x,y,rot,s)=>G(`translate(${x} ${y}) rotate(${rot}) scale(${s})`,L(0,0,0,170,'#8A5A3A',12)+P('M-70 -6Q0 -30 70 -6L60 8Q0 -10 -60 8Z','#9AA0A8',{stroke:'#4A4E56','stroke-width':3}));
+// A week strip: seven squares, n filled, the seventh glowing gold at `g7`.
+function week(t,cx,cy,sz,n,g7){
+  let g='';const gap=sz*1.18,x0=cx-gap*3;
+  for(let i=0;i<7;i++){const x=x0+i*gap,on=clamp(n-i);
+    if(i<6)g+=R(x-sz/2,cy-sz/2,sz,sz,8,mix('#2A2638','#7CD4FF',on),{stroke:'#F6EFDC','stroke-width':4});
+    else g+=glow(x,cy,sz*1.4,'#FFD86B',.7*g7)+R(x-sz/2,cy-sz/2,sz,sz,8,mix('#2A2638','#FFD86B',g7),{stroke:'#FFF4C8','stroke-width':5});
+    g+=T(x,cy+sz*.18,String(i+1),{size:sz*.5,font:'Segoe UI Black',weight:900,anchor:'middle',fill:i<6?(on>.5?INK:'#8A86A0'):(g7>.5?INK:'#8A86A0')});}
+  return g;
+}
+
+// Ground tufts drawn inside the sheet (under the labels, unlike the engine's fore layer). Vertical only below the art.
+function tufts(t,seed,cols,flowers=[]){
+  if(!E.VERT)return '';
+  const r=rng(seed);let g='';
+  for(let i=0;i<70;i++){const x=-40+r()*2000,y=vy(1230)+r()*(1780-vy(1230)),h=18+r()*30,c=cols[i%cols.length],sw=Math.sin(t*1.1+i)*3;
+    g+=P(`M${(x-8).toFixed(0)} ${y.toFixed(0)}l${(4+sw).toFixed(1)} ${-h.toFixed(0)}M${x.toFixed(0)} ${y.toFixed(0)}l${(sw).toFixed(1)} ${(-h*1.2).toFixed(0)}M${(x+8).toFixed(0)} ${y.toFixed(0)}l${(-4+sw).toFixed(1)} ${-h.toFixed(0)}`,'none',{stroke:c,'stroke-width':4,opacity:.8});
+    if(flowers.length&&i%5===0)g+=glow(x,y-h*1.2,14,flowers[i%flowers.length],.5)+C(x,y-h*1.2,4,flowers[i%flowers.length]);}
+  return g;
+}
+
+// ---------- vertical layout ----------
+// Every vertical sheet is filmed wide (zoom .84 on 960,560), so frame position (fx, fy) maps to fixed sheet coordinates.
+// Vertical frame zones: verse cards 170-~560, art 560-1180, captions 1220-1340, lower labels 1380-1560.
+const vx=f=>960+(f-540)/.84, vy=f=>560+(f-1010)/.84;
+const X=(l,f)=>hv(l,vx(f)), Y=(l,f)=>hv(l,vy(f)), SZ=(l,f)=>hv(l,f/.84);
+const tag=(t,at,x,y,s,size,id,o={})=>piece(t,at,x,y,label(x,y-size*.81,s,Object.assign({size,anchor:'middle'},o)),id,1.3);
+const WIDE=[960,560,.84];
+
+// ---------- 0. Cold open: a boss who says stop ----------
+function coldOpen(t){
+  let g=stars(t,.4,300)+fireflies(t,0,-600,1920,700,'#FFE9A8',14,.4);
+  const glowIn=ease.out(prog(t,0,AT.boss+1)),four=ease.inOut(prog(t,AT.fourth-.2,AT.fourth+.8));
+  const lit=k=>k===3?glowIn*(.6+.6*four*(1+.15*Math.sin(t*3))):glowIn*(.6-.45*four);
+  g+=`<path d="${ridge(5,hv(930,vy(1250)),14,260)}" fill="#1E1A24"/>`;
+  const cy=Y(560,860),s=hv(1,1.3);
+  const tf=`translate(960 ${cy}) scale(${s}) translate(-960 -560)`;
+  // The fourth line is the last but one on the left tablet.
+  g+=piece(t,0,960,cy,G(tf,tablets(960,560,1,lit)+mark(scribble(755,668,230,52,4),ease.inOut(prog(t,AT.fourth,AT.fourth+.8)),CORAL,8)),1,1.2);
+  // Top band (gone before the verse): a boss who says stop, one day in seven.
+  g+=fade(t,AT.remember-.25,
+    tag(t,AT.boss+.2,960,Y(150,260),'A BOSS WHO SAYS STOP?',SZ(40,46),2,{bg:CORAL,rot:-2})+
+    G('',week(t,960,Y(260,400),SZ(70,84),7*ease.inOut(prog(t,AT.oneDay,AT.oneDay+1.4)),ease.out(prog(t,AT.oneDay+1.4,AT.oneDay+2))),prog(t,AT.oneDay-.2,AT.oneDay+.2)));
+  g+=verse(t,AT.remember-.15,420,40,['Remember the Sabbath day, to keep it holy.'],'EXODUS 20:8 ESV',{size:54,hl:'to keep it holy.',hlAt:AT.keepHoly[0],hlDur:AT.keepHoly[1]-AT.keepHoly[0],seed:5,id:4});
+  const ly=Y(900,1420),half=hv(220,300);
+  g+=fade(t,AT.israel-.4,
+    tag(t,AT.most,960,ly,"A LIST OF DON'TS?",SZ(36,44),5,{rot:-2})+strike(960-half,ly,960+half,ease.inOut(prog(t,AT.gift-.4,AT.gift+.1)))+
+    tag(t,AT.gift,960,Y(990,1530),'IT STARTED AS A GIFT',SZ(44,50),6,{bg:CORAL}));
+  return g;
+}
+
+// ---------- 1. Egypt: nobody rested ----------
+function egypt(t,lt){
+  let g=glow(1400,180,360,'#FFB04C',.7)+C(1400,180,90,'#FFC870',{opacity:.9});
+  g+=P('M260 760L560 330L860 760Z','#8A3A1E')+P('M560 330L860 760L700 760Z','#6A2A14')+P('M1060 760L1260 470L1460 760Z','#7A3218')+P('M1260 470L1460 760L1360 760Z','#5A2210');
+  g+=`<path d="${ridge(11,760,10,240)}" fill="#B0602E"/><path d="${ridge(12,860,8,180)}" fill="#8E4A22"/>`+tufts(t,1,['#7A3E1C','#A0582A','#6A3214']);
+  // The stack grows on "Bricks today" and again on "more bricks".
+  const n=Math.round(4+8*ease.out(prog(t,AT.bricks,AT.bricks+.8))+10*ease.out(prog(t,AT.more,AT.more+1.2)));
+  g+=bricks(X(1460,520),Y(820,1150),n);
+  const bend=12+Math.sin(E.held(t,8)*2.5)*4;
+  g+=crowd(t,X(260,120),Y(900,1180),hv(5,3),hv(170,170),.9,{lean:bend,aura:'#FFB04C',auraOp:.25});
+  g+=tag(t,AT.israel+.2,960,Y(120,330),'EGYPT',SZ(46,56),1);
+  g+=tag(t,AT.nobody,960,Y(220,450),'NO DAY OFF. EVER.',SZ(36,46),2,{bg:CORAL,rot:-2});
+  g+=tag(t,AT.noEnd,X(1400,540),Y(900,1430),'NO END IN SIGHT',SZ(34,42),3);
+  return g;
+}
+
+// ---------- 2. Six days, then stop: everyone in the house rests ----------
+// Household row (vertical: two rows, clear of captions and the right-hand buttons).
+function household(t,lt){
+  let g=glow(960,300,900,'#FFE9B0',.35)+fireflies(t,0,-600,1920,2300,'#FFF2C8',14,.4);
+  g+=`<path d="${ridge(21,hv(860,vy(1150)),12,240)}" fill="#7A9A4A"/>`+tufts(t,2,['#6A8A3E','#8AAA5A','#5A7A30'],['#FFD45E','#FFFFFF']);
+  // New rhythm: six days fill, the seventh glows (art zone, before the household arrives).
+  const wk=week(t,960,Y(560,720),SZ(80,96),6*ease.inOut(prog(t,AT.rhythm,AT.rhythm+1.2)),ease.out(prog(t,AT.fullStop,AT.fullStop+.6)));
+  g+=fade(t,AT.onIt-.3,G('',wk,prog(t,AT.now,AT.now+.4)));
+  g+=fade(t,AT.onIt-.3,tag(t,AT.fullStop,960,Y(900,1430),'6 DAYS WORK · 1 DAY STOP',SZ(36,44),1));
+  // Each member lights up as the verse names them.
+  const lit=a=>t<a?0:.35+.55*ease.out(prog(t,a,a+.5));
+  const row1=hv(860,vy(950)),row2=hv(860,vy(1180)),s=hv(.8,.78);
+  const P1=[[hv(260,vx(150)),'you'],[hv(450,vx(300)),'son'],[hv(640,vx(450)),'daughter'],[hv(830,vx(600)),'male'],[hv(1020,vx(750)),'female']];
+  let ppl='';
+  P1.forEach(([x,w],i)=>{ppl+=person(t,x,row1,s*(i===0?1.08:i<3?.86:1),[1,0,3,4,2][i],{f:w==='daughter'||w==='female',aura:'#FFE36B',auraOp:lit(AT[w])});});
+  const animals=ox(t,hv(1240,vx(200)),row2,hv(.75,.72),{aura:'#FFE36B',auraOp:lit(AT.livestock)})+donkey(t,hv(1490,vx(470)),row2,hv(.72,.7),{aura:'#FFE36B',auraOp:lit(AT.livestock)})+
+    person(t,hv(1700,vx(720)),row2,s,4,{aura:'#FFE36B',auraOp:lit(AT.sojourner),flip:-1,tunic:'#E0A050',tunic2:'#8A5A2A'})+
+    G('',L(hv(1745,vx(720)+45),row2-210,hv(1760,vx(720)+60),row2,'#6A4A2A',8),1);
+  g+=G('',ppl+animals,ease.out(prog(t,AT.onIt-.4,AT.onIt+.4)));
+  g+=verse(t,AT.six-.15,300,40,['Six days you shall labor, and do all your work,','but the seventh day is a Sabbath to the LORD your God.'],'EXODUS 20:9-10 ESV',{size:46,hl:'the seventh day is a Sabbath',hlAt:AT.seventh1[0],hlDur:AT.seventh1[1]-AT.seventh1[0],seed:9,id:2,end:AT.onIt-.1});
+  g+=verse(t,AT.onIt-.05,200,40,['On it you shall not do any work, you, or your son, or your daughter,','your male servant, or your female servant, or your livestock,','or the sojourner who is within your gates.'],'EXODUS 20:10 ESV',{size:44,seed:10,id:3});
+  // After the verse: who is on the list.
+  g+=tag(t,AT.sons,960,Y(920,1420),'FAMILY · SERVANTS',SZ(34,42),4);
+  g+=tag(t,AT.animals,960,Y(1000,1535),'ANIMALS · FOREIGNERS',SZ(34,42),5);
+  g+=tag(t,AT.nobodyLeft,960,Y(150,360),'EVERYONE STOPS',SZ(46,56),6,{bg:CORAL,rot:-2});
+  return g;
+}
+
+// ---------- 3. The seventh day: creation's rest ----------
+function dayIcon(k,cx,cy,r,t){
+  if(k===0)return glow(cx,cy,r*1.2,'#FFFBEA',.8)+[...Array(8)].map((_,i)=>{const a=i/8*6.283;return L(cx+Math.cos(a)*r*.3,cy+Math.sin(a)*r*.3,cx+Math.cos(a)*r*.62,cy+Math.sin(a)*r*.62,'#FFF6D0',5);}).join('');
+  if(k===1)return [0,1,2].map(i=>P(`M${cx-r*.6} ${cy-r*.2+i*r*.3}q${r*.15} ${-r*.12} ${r*.3} 0t${r*.3} 0t${r*.3} 0t${r*.3} 0`,'none',{stroke:['#7CD4FF','#3FB0FF','#2B8AE0'][i],'stroke-width':6})).join('');
+  if(k===2)return P(`M${cx-r*.7} ${cy+r*.4}Q${cx} ${cy-r*.3} ${cx+r*.7} ${cy+r*.4}Z`,'#3BBF7A')+L(cx,cy+r*.05,cx,cy-r*.45,'#2E9A62',5)+Ell(cx-r*.14,cy-r*.35,r*.16,r*.08,'#5AD890')+Ell(cx+r*.14,cy-r*.45,r*.16,r*.08,'#5AD890');
+  if(k===3)return glow(cx-r*.25,cy,r*.6,'#FFB04C',.6)+C(cx-r*.25,cy,r*.3,'#FFC24C')+P(`M${cx+r*.35} ${cy-r*.32}A${r*.32} ${r*.32} 0 1 0 ${cx+r*.35} ${cy+r*.32}A${r*.24} ${r*.24} 0 1 1 ${cx+r*.35} ${cy-r*.32}Z`,'#F3F0FF');
+  if(k===4)return P(`M${cx-r*.55} ${cy+r*.2}Q${cx-r*.25} ${cy-r*.05} ${cx+r*.05} ${cy+r*.2}Q${cx-r*.25} ${cy+r*.45} ${cx-r*.55} ${cy+r*.2}ZM${cx+r*.05} ${cy+r*.2}L${cx+r*.22} ${cy+r*.05}L${cx+r*.22} ${cy+r*.35}Z`,'#FF8F5A')+
+    P(`M${cx-r*.1} ${cy-r*.35}q${r*.15} ${-r*.18} ${r*.3} 0q${r*.15} ${-r*.18} ${r*.3} 0`,'none',{stroke:'#F6EFDC','stroke-width':5});
+  return person(t,cx-r*.22,cy+r*.55,r*.0034,1,{auraOp:0})+person(t,cx+r*.24,cy+r*.55,r*.0034,0,{auraOp:0,f:true});
+}
+const DAYPOS=k=>E.VERT?[vx([170,383,596,809,250,470,735][k]),vy([700,700,700,700,940,940,960][k])]:[[260,480,700,920,1140,1360,1660][k],[620,560,520,500,520,560,560][k]];
+function creation(t,lt){
+  let g=stars(t,.8,1080)+fireflies(t,0,-600,1920,2300,'#B8D8FF',16,.4);
+  if(E.VERT)g+=`<path d="${ridge(17,vy(1420),18,300)}" fill="#101A3A"/>`+glow(960,vy(1420),900,'#3A5AB0',.25);
+  const fillP=prog(t,AT.inSix,AT.everything+.8),r7=ease.out(prog(t,AT.heRested-.2,AT.heRested+.8));
+  for(let k=0;k<7;k++){
+    const [cx,cy]=DAYPOS(k),r=hv(k<6?78:118,k<6?92:128),on=k<6?ease.out(clamp(fillP*6-k)):r7;
+    if(k===6)g+=glow(cx,cy,r*2.4,'#FFD86B',.8*r7);
+    g+=G('',C(cx,cy,r,k<6?'#141A3A':mix('#141A3A','#FFE9A8',r7),{stroke:k<6?'#7CD4FF':'#FFD86B','stroke-width':6})+(k<6&&on>0?G('',dayIcon(k,cx,cy,r,t),on):'')+
+      T(cx,cy+r+hv(36,44),'DAY '+(k+1),{size:hv(26,34),font:'Segoe UI Black',weight:900,anchor:'middle',fill:k<6?'#CFE6FF':'#FFE9A8'}),.35+.65*Math.max(on,k===6?.6:0));
+  }
+  g+=fade(t,AT.blessed-.25,tag(t,AT.why,960,Y(150,330),'WHY THE SEVENTH DAY?',SZ(44,52),1,{bg:CORAL,rot:-2}));
+  g+=verse(t,AT.blessed-.15,300,60,['So God blessed the seventh day and made it holy,','because on it God rested from all his work','that he had done in creation.'],'GENESIS 2:3 ESV',{size:46,hl:'rested from all his work',hlAt:AT.restedFrom[0],hlDur:AT.restedFrom[1]-AT.restedFrom[0],seed:12,id:3});
+  g+=tag(t,AT.tired,960,Y(900,1420),'FINISHED, NOT TIRED',SZ(40,46),4,{bg:CORAL});
+  g+=tag(t,AT.hang,960,Y(990,1520),"THE WORLD DOESN'T HANG ON ME",SZ(32,40),5);
+  return g;
+}
+
+// ---------- 4. You were a slave: the chain breaks ----------
+function freedom(t,lt){
+  const dawn=ease.inOut(prog(t,AT.brought,AT.brought+2));
+  let g=glow(1400,180,420,mix('#FFB04C','#FFF2C8',dawn),.7+.2*dawn)+C(1400,180,90,mix('#FFC870','#FFFBEA',dawn),{opacity:.9});
+  g+=P('M260 760L560 330L860 760Z','#8A3A1E')+P('M1060 760L1260 470L1460 760Z','#7A3218');
+  g+=`<path d="${ridge(13,760,10,240)}" fill="#B0602E"/><path d="${ridge(14,860,8,180)}" fill="#8E4A22"/>`+tufts(t,3,['#7A3E1C','#A0582A','#6A3214']);
+  // A gold-foil chain across the art zone; the middle link splits on "brought you out".
+  const [F,def]=foil(t);g+=def;
+  const br=ease.out(prog(t,AT.brought,AT.brought+.9)),cy=Y(560,820);
+  let ch='';
+  for(let i=0;i<9;i++){const x=hv(560,vx(140))+i*hv(100,96),side=i<4?-1:i>4?1:0,dx=side*br*hv(120,140),dy=side?br*br*30:0;
+    if(i===4&&br>0){ch+=G(`translate(${(-br*60).toFixed(1)} ${(br*40).toFixed(1)}) rotate(${(-br*30).toFixed(1)} ${x} ${cy})`,P(`M${x-34} ${cy}A34 22 0 0 1 ${x+10} ${cy-20}`,'none',{stroke:F,'stroke-width':14}))+
+      G(`translate(${(br*60).toFixed(1)} ${(br*40).toFixed(1)}) rotate(${(br*30).toFixed(1)} ${x} ${cy})`,P(`M${x+34} ${cy}A34 22 0 0 1 ${x-10} ${cy+20}`,'none',{stroke:F,'stroke-width':14}));continue;}
+    ch+=Ell(x+dx,cy+dy,i%2?40:44,i%2?16:26,'none',{stroke:F,'stroke-width':14})+Ell(x+dx,cy+dy,i%2?40:44,i%2?16:26,'none',{stroke:'#8A5A12','stroke-width':3,opacity:.6});}
+  g+=ch+(br>0&&br<1?glow(hv(960,vx(530)),cy,300,'#FFF6DA',.8*(1-br)):'');
+  // The people walk out into the light after the break.
+  const go=ease.inOut(prog(t,AT.brought+.3,AT.therefore+2)),wx=lerp(0,hv(420,160),go);
+  g+=G(`translate(${wx.toFixed(1)} 0)`,crowd(t,X(260,60),Y(900,1180),hv(5,4),hv(170,150),.9,{lean:go>0?0:12,walk:go>0&&go<1,aura:mix('#FFB04C','#7CFFE6',dawn),auraOp:.25+.25*dawn}));
+  g+=fade(t,AT.youShall-.25,tag(t,AT.forty,960,Y(150,300),'FORTY YEARS LATER',SZ(40,48),1)+tag(t,AT.second,960,Y(240,420),'A SECOND REASON',SZ(44,52),2,{bg:CORAL,rot:-2}));
+  g+=verse(t,AT.youShall-.15,280,40,['You shall remember that you were a slave in the land of Egypt,','and the LORD your God brought you out from there with a mighty hand','and an outstretched arm. Therefore the LORD your God','commanded you to keep the Sabbath day.'],'DEUTERONOMY 5:15 ESV',{size:44,hl:'you were a slave',hlAt:AT.slave1[0],hlDur:AT.slave1[1]-AT.slave1[0],seed:14,id:3});
+  const ly=Y(900,1420),half=hv(200,260);
+  g+=fade(t,AT.notSlave-.2,tag(t,AT.slaves,X(560,540),Y(820,680),'NO DAY OFF',SZ(34,42),4,{rot:-2}));
+  g+=tag(t,AT.worth,960,ly,'WORTH = OUTPUT',SZ(36,44),5)+strike(960-half,ly,960+half,ease.inOut(prog(t,AT.notSlave-.3,AT.notSlave+.2)));
+  g+=tag(t,AT.notSlave,960,Y(990,1530),'NOT A SLAVE ANY MORE',SZ(42,48),6,{bg:CORAL});
+  return g;
+}
+
+// ---------- 5. Made for man: the grain field, the rules, Jesus' words ----------
+function wheat(seed,x0,x1,y,h,t,col){
+  const r=rng(seed);let g='';
+  for(let x=x0;x<x1;x+=26){const hh=h*(.75+r()*.4),sw=Math.sin(t*1.3+x*.01)*8,tx=x+sw;
+    g+=P(`M${x} ${y}Q${x+sw*.3} ${y-hh*.5} ${tx} ${y-hh}`,'none',{stroke:col,'stroke-width':4})+Ell(tx,y-hh-14,7,20,'#E8B53A',{transform:`rotate(${(sw*.8).toFixed(1)} ${tx} ${y-hh-14})`});}
+  return g;
+}
+const RULES=[["DON'T CARRY",-8],["DON'T WALK FAR",6],['NO WORK!',-4],['COUNT EVERY STEP',9]];
+function field(t,lt){
+  let g=glow(1500,140,360,'#FFF2C8',.5);
+  g+=`<path d="${ridge(31,hv(700,vy(1000)),16,240)}" fill="#C99C5E"/>`+tufts(t,4,['#B0864A','#D8B070','#9A7038']);
+  g+=wheat(3,-120,2040,hv(760,vy(1060)),hv(150,170),t,'#B88A3A');
+  // The disciples walk through, one picks grain.
+  const go=prog(t,AT.hungry-.4,AT.answered),wx=lerp(0,hv(380,200),go),pk=t>AT.picked&&t<AT.critics+1.2?.8:0;
+  g+=G(`translate(${wx.toFixed(1)} 0)`,crowd(t,X(300,100),Y(900,1180),hv(4,3),hv(180,170),.85,{walk:go>0&&go<1,reach:pk,aura:'#FFE36B',auraOp:.3}));
+  g+=wheat(7,-120,2040,hv(930,vy(1230)),hv(110,120),t+.7,'#D8A84A');
+  // The rules pile up over the field, then blow away on Jesus' words.
+  const away=Math.pow(prog(t,AT.madeFor+.3,AT.madeFor+1.6),2);
+  RULES.forEach(([s,rot],k)=>{const x=X([560,1360,760,1160][k],[300,690,460,620][k]),y=Y([500,560,640,700][k],[620,700,800,880][k]);
+    const inner=tag(t,AT.piled+k*.35,x,y,s,SZ(34,40),10+k,{rot,bg:'#F6EFDC',fill:INK});
+    g+=away>=1?'':G(`translate(${(away*1400).toFixed(0)} ${(-away*500).toFixed(0)}) rotate(${(away*40).toFixed(1)} ${x} ${y})`,inner,1-away);});
+  // Light behind Jesus' words (the words arrive on paper in light; he is not shown).
+  const lw=ease.out(prog(t,AT.madeFor-.5,AT.madeFor+.5));
+  if(lw>0)g+=glow(960,Y(120,140),hv(700,900),'#FFF6DA',.7*lw);
+  g+=fade(t,AT.madeFor-.25,tag(t,AT.giftBuried,960,Y(150,300),'THE GIFT, BURIED',SZ(44,52),1,{bg:CORAL,rot:-2}));
+  g+=verse(t,AT.madeFor-.15,460,60,['The Sabbath was made for man, not man for the Sabbath.'],'MARK 2:27 ESV',{size:52,hl:'made for man,',hlAt:AT.madeFor+.4,hlDur:.7,seed:16,id:4});
+  g+=fade(t,AT.serve-.2,tag(t,AT.critics,960,Y(900,1420),'"THAT COUNTS AS WORK!"',SZ(34,42),5));
+  g+=tag(t,AT.serve,960,Y(990,1430),'MADE TO SERVE, NOT CRUSH',SZ(40,46),6,{bg:CORAL});
+  return g;
+}
+
+// ---------- 6. Christians differ ----------
+function calPage(cx,cy,day,all,t){
+  let g=R(cx-90,cy-80,180,160,8,'#FFFDF5',{stroke:'#8A7A5A','stroke-width':3})+R(cx-90,cy-80,180,30,8,CORAL);
+  for(let i=0;i<7;i++){const x=cx-78+i*23,on=all?1:i===day?1:0;
+    if(on)g+=glow(x+9,cy+10,30,'#FFD86B',all?.35:.8);
+    g+=R(x,cy-6,18,36,3,on?'#FFD86B':'#E6DCC4',{stroke:on?'#C08A22':'#C8BCA0','stroke-width':2});}
+  g+=T(cx,cy+64,['S','M','T','W','T','F','S'].join('  '),{size:16,font:'Segoe UI',weight:700,anchor:'middle',fill:'#6A5A3A'});
+  if(all)g+=glow(cx,cy-40,140,'#FFF2C8',.5+.15*Math.sin(t*2));
+  return g;
+}
+const DIFF=k=>E.VERT?[vx([285,795,540][k]),vy([560,560,850][k])]:[[440,960,1480][k],560];
+function differ(t,lt){
+  let g=glow(960,540,900,'#FFE9B0',.35)+stars(t,.5,1080);
+  g+=`<path d="${ridge(23,hv(900,vy(1190)),10,240)}" fill="#1E1830"/>`+tufts(t,6,['#3A3058','#4A3E6A','#2A2244']);
+  // A small congregation at the foot of the sheet.
+  g+=crowd(t,X(380,120),Y(890,1190),hv(7,5),hv(190,160),hv(.7,.66),{aura:'#FFE9A8',auraOp:.3});
+  const items=[['SATURDAY','saturday',6,false],['SUNDAY','onSunday',0,false],['REST IN CHRIST','fulfilled',0,true]];
+  items.forEach(([name,w,day,all],k)=>{const [cx,cy]=DIFF(k);g+=cutout(t,AT[w],cx,cy,G(`translate(${cx} ${cy}) scale(1.45) translate(${-cx} ${-cy})`,calPage(cx,cy,day,all,t)),name,20+k,{w:340,h:310});});
+  g+=tag(t,AT.disagree,960,Y(150,340),'CHRISTIANS DISAGREE',SZ(44,52),1,{rot:-2});
+  const uy=Y(940,1430);
+  g+=tag(t,AT.agree,960,Y(860,1420),'BUT ALMOST ALL AGREE:',SZ(32,38),2);
+  g+=tag(t,AT.madeToStop,960,Y(960,1520),'YOU WERE MADE TO STOP',SZ(44,50),3,{bg:CORAL})+
+    mark(`M${960-hv(300,380)} ${Y(990,1580)}Q960 ${Y(1010,1600)} ${960+hv(300,380)} ${Y(985,1575)}`,ease.inOut(prog(t,AT.madeToStop+.3,AT.madeToStop+1)),CORAL,8);
+  return g;
+}
+
+// ---------- 7. Rest offered, then the end card ----------
+function rest(t,lt){
+  const restP=ease.inOut(prog(t,AT.giveRest-.2,AT.giveRest+1));
+  let g=glow(960,560,1200,'#FFE9B0',.45+.2*restP)+fireflies(t,0,-600,1920,2300,'#FFF6DA',20,.7);
+  g+=`<path d="${ridge(41,hv(860,vy(1180)),12,240)}" fill="#6AA05A"/>`+tufts(t,5,['#5A8A4A','#8AC070','#4A7A3A'],['#FF7BD5','#FFD45E','#FFFFFF']);
+  // The tired worker: pickaxe on the shoulder, then laid down; his glow brightens.
+  const wx=X(820,380),wy=Y(860,1180);
+  g+=person(t,wx,wy,hv(1.05,1.15),1,{lean:lerp(16,0,restP),aura:'#FFE36B',auraOp:.15+.6*restP,tunic:'#7CD4FF',tunic2:'#2F6FD0'});
+  g+=restP<.5?pickaxe(wx+hv(70,80),wy-hv(250,270),lerp(-30,40,restP*2),hv(1,1.1)):pickaxe(wx+hv(150,170),wy-hv(10,12),lerp(40,-80,(restP-.5)*2),hv(1,1.1));
+  g+=verse(t,AT.come-.15,300,60,['Come to me, all who labor and are heavy laden,','and I will give you rest.'],'MATTHEW 11:28 ESV',{size:50,hl:'and I will give you rest.',hlAt:AT.giveRest-.6,hlDur:1,seed:22,id:2});
+  if(t>AT.come-.6)g+=glow(960,Y(120,140),hv(700,900),'#FFF6DA',.6*ease.out(prog(t,AT.come-.6,AT.come+.4)));
+  g+=fade(t,AT.come-.25,tag(t,AT.further,960,Y(150,330),'JESUS WENT FURTHER',SZ(44,52),1,{bg:CORAL,rot:-2}));
+  g+=fade(t,AT.earn-.3,tag(t,AT.dayOff,X(560,540),Y(900,1420),'NOT JUST A DAY OFF',SZ(34,42),3)+tag(t,AT.soul,X(1360,540),Y(990,1520),'REST FOR THE SOUL',SZ(42,48),4,{bg:CORAL}));
+  g+=tag(t,AT.earn,960,Y(900,1420),'NO NEED TO EARN YOUR WORTH',SZ(32,40),5);
+  g+=tag(t,AT.canStop,960,Y(990,1520),'YOU CAN STOP',SZ(48,56),6,{bg:CORAL});
+  // The tablets return, the fourth line glowing gold.
+  const tb=ease.out(prog(t,AT.canStop-.2,AT.canStop+1));
+  if(tb>0){const ty=Y(400,600),s=hv(.6,.78),lit=k=>k===3?1.3:.4;g+=G('',glow(960,ty,700,'#FFD86B',.4*tb)+G(`translate(960 ${ty}) scale(${s}) translate(-960 -560)`,tablets(960,560,1,lit)),tb);}
+  // End card after the last word.
+  const ec=prog(t,AT.last+.6,AT.last+1.2);
+  if(ec>0){g+=G('',R(-200,-800,2400,2800,0,'#08060F',{opacity:.86})+
+    T(960,Y(380,700),'THE TEN COMMANDMENTS · PART 4',{size:SZ(40,40),font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
+    T(960,Y(470,810),'REMEMBER THE SABBATH',{size:SZ(76,70),font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
+    g+=tag(t,AT.last+1.6,960,Y(620,960),'NEXT: THE FIFTH COMMANDMENT',SZ(42,42),7,{bg:CORAL});
+    if(t>AT.last+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
+      .forEach((ln,i)=>{g+=T(960,Y(760,1080)+i*SZ(34,36),ln,{size:SZ(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});}
+  return g;
+}
+
+const wide=(a,b)=>[shot(a,b,...WIDE)];
+E.start({
+  cast:{},
+  sheets:[
+    {name:'cold open',draw:coldOpen,bg:['#1A1622','#07060C'],cam:wide(0,AT.israel-.3)},
+    {name:'egypt',at:AT.israel-.1,draw:egypt,bg:['#5A1410','#C2451E'],stars:false,
+     cam:wide(AT.israel,AT.now-.3)},
+    {name:'household',at:AT.now-.1,draw:household,bg:['#F2D79A','#C98E4A'],stars:false,
+     cam:wide(AT.now,AT.why-.3)},
+    {name:'seventh day',at:AT.why-.1,draw:creation,bg:['#0E1A4A','#060A20'],cam:wide(AT.why,AT.forty-.3)},
+    {name:'you were a slave',at:AT.forty-.1,draw:freedom,bg:['#5A1410','#C2451E'],stars:false,
+     cam:wide(AT.forty,AT.buried-.3)},
+    {name:'made for man',at:AT.buried-.1,draw:field,bg:['#E2C48A','#A9783E'],stars:false,
+     cam:wide(AT.buried,AT.how-.3)},
+    {name:'christians differ',at:AT.how-.1,draw:differ,bg:['#2A2240','#120E22'],cam:wide(AT.how,AT.further-.3)},
+    {name:'rest offered',at:AT.further-.1,draw:rest,bg:['#FFE9B0','#E8A060'],stars:false,vIn:'cut',
+     cam:wide(AT.further,AT.last+6)},
+  ],
+  talk:[],
+  focus:[[AT.stopWorking,.8],[AT.gift,.7],[AT.nobody,.8],[AT.nobodyLeft,.6],[AT.heRested,1.0],[AT.brought,1.0],[AT.notSlave,.7],[AT.madeFor,1.0],[AT.madeToStop,.7],[AT.giveRest,1.0],[AT.canStop,.8]],
+  flashes:[[AT.further-.1,.9,'#FFFBEC']],
+  tail:7,
+  fadeOut:1.2,
+});
+</script>
