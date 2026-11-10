@@ -163,9 +163,10 @@
   "section": 3,
   "mode": "talk",
   "text": "The first words aren't a command at all.",
-  "seed": 1,
-  "words_per_second": 3.43,
-  "in_range": true
+  "seed": 7,
+  "words_per_second": 3.59,
+  "in_range": true,
+  "word_check": "match"
  },
  "s03-03-grave-3f588b.wav": {
   "section": 3,
@@ -411,9 +412,10 @@
   "section": 7,
   "mode": "talk",
   "text": "We don't melt down earrings any more.",
-  "seed": 1,
-  "words_per_second": 3.85,
-  "in_range": true
+  "seed": 5,
+  "words_per_second": 3.76,
+  "in_range": true,
+  "word_check": "match"
  },
  "s07-02-story-3a3a1a.wav": {
   "section": 7,
@@ -526,5 +528,13 @@
   "seed": 1,
   "words_per_second": 3.18,
   "in_range": true
+ },
+ "s02-02-grave-b3ea40.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "The smoke of it went up like the smoke of a kiln, and the whole mountain trembled greatly.",
+  "seed": 2,
+  "words_per_second": 3.02,
+  "in_range": false
  }
 }
