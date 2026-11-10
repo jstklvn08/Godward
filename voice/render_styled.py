@@ -157,8 +157,9 @@ def passages_with_pauses(section: int, text: str) -> list[tuple[str, str, float]
     marker = re.compile("|".join(re.escape(m) for m in MARKERS))
     out: list[list] = []
     # Clean the text first (quotes, pronunciations), then split, so sentences ending in a quote split.
+    # A delivery tag in the middle of a line (after "and said:") starts a new passage.
     # Also split after a pause marker, so a marker at the end of a line pauses after that sentence, not the next.
-    for sentence in re.split(r"(?<=[.?!])\s+|(?<=\[beat\])\s+|(?<=\[pause\])\s+|(?<=\[hold\])\s+", render_full.to_speech(text)):
+    for sentence in re.split(r"(?<=[.?!])\s+|(?<=\[beat\])\s+|(?<=\[pause\])\s+|(?<=\[hold\])\s+|\s+(?=\[(?:grave|talk|story|pivot)\])", render_full.to_speech(text)):
         extra = sum(MARKERS[m] for m in marker.findall(sentence))
         sentence = marker.sub("", sentence).strip()
         if not sentence:

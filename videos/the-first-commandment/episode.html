@@ -8,7 +8,7 @@
 <script src="words.js"></script>
 <script src="../_kit/episode-engine.js"></script>
 <script>
-// The Ten Commandments, part 1: the first commandment. Script: scripts/02-the-first-commandment.md (KJV fill).
+// The Ten Commandments, part 1: the first commandment. Script: scripts/02-the-first-commandment.md (ESV fill).
 // Every time below comes from the spoken words (words.js), so a new narration re-times the episode.
 // Guide: .claude/skills/godward-episode/reference/engine.md. K.E is the ellipse helper (Ell), window.E the engine.
 const {G,R,C,L,P,T,prog,ease,lerp,mix,clamp,rng}=K, Ell=K.E;
@@ -19,19 +19,19 @@ const GOLD='#E8B53A', NEON='#2BF0FF';
 const AT={
   ten:cue('There are ten'), oneFirst:cue('But one of them'), hangs:cue('hangs'),
   murder:cue('murder'), steal:cue('steal'), itsThis:cue("It's this"),
-  v203a:cue('Thou shalt have',1), religions:cue('religions'), list:cue('on your list'), bigger:cue('bigger than both'),
+  v203a:cue('You shall have',1), religions:cue('religions'), list:cue('on your list'), bigger:cue('bigger than both'),
   understand:cue('To understand'), heard:cue('who heard it'), slaves:cue('slaves'), walked:cue('walked out'),
   through:cue('through the middle'), sea:cue('of the sea'),
   saved:cue('Thus the LORD saved'), earn:cue("They didn't earn"), rescued:cue('They were rescued'),
   months:cue('three months'), sinai:cue('called Sinai'),
-  mount:cue('And mount Sinai'), fire:cue('in fire'), furnace:cue('furnace'), quaked:cue('quaked'),
+  mount:cue('Now Mount Sinai'), fire:cue('in fire'), furnace:cue('kiln'), quaked:cue('trembled greatly'),
   line:cue('behind a line'), trembling:cue('trembling'), outOf:cue('out of the fire'), speaks:cue('God speaks'),
   strange:cue("Here's the strange"), firstWords:cue('The first words'), iam:cue('I am the LORD'),
-  broughtOut:span('brought thee out'), bondageEnd:end('bondage'),
+  broughtOut:span('brought you out'), bondageEnd:end('house of slavery'),
   tells:cue('Before God tells'), already:cue('already done'),
   rescueFirst:cue('The rescue comes first'), rulesSecond:cue('The rules come second'),
   earning:cue('earning'), haveIt:cue('already have it'),
-  thenComes:cue('And then comes'), v203b:cue('Thou shalt have',2), noOther2:span('no other gods',2),
+  thenComes:cue('And then comes'), v203b:cue('You shall have',2), noOther2:span('no other gods',2),
   raised:cue('raised in Egypt'), everything:cue('gods for everything'),
   sun:cue('The sun'), river:cue('The river'), harvest:cue('The harvest'), king:cue('The king'),
   spread:cue('spread your trust'), beat:cue('just beat Egypt'), notHere:cue('not here'), dividing:cue('No dividing'), backup:cue('No backup'),
@@ -39,12 +39,12 @@ const AT={
   myFace:cue('before my face'), isnt:cue("It isn't God first"), room:cue('no one else in the room'),
   ranking:cue("isn't a ranking"), relationship:cue("It's a relationship"),
   broke:cue('And Israel broke'), forty:cue('forty days'), waiting:cue('tired of waiting'), melted:cue('melted'), calf:cue('into a calf'),
-  these:cue('These be thy gods'), twist:cue("Here's the twist"), feast:cue('feast'), leaving:cue('leaving God'),
+  these:cue('These are your gods'), twist:cue("Here's the twist"), feast:cue('feast'), leaving:cue('leaving God'),
   adding:cue('adding something'), see:cue('could see'), ruledOut:cue('ruled out'),
   melt:cue("We don't melt"), pull:cue('the pull'), money:cue('Money'), approval:cue('Approval'), success:cue('Success'), planB:cue('A plan B'),
-  goodThings:cue('Good things'), psalm:cue('A psalm'), theyThat:cue('They that make'), become:cue('You become'),
+  goodThings:cue('Good things'), psalm:cue('A psalm'), theyThat:cue('Those who make'), become:cue('You become'),
   centuries:cue('Centuries later'), greatest:cue('the greatest'), newRule:cue('a new rule'), insideOut:cue('inside out'),
-  love:cue('Thou shalt love'), heart:span('with all thy heart'), mind:end('all thy mind'),
+  love:cue('You shall love'), heart:span('with all your heart'), mind:end('all your mind'),
   fence:cue('is the fence'), field:cue('the field inside'), rescuedYou:cue('who rescued you'), share:cue('a share'), allOfIt:cue('all of it'),
 };
 AT.last=WORDS[WORDS.length-1][2];
@@ -136,7 +136,7 @@ function coldOpen(t){
   const m1=Y(330,300),m2=Y(450,420),half=hv(170,250);
   g+=fade(t,AT.v203a-.2,tag(t,AT.murder,lx,m1,'DO NOT MURDER?',ls,2,{rot:-3})+strike(lx-half,m1,lx+half,ease.inOut(prog(t,AT.steal-.5,AT.steal)))+
     tag(t,AT.steal,lx,m2,'DO NOT STEAL?',ls,3,{rot:2})+strike(lx-half*.9,m2,lx+half*.9,ease.inOut(prog(t,AT.itsThis-.3,AT.itsThis+.2))));
-  g+=verse(t,AT.v203a-.15,380,40,['Thou shalt have no other gods before me.'],'EXODUS 20:3 KJV',{size:52,hl:'no other gods',hlAt:AT.v203a+.6,hlDur:.9,seed:5,id:4});
+  g+=verse(t,AT.v203a-.15,380,40,['You shall have no other gods before me.'],'EXODUS 20:3 ESV',{size:52,hl:'no other gods',hlAt:AT.v203a+.6,hlDur:.9,seed:5,id:4});
   // Two common readings, both too small.
   g+=fade(t,AT.understand-.4,
     tag(t,AT.religions,X(420,540),Y(900,1420),'"NO OTHER RELIGIONS"',SZ(32,40),5,{rot:-2})+
@@ -173,7 +173,7 @@ function sea(t,lt){
   // The far shore at the bottom, the people looking back.
   g+=`<path d="${ridge(41,Y(940,1380),16,260)}" fill="#C9A060"/>`;
   g+=crowd(t,X(560,40),Y(1010,1590),6,hv(150,170),hv(.75,.85),{aura:'#7CFFE6',auraOp:.45});
-  g+=verse(t,AT.saved-.15,330,60,['Thus the LORD saved Israel that day','out of the hand of the Egyptians.'],'EXODUS 14:30 KJV',{size:48,hl:'saved Israel',hlAt:AT.saved+.5,hlDur:.8,seed:8,id:5});
+  g+=verse(t,AT.saved-.15,330,60,['Thus the LORD saved Israel that day','from the hand of the Egyptians.'],'EXODUS 14:30 ESV',{size:48,hl:'saved Israel',hlAt:AT.saved+.5,hlDur:.8,seed:8,id:5});
   const ex=X(560,540),ey=Y(760,660);
   g+=tag(t,AT.earn,ex,ey,'NOT EARNED',SZ(38,46),2)+strike(ex-hv(140,190),ey,ex+hv(140,190),ease.inOut(prog(t,AT.rescued-.2,AT.rescued+.3)));
   g+=tag(t,AT.rescued,X(1360,540),Y(760,800),'RESCUED',SZ(48,58),3,{bg:CORAL,rot:-3});
@@ -199,7 +199,7 @@ function sinai(t,lt){
   g+=crowd(t,X(260,40),Y(1010,1640),hv(9,6),hv(180,165),.82,{tremble:t>AT.trembling?10:0,aura:'#7CFFE6',auraOp:t>AT.trembling?.5+.2*Math.sin(t*14):.3});
   g+=fade(t,hv(1e9,AT.mount-.3),tag(t,AT.sinai,X(1500,540),Y(520,640),'MOUNT SINAI',SZ(40,50),1));
   g+=fade(t,AT.mount-.3,tag(t,AT.months,X(1500,540),Y(600,520),'3 MONTHS LATER',SZ(30,40),2,{bg:CORAL}));
-  g+=verse(t,AT.mount-.15,280,40,['And mount Sinai was altogether on a smoke, because the LORD','descended upon it in fire: and the smoke thereof ascended','as the smoke of a furnace, and the whole mount quaked greatly.'],'EXODUS 19:18 KJV',{size:40,hl:'quaked greatly.',seed:12,id:3,hlAt:AT.quaked,hlDur:.8});
+  g+=verse(t,AT.mount-.15,280,40,['Now Mount Sinai was wrapped in smoke because the LORD','had descended on it in fire. The smoke of it went up like','the smoke of a kiln, and the whole mountain trembled greatly.'],'EXODUS 19:18 ESV',{size:40,hl:'trembled greatly.',seed:12,id:3,hlAt:AT.quaked,hlDur:.8});
   return g;
 }
 
@@ -209,7 +209,7 @@ function summit(t,lt){
   for(let i=0;i<16;i++){const a=i/16*6.283+t*.05;g+=P(`M960 520L${(960+Math.cos(a)*1800).toFixed(0)} ${(520+Math.sin(a)*1800).toFixed(0)}L${(960+Math.cos(a+.08)*1800).toFixed(0)} ${(520+Math.sin(a+.08)*1800).toFixed(0)}Z`,'#FFF6DA',{opacity:.12});}
   g+=fireflies(t,0,-600,1920,2300,'#FFE9A8',22,.6);
   g+=fade(t,hv(AT.rescueFirst-.2,AT.iam-.2),tag(t,AT.firstWords,960,Y(820,660),"THE FIRST WORDS AREN'T A COMMAND",SZ(34,40),1));
-  g+=verse(t,AT.iam-.15,260,140,['I am the LORD thy God, which have brought thee out','of the land of Egypt, out of the house of bondage.'],'EXODUS 20:2 KJV',{size:46,hl:'brought thee out',hlAt:AT.broughtOut[0],hlDur:AT.broughtOut[1]-AT.broughtOut[0],seed:14,id:2,end:AT.rulesSecond-.3});
+  g+=verse(t,AT.iam-.15,260,140,['I am the LORD your God, who brought you out','of the land of Egypt, out of the house of slavery.'],'EXODUS 20:2 ESV',{size:46,hl:'brought you out',hlAt:AT.broughtOut[0],hlDur:AT.broughtOut[1]-AT.broughtOut[0],seed:14,id:2,end:AT.rulesSecond-.3});
   g+=fade(t,AT.rescueFirst-.2,tag(t,AT.bondageEnd+.1,X(1480,540),Y(470,640),'NOT A RULE',SZ(40,50),3,{bg:CORAL,rot:-4})+
     tag(t,AT.tells+.6,X(560,540),Y(560,800),'WHO I AM.',SZ(44,54),4)+
     tag(t,AT.already-.2,X(1360,540),Y(560,920),'WHAT I DID.',SZ(44,54),5));
@@ -233,7 +233,7 @@ function godArt(k,cx,cy){
 const GRID=k=>E.VERT?[vx([300,780,300,780][k]),vy([700,700,1040,1040][k])]:[[300,740,1180,1620][k],800];
 function noOther(t,lt){
   let g=glow(960,540,700,'#3A2A6A',.5)+stars(t,.3,1080);
-  g+=verse(t,AT.v203b-.15,420,420,['Thou shalt have no other gods before me.'],'EXODUS 20:3 KJV',{size:56,hl:'no other gods',hlAt:AT.noOther2[0],hlDur:AT.noOther2[1]-AT.noOther2[0],seed:5,id:4,end:AT.look-.3});
+  g+=verse(t,AT.v203b-.15,420,420,['You shall have no other gods before me.'],'EXODUS 20:3 ESV',{size:56,hl:'no other gods',hlAt:AT.noOther2[0],hlDur:AT.noOther2[1]-AT.noOther2[0],seed:5,id:4,end:AT.look-.3});
   g+=tag(t,AT.thenComes,960,Y(150,480),'THE FIRST COMMAND',SZ(40,44),1,{bg:CORAL});
   GODS.forEach(([name,w],k)=>{
     const [cx,cy]=GRID(k),xp=ease.inOut(prog(t,AT.notHere+k*.25,AT.notHere+k*.25+.4));
@@ -290,7 +290,7 @@ function camp(t,lt){
   g+=G(`translate(0 ${dy.toFixed(1)})`,c);
   const cy=Y(1010,1640),re=t>AT.feast?.8:0;
   g+=crowd(t,X(260,30),cy,hv(4,3),hv(150,140),.8,{reach:re})+crowd(t,X(1260,640),cy,hv(4,3),hv(150,140),.8,{flip:-1,reach:re});
-  g+=verse(t,AT.these-.15,330,40,['These be thy gods, O Israel, which brought thee','up out of the land of Egypt.'],'EXODUS 32:4 KJV',{size:48,hl:'These be thy gods,',hlAt:AT.these,hlDur:.9,seed:16,id:6});
+  g+=verse(t,AT.these-.15,330,40,['These are your gods, O Israel, who brought you','up out of the land of Egypt!'],'EXODUS 32:4 ESV',{size:48,hl:'These are your gods,',hlAt:AT.these,hlDur:.9,seed:16,id:6});
   const ly=Y(560,1420);
   g+=tag(t,AT.leaving,X(500,540),ly,'LEAVING GOD?',SZ(34,42),3)+strike(X(500,540)-hv(130,170),ly,X(500,540)+hv(130,170),ease.inOut(prog(t,AT.adding-.3,AT.adding+.2)));
   g+=tag(t,AT.adding,X(1420,540),Y(560,1520),'ADDING SOMETHING',SZ(38,46),4,{bg:CORAL});
@@ -313,7 +313,7 @@ function modern(t,lt){
   items.forEach(([name,w,fn],k)=>{const [cx,cy]=GRID(k);g+=cutout(t,AT[w],cx,cy,fn(cx,cy,F),name,20+k,{w:250,h:250,paper:'#2A2018'});});
   g+=fade(t,hv(1e9,AT.theyThat-.3),tag(t,AT.melt,960,Y(150,480),'THE PULL IS THE SAME',SZ(40,44),1));
   g+=fade(t,AT.become-.2,tag(t,AT.goodThings,960,Y(860,1420),'GOOD THINGS · THE WRONG PLACE',SZ(38,40),2,{bg:CORAL}));
-  g+=verse(t,AT.theyThat-.15,320,140,['They that make them are like unto them;','so is every one that trusteth in them.'],'PSALM 115:8 KJV',{size:50,hl:'trusteth in them.',seed:19,id:7,hlAt:AT.become-1.6,hlDur:.8});
+  g+=verse(t,AT.theyThat-.15,320,140,['Those who make them become like them;','so do all who trust in them.'],'PSALM 115:8 ESV',{size:50,hl:'trust in them.',seed:19,id:7,hlAt:AT.become-1.6,hlDur:.8});
   g+=tag(t,AT.become,960,Y(940,1440),'YOU BECOME LIKE WHAT YOU TRUST',SZ(42,40),3);
   return g;
 }
@@ -332,8 +332,8 @@ function heartSheet(t,lt){
     tag(t,AT.field,X(1540,790),Y(560,1440),'THE FIELD',SZ(38,44),2,{bg:'#1E9A5A'}));
   g+=fade(t,AT.fence-.4,tag(t,AT.newRule,960,Y(860,1430),'NOT A NEW RULE',SZ(36,42),3)+
     tag(t,AT.insideOut,960,Y(930,1520),'THE FIRST ONE, INSIDE OUT',SZ(36,42),6,{bg:CORAL}));
-  g+=verse(t,AT.centuries+.5,300,40,['Thou shalt have no other gods before me.'],'EXODUS 20:3 KJV',{size:44,seed:5,id:8,end:AT.fence-.4});
-  g+=verse(t,AT.love-.15,240,220,['Thou shalt love the Lord thy God with all thy heart,','and with all thy soul, and with all thy mind.'],'MATTHEW 22:37 KJV',{size:46,hl:'with all thy heart,',hlAt:AT.heart[0],hlDur:AT.heart[1]-AT.heart[0],seed:22,id:9});
+  g+=verse(t,AT.centuries+.5,300,40,['You shall have no other gods before me.'],'EXODUS 20:3 ESV',{size:44,seed:5,id:8,end:AT.fence-.4});
+  g+=verse(t,AT.love-.15,240,220,['You shall love the Lord your God with all your heart','and with all your soul and with all your mind.'],'MATTHEW 22:37 ESV',{size:46,hl:'with all your heart',hlAt:AT.heart[0],hlDur:AT.heart[1]-AT.heart[0],seed:22,id:9});
   // The tablets return, the first line brightest.
   const tb=ease.out(prog(t,AT.share-.2,AT.share+1));
   if(tb>0){const ty=Y(420,640),s=hv(.62,.9),lit=k=>k===0?1.2:.5;g+=G('',glow(960,ty,700,'#FFD86B',.4*tb)+G(`translate(960 ${ty}) scale(${s}) translate(-960 -560)`,tablets(960,560,1,lit)),tb);}
@@ -344,7 +344,8 @@ function heartSheet(t,lt){
     T(960,Y(380,700),'THE TEN COMMANDMENTS · PART 1',{size:SZ(40,40),font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
     T(960,Y(470,810),'NO OTHER GODS',{size:SZ(84,84),font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
     g+=tag(t,AT.last+1.6,960,Y(620,960),'NEXT: THE SECOND COMMANDMENT',SZ(42,42),5,{bg:CORAL});
-    if(t>AT.last+2.4)g+=T(960,Y(760,1100),'Scripture quotations from the King James Version.',{size:SZ(26,28),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});}
+    if(t>AT.last+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
+      .forEach((ln,i)=>{g+=T(960,Y(760,1080)+i*SZ(34,36),ln,{size:SZ(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});}
   return g;
 }
 

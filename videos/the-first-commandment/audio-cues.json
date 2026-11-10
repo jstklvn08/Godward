@@ -46,7 +46,7 @@
         {"inst": "bell", "repeat": {"from": 0.4, "to": 7.2, "every": 0.32, "shift": 0.2}, "seq": [86, 90, 93, 98], "lv": 0.55, "pan": "random", "dec": 3},
         {"inst": "bell", "motif": "ONE", "at": {"word": "But one of them"}, "step": 0.7, "transpose": 12, "lv": 0.7, "pan": 0.5, "dec": 3},
         {"inst": "pad", "repeat": {"from": 7.4, "to": "egypt", "every": 4}, "chords": [[50, 57, 62, 66], [47, 54, 59, 62], [43, 50, 55, 59], [45, 52, 57, 61]], "hold": 4.3, "lv": 0.7, "bright": 0.5, "a": 1.2, "r": 0.6},
-        {"inst": "choir", "at": {"word": "Thou shalt have", "n": 1, "offset": -0.3}, "to": {"word": "Thou shalt have", "n": 1, "offset": 3.5}, "notes": [62, 66, 69, 74], "lv": 0.8, "att": 0.8, "rel": 1.5},
+        {"inst": "choir", "at": {"word": "You shall have", "n": 1, "offset": -0.3}, "to": {"word": "You shall have", "n": 1, "offset": 3.5}, "notes": [62, 66, 69, 74], "lv": 0.8, "att": 0.8, "rel": 1.5},
 
         {"scene": "egypt"},
         {"inst": "pad", "at": "egypt", "to": "sea", "notes": [38, 45, 50, 53], "lv": 0.8, "bright": 0.3, "a": 1.5, "r": 1},
@@ -62,7 +62,7 @@
 
         {"scene": "sinai"},
         {"inst": "pad", "at": "sinai", "to": "speaks", "notes": [26, 33, 38, 45], "lv": 0.9, "bright": 0.3, "a": 2, "r": 1},
-        {"inst": "noiseBed", "at": {"word": "And mount Sinai"}, "to": "speaks", "fc": 120, "lv": 1.2, "q": 0.8, "mod": 0.5},
+        {"inst": "noiseBed", "at": {"word": "Now Mount Sinai"}, "to": "speaks", "fc": 120, "lv": 1.2, "q": 0.8, "mod": 0.5},
         {"inst": "tremolo", "at": {"word": "behind a line"}, "to": "speaks-0.6", "notes": [50, 53, 57, 62], "lv": 1.1},
 
         {"scene": "summit"},
@@ -74,7 +74,7 @@
 
         {"scene": "first-command"},
         {"inst": "pad", "repeat": {"from": "first", "to": "face", "every": 4}, "chords": [[38, 50, 57, 62], [34, 46, 53, 58], [36, 48, 55, 60], [33, 45, 52, 57]], "hold": 4.3, "lv": 0.75, "bright": 0.4, "a": 1.2, "r": 0.6},
-        {"inst": "choir", "at": {"word": "Thou shalt have", "n": 2, "offset": -0.3}, "to": {"word": "Thou shalt have", "n": 2, "offset": 3.5}, "notes": [62, 66, 69, 74], "lv": 0.9, "att": 0.6, "rel": 1.5},
+        {"inst": "choir", "at": {"word": "You shall have", "n": 2, "offset": -0.3}, "to": {"word": "You shall have", "n": 2, "offset": 3.5}, "notes": [62, 66, 69, 74], "lv": 0.9, "att": 0.6, "rel": 1.5},
         {"inst": "pluck", "at": [{"word": "The sun"}, {"word": "The river"}, {"word": "The harvest"}, {"word": "The king"}], "notes": [62, 66, 69], "strum": 0.08, "lv": 0.6, "pan": 0.5, "len": 1.2, "bright": 0.6},
         {"inst": "drum", "at": [{"word": "not here"}, {"word": "not here", "offset": 0.25}, {"word": "not here", "offset": 0.5}, {"word": "not here", "offset": 0.75}], "lv": 1.6, "f0": 50},
 
@@ -100,7 +100,7 @@
         {"scene": "heart"},
         {"inst": "pad", "repeat": {"from": "heart", "to": {"mark": "lastWord", "offset": 0.5}, "every": 3.6}, "chords": [[43, 55, 59, 62, 67], [40, 52, 55, 59, 64], [36, 48, 55, 60, 64], [38, 50, 54, 57, 62]], "hold": 3.9, "holdClip": false, "lv": 0.8, "bright": 0.5, "a": 1.2, "r": 0.6},
         {"inst": "flute", "motif": "ONE", "at": {"word": "inside out", "offset": 0.4}, "step": 0.8, "transpose": 12, "len": 0.6, "lv": 1.0, "pan": 0.5},
-        {"inst": "choir", "at": {"word": "Thou shalt love", "offset": -0.3}, "to": {"word": "all thy mind", "edge": "end", "offset": 1.2}, "notes": [62, 66, 69, 74], "lv": 1.0, "att": 1, "rel": 1.5},
+        {"inst": "choir", "at": {"word": "You shall love", "offset": -0.3}, "to": {"word": "all your mind", "edge": "end", "offset": 1.2}, "notes": [62, 66, 69, 74], "lv": 1.0, "att": 1, "rel": 1.5},
         {"inst": "bell", "at": {"word": "the field inside"}, "note": 83, "lv": 0.6, "pan": 0.6, "dec": 3},
         {"comment": "'all of it': the warmest chord, held under the end card", "inst": "pad", "at": {"word": "all of it"}, "to": {"mark": "lastWord", "offset": 6.5}, "notes": [43, 55, 59, 62, 67, 71, 74], "lv": 1, "bright": 0.6, "a": 0.8, "r": 2},
         {"inst": "choir", "at": {"word": "all of it"}, "to": {"mark": "lastWord", "offset": 6.0}, "notes": [67, 71, 74, 79], "lv": 0.9, "att": 1, "rel": 2},
@@ -130,7 +130,7 @@
 
         {"scene": "sinai"},
         {"inst": "wind", "at": "sinai", "to": "speaks", "lv": 0.7, "fc": 280},
-        {"inst": "rumble", "at": {"word": "And mount Sinai"}, "to": "speaks", "lv": 0.8},
+        {"inst": "rumble", "at": {"word": "Now Mount Sinai"}, "to": "speaks", "lv": 0.8},
         {"inst": "flame", "at": {"word": "in fire", "offset": -0.2}, "to": "speaks", "lv": 1.2, "pan": 0.5},
 
         {"scene": "summit"},
@@ -172,8 +172,8 @@
           "lv": 0.8, "pan": {"rand": [0.35, 0.65]}},
         {"comment": "strikes, Xs, scribbles, highlights: soft swish", "inst": "swish", "at": [
           {"word": "hangs"}, {"word": "steal", "offset": -0.5}, {"word": "It's this", "offset": -0.3}, {"word": "They were rescued", "offset": -0.2},
-          {"word": "brought thee out"}, {"word": "The rules come second", "offset": -0.3}, {"word": "not here"}, {"word": "little word"},
-          {"word": "no one else in the room", "offset": -0.2}, {"word": "These be thy gods"}, {"word": "adding something", "offset": -0.3}, {"word": "ruled out"}],
+          {"word": "brought you out"}, {"word": "The rules come second", "offset": -0.3}, {"word": "not here"}, {"word": "little word"},
+          {"word": "no one else in the room", "offset": -0.2}, {"word": "These are your gods"}, {"word": "adding something", "offset": -0.3}, {"word": "ruled out"}],
           "len": 0.6, "lv": 0.5, "pan": 0.5},
         {"comment": "sheet changes: whoosh 0.4 s before each", "inst": "whoosh", "at": ["egypt-0.4", "sea-0.4", "sinai-0.4", "summit-0.4", "first-0.4", "face-0.4", "camp-0.4", "modern-0.4", "heart-0.4"], "len": 0.8, "lv": 0.75, "pan": 0.5},
         {"comment": "the first line lights", "inst": "sparkle", "at": {"word": "But one of them"}, "len": 2, "lv": 1, "pan": 0.45},
