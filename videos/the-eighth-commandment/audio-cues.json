@@ -1,0 +1,204 @@
+{
+  "_doc": "Soundtrack for 'The Eighth Commandment' (Ten Commandments part 8). Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue, so re-voicing re-times the sound.",
+  "episode": "the-eighth-commandment",
+  "words": "words.js",
+  "duration": {"word": "name", "n": -1, "edge": "end", "offset": 7},
+  "marks": {
+    "steal": {"word": "You shall not steal"},
+    "land": {"word": "When Israel heard", "offset": -0.1},
+    "jericho": {"word": "And the first time", "offset": -0.1},
+    "tent": {"word": "Most stealing", "offset": -0.1},
+    "edges": {"word": "But here's the surprising", "offset": -0.1},
+    "city": {"word": "Centuries later", "offset": -0.1},
+    "share": {"word": "The apostle Paul", "offset": -0.1},
+    "hands": {"word": "The God who gave", "offset": -0.1},
+    "lastWord": {"word": "name", "n": -1, "edge": "end"}
+  },
+  "motifs": {
+    "GIVE": [62, 66, 69, 74],
+    "TAKE": [62, 61, 58, 57]
+  },
+  "scenes": [
+    {"name": "cold-open", "start": 0, "screen": "two tablets, the eighth line lit and circled; Exodus 20:15; a closed fist and an opening hand", "music": "choir and high bells to open; SILENCE before 'You shall not steal'; GIVE motif on bells at 'what are your hands for'", "sound": "low wind, shimmer as the eighth line lights; thunder under the verse"},
+    {"name": "land", "start": "land", "screen": "freed slaves, then a torn map of family plots: field, vineyard, flock, home", "music": "warm pastoral pad, flute GIVE motif as the plots arrive", "sound": "open-air wind, birds, a sheep at 'A flock'"},
+    {"name": "jericho", "start": "jericho", "screen": "fallen walls, the treasure, Achan; SAW / WANTED / TOOK / HID; the treasure sinks under the tent", "music": "minor drone, TAKE motif on piano at 'I coveted them'; four low drum hits on saw, wanted, took, hid", "sound": "hot wind, sand; dust and a thump when the treasure is hidden"},
+    {"name": "tent", "start": "tent", "screen": "inside a dark tent: a money bag crossed out, then homework, extra change, credit tucked under the floor", "music": "sparse detuned piano, cold pad", "sound": "faint wind; a soft rustle as the things slide under"},
+    {"name": "edges", "start": "edges", "screen": "a wheat field from above, reaped but for the glowing edges; grapes left; gleaners come", "music": "bright pad, pluck pattern, choir at 'for the poor'", "sound": "wind in grain (rustle), birds"},
+    {"name": "city", "start": "city", "screen": "Jericho again: Zacchaeus in a tree, a warm light comes, coins pour out x4; then a closed fist and an open hand", "music": "warm pad, pluck; choir under Zacchaeus' words; bells as the coins pour; GIVE motif on flute at 'opposite hands'", "sound": "crowd steps, wind, rustle in the tree"},
+    {"name": "share", "start": "share", "screen": "a work bench, hammer, saw, a loaf broken to share; Ephesians 4:28; two hands open and lights drift out", "music": "warm pad, piano GIVE motif; swell at 'It's opening them'", "sound": "warm wind, shimmer, sparkle as the hands open"},
+    {"name": "hands", "start": "hands", "screen": "the tablets, the question, hands that open; the ninth line warms; end card", "music": "full warm chords, choir, GIVE motif on flute; held chord under the end card", "sound": "warm wind, birds"}
+  ],
+
+  "stems": {
+    "score": {
+      "seed": 2088,
+      "reverb": {"room": 0.87, "damp": 0.32, "wet": 0.38},
+      "autoLevel": {"window": 0.1, "smooth": 15, "min": 0.35, "max": 4},
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2.5},
+      "events": [
+        {"scene": "cold-open"},
+        {"inst": "pad", "at": 0, "to": "land", "notes": [38, 50, 57, 62], "lv": 0.35, "bright": 0.3, "a": 3, "r": 2},
+        {"inst": "choir", "at": 0, "to": {"word": "You shall not steal", "offset": -0.8}, "notes": [62, 66, 69, 74], "lv": 1.0, "att": 2.0},
+        {"inst": "bell", "repeat": {"from": 0.4, "to": {"word": "You shall not steal", "offset": -0.9}, "every": 0.32, "shift": 0.2}, "seq": [86, 90, 93, 98], "lv": 0.5, "pan": "random", "dec": 3},
+        {"inst": "pad", "repeat": {"from": {"word": "Most of us read", "offset": -0.3}, "to": "land", "every": 4}, "chords": [[50, 57, 62, 66], [47, 54, 59, 62], [43, 50, 55, 59], [45, 52, 57, 61]], "hold": 4.3, "lv": 0.7, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "piano", "motif": "TAKE", "at": {"word": "what did you take"}, "step": 0.5, "lv": 0.7, "pan": 0.4, "dec": 2},
+        {"inst": "bell", "motif": "GIVE", "at": {"word": "what are your hands for"}, "step": 0.5, "transpose": 12, "lv": 0.7, "pan": 0.6, "dec": 3},
+
+        {"scene": "land"},
+        {"inst": "pad", "at": "land", "to": {"word": "But God was bringing"}, "notes": [38, 45, 50, 53], "lv": 0.7, "bright": 0.3, "a": 1.5, "r": 1},
+        {"inst": "pad", "repeat": {"from": {"word": "But God was bringing"}, "to": "jericho", "every": 3.6}, "chords": [[43, 55, 59, 62], [48, 55, 60, 64], [45, 52, 57, 60], [50, 57, 62, 66]], "hold": 3.9, "lv": 0.7, "bright": 0.55, "a": 1.2, "r": 0.5},
+        {"inst": "flute", "motif": "GIVE", "at": {"word": "every family would get"}, "step": 0.7, "transpose": 12, "len": 0.6, "lv": 0.85, "pan": 0.5},
+        {"inst": "pluck", "at": [{"word": "A field"}, {"word": "A vineyard"}, {"word": "A flock"}], "notes": [67, 71, 74], "strum": 0.08, "lv": 0.55, "pan": 0.5, "len": 1.2, "bright": 0.6},
+        {"inst": "piano", "motif": "TAKE", "at": {"word": "Stealing grabs"}, "step": 0.45, "lv": 0.6, "pan": 0.5, "dec": 2},
+
+        {"scene": "jericho"},
+        {"inst": "pad", "repeat": {"from": "jericho", "to": "tent", "every": 5}, "chords": [[38, 50, 57, 62, 65], [34, 46, 53, 58, 62], [31, 43, 50, 55, 58], [33, 45, 52, 57, 61]], "hold": 5.4, "lv": 0.7, "bright": 0.35, "a": 1.4, "r": 0.8},
+        {"inst": "pluck", "at": [{"word": "beautiful cloak"}, {"word": "some silver"}, {"word": "a bar of gold"}], "notes": [74, 77, 81], "strum": 0.06, "lv": 0.5, "pan": 0.6, "len": 1.0, "bright": 0.8},
+        {"inst": "piano", "motif": "TAKE", "at": {"word": "I coveted them", "offset": -0.2}, "step": 0.6, "lv": 0.8, "pan": 0.5, "dec": 2.5},
+        {"inst": "glide", "at": {"word": "hidden in the earth"}, "len": 2.4, "from": 45, "toNote": 38, "lv": 0.9, "pan": 0.5},
+        {"inst": "drum", "at": [{"word": "He saw"}, {"word": "He wanted"}, {"word": "He took"}, {"word": "He hid"}], "lv": 1.4, "f0": 50},
+        {"inst": "pad", "at": {"word": "in his heart", "offset": -0.3}, "to": "tent", "notes": [62, 63, 67, 70], "lv": 0.6, "bright": 0.5, "a": 0.3, "r": 1.2},
+
+        {"scene": "tent"},
+        {"inst": "pad", "at": "tent", "to": "edges", "notes": [26, 38, 50], "lv": 0.5, "bright": 0.2, "a": 1.5, "r": 1},
+        {"inst": "piano", "repeat": {"from": "tent+0.6", "to": "edges-0.5", "every": 1.6, "jitter": 1.2}, "pick": "random", "seq": [62, 65, 69, 72, 74, 77], "lv": 0.6, "pan": "random", "dec": 2.5, "detune": {"rand": [-0.006, 0.006]}},
+        {"inst": "reversed", "at": {"word": "still stealing", "offset": -2}, "len": 2, "notes": [50, 57], "lv": 0.9},
+
+        {"scene": "edges"},
+        {"inst": "pad", "repeat": {"from": "edges", "to": "city", "every": 3.6}, "chords": [[43, 55, 59, 62, 67], [40, 52, 55, 59, 64], [36, 48, 55, 60, 64], [38, 50, 54, 57, 62]], "hold": 3.9, "lv": 0.7, "bright": 0.55, "a": 1.2, "r": 0.6},
+        {"inst": "pluck", "repeat": {"from": {"word": "Farmers in Israel"}, "to": {"word": "You shall leave them"}, "every": 0.3}, "seq": [67, 71, 74, 79, 74, 71], "lv": 0.3, "pan": [0.3, 0.7], "len": 1.2, "bright": 0.7},
+        {"inst": "choir", "at": {"word": "You shall leave them", "offset": -0.3}, "to": {"word": "I am the LORD your God", "edge": "end", "offset": 1.5}, "notes": [62, 66, 69, 74], "lv": 0.9, "att": 1, "rel": 1.5},
+        {"inst": "flute", "motif": "GIVE", "at": {"word": "Holding on too tightly", "offset": 1.4}, "step": 0.7, "transpose": 12, "len": 0.6, "lv": 0.75, "pan": 0.5},
+
+        {"scene": "city"},
+        {"inst": "pad", "repeat": {"from": "city", "to": "share", "every": 4}, "chords": [[43, 55, 59, 62], [48, 55, 60, 64], [45, 52, 57, 60], [50, 57, 62, 66]], "hold": 4.3, "lv": 0.7, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "pluck", "repeat": {"from": {"word": "He climbed a tree"}, "to": {"word": "And Zacchaeus stood"}, "every": 0.35}, "seq": [74, 78, 81, 86, 81, 78], "lv": 0.3, "pan": [0.3, 0.7], "len": 1.0, "bright": 0.8},
+        {"inst": "choir", "at": {"word": "Behold, Lord", "offset": -0.3}, "to": {"word": "fourfold", "edge": "end", "offset": 1.5}, "notes": [62, 66, 69, 74, 78], "lv": 1.0, "att": 1, "rel": 2},
+        {"inst": "bell", "repeat": {"from": {"word": "give to the poor"}, "to": {"word": "fourfold", "offset": 1.2}, "every": 0.22}, "seq": [86, 90, 93, 98, 93, 90], "lv": 0.4, "pan": "random", "dec": 1.5},
+        {"inst": "piano", "motif": "TAKE", "at": {"word": "Achan took and hid"}, "step": 0.4, "lv": 0.6, "pan": 0.35, "dec": 2},
+        {"inst": "flute", "motif": "GIVE", "at": {"word": "Zacchaeus gave back"}, "step": 0.55, "transpose": 12, "len": 0.5, "lv": 0.9, "pan": 0.65},
+
+        {"scene": "share"},
+        {"inst": "pad", "repeat": {"from": "share", "to": "hands", "every": 3.6}, "chords": [[50, 57, 62, 66], [47, 54, 59, 62], [43, 50, 55, 59], [45, 52, 57, 61]], "hold": 3.9, "lv": 0.7, "bright": 0.55, "a": 1.2, "r": 0.5},
+        {"inst": "choir", "at": {"word": "Let the thief", "offset": -0.3}, "to": {"word": "anyone in need", "edge": "end", "offset": 1.2}, "notes": [62, 66, 69, 74], "lv": 0.85, "att": 1, "rel": 1.5},
+        {"inst": "piano", "motif": "GIVE", "at": {"word": "but with share", "offset": 0.4}, "step": 0.6, "lv": 0.85, "pan": 0.5, "dec": 3},
+        {"inst": "pad", "at": {"word": "It's opening them", "offset": -0.3}, "to": "hands+0.5", "notes": [50, 57, 62, 66, 69, 74], "lv": 0.9, "bright": 0.6, "a": 0.6, "r": 1.2},
+
+        {"scene": "hands"},
+        {"inst": "pad", "repeat": {"from": "hands", "to": {"mark": "lastWord", "offset": 0.5}, "every": 3.6}, "chords": [[43, 55, 59, 62, 67], [40, 52, 55, 59, 64], [36, 48, 55, 60, 64], [38, 50, 54, 57, 62]], "hold": 3.9, "holdClip": false, "lv": 0.8, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "bell", "at": {"word": "a giving God"}, "note": 86, "lv": 0.5, "pan": 0.6, "dec": 3},
+        {"comment": "'learn to give': the warmest chord, held under the end card", "inst": "pad", "at": {"word": "learn to give"}, "to": {"mark": "lastWord", "offset": 6.5}, "notes": [43, 55, 59, 62, 67, 71, 74], "lv": 1, "bright": 0.6, "a": 0.8, "r": 2},
+        {"inst": "choir", "at": {"word": "learn to give"}, "to": {"mark": "lastWord", "offset": 6.0}, "notes": [67, 71, 74, 79], "lv": 0.9, "att": 1, "rel": 2},
+        {"inst": "flute", "motif": "GIVE", "at": {"word": "learn to give", "offset": 0.8}, "step": 0.8, "transpose": 12, "len": 0.6, "lv": 0.9, "pan": 0.5},
+        {"inst": "bell", "motif": "GIVE", "at": {"mark": "lastWord", "offset": 1.6}, "step": 0.8, "transpose": 24, "lv": 0.5, "pan": 0.5, "dec": 3}
+      ]
+    },
+
+    "ambience": {
+      "seed": 3188,
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2},
+      "events": [
+        {"scene": "cold-open"},
+        {"inst": "wind", "at": 0, "to": "land", "lv": 0.4, "fc": 300},
+        {"inst": "shimmer", "at": {"word": "just four words"}, "len": 2.5, "lv": 0.5},
+
+        {"scene": "land"},
+        {"inst": "wind", "at": "land", "to": "jericho", "lv": 0.5, "fc": 700, "pan": 0.6},
+        {"inst": "bird", "repeat": {"from": {"word": "But God was bringing"}, "to": "jericho-0.5", "every": 1.8, "jitter": 1}, "lv": 0.5, "pan": "random"},
+        {"inst": "bleat", "at": {"word": "A flock", "offset": 0.3}, "lv": 0.6, "pan": 0.3},
+
+        {"scene": "jericho"},
+        {"inst": "wind", "at": "jericho", "to": "tent", "lv": 0.6, "fc": 650},
+        {"inst": "sand", "at": "jericho", "to": "tent", "lv": 0.45},
+        {"inst": "step", "repeat": {"from": {"word": "took them"}, "to": {"word": "hidden in the earth"}, "every": 0.42}, "lv": 0.4, "pan": {"ramp": [0.4, 0.7]}, "soft": 0.8},
+        {"inst": "dust", "at": {"word": "hidden in the earth", "offset": 0.3}, "lv": 0.8, "pan": 0.7},
+
+        {"scene": "tent"},
+        {"inst": "wind", "at": "tent", "to": "edges", "lv": 0.3, "fc": 350},
+        {"inst": "rustle", "at": {"word": "Nobody sees it"}, "len": 1.2, "lv": 0.6, "pan": 0.5},
+
+        {"scene": "edges"},
+        {"inst": "wind", "at": "edges", "to": "city", "lv": 0.6, "fc": 800, "pan": 0.5},
+        {"inst": "rustle", "repeat": {"from": {"word": "Farmers in Israel"}, "to": {"word": "You shall leave them"}, "every": 0.9}, "len": 0.8, "lv": 0.4, "pan": "random"},
+        {"inst": "bird", "repeat": {"from": "edges+1", "to": "city-0.5", "every": 2, "jitter": 1}, "lv": 0.45, "pan": "random"},
+
+        {"scene": "city"},
+        {"inst": "wind", "at": "city", "to": "share", "lv": 0.5, "fc": 650},
+        {"inst": "step", "repeat": {"from": {"word": "walked into Jericho"}, "to": {"word": "A tax collector"}, "every": 0.45}, "lv": 0.35, "pan": {"ramp": [0.8, 0.5]}, "soft": 0.8},
+        {"inst": "rustle", "at": {"word": "He climbed a tree"}, "len": 1.4, "lv": 0.6, "pan": 0.35},
+        {"inst": "rustle", "at": {"word": "And Zacchaeus stood", "offset": -0.6}, "len": 1.2, "lv": 0.6, "pan": 0.4},
+
+        {"scene": "share"},
+        {"inst": "wind", "at": "share", "to": "hands", "lv": 0.5, "fc": 700, "pan": 0.6},
+        {"inst": "shimmer", "at": {"word": "It's opening them", "offset": -0.2}, "len": 3, "lv": 0.8},
+
+        {"scene": "hands"},
+        {"inst": "wind", "at": "hands", "to": {"mark": "lastWord", "offset": 6}, "lv": 0.6, "fc": 700, "pan": 0.6},
+        {"inst": "bird", "repeat": {"from": {"word": "learn to give"}, "to": {"mark": "lastWord", "offset": 1}, "every": 1.6, "jitter": 1}, "lv": 0.5, "pan": "random"}
+      ]
+    },
+
+    "sfx": {
+      "seed": 5188,
+      "events": [
+        {"comment": "pieces landing: soft paper taps on the label words", "inst": "paperTap", "at": [
+          {"word": "just four words"}, {"word": "robbed a bank"}, {"word": "So this one feels easy"}, {"word": "much bigger question"}, {"word": "what did you take"}, {"word": "what are your hands for"},
+          {"word": "freed slaves"}, {"word": "owned almost nothing"}, {"word": "But God was bringing"}, {"word": "A field"}, {"word": "A vineyard"}, {"word": "A flock"}, {"word": "guarding"}, {"word": "Stealing grabs"},
+          {"word": "At Jericho"}, {"word": "devoted"}, {"word": "beautiful cloak"}, {"word": "some silver"}, {"word": "a bar of gold"},
+          {"word": "He saw"}, {"word": "He wanted"}, {"word": "He took"}, {"word": "He hid"}, {"word": "The theft happened"}, {"word": "in his heart"},
+          {"word": "Most stealing", "offset": 0.2}, {"word": "Achan's tent"}, {"word": "small, hidden"}, {"word": "Copying"}, {"word": "extra change"}, {"word": "Taking credit"}, {"word": "Nobody sees it"}, {"word": "still stealing"},
+          {"word": "doesn't stop at"}, {"word": "edges of their fields", "offset": 0.2}, {"word": "other side"}, {"word": "Holding on too tightly"},
+          {"word": "Centuries later"}, {"word": "A tax collector"}, {"word": "fourfold"}, {"word": "Achan took and hid"}, {"word": "Zacchaeus gave back"}, {"word": "opposite hands", "offset": -0.4},
+          {"word": "The apostle Paul"}, {"word": "honest work"}, {"word": "honest work", "offset": 0.3}, {"word": "honest work", "offset": 0.6}, {"word": "stop taking"}, {"word": "but with share"}, {"word": "hands to yourself"}, {"word": "It's opening them"},
+          {"word": "a giving God"}, {"word": "have I ever stolen"}, {"word": "what are my hands"}, {"word": "Hands that once took"}, {"word": "learn to give"}, {"word": "learn to give", "offset": 0.4}],
+          "lv": 0.8, "pan": {"rand": [0.35, 0.65]}},
+        {"comment": "strikes, Xs, scribbles, highlights: soft swish", "inst": "swish", "at": [
+          {"word": "just four words"}, {"word": "Stealing grabs"}, {"word": "I coveted them"}, {"word": "a robbery", "offset": 0.2},
+          {"word": "for the poor", "n": 1}, {"word": "the half of my goods"}, {"word": "share with anyone in need"}, {"word": "but with share", "offset": -0.3}, {"word": "what are my hands", "offset": -0.4}],
+          "len": 0.6, "lv": 0.5, "pan": 0.5},
+        {"comment": "sheet changes: whoosh 0.4 s before each", "inst": "whoosh", "at": ["land-0.4", "jericho-0.4", "tent-0.4", "edges-0.4", "city-0.4", "share-0.4", "hands-0.4"], "len": 0.8, "lv": 0.75, "pan": 0.5},
+        {"comment": "the eighth line lights", "inst": "sparkle", "at": {"word": "just four words"}, "len": 2, "lv": 1, "pan": 0.55},
+        {"comment": "the treasure is hidden", "inst": "thump", "at": {"word": "hidden in the earth", "offset": 0.9}, "lv": 0.9},
+        {"inst": "swell", "at": {"word": "hidden in the earth", "offset": -0.8}, "len": 2.6, "note": 38, "lv": 0.7},
+        {"comment": "coins: little bells as Zacchaeus gives", "inst": "bell", "at": [{"word": "give to the poor"}, {"word": "give to the poor", "offset": 0.15}, {"word": "give to the poor", "offset": 0.3}, {"word": "fourfold"}, {"word": "fourfold", "offset": 0.12}, {"word": "fourfold", "offset": 0.24}, {"word": "fourfold", "offset": 0.36}], "note": 96, "dec": 0.4, "lv": 0.4, "pan": "random"},
+        {"comment": "the hands open", "inst": "chime", "at": {"word": "It's opening them"}, "note": 81, "lv": 0.8},
+        {"inst": "sparkle", "at": {"word": "It's opening them", "offset": 0.1}, "len": 2, "lv": 1},
+        {"inst": "sparkle", "at": {"word": "learn to give"}, "len": 2, "lv": 0.9},
+        {"comment": "the ninth line warms", "inst": "chime", "at": {"word": "ninth commandment"}, "note": 76, "lv": 0.5},
+        {"comment": "the end card", "inst": "chime", "at": {"mark": "lastWord", "offset": 1.6}, "note": 74, "lv": 0.7}
+      ]
+    }
+  },
+
+  "mix": {
+    "voice": {"volume": 1.25},
+    "buses": [
+      {"name": "music", "stem": "score.wav", "volume": 1.6,
+       "duck": {"threshold": 0.02, "ratio": 4, "attack": 30, "release": 500, "makeup": 1},
+       "envelope": [
+         {"comment": "opening choir swell", "from": 1.0, "to": {"word": "You shall not steal", "offset": -1.2}, "db": 7, "in": 1.0, "out": 0.4},
+         {"comment": "silence before 'You shall not steal', back after the thunder", "from": {"word": "You shall not steal", "offset": -0.76}, "to": {"word": "You shall not steal", "edge": "end", "offset": 1.1}, "mute": true, "in": 0.6, "out": 1.4},
+         {"comment": "end card: let the closing chord be heard", "from": {"mark": "lastWord", "offset": 0.4}, "to": {"mark": "lastWord", "offset": 7}, "db": 6, "in": 1.2, "out": 0.5}
+       ]},
+      {"name": "sfx", "stem": "sfx.wav", "volume": 0.2},
+      {"name": "ambience", "stem": "ambience.wav",
+       "compressor": {"threshold": 0.05, "ratio": 3.5, "attack": 10, "release": 300, "makeup": 2.8},
+       "duck": {"threshold": 0.02, "ratio": 6, "attack": 20, "release": 600, "makeup": 1.5}}
+    ],
+    "hits": [
+      {"name": "thunder", "sound": "thunder", "seed": 888, "len": 6, "at": {"word": "You shall not steal", "offset": -0.04},
+       "compressor": {"threshold": 0.02, "ratio": 12, "attack": 0.5, "release": 400, "makeup": 10}, "volume": 2.2}
+    ],
+    "limiter": {"limit": 0.89, "attack": 1, "release": 60},
+    "loudnorm": {"I": -14, "TP": -1.0, "LRA": 18},
+    "tail": 7,
+    "checks": [
+      {"label": "choir swell", "from": 2, "to": 4, "solo": "music"},
+      {"label": "music cut", "from": "steal-0.15", "to": "steal-0.05", "solo": "music"},
+      {"label": "thunder", "from": "steal-0.04", "to": "steal+0.96"},
+      {"label": "land music", "from": "land+1", "to": "jericho-1.0", "solo": "music"},
+      {"label": "jericho ambience", "from": "jericho+1", "to": "tent-1.0", "solo": "ambience"},
+      {"label": "end card", "from": {"mark": "lastWord", "offset": 2}, "to": {"mark": "lastWord", "offset": 5}}
+    ]
+  }
+}
