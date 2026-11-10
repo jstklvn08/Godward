@@ -1,0 +1,514 @@
+{
+ "phrases": [
+  {
+   "n": 2,
+   "a": 8.4,
+   "dur": 6.0,
+   "wps": 2.83,
+   "med": 108,
+   "rel": -2.3,
+   "peak": 175,
+   "end": 1.4,
+   "fry": 25,
+   "db": 75.2,
+   "text": "mental health has become a popular subject in everything from films and television to anime and manga,",
+   "last": "manga,"
+  },
+  {
+   "n": 3,
+   "a": 14.4,
+   "dur": 3.76,
+   "wps": 2.13,
+   "med": 97,
+   "rel": -4.1,
+   "peak": 231,
+   "end": -0.8,
+   "fry": 1,
+   "db": 75.6,
+   "text": "but there's something particularly difficult about portraying trauma,",
+   "last": "trauma,"
+  },
+  {
+   "n": 4,
+   "a": 18.24,
+   "dur": 2.88,
+   "wps": 2.43,
+   "med": 118,
+   "rel": -0.8,
+   "peak": 203,
+   "end": -8.0,
+   "fry": 16,
+   "db": 74.4,
+   "text": "an experience that is simultaneously very common,",
+   "last": "common,"
+  },
+  {
+   "n": 5,
+   "a": 21.12,
+   "dur": 3.34,
+   "wps": 2.69,
+   "med": 113,
+   "rel": -1.6,
+   "peak": 175,
+   "end": -12.1,
+   "fry": 28,
+   "db": 74.4,
+   "text": "yet deeply personal to everyone who goes through it.",
+   "last": "it."
+  },
+  {
+   "n": 6,
+   "a": 24.58,
+   "dur": 6.38,
+   "wps": 3.13,
+   "med": 118,
+   "rel": -0.8,
+   "peak": 225,
+   "end": 1.2,
+   "fry": 14,
+   "db": 74.4,
+   "text": "We all know there's a big difference between understanding a character's suffering and actually feeling even a fraction of it.",
+   "last": "it."
+  },
+  {
+   "n": 7,
+   "a": 31.14,
+   "dur": 0.56,
+   "wps": 3.57,
+   "med": 165,
+   "rel": 5.1,
+   "peak": 223,
+   "end": 3.8,
+   "fry": 0,
+   "db": 75.4,
+   "text": "And yet,",
+   "last": "yet,"
+  },
+  {
+   "n": 8,
+   "a": 31.7,
+   "dur": 1.44,
+   "wps": 2.08,
+   "med": 110,
+   "rel": -1.9,
+   "peak": 137,
+   "end": -6.1,
+   "fry": 29,
+   "db": 77.1,
+   "text": "through their artwork,",
+   "last": "artwork,"
+  },
+  {
+   "n": 9,
+   "a": 33.14,
+   "dur": 0.62,
+   "wps": 1.61,
+   "med": 144,
+   "rel": 2.7,
+   "peak": 169,
+   "end": 2.7,
+   "fry": 0,
+   "db": 74.6,
+   "text": "storytelling,",
+   "last": "storytelling,"
+  },
+  {
+   "n": 10,
+   "a": 33.76,
+   "dur": 2.4,
+   "wps": 2.92,
+   "med": 120,
+   "rel": -0.5,
+   "peak": 206,
+   "end": 2.6,
+   "fry": 4,
+   "db": 74.5,
+   "text": "and the unique possibilities of the medium,",
+   "last": "medium,"
+  },
+  {
+   "n": 11,
+   "a": 36.16,
+   "dur": 7.52,
+   "wps": 2.26,
+   "med": 124,
+   "rel": 0.1,
+   "peak": 236,
+   "end": -0.5,
+   "fry": 13,
+   "db": 74.1,
+   "text": "some manga authors have developed an almost uncanny ability to make us connect to their character's pain.",
+   "last": "pain."
+  },
+  {
+   "n": 12,
+   "a": 43.68,
+   "dur": 6.9,
+   "wps": 2.75,
+   "med": 124,
+   "rel": 0.1,
+   "peak": 237,
+   "end": -1.4,
+   "fry": 2,
+   "db": 77.5,
+   "text": "One of the ways they achieve this is by taking us directly into the moments that left them scarred.",
+   "last": "scarred."
+  },
+  {
+   "n": 13,
+   "a": 50.58,
+   "dur": 7.14,
+   "wps": 2.8,
+   "med": 142,
+   "rel": 2.5,
+   "peak": 314,
+   "end": -0.8,
+   "fry": 3,
+   "db": 73.3,
+   "text": "Sweet Ishida's Tokyo Ghoul takes place in a world where humans are unknowingly sharing their cities with creatures called ghouls,",
+   "last": "ghouls,"
+  },
+  {
+   "n": 14,
+   "a": 57.72,
+   "dur": 4.24,
+   "wps": 2.59,
+   "med": 159,
+   "rel": 4.4,
+   "peak": 239,
+   "end": -1.1,
+   "fry": 7,
+   "db": 74.8,
+   "text": "who look identical to regular people but with insane physical abilities.",
+   "last": "abilities."
+  },
+  {
+   "n": 15,
+   "a": 61.96,
+   "dur": 1.54,
+   "wps": 3.25,
+   "med": 151,
+   "rel": 3.5,
+   "peak": 313,
+   "end": -3.6,
+   "fry": 2,
+   "db": 74.4,
+   "text": "Kaneki is an ordinary university.",
+   "last": "university."
+  }
+ ],
+ "stressed": [
+  [
+   "mental",
+   13.1,
+   8.4
+  ],
+  [
+   "in",
+   5.3,
+   10.4
+  ],
+  [
+   "films",
+   9.7,
+   11.5
+  ],
+  [
+   "television",
+   7.9,
+   12.2
+  ],
+  [
+   "to",
+   8.5,
+   12.8
+  ],
+  [
+   "anime",
+   7.1,
+   13.2
+  ],
+  [
+   "but",
+   7.7,
+   14.4
+  ],
+  [
+   "there's",
+   9.7,
+   14.7
+  ],
+  [
+   "something",
+   19.4,
+   14.9
+  ],
+  [
+   "particularly",
+   12.5,
+   15.2
+  ],
+  [
+   "difficult",
+   4.4,
+   15.8
+  ],
+  [
+   "experience",
+   11.5,
+   18.5
+  ],
+  [
+   "common,",
+   4.7,
+   20.2
+  ],
+  [
+   "deeply",
+   7.8,
+   21.5
+  ],
+  [
+   "personal",
+   8.7,
+   21.9
+  ],
+  [
+   "to",
+   4.3,
+   22.4
+  ],
+  [
+   "everyone",
+   5.7,
+   22.7
+  ],
+  [
+   "We",
+   10.6,
+   24.6
+  ],
+  [
+   "all",
+   11.2,
+   24.7
+  ],
+  [
+   "know",
+   8.2,
+   24.8
+  ],
+  [
+   "big",
+   7.3,
+   25.2
+  ],
+  [
+   "difference",
+   8.7,
+   25.4
+  ],
+  [
+   "understanding",
+   12.3,
+   26.1
+  ],
+  [
+   "suffering",
+   4.3,
+   27.7
+  ],
+  [
+   "actually",
+   8.3,
+   28.5
+  ],
+  [
+   "feeling",
+   12.9,
+   28.9
+  ],
+  [
+   "even",
+   6.4,
+   29.5
+  ],
+  [
+   "a",
+   4.8,
+   29.9
+  ],
+  [
+   "And",
+   4.2,
+   31.1
+  ],
+  [
+   "yet,",
+   5.5,
+   31.4
+  ],
+  [
+   "the",
+   6.0,
+   35.1
+  ],
+  [
+   "medium,",
+   9.4,
+   35.2
+  ],
+  [
+   "some",
+   13.5,
+   36.2
+  ],
+  [
+   "developed",
+   8.7,
+   37.9
+  ],
+  [
+   "uncanny",
+   10.6,
+   39.2
+  ],
+  [
+   "ability",
+   7.0,
+   40.1
+  ],
+  [
+   "to",
+   4.4,
+   40.7
+  ],
+  [
+   "make",
+   11.1,
+   41.3
+  ],
+  [
+   "us",
+   13.1,
+   41.4
+  ],
+  [
+   "achieve",
+   8.6,
+   44.4
+  ],
+  [
+   "taking",
+   10.9,
+   45.3
+  ],
+  [
+   "us",
+   7.5,
+   45.5
+  ],
+  [
+   "into",
+   10.0,
+   46.2
+  ],
+  [
+   "the",
+   8.1,
+   46.7
+  ],
+  [
+   "scarred.",
+   17.7,
+   49.1
+  ],
+  [
+   "Sweet",
+   12.5,
+   50.6
+  ],
+  [
+   "takes",
+   14.2,
+   51.6
+  ],
+  [
+   "place",
+   16.8,
+   51.8
+  ],
+  [
+   "humans",
+   9.7,
+   52.9
+  ],
+  [
+   "are",
+   14.5,
+   53.3
+  ],
+  [
+   "unknowingly",
+   13.6,
+   53.8
+  ],
+  [
+   "cities",
+   7.5,
+   54.9
+  ],
+  [
+   "with",
+   16.6,
+   55.5
+  ],
+  [
+   "creatures",
+   8.4,
+   55.9
+  ],
+  [
+   "identical",
+   4.4,
+   58.2
+  ],
+  [
+   "people",
+   6.5,
+   59.2
+  ],
+  [
+   "insane",
+   5.3,
+   60.2
+  ],
+  [
+   "abilities.",
+   15.8,
+   61.8
+  ],
+  [
+   "Kaneki",
+   13.7,
+   62.0
+  ],
+  [
+   "an",
+   12.1,
+   62.6
+  ]
+ ],
+ "micro_pauses": [
+  [
+   31.52,
+   0.18,
+   55.5
+  ],
+  [
+   49.9,
+   0.47,
+   -300.0
+  ]
+ ]
+}

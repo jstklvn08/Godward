@@ -1,0 +1,385 @@
+{
+ "file": {
+  "duration_s": 63.53,
+  "sample_rate": 44100,
+  "stereo_LR_correlation": 1.0,
+  "peak_dbfs": -1.0800000429153442,
+  "integrated_LUFS": -20.25,
+  "bandwidth_hz_99pct": 5921,
+  "bandwidth_hz_999pct": 9388,
+  "energy_above_16k_ratio": 9.42e-07,
+  "speech_level_db_p90": 74.8,
+  "pause_floor_db_median": -300.0,
+  "pause_floor_db_min": -300.0
+ },
+ "pitch_overall": {
+  "median_hz": 122.7,
+  "mean_hz": 136.7,
+  "p5_hz": 82.2,
+  "p95_hz": 231.1,
+  "range_p5_p95_semitones": 17.88,
+  "sd_semitones": 5.41,
+  "voiced_fraction_of_speech": 0.64
+ },
+ "voice_quality": {
+  "jitter_local_pct": 3.32,
+  "shimmer_local_pct": 16.1,
+  "hnr_db_mean": 7.0
+ },
+ "formants_median_hz": {
+  "F1": 430.0,
+  "F2": 1395.0,
+  "F3": 2272.0,
+  "F4": 3447.0,
+  "dispersion_hz": 1006.0,
+  "vocal_tract_length_cm_est": 17.4
+ },
+ "spectral_balance": {
+  "centroid_voiced_hz": 1234.0,
+  "alpha_ratio_db_(1-5k vs 0-1k)": -10.5,
+  "low_0-300_vs_300-3k_db": -0.0,
+  "presence_3-6k_vs_300-3k_db": -21.0,
+  "air_6-12k_vs_300-3k_db": -25.9,
+  "sibilance_5-9k_vs_300-3k_db": -24.2
+ },
+ "sentences": [
+  {
+   "n": 1,
+   "start": 0.0,
+   "end": 24.46,
+   "text": "You know, mental health has become a popular subject in everything from films and television to anime and manga, but there's something particularly difficult about portraying trauma, an experience that is simultaneously very common, yet deeply personal to everyone who goes through it.",
+   "words": 43,
+   "wpm_gross": 105.0,
+   "syll_per_s_net": 5.02,
+   "internal_pause_s": 8.34,
+   "f0_median": 111.0,
+   "f0_vs_global_st": -1.77,
+   "f0_range_st_p10_p90": 12.3,
+   "start_vs_end_st": 1.1,
+   "loudness_db_mean": 67.7,
+   "pause_after_s": 0.0,
+   "emphasis_top3": [
+    "know,",
+    "something",
+    "mental"
+   ]
+  },
+  {
+   "n": 2,
+   "start": 24.58,
+   "end": 30.96,
+   "text": "We all know there's a big difference between understanding a character's suffering and actually feeling even a fraction of it.",
+   "words": 20,
+   "wpm_gross": 188.0,
+   "syll_per_s_net": 5.64,
+   "internal_pause_s": 0,
+   "f0_median": 118.0,
+   "f0_vs_global_st": -0.69,
+   "f0_range_st_p10_p90": 10.4,
+   "start_vs_end_st": -1.6,
+   "loudness_db_mean": 66.7,
+   "pause_after_s": 0.0,
+   "emphasis_top3": [
+    "feeling",
+    "understanding",
+    "big"
+   ]
+  },
+  {
+   "n": 3,
+   "start": 31.14,
+   "end": 43.68,
+   "text": "And yet, through their artwork, storytelling, and the unique possibilities of the medium, some manga authors have developed an almost uncanny ability to make us connect to their character's pain.",
+   "words": 30,
+   "wpm_gross": 144.0,
+   "syll_per_s_net": 4.31,
+   "internal_pause_s": 0,
+   "f0_median": 122.0,
+   "f0_vs_global_st": -0.1,
+   "f0_range_st_p10_p90": 15.2,
+   "start_vs_end_st": -0.0,
+   "loudness_db_mean": 67.1,
+   "pause_after_s": 0.0,
+   "emphasis_top3": [
+    "some",
+    "uncanny",
+    "to"
+   ]
+  },
+  {
+   "n": 4,
+   "start": 43.68,
+   "end": 49.86,
+   "text": "One of the ways they achieve this is by taking us directly into the moments that left them scarred.",
+   "words": 19,
+   "wpm_gross": 184.0,
+   "syll_per_s_net": 4.21,
+   "internal_pause_s": 0,
+   "f0_median": 122.0,
+   "f0_vs_global_st": -0.03,
+   "f0_range_st_p10_p90": 12.0,
+   "start_vs_end_st": -0.3,
+   "loudness_db_mean": 69.1,
+   "pause_after_s": 0.54,
+   "emphasis_top3": [
+    "scarred.",
+    "that",
+    "into"
+   ]
+  },
+  {
+   "n": 5,
+   "start": 50.58,
+   "end": 61.96,
+   "text": "Sweet Ishida's Tokyo Ghoul takes place in a world where humans are unknowingly sharing their cities with creatures called ghouls, who look identical to regular people but with insane physical abilities.",
+   "words": 31,
+   "wpm_gross": 163.0,
+   "syll_per_s_net": 4.92,
+   "internal_pause_s": 0,
+   "f0_median": 149.0,
+   "f0_vs_global_st": 3.35,
+   "f0_range_st_p10_p90": 12.9,
+   "start_vs_end_st": 2.9,
+   "loudness_db_mean": 68.5,
+   "pause_after_s": 0.0,
+   "emphasis_top3": [
+    "ghouls,",
+    "abilities.",
+    "are"
+   ]
+  },
+  {
+   "n": 6,
+   "start": 61.96,
+   "end": 63.5,
+   "text": "Kaneki is an ordinary university.",
+   "words": 5,
+   "wpm_gross": 195.0,
+   "syll_per_s_net": 9.09,
+   "internal_pause_s": 0,
+   "f0_median": 150.0,
+   "f0_vs_global_st": 3.45,
+   "f0_range_st_p10_p90": 15.2,
+   "start_vs_end_st": -13.7,
+   "loudness_db_mean": 68.2,
+   "pause_after_s": 0.0,
+   "emphasis_top3": [
+    "is",
+    "ordinary",
+    "Kaneki"
+   ]
+  }
+ ],
+ "pauses": [
+  {
+   "at": 0.04,
+   "len": 8.34,
+   "after_word": "(start)",
+   "punct": "none"
+  },
+  {
+   "at": 49.86,
+   "len": 0.54,
+   "after_word": "scarred.",
+   "punct": "period"
+  }
+ ],
+ "pause_summary": {
+  "period": {
+   "count": 1,
+   "median_s": 0.54,
+   "min": 0.54,
+   "max": 0.54
+  }
+ },
+ "pace": {
+  "words": 148,
+  "syllables_est": 267,
+  "speech_span_s": 63.5,
+  "wpm_gross_incl_pauses": 140.0,
+  "syll_per_s_articulation": 4.89,
+  "pause_fraction": 0.14
+ },
+ "opening_0_9s": {
+  "pauses": [
+   [
+    0.0,
+    8.4
+   ]
+  ],
+  "voiced_fraction": 0.04,
+  "intensity_db_by_second": [
+   -300.0,
+   -300.0,
+   -300.0,
+   -300.0,
+   -300.0,
+   -300.0,
+   -300.0,
+   -300.0,
+   64.2
+  ]
+ },
+ "f0_by_2s": [
+  [
+   0,
+   null,
+   -300.0
+  ],
+  [
+   2,
+   null,
+   -300.0
+  ],
+  [
+   4,
+   null,
+   -300.0
+  ],
+  [
+   6,
+   null,
+   -300.0
+  ],
+  [
+   8,
+   108.0,
+   68.8
+  ],
+  [
+   10,
+   83.0,
+   68.4
+  ],
+  [
+   12,
+   128.0,
+   70.5
+  ],
+  [
+   14,
+   131.0,
+   66.1
+  ],
+  [
+   16,
+   93.0,
+   64.7
+  ],
+  [
+   18,
+   118.0,
+   69.1
+  ],
+  [
+   20,
+   111.0,
+   63.0
+  ],
+  [
+   22,
+   117.0,
+   68.8
+  ],
+  [
+   24,
+   112.0,
+   66.8
+  ],
+  [
+   26,
+   113.0,
+   68.7
+  ],
+  [
+   28,
+   122.0,
+   67.1
+  ],
+  [
+   30,
+   128.0,
+   63.2
+  ],
+  [
+   32,
+   121.0,
+   72.5
+  ],
+  [
+   34,
+   120.0,
+   68.9
+  ],
+  [
+   36,
+   118.0,
+   69.0
+  ],
+  [
+   38,
+   149.0,
+   66.0
+  ],
+  [
+   40,
+   132.0,
+   68.1
+  ],
+  [
+   42,
+   114.0,
+   62.3
+  ],
+  [
+   44,
+   124.0,
+   71.9
+  ],
+  [
+   46,
+   131.0,
+   70.2
+  ],
+  [
+   48,
+   106.0,
+   64.2
+  ],
+  [
+   50,
+   134.0,
+   68.0
+  ],
+  [
+   52,
+   154.0,
+   70.4
+  ],
+  [
+   54,
+   141.0,
+   68.4
+  ],
+  [
+   56,
+   138.0,
+   68.3
+  ],
+  [
+   58,
+   151.0,
+   69.8
+  ],
+  [
+   60,
+   184.0,
+   67.4
+  ],
+  [
+   62,
+   140.0,
+   70.2
+  ]
+ ]
+}
