@@ -91,17 +91,52 @@ function cutout(t,at,cx,cy,inner,name,id,o={}){
     label(cx,cy+h/2+14,name,{size:hv(26,34),anchor:'middle',bg:o.bg}),id,1.4);
 }
 // Rain streaks.
-function rain(t,o){let g='';for(let i=0;i<60;i++){const x=(hash(i,1)*2200-140+t*40)%2200-140,y=((hash(i,2)*2600+t*900)%2600)-720;g+=L(x,y,x-14,y+60,'#B8C4D8',3,{opacity:(.35*o).toFixed(2)});}return g;}
+function rain(t,o,n=140){let g='';for(let i=0;i<n;i++){const x=(hash(i,1)*2200-140+t*40)%2200-140,y=((hash(i,2)*2600+t*900)%2600)-720;g+=L(x,y,x-14,y+60,'#B8C4D8',3,{opacity:(.35*o).toFixed(2)});}return g;}
 
 // Vertical ground under the lower labels (frame y 1570-1920), drawn BEFORE the labels so grass never covers text.
-function ground(t,seed,gc,fc=[]){
+function ground(t,seed,gc,fc=[],fy=1575){
   if(!E.VERT)return '';
-  const y0=vy(1575);let g=`<path d="${ridge(seed,y0,14,170)}" fill="${gc[1]}"/>`;
+  const y0=vy(fy);let g=`<path d="${ridge(seed,y0,14,170)}" fill="${gc[1]}"/>`;
   for(let k=0;k<70;k++){const x=hash(k,seed)*2060-60,y=y0+20+Math.pow(hash(k,seed+1),.8)*(1800-y0-20),sz=lerp(1.4,3.2,(y-y0)/(1800-y0)),sw=Math.sin(t*1.5+k)*4*sz,c=gc[k%3];
     for(let j=-1;j<=1;j++)g+=L(x+j*5*sz,y,x+j*9*sz+sw,y-(16+hash(k,j+5)*20)*sz,c,3.2*sz);
     if(fc.length&&k%5===0){const fy=y-40*sz,col=fc[k%fc.length];g+=glow(x+sw,fy,18*sz,col,.7)+C(x+sw,fy,5*sz,col);}}
   return g;
 }
+
+// Vertical terrain (frame y `top` to the bottom): three paper ridges with a rim light and scattered stones.
+// o.c = [far, mid, near, rim]. Drawn before the lower labels.
+function land(t,seed,o){
+  if(!E.VERT)return '';
+  const c=o.c,y0=vy(o.top),d0=ridge(seed,y0,o.amp||26,o.wave||260),r=rng(seed*7+3);
+  let g=`<path d="${d0}" fill="${c[0]}"/><path d="${d0}" fill="none" stroke="${c[3]}" stroke-width="5" opacity="${o.rimOp??.45}"/>`+
+    `<path d="${ridge(seed+1,y0+150,20,200)}" fill="${c[1]}"/><path d="${ridge(seed+2,y0+340,16,150)}" fill="${c[2]}"/>`;
+  for(let k=0;k<(o.stones??22);k++){const x=r()*2000-40,y=y0+60+r()*(1720-y0-60),sz=lerp(.7,2,(y-y0)/(1720-y0)),w=(14+r()*22)*sz;
+    g+=Ell(x,y,w,w*.45,c[0])+Ell(x-w*.25,y-w*.16,w*.5,w*.16,c[3],{opacity:.18});}
+  return g;
+}
+// A row of small houses on the ground, windows lit by `on`. pts: [frameX, frameY, scale].
+const village=(t,pts,on)=>pts.map(([x,y,s])=>house(t,vx(x),vy(y),s,on)).join('');
+// Vertical town at dusk: far rooftops (frame y ~930-1180) and a wet street with puddles from frame y `top`.
+function street(t,seed,o={}){
+  if(!E.VERT)return '';
+  const top=o.top||1170,y0=vy(top),r=rng(seed),wet=o.wet??1;
+  let g='';
+  for(let i=0,x=-80;x<2040;i++){const w=150+r()*170,h=150+r()*190,yb=y0+6,rt=r()<.5;
+    g+=R(x,yb-h,w,h+10,0,o.far||'#3A404E')+(rt?P(`M${x-10} ${yb-h}L${x+w/2} ${yb-h-90}L${x+w+10} ${yb-h}Z`,o.far||'#3A404E'):R(x+w*.6,yb-h-50,26,50,0,o.far||'#3A404E'));
+    for(let j=0;j<2;j++)if(r()<.55)g+=R(x+20+j*(w/2),yb-h+40,34,40,3,'#E8C27A',{opacity:(.25+.3*r()).toFixed(2)});
+    x+=w+20+r()*40;}
+  g+=R(-80,y0-4,2120,18,0,'#6A7280')+R(-80,y0+14,2120,1800-y0,0,o.road||'#2E333E');
+  // Cobbles, nearer rows bigger.
+  for(let row=0;row<9;row++){const y=y0+40+Math.pow(row/8,1.4)*(1700-y0-40),sz=lerp(.6,2.2,row/8);
+    for(let x=-60+(row%2)*40*sz;x<2000;x+=90*sz)g+=P(`M${x} ${y}h${60*sz}`,'none',{stroke:'#3E4452','stroke-width':4*sz,opacity:.7});}
+  // Puddles reflecting the sky, rings when it rains.
+  [[300,1500,180],[1500,1440,140],[900,1640,240],[1700,1700,200],[150,1740,160]].forEach(([x,y,w],k)=>{
+    if(y<y0+60)return;g+=Ell(x,y,w,w*.18,'#7E8AA0',{opacity:.45})+Ell(x-w*.2,y-w*.04,w*.5,w*.05,'#C8D4E8',{opacity:.35});
+    for(let j=0;j<2;j++){const ph=(t*.9+hash(k,j+11))%1;g+=Ell(x+(hash(k,j)-.5)*w,y,8+ph*60,(8+ph*60)*.25,'none',{stroke:'#C8D4E8','stroke-width':3,opacity:(wet*.6*(1-ph)).toFixed(2)});}});
+  return g;
+}
+// A street lamp: post from frame (fx, fy) up, warm glow at the head.
+const lamp=(fx,fy,h,on=1)=>{const x=vx(fx),y=vy(fy),hy=y-h;return glow(x,hy,260,'#FFD27A',.55*on)+R(x-7,hy,14,h,3,'#1E2230')+R(x-26,hy-40,52,46,6,'#1E2230')+R(x-18,hy-32,36,30,4,mix('#5A4A2A','#FFE9A8',on));};
 
 // ---------- vertical layout ----------
 // Every vertical sheet is filmed wide (zoom .84 on 960,560), so frame position (fx, fy) maps to fixed sheet coordinates.
@@ -114,10 +149,14 @@ const goldOrCoral=k=>k<4?'#FFD86B':k===4?WARM:'#FF8A70';
 
 // ---------- 0. Cold open: four about God, then home ----------
 function coldOpen(t){
-  let g=ground(t,87,['#1E1A24','#16121C','#2A2432'])+stars(t,.4,300)+fireflies(t,0,-600,1920,700,'#FFE9A8',14,.4);
   const four=ease.out(prog(t,AT.firstFour,AT.firstFour+1)),five=ease.out(prog(t,AT.mother,AT.mother+.8));
   const lit=k=>k<4?.15+.85*four:k===4?.15+1.1*five*(1+.15*Math.sin(t*3)):.12;
-  g+=`<path d="${ridge(5,hv(930,vy(1250)),14,260)}" fill="#1E1A24"/>`;
+  let g=stars(t,.4,300)+fireflies(t,0,-600,1920,700,'#FFE9A8',14,.4);
+  // Vertical: the tablets stand on a rocky mountain; a village below lights up at "your mother and father".
+  if(E.VERT)g+=glow(960,vy(1180),1000,'#FFD86B',.16)+land(t,87,{top:1130,c:['#2C2638','#383046','#463C56','#FFD86B']})+
+    ground(t,87,['#4A4060','#3A3250','#5A4E72'],['#FFE9A8'],1600)+glow(960,vy(1780),700,'#FFD27A',.3*five)+
+    village(t,[[70,1820,.5],[270,1790,.4],[470,1830,.46],[690,1800,.38],[900,1830,.5]],five)+fireflies(t,0,vy(1380),1920,700,'#FFE9A8',12,.5);
+  else g+=`<path d="${ridge(5,930,14,260)}" fill="#1E1A24"/>`;
   const cy=Y(560,860),s=hv(1,1.36);
   const [lx0,ly5,lx1]=lineAt(960,560,4);
   g+=piece(t,0,960,cy,G(`translate(960 ${cy}) scale(${s}) translate(-960 -560)`,tablets(960,560,lit,goldOrCoral)+
@@ -136,10 +175,11 @@ function coldOpen(t){
 
 // ---------- 1. The hinge: God-ward, neighbour-ward ----------
 function hingeSheet(t,lt){
-  let g=ground(t,88,['#1E1A30','#14122A','#2A2440'],['#FFE9A8'])+stars(t,.35,600)+fireflies(t,0,-600,1920,2200,'#FFE9A8',16,.4);
+  let g=stars(t,.35,600)+(E.VERT?glow(960,vy(1150),900,'#FFD86B',.12)+land(t,88,{top:1150,c:['#24203A','#2E2848','#3A3258','#FFE9A8']}):'')+
+    ground(t,88,['#40385E','#322C4E','#4E4672'],['#FFE9A8'],1600)+fireflies(t,0,-600,1920,2200,'#FFE9A8',16,.4);
   const gl=ease.out(prog(t,AT.lovingGod-.2,AT.lovingGod+.8)),nl=ease.out(prog(t,AT.lovingN-.2,AT.lovingN+.8)),hp=ease.out(prog(t,AT.firstN,AT.firstN+.8));
   const lit=k=>k<4?.2+.8*gl:k===4?.2+1.1*hp*(1+.15*Math.sin(t*3)):.15+.85*nl;
-  const cy=Y(560,760),s=hv(.9,1.05);
+  const cy=Y(560,745),s=hv(.9,1.22);
   const [x0,y5,x1]=lineAt(960,560,4);
   // Bracket on line V and an arrow across to the neighbour tablet.
   let inner=tablets(960,560,lit,goldOrCoral)+mark(scribble((x0+x1)/2,y5,(x1-x0)*.62,34,7),ease.inOut(prog(t,AT.firstN,AT.firstN+.7)),CORAL,8)+
@@ -163,17 +203,19 @@ function hingeSheet(t,lt){
 function scale(t,cx,cy,w,ang,leftIn,rightIn){
   const a=ang*Math.PI/180,dx=Math.cos(a)*w/2,dy=Math.sin(a)*w/2;
   const lx=cx-dx,ly=cy+dy,rx=cx+dx,ry=cy-dy;
-  const pan=(x,y,inner)=>L(x,y,x-90,y+170,'#6A4A22',4)+L(x,y,x+90,y+170,'#6A4A22',4)+inner(x,y+170)+
-    P(`M${x-130} ${y+170}Q${x} ${y+240} ${x+130} ${y+170}Z`,GOLD,{stroke:'#8A5A12','stroke-width':5});
-  return P(`M${cx-26} ${cy}L${cx-60} ${cy+480}H${cx+60}L${cx+26} ${cy}Z`,'#8A5A12')+R(cx-160,cy+470,320,36,8,'#6A4A22')+
-    L(lx,ly,rx,ry,'#B8862C',18)+C(cx,cy,24,GOLD,{stroke:'#8A5A12','stroke-width':5})+
+  const pan=(x,y,inner)=>L(x,y,x-90,y+170,'#3A2810',5)+L(x,y,x+90,y+170,'#3A2810',5)+inner(x,y+170)+
+    P(`M${x-130} ${y+170}Q${x} ${y+240} ${x+130} ${y+170}Z`,GOLD,{stroke:'#2A1A08','stroke-width':6});
+  const ol={stroke:'#2A1A08','stroke-width':6};
+  return P(`M${cx-26} ${cy}L${cx-60} ${cy+480}H${cx+60}L${cx+26} ${cy}Z`,'#7A4E10',ol)+R(cx-160,cy+470,320,36,8,'#4A3214',ol)+
+    L(lx,ly,rx,ry,'#2A1A08',26)+L(lx,ly,rx,ry,'#C8922E',16)+C(cx,cy,24,GOLD,{stroke:'#2A1A08','stroke-width':6})+
     pan(lx,ly,leftIn)+pan(rx,ry,rightIn);
 }
 function heavySheet(t,lt){
-  let g=ground(t,81,['#C99C5E','#B0864A','#D8B070'])+glow(960,520,1000,'#FFE9B0',.4)+fireflies(t,0,-600,1920,2300,'#FFF6DA',14,.5);
+  let g=glow(960,hv(520,vy(760)),hv(1000,760),'#FFF4D8',.18)+land(t,81,{top:1185,c:['#A87838','#946628','#7E5620','#FFF2C8'],rimOp:.6})+
+    ground(t,81,['#C99C5E','#7E5A2A','#D8B070'],[],1620)+fireflies(t,0,-600,1920,2300,'#FFF6DA',14,.5);
   const sink=ease.back(prog(t,AT.weight-.1,AT.weight+.9)),ang=-4+sink*16+Math.sin(t*1.3)*1.2;
-  const cy=Y(380,700),sc=hv(.9,1.05);
-  g+=G(`translate(960 ${cy}) scale(${sc}) translate(-960 ${-cy})`,scale(t,960,cy,760,ang,
+  const cy=Y(380,660),sc=hv(.9,1.2);
+  g+=G(`translate(960 ${cy}) scale(${sc}) translate(-960 ${-cy})`,scale(t,960,cy,hv(760,640),ang,
     (x,y)=>sink>0?person(t,x,y+10,.62,0,{hair:'#D8D8E0',aura:'#FFD27A',auraOp:.55}):'',
     (x,y)=>P(`M${x-50} ${y}Q${x} ${y-70} ${x+50} ${y-10}Q${x} ${y-30} ${x-50} ${y}Z`,'#F6EFDC',{stroke:'#B8A888','stroke-width':3})));
   // Top band: the Hebrew word.
@@ -184,8 +226,8 @@ function heavySheet(t,lt){
   g+=fade(t,AT.child-.3,tag(t,AT.seriously,960,Y(900,1420),'TAKE THEM SERIOUSLY',SZ(38,44),3));
   // Child and grown adult beside the scale.
   const cp=ease.out(prog(t,AT.child-.1,AT.child+.5)),ap=ease.out(prog(t,AT.adult-.1,AT.adult+.5));
-  if(cp>0)g+=G('',person(t,X(560,170),Y(1000,1175),hv(.42,.48),2,{f:false}),cp);
-  if(ap>0)g+=G('',person(t,X(1360,900),Y(1000,1175),hv(.62,.7),4,{flip:-1,reach:.4}),ap);
+  if(cp>0)g+=G('',person(t,X(560,170),Y(1000,1175),hv(.42,.6),2,{f:false}),cp);
+  if(ap>0)g+=G('',person(t,X(1360,900),Y(1000,1175),hv(.62,.85),4,{flip:-1,reach:.4}),ap);
   g+=tag(t,AT.child,960,Y(900,1420),'A CHILD OBEYS',SZ(36,42),4);
   g+=tag(t,AT.adult,960,Y(980,1520),'A GROWN-UP STILL HONORS',SZ(40,46),5,{bg:CORAL});
   return g;
@@ -222,14 +264,15 @@ function frameArt(k,cx,cy,on){
 }
 const HARD=[['HURT','hurt'],['LEFT','left'],['NEVER KNEW','knew']];
 function hardSheet(t,lt){
-  let g=ground(t,83,['#4A5048','#3A4038','#5A6058'])+rain(t,1-ease.inOut(prog(t,AT.fathers,AT.bothWays+1)));
+  const wet=1-ease.inOut(prog(t,AT.fathers,AT.bothWays+1)),bw=ease.out(prog(t,AT.bothWays-.3,AT.bothWays+.6));
+  let g=street(t,83,{wet})+(E.VERT?lamp(120,1190,hv(0,300))+house(t,vx(810),vy(1182),1.35,.25+.75*bw):'')+rain(t,wet);
   const fy=Y(560,720);
   HARD.forEach(([name,w],k)=>{const cx=X([620,960,1300][k],[200,540,880][k]);g+=fade(t,AT.fathers-.3,cutout(t,AT[w],cx,fy,frameArt(k,cx,fy),name,30+k,{w:230,h:230,paper:'#B8B2A8'}));});
   // The lone figure, and later a parent opposite: the weight runs both ways.
-  const ly=Y(1000,1175),bw=ease.out(prog(t,AT.bothWays-.3,AT.bothWays+.6));
-  g+=person(t,lerp(X(960,540),X(760,280),bw),ly,hv(.7,.75),1,{aura:'#9AB0D0',auraOp:.25+.3*bw});
-  if(bw>0){g+=G('',person(t,X(1160,800),ly,hv(.8,.82),0,{flip:-1,hair:'#8A8A92',aura:'#FFD27A'}),bw);
-    const ay=ly-hv(150,190),a0=X(860,400),a1=X(1060,680);
+  const ly=Y(1000,1185);
+  g+=person(t,lerp(X(960,500),X(760,280),bw),ly,hv(.7,1.02),1,{aura:'#9AB0D0',auraOp:.25+.3*bw});
+  if(bw>0){g+=G('',person(t,X(1160,800),ly,hv(.8,1.1),0,{flip:-1,hair:'#8A8A92',aura:'#FFD27A'}),bw);
+    const ay=ly-hv(150,310),a0=X(860,400),a1=X(1060,680);
     g+=arrow(a0,ay,(a0+a1)/2,ay-60,a1,ay,bw,CORAL,8)+arrow(a1,ay+40,(a0+a1)/2,ay+100,a0,ay+40,clamp(bw*1.5-.5),CORAL,8);}
   // Top band (before the verse): what honor is not.
   g+=fade(t,AT.pretending-.3,tag(t,AT.hard,960,Y(150,300),'HARD TO HONOR?',SZ(44,54),1));
@@ -245,7 +288,8 @@ function hardSheet(t,lt){
 
 // ---------- 5. Taken in ----------
 function takenSheet(t,lt){
-  let g=ground(t,84,['#5A6A4A','#4A5A3A','#6A7A5A'],['#FFE9A8'])+rain(t,.6*(1-ease.inOut(prog(t,AT.takeMe[0]-1,AT.takeMe[0]+1))));
+  const dry=ease.inOut(prog(t,AT.takeMe[0]-1,AT.takeMe[0]+1));
+  let g=street(t,84,{wet:.6*(1-dry),far:'#3E3A50',road:'#33303F'})+(E.VERT?lamp(130,1190,420,.5)+house(t,vx(880),vy(1182),1.1,.15+.6*dry):'')+rain(t,.6*(1-dry));
   const lp=ease.inOut(prog(t,AT.takeMe[0]-.3,AT.takeMe[1]+.6)),ly=Y(1000,1175),fx=960;
   g+=P(`M${fx-90} -800L${fx+90} -800L${fx+260} ${ly+20}L${fx-260} ${ly+20}Z`,'#FFF2C8',{opacity:(.5*lp).toFixed(2)})+glow(fx,ly-120,600*Math.max(.05,lp),'#FFE9A8',.7*lp);
   g+=fireflies(t,0,-600,1920,2300,'#FFF6DA',18,.3+.5*lp);
@@ -259,15 +303,26 @@ function takenSheet(t,lt){
 
 // ---------- 6. From the cross ----------
 function crossSheet(t,lt){
-  let g=ground(t,85,['#2A1418','#3A1C1E','#24100F'])+glow(960,hv(200,vy(700)),900,'#C2451E',.35);
+  let g=glow(960,hv(200,vy(820)),900,'#C2451E',.4);
   const hy=Y(760,1150);
-  g+=`<path d="${ridge(71,hy,18,200)}" fill="#2A1418"/>`;
+  if(E.VERT){
+    // Low storm clouds drifting across the darkened sky.
+    for(let i=0;i<9;i++){const cx0=((hash(i,3)*2400+t*(8+i*2))%2400)-240,cy0=vy(170+hash(i,4)*480),w=220+hash(i,5)*260;
+      g+=Ell(cx0,cy0,w,w*.22,'#1A0606',{opacity:.8})+Ell(cx0+w*.3,cy0-w*.12,w*.55,w*.2,'#240A08',{opacity:.75})+Ell(cx0-w*.1,cy0-w*.2,w*.6,w*.05,'#E06030',{opacity:.28});}
+    // Distant hills, the city wall, then Golgotha under the cross and ground to the bottom.
+    g+=`<path d="${ridge(72,vy(1130),26,240)}" fill="#3A1614"/>`;
+    g+=R(vx(-40),vy(1110),vx(1120)-vx(-40),220,0,'#5A2418');for(let x=vx(-40);x<vx(1120);x+=70)g+=R(x,vy(1085)+(Math.floor(x/70)%6===0?-50:0),46,80,0,'#5A2418');
+    g+=P(`M${vx(-120)} ${vy(1340)}Q${vx(260)} ${vy(1070)} ${vx(540)} ${vy(1058)}Q${vx(820)} ${vy(1070)} ${vx(1200)} ${vy(1340)}V2000H${vx(-120)}Z`,'#3E1A16',{stroke:'#E0602A','stroke-width':5,'stroke-opacity':.5});
+    g+=glow(960,vy(1380),900,'#E0602A',.18)+land(t,85,{top:1380,c:['#5E2A1E','#4E2218','#3E1A12','#FF8A4A'],rimOp:.4,stones:40})+ground(t,85,['#8A5034','#5A2C20','#9A6040'],['#FFB27A'],1640);
+    // A path down from the hill toward the house.
+    g+=P(`M${vx(330)} ${vy(1200)}Q${vx(520)} ${vy(1420)} ${vx(380)} ${vy(1600)}T${vx(560)} ${vy(1960)}`,'none',{stroke:'#8A4A30','stroke-width':46,opacity:.55,'stroke-linecap':'round'});
+  } else g+=`<path d="${ridge(71,hy,18,200)}" fill="#2A1418"/>`;
   // The empty paper cross (no figure on it).
-  const cx=hv(1300,960),cb=hy+10,ch=hv(560,520),cs=1;
+  const cx=hv(1300,960),cb=hv(hy+10,vy(1062)),ch=hv(560,520),cs=1;
   g+=G(`translate(${cx} ${cb}) scale(${cs})`,P(`M-24 0V${-ch}H24V0Z`,'#1A0C0E',{stroke:'#4A2420','stroke-width':4})+
     P(`M${-ch*.32} ${-ch*.78}H${ch*.32}V${-ch*.78+44}H${-ch*.32}Z`,'#1A0C0E',{stroke:'#4A2420','stroke-width':4}));
   // Mary and the disciple; after "from that hour" they walk together toward a glowing house.
-  const wk=ease.inOut(prog(t,AT.hour,AT.hadHome+1.5)),fy=Y(1000,1175);
+  const wk=ease.inOut(prog(t,AT.hour,AT.hadHome+1.5)),fy=Y(1000,1190);
   const hx=hv(1700,vx(900)),hs=ease.out(prog(t,AT.hour,AT.hour+.8));
   if(hs>0)g+=G('',house(t,hx,fy,hv(.6,.62),hs),hs);
   const mx=lerp(hv(980,vx(170)),hx-hv(260,240),wk),dx=mx+hv(130,150);
@@ -293,7 +348,7 @@ function weightArt(t,cx,cy){return L(cx,cy-70,cx,cy+60,'#8A5A12',8)+L(cx-80,cy-5
   C(cx-80,cy-6,18,CORAL)+R(cx-50,cy+60,100,14,4,'#8A5A12');}
 const GRID=k=>E.VERT?[vx([300,780,300,780][k]),vy([700,700,1040,1040][k])]:[[300,740,1180,1620][k],760];
 function nowSheet(t,lt){
-  let g=ground(t,86,['#3BBF7A','#2E9A62','#5AD890'],['#FF7BD5','#FFD45E','#FFFFFF'])+glow(960,540,1000,'#FFFFFF',.35)+fireflies(t,0,-600,1920,2300,'#FFD27A',14,.4);
+  let g=ground(t,86,['#3BBF7A','#2E9A62','#5AD890'],['#FF7BD5','#FFD45E','#FFFFFF'],1390)+glow(960,540,1000,'#FFFFFF',.35)+fireflies(t,0,-600,1920,2300,'#FFD27A',14,.4);
   const items=[['CALL','phone',phoneArt],['PATIENCE','patience',teaArt],['FORGIVE','forgive',doorArt],['GIVE WEIGHT','giving',weightArt]];
   items.forEach(([name,w,fn],k)=>{const [cx,cy]=GRID(k);g+=cutout(t,AT[w],cx,cy,fn(t,cx,cy),name,40+k,{w:250,h:250,bg:k===3?CORAL:undefined});});
   g+=tag(t,AT.looksNow,960,Y(140,330),'WHAT IT LOOKS LIKE NOW',SZ(42,48),1);
@@ -304,10 +359,12 @@ function nowSheet(t,lt){
 
 // ---------- 8. The doorway, then the end card ----------
 function doorSheet(t,lt){
-  let g=ground(t,89,['#1E1A24','#16121C','#2A2432'],['#FFE9A8'])+stars(t,.35,600)+fireflies(t,0,-600,1920,2200,'#FFE9A8',16,.45);
   const fl=ease.inOut(prog(t,AT.walks-.2,AT.arrives+1)),six=prog(t,AT.sixth,AT.sixth+.6);
+  let g=stars(t,.35,600)+(E.VERT?glow(960,vy(1150),1000,'#FFD86B',.16)+land(t,89,{top:1130,c:['#2C2638','#383046','#463C56','#FFD86B']}):'')+
+    ground(t,89,['#4A4060','#3A3250','#5A4E72'],['#FFE9A8'],1600)+(E.VERT?glow(960,vy(1780),700,'#FFD27A',.3*fl)+
+    village(t,[[70,1820,.5],[270,1790,.4],[470,1830,.46],[690,1800,.38],[900,1830,.5]],.25+.75*fl):'')+fireflies(t,0,-600,1920,2200,'#FFE9A8',16,.45);
   const lit=k=>k<4?1:k===4?.8+.6*fl:k===5?.2+.8*fl*.6+(six>0?.6*Math.abs(Math.sin(t*6)):0):.2+.6*fl;
-  const cy=Y(560,800),s=hv(.9,1.05);
+  const cy=Y(560,770),s=hv(.9,1.22);
   const [x0,y5,x1]=lineAt(960,560,4);
   let inner=tablets(960,560,lit,goldOrCoral);
   // Light running from the God-ward lines, through line V, across to the neighbour tablet.
@@ -335,7 +392,7 @@ E.start({
   sheets:[
     {name:'cold open',draw:coldOpen,bg:['#1A1622','#07060C'],cam:wide(0,AT.readers-.3)},
     {name:'the hinge',at:AT.readers-.1,draw:hingeSheet,bg:['#1C1830','#0A0814'],cam:wide(AT.readers,AT.mean-.3)},
-    {name:'heavy',at:AT.mean-.1,draw:heavySheet,bg:['#F6E2B0','#D8A860'],stars:false,vIn:'cut',cam:wide(AT.mean,AT.something-.3)},
+    {name:'heavy',at:AT.mean-.1,draw:heavySheet,bg:['#F6E2B0','#D8A860'],stars:false,cam:wide(AT.mean,AT.something-.3)},
     {name:'a promise',at:AT.something-.1,draw:promiseSheet,bg:['#0E2A5C','#06122E'],cam:wide(AT.something,AT.hard-.3)},
     {name:'hard to honor',at:AT.hard-.1,draw:hardSheet,bg:['#5A6070','#2A2E3A'],stars:false,cam:wide(AT.hard,AT.letGo-.3)},
     {name:'taken in',at:AT.letGo-.1,draw:takenSheet,bg:['#6A6878','#3A3448'],stars:false,cam:wide(AT.letGo,AT.cross-.3)},
@@ -345,7 +402,7 @@ E.start({
   ],
   talk:[],
   focus:[[AT.mother,.8],[AT.hinge,.7],[AT.weight,.9],[AT.promise[0],.7],[AT.pretending,.7],[AT.godNot,.9],[AT.behold[0],.8],[AT.veryEnd,.8],[AT.giving,.6],[AT.sixth,.8]],
-  flashes:[[AT.mean-.1,.6,'#FFFBEC'],[AT.takeMe[0],.6,'#FFFBEC'],[AT.looksNow-.1,.8,'#FFFBEC']],
+  flashes:[[AT.takeMe[0],.6,'#FFFBEC'],[AT.looksNow-.1,.8,'#FFFBEC']],
   tail:7,
   fadeOut:1.2,
 });
