@@ -145,18 +145,36 @@ const X=(l,f)=>hv(l,vx(f)), Y=(l,f)=>hv(l,vy(f)), SZ=(l,f)=>hv(l,f/.84);
 const tag=(t,at,x,y,s,size,id,o={})=>piece(t,at,x,y,label(x,y-size*.81,s,Object.assign({size,anchor:'middle'},o)),id,1.3);
 const WIDE=[960,560,.84];
 
+// Vertical-only lower land: layered ridges at frame heights (below the captions), drawn under the labels.
+function lowland(seed,layers){
+  if(!E.VERT)return '';
+  return layers.map(([fy,col,amp],i)=>`<path d="${ridge(seed+i,vy(fy),amp||12,220+i*40)}" fill="${col}"/>`).join('');
+}
+// A tent camp with small fires (Sinai), frame positions.
+function camp(t,fy,xs){
+  if(!E.VERT)return '';
+  let g='';
+  xs.forEach((fx,i)=>{const x=vx(fx),y=vy(fy+(i%2)*18),w=SZ(0,i%2?110:140),h=w*.62,fl=.75+.25*Math.sin(E.held(t,10)*7+i*2);
+    g+=glow(x,y-h*.3,w*1.1,'#FF9A3C',.28*fl)+P(`M${x-w/2} ${y}L${x} ${y-h}L${x+w/2} ${y}Z`,['#C9A27A','#B08A64','#D8B48A'][i%3],{stroke:'#4A3426','stroke-width':4})+
+      P(`M${x} ${y-h}L${x+w*.12} ${y}L${x-w*.12} ${y}Z`,'#3A2A22');
+    const fx2=x+w*.75,fh=SZ(0,34)*fl;
+    g+=glow(fx2,y-fh*.4,SZ(0,70),'#FFB04C',.6*fl)+P(`M${fx2-12} ${y}Q${fx2} ${y-fh*1.4} ${fx2+12} ${y}Z`,'#FFD27A')+P(`M${fx2-6} ${y}Q${fx2} ${y-fh*.8} ${fx2+6} ${y}Z`,'#FFF4C8');});
+  return g;
+}
 // ---------- 0. Cold open: a boss who says stop ----------
 function coldOpen(t){
   let g=stars(t,.4,300)+fireflies(t,0,-600,1920,700,'#FFE9A8',14,.4);
   const glowIn=ease.out(prog(t,0,AT.boss+1)),four=ease.inOut(prog(t,AT.fourth-.2,AT.fourth+.8));
   const lit=k=>k===3?glowIn*(.6+.6*four*(1+.15*Math.sin(t*3))):glowIn*(.6-.45*four);
   g+=`<path d="${ridge(5,hv(930,vy(1250)),14,260)}" fill="#1E1A24"/>`;
+  // Vertical: the foot of the mountain, a camp with fires (fills the band under the captions).
+  g+=lowland(60,[[1390,'#2A2132',14],[1560,'#3A2B3C',12]])+(E.VERT?glow(960,vy(1560),900,'#FF9A3C',.12):'')+camp(t,1615,[60,190,890,1020])+lowland(70,[[1700,'#4A3546',10]]);
   const cy=Y(560,860),s=hv(1,1.3);
   const tf=`translate(960 ${cy}) scale(${s}) translate(-960 -560)`;
   // The fourth line is the last but one on the left tablet.
   g+=piece(t,0,960,cy,G(tf,tablets(960,560,1,lit)+mark(scribble(755,668,230,52,4),ease.inOut(prog(t,AT.fourth,AT.fourth+.8)),CORAL,8)),1,1.2);
   // Top band (gone before the verse): a boss who says stop, one day in seven.
-  g+=fade(t,AT.remember-.25,
+  g+=fade(t,AT.remember-.8,
     tag(t,AT.boss+.2,960,Y(150,260),'A BOSS WHO SAYS STOP?',SZ(40,46),2,{bg:CORAL,rot:-2})+
     G('',week(t,960,Y(260,400),SZ(70,84),7*ease.inOut(prog(t,AT.oneDay,AT.oneDay+1.4)),ease.out(prog(t,AT.oneDay+1.4,AT.oneDay+2))),prog(t,AT.oneDay-.2,AT.oneDay+.2)));
   g+=verse(t,AT.remember-.15,420,40,['Remember the Sabbath day, to keep it holy.'],'EXODUS 20:8 ESV',{size:54,hl:'to keep it holy.',hlAt:AT.keepHoly[0],hlDur:AT.keepHoly[1]-AT.keepHoly[0],seed:5,id:4});
@@ -224,8 +242,16 @@ function dayIcon(k,cx,cy,r,t){
 const DAYPOS=k=>E.VERT?[vx([170,383,596,809,250,470,735][k]),vy([700,700,700,700,940,940,960][k])]:[[260,480,700,920,1140,1360,1660][k],[620,560,520,500,520,560,560][k]];
 function creation(t,lt){
   let g=stars(t,.8,1080)+fireflies(t,0,-600,1920,2300,'#B8D8FF',16,.4);
-  if(E.VERT)g+=`<path d="${ridge(17,vy(1420),18,300)}" fill="#101A3A"/>`+glow(960,vy(1420),900,'#3A5AB0',.25);
   const fillP=prog(t,AT.inSix,AT.everything+.8),r7=ease.out(prog(t,AT.heRested-.2,AT.heRested+.8));
+  if(E.VERT){
+    // Lower band: a calm sea under the night, glinting gold once the seventh day glows, then a shore.
+    const sy=vy(1360),[sf,sd]=E.vgrad('#1A3A7A','#0A1638');
+    g+=sd+R(-60,sy,2060,1900-sy,0,sf)+glow(vx(735),sy,900,'#FFD86B',.35*r7)+glow(960,sy,1300,'#3A6AD0',.25);
+    const r=rng(77);
+    for(let i=0;i<46;i++){const x=-40+r()*2000,y=sy+20+Math.pow(r(),1.3)*(vy(1640)-sy-20),w=30+r()*90,ph=Math.sin(t*1.6+i*1.7),near=Math.max(0,1-Math.abs(x-vx(735))/700);
+      g+=L(x-w/2+ph*10,y,x+w/2+ph*10,y,mix('#7CD4FF','#FFE9A8',near*r7),3,{opacity:(.25+.35*(.5+.5*ph)+.3*near*r7).toFixed(2)});}
+    g+=lowland(80,[[1640,'#14304A',14],[1760,'#1A3E50',10]]);
+  }
   for(let k=0;k<7;k++){
     const [cx,cy]=DAYPOS(k),r=hv(k<6?78:118,k<6?92:128),on=k<6?ease.out(clamp(fillP*6-k)):r7;
     if(k===6)g+=glow(cx,cy,r*2.4,'#FFD86B',.8*r7);
@@ -284,7 +310,7 @@ function field(t,lt){
   g+=wheat(7,-120,2040,hv(930,vy(1230)),hv(110,120),t+.7,'#D8A84A');
   // The rules pile up over the field, then blow away on Jesus' words.
   const away=Math.pow(prog(t,AT.madeFor+.3,AT.madeFor+1.6),2);
-  RULES.forEach(([s,rot],k)=>{const x=X([560,1360,760,1160][k],[300,690,460,620][k]),y=Y([500,560,640,700][k],[620,700,800,880][k]);
+  RULES.forEach(([s,rot],k)=>{const x=X([560,1360,760,1160][k],[290,700,330,640][k]),y=Y([500,560,640,700][k],[600,700,800,900][k]);
     const inner=tag(t,AT.piled+k*.35,x,y,s,SZ(34,40),10+k,{rot,bg:'#F6EFDC',fill:INK});
     g+=away>=1?'':G(`translate(${(away*1400).toFixed(0)} ${(-away*500).toFixed(0)}) rotate(${(away*40).toFixed(1)} ${x} ${y})`,inner,1-away);});
   // Light behind Jesus' words (the words arrive on paper in light; he is not shown).
@@ -311,6 +337,22 @@ const DIFF=k=>E.VERT?[vx([285,795,540][k]),vy([560,560,850][k])]:[[440,960,1480]
 function differ(t,lt){
   let g=glow(960,540,900,'#FFE9B0',.35)+stars(t,.5,1080);
   g+=`<path d="${ridge(23,hv(900,vy(1190)),10,240)}" fill="#1E1830"/>`+tufts(t,6,['#3A3058','#4A3E6A','#2A2244']);
+  // Vertical lower band: hills with lit homes, below the captions.
+  if(E.VERT){g+=lowland(90,[[1430,'#2A2244',12]]);
+    [[70,1450],[190,1470],[880,1460],[1010,1440]].forEach(([fx,fy],i)=>{const x=vx(fx),y=vy(fy),w=SZ(0,90),h=SZ(0,70),lw=.7+.3*Math.sin(t*2+i);
+      g+=glow(x,y-h*.5,w*1.2,'#FFD86B',.25*lw)+R(x-w/2,y-h,w,h,4,'#3A2E58')+P(`M${x-w/2-8} ${y-h}L${x} ${y-h-w*.5}L${x+w/2+8} ${y-h}Z`,'#4A3A6A')+
+        R(x-w*.28,y-h*.7,w*.22,h*.3,2,'#FFD86B',{opacity:lw.toFixed(2)})+R(x+w*.06,y-h*.7,w*.22,h*.3,2,'#FFD86B',{opacity:lw.toFixed(2)});});
+    g+=lowland(95,[[1620,'#342A50',12],[1740,'#3E3260',10]]);}
+  // Before the calendars: which day? Sunday and Saturday glow in turn.
+  const wd=prog(t,AT.how+.2,AT.how+.7);
+  if(wd>0&&t<AT.saturday){const cy=Y(560,760),sz=SZ(80,98),gap=sz*1.2,a=.5+.5*Math.sin((t-AT.how)*3.2);let wk='';
+    ['S','M','T','W','T','F','S'].forEach((d,i)=>{const x=960+(i-3)*gap,on=i===0?a:i===6?1-a:0;
+      if(on>0)wk+=glow(x,cy,sz*1.3,'#FFD86B',.7*on);
+      wk+=R(x-sz/2,cy-sz/2,sz,sz,8,mix('#2A2638','#FFD86B',on),{stroke:'#F6EFDC','stroke-width':4})+
+        T(x,cy+sz*.18,d,{size:sz*.5,font:'Segoe UI Black',weight:900,anchor:'middle',fill:on>.5?INK:'#B8B4D0'});});
+    wk+=T(960,cy-sz*1.1,'?',{size:sz*1.2,font:'Segoe UI Black',weight:900,anchor:'middle',fill:CORAL});
+    g+=fade(t,AT.saturday-.35,G('',wk,ease.out(wd)));}
+  g+=fade(t,AT.disagree-.25,tag(t,AT.how+.1,960,Y(150,340),'HOW DO CHRISTIANS KEEP IT?',SZ(40,46),9,{bg:CORAL,rot:-2}));
   // A small congregation at the foot of the sheet.
   g+=crowd(t,X(380,120),Y(890,1190),hv(7,5),hv(190,160),hv(.7,.66),{aura:'#FFE9A8',auraOp:.3});
   const items=[['SATURDAY','saturday',6,false],['SUNDAY','onSunday',0,false],['REST IN CHRIST','fulfilled',0,true]];
@@ -353,21 +395,22 @@ function rest(t,lt){
 }
 
 const wide=(a,b)=>[shot(a,b,...WIDE)];
+const FT=vy(1600);
 E.start({
   cast:{},
   sheets:[
-    {name:'cold open',draw:coldOpen,bg:['#1A1622','#07060C'],cam:wide(0,AT.israel-.3)},
-    {name:'egypt',at:AT.israel-.1,draw:egypt,bg:['#5A1410','#C2451E'],stars:false,
+    {name:'cold open',draw:coldOpen,bg:['#1A1622','#07060C'],fore:{grass:['#4A3A50','#3A2C42','#6A5070'],flowers:['#FFB04C','#FFE9A8'],top:FT},cam:wide(0,AT.israel-.3)},
+    {name:'egypt',at:AT.israel-.1,draw:egypt,bg:['#5A1410','#C2451E'],stars:false,fore:{grass:['#9A5026','#7A3E1C','#B8682E'],top:FT},
      cam:wide(AT.israel,AT.now-.3)},
-    {name:'household',at:AT.now-.1,draw:household,bg:['#F2D79A','#C98E4A'],stars:false,
+    {name:'household',at:AT.now-.1,draw:household,bg:['#F2D79A','#C98E4A'],stars:false,fore:{grass:['#6A8A3E','#5A7A30','#8AAA5A'],flowers:['#FFD45E','#FFFFFF'],top:FT},
      cam:wide(AT.now,AT.why-.3)},
-    {name:'seventh day',at:AT.why-.1,draw:creation,bg:['#0E1A4A','#060A20'],cam:wide(AT.why,AT.forty-.3)},
-    {name:'you were a slave',at:AT.forty-.1,draw:freedom,bg:['#5A1410','#C2451E'],stars:false,
+    {name:'seventh day',at:AT.why-.1,draw:creation,bg:['#0E1A4A','#060A20'],fore:{grass:['#1E4A5A','#163A4A','#2A6070'],flowers:['#7CD4FF','#FFE9A8'],top:vy(1680)},cam:wide(AT.why,AT.forty-.3)},
+    {name:'you were a slave',at:AT.forty-.1,draw:freedom,bg:['#5A1410','#C2451E'],stars:false,fore:{grass:['#9A5026','#7A3E1C','#B8682E'],top:FT},
      cam:wide(AT.forty,AT.buried-.3)},
-    {name:'made for man',at:AT.buried-.1,draw:field,bg:['#E2C48A','#A9783E'],stars:false,
+    {name:'made for man',at:AT.buried-.1,draw:field,bg:['#E2C48A','#A9783E'],stars:false,fore:{grass:['#B0864A','#9A7038','#D8B070'],flowers:['#E8B53A'],top:FT},
      cam:wide(AT.buried,AT.how-.3)},
-    {name:'christians differ',at:AT.how-.1,draw:differ,bg:['#2A2240','#120E22'],cam:wide(AT.how,AT.further-.3)},
-    {name:'rest offered',at:AT.further-.1,draw:rest,bg:['#FFE9B0','#E8A060'],stars:false,vIn:'cut',
+    {name:'christians differ',at:AT.how-.1,draw:differ,bg:['#2A2240','#120E22'],fore:{grass:['#4A3E6A','#3A3058','#5A4C80'],flowers:['#FFD86B','#B98CFF'],top:vy(1660)},cam:wide(AT.how,AT.further-.3)},
+    {name:'rest offered',at:AT.further-.1,draw:rest,bg:['#FFE9B0','#E8A060'],stars:false,vIn:'cut',fore:t=>{const k=.86*prog(t,AT.last+.6,AT.last+1.2);return {grass:['#5A8A4A','#4A7A3A','#8AC070'].map(c=>mix(c,'#08060F',k)),flowers:k>.2?[]:['#FF7BD5','#FFD45E','#FFFFFF'],top:FT};},
      cam:wide(AT.further,AT.last+6)},
   ],
   talk:[],
