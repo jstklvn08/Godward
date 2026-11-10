@@ -1,0 +1,345 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Godward: The Third Commandment</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="words.js"></script>
+<script src="../_kit/episode-engine.js"></script>
+<script>
+// The Ten Commandments, part 3: the third commandment. Script: scripts/04-the-third-commandment.md (ESV fill).
+// Every time below comes from the spoken words (words.js), so a new narration re-times the episode.
+// Guide: .claude/skills/godward-episode/reference/engine.md. K.E is the ellipse helper (Ell), window.E the engine.
+const {G,R,C,L,P,T,prog,ease,lerp,mix,clamp,rng}=K, Ell=K.E;
+const {hash,piece,glow,label,mark,scribble,arrow,strip,tape,torn}=S;
+const {cue,end,span,shot,ridge,verse,fade,hv,stars,fireflies,INK,YEL,CORAL}=E;
+const GOLD='#E8B53A', NEON='#2BF0FF';
+
+const AT={
+  most:cue('Most people think'), swear:cue('swear word'), partOf:cue("that's part of it"),
+  v207:cue('You shall not take'), beyond:cue('reach far beyond'), without:cue('without saying a word'),
+  seeWhy:cue('To see why'), bushW:cue('a bush that burned'), burnUp:cue('did not burn up'),
+  moses:cue('Moses was sent'), egypt:cue('back to Egypt'), asked:cue('And Moses asked'), yourName:cue('What is your name'),
+  iam:cue('I AM WHO'), iamEnd:end('I AM WHO I AM'), forever:cue('This is my name forever'), generations:end('all generations'),
+  hebrew:cue('In Hebrew'), four:cue('four letters'), yahweh:cue('Yahweh'), prints:cue('prints LORD'), capitals:cue('capital letters'),
+  aLabel:cue('just a label'), someone:cue('who someone is'), handed:cue('handed his name'), slaves:cue('crowd of slaves'), callOn:cue('call on him'),
+  speaks:cue('So when God speaks'), guards:cue('guards that name'), two:cue('two words'), take:cue('The Hebrew word for take'),
+  lift:cue('lift up'), carry:cue('or to carry'), vain:cue('And in vain'), empty:cue('means empty'), promise:cue('Like a promise'),
+  otherWords:cue('In other words'), emptily:cue('around emptily'),
+  talk:cue('covers how we talk'), curse:cue('as a curse'), shrug:cue('as a shrug'), promises:cue('covers promises'),
+  swore:cue('people swore'), meant:cue('meant it'), v1912:cue('You shall not swear'), falsely:span('swear by my name falsely'),
+  lying:cue('Lying with'), dragged:cue('dragged him'),
+  bigger:cue("here's where it gets bigger"), speak:cue("didn't only speak"), wore:cue('They wore it'), priests:cue('After the'),
+  v627:cue('So shall they put'), upon:span('put my name upon'), bless:end('I will bless them'),
+  bride:cue('Think of a bride'), takes:cue('She takes'), goes:cue('everywhere she goes'), readers:cue('Many readers'), world:cue('into the world'),
+  lived:cue('How they lived'), nations:cue('the nations'), canCarry:cue('So you can carry'), saying:cue('without ever saying'),
+  calling:cue('Calling yourself his'), notThere:cue("isn't there"), same:cue('stays the same'), small:cue('look small'),
+  centuries:cue('Centuries later'), pray:cue('taught his followers'), firstThing:cue('the first thing he asked'),
+  father:cue('Our Father'), hallowedBe:span('hallowed be your name'), means:cue('Hallowed means'), full:cue('Full not empty'),
+  christians:cue('Christians have long'), prayer:cue('into a prayer'), weighs:cue('weighs nothing'), carryIt:cue('Carry it like'),
+  best:cue('best thing you own'), next:cue('Next time'),
+};
+AT.last=WORDS[WORDS.length-1][2];
+
+// ---------- shared pieces (from part 1) ----------
+const slab=(w,h)=>`M${-w/2} ${h/2}V${-h/2+w*.32}Q${-w/2} ${-h/2} 0 ${-h/2}Q${w/2} ${-h/2} ${w/2} ${-h/2+w*.32}V${h/2}Z`;
+const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+// One tablet with five carved lines (numerals + illegible carving, never a quotation). lit(i) 0..1 per line.
+function tablet(x,y,w,h,first,lit,seed){
+  const r=rng(seed);let g=G(`translate(${x} ${y})`,P(slab(w,h),'#7E7A70')+P(slab(w-24,h-24),'#9C988C')+
+    P(slab(w-24,h-24),'none',{stroke:'#5E5A52','stroke-width':3,opacity:.5}));
+  for(let i=0;i<5;i++){
+    const k=first+i,ly=y-h/2+w*.46+i*(h-w*.5)/5.2,x0=x-w/2+92,x1=x+w/2-34-r()*40,on=lit(k);
+    let d=`M${x0} ${ly}`;for(let xx=x0;xx<x1;xx+=18)d+=`L${xx+9} ${ly+(r()-.5)*6}L${xx+18} ${ly}`;
+    g+=glow((x0+x1)/2,ly,(x1-x0)*.6,'#FFD86B',.35*on);
+    g+=T(x-w/2+60,ly+12,NUM[k],{size:34,font:'Georgia',weight:700,anchor:'middle',fill:mix('#4A4740','#FFF4C8',on)});
+    g+=P(d,'none',{stroke:'#4A4740','stroke-width':5,opacity:.8})+P(d,'none',{stroke:'#FFE9A8','stroke-width':3,opacity:(.12+.88*on).toFixed(3)});
+  }
+  return g;
+}
+const tablets=(cx,cy,s,lit)=>G(`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`,
+  glow(cx,cy,560,'#FFD86B',.12)+tablet(cx-205,cy,380,560,0,lit,21)+tablet(cx+205,cy,380,560,5,lit,33));
+const strike=(x0,y,x1,p)=>mark(`M${x0} ${y+6}L${x1} ${y-6}`,p,CORAL,9);
+// Paper-cut mountain, one jagged peak.
+function mountain(seed,px,py,fill,steep){
+  const r=rng(seed*91+7),pts=[];
+  for(let x=-140;x<=2060;x+=22){const d=Math.abs(x-px)/(900*steep);pts.push([x,py+Math.pow(d,1.25)*560+(r()-.5)*16]);}
+  return P('M'+pts.map(p=>p[0].toFixed(0)+' '+Math.min(p[1],1800).toFixed(0)).join('L')+'L2060 1800L-140 1800Z',fill);
+}
+// A crowd of small glowing people (modest tunics). o.grey(i) 0..1 drains a figure's glow.
+const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
+function crowd(t,x0,y,n,gap,s,o={}){
+  let g='';
+  for(let i=0;i<n;i++){
+    const tr=o.tremble?(hash(Math.floor(t*12),i)-.5)*o.tremble:0,[a,b]=TUN[i%5],gr=o.grey?o.grey(i):0;
+    g+=E.chubby(x0+i*gap+tr+(i%2)*10,y+(i%3)*14,s*(.92+.16*hash(i,4)),{f:i%2===1,flip:o.flip||1,tunic:mix(a,'#77727A',gr),tunic2:mix(b,'#4A464E',gr),aura:gr>.5?'#8A8890':(o.aura||'#7CFFE6'),auraOp:(o.auraOp??.35)*(1-.7*gr),
+      walk:o.walk?t*7+i:0,lean:o.lean||0,reach:o.reach||0,phase:i*.7,hair:['#2E1C52','#4A2A16','#1A1A2A'][i%3],skin:['#F5BE8E','#D9965E','#B87444'][i%3],shade:['#C4835E','#A86A3E','#8A5230'][i%3]});
+  }
+  return g;
+}
+
+// ---------- vertical layout ----------
+// Every vertical sheet is filmed wide (zoom .84 on 960,560), so frame position (fx, fy) maps to fixed sheet coordinates.
+// Vertical frame zones: verse cards 170-~520, art 560-1180, captions 1220-1340, lower labels 1380-1560.
+const vx=f=>960+(f-540)/.84, vy=f=>560+(f-1010)/.84;
+const X=(l,f)=>hv(l,vx(f)), Y=(l,f)=>hv(l,vy(f)), SZ=(l,f)=>hv(l,f/.84);
+const tag=(t,at,x,y,s,size,id,o={})=>piece(t,at,x,y,label(x,y-size*.81,s,Object.assign({size,anchor:'middle'},o)),id,1.3);
+const WIDE=[960,560,.84];
+
+// ---------- new pieces for this episode ----------
+// The divine name as four glowing letters on a gold plate. full 1 = glowing; 0 = hollow (outline only).
+function namePlate(t,cx,cy,s,full,o={}){
+  const w=440,h=170,f=clamp(full),pulse=.5+.5*Math.sin(t*2.2);
+  let g=glow(0,0,330,'#FFD86B',(.25+.25*pulse)*f*(o.halo??1));
+  g+=R(-w/2,-h/2,w,h,28,'#E8B53A',{opacity:(.95*f).toFixed(3)})+R(-w/2+12,-h/2+12,w-24,h-24,20,'#FFE9A8',{opacity:(.55*f).toFixed(3)});
+  g+=R(-w/2,-h/2,w,h,28,'none',{stroke:mix('#FFFFFF','#FFE9A8',f),'stroke-width':8,'stroke-dasharray':f<.98?`${lerp(18,400,f).toFixed(0)} ${lerp(16,0,f).toFixed(0)}`:'none',opacity:.95});
+  g+=T(0,38,'YHWH',{size:104,font:'Georgia',weight:700,anchor:'middle',fill:mix('#FFFFFF','#5A3A0A',f),op:(.35+.65*f).toFixed(3),ls:10});
+  return G(`translate(${cx} ${cy}) scale(${s})`,g);
+}
+// A bush that burns and is not burned up: dark branches, layered neon flames.
+function bush(t,cx,cy,s,fire){
+  let g=glow(0,-140,420,'#FF8A3C',.55*fire)+glow(0,-140,200,'#FFE9A8',.5*fire);
+  const br=[[0,0,-90,-170],[0,0,80,-190],[-40,-80,-150,-150],[40,-90,150,-140],[0,0,0,-230],[-20,-120,-60,-230],[20,-120,70,-240]];
+  br.forEach(([a,b,c,d])=>g+=L(a,b,c,d,'#3A2414',14)+L(a,b,c,d,'#6A4026',6));
+  for(let l=0;l<3;l++)for(let i=0;i<9;i++){
+    const x=-150+i*37+Math.sin(i*2.3)*16,base=-120-Math.sin(i*1.1)*60,f=Math.sin(t*(9+l)+i*1.7+l),k=[1,.66,.36][l];
+    const ht=(110+40*Math.sin(t*7+i))*k*fire,w=34*k;
+    g+=P(`M${x-w} ${base}Q${x-w*1.2+f*10} ${base-ht*.5} ${x+f*14} ${base-ht}Q${x+w*1.2+f*10} ${base-ht*.5} ${x+w} ${base}Q${x} ${base+w} ${x-w} ${base}Z`,['#FF5A2C','#FFB04C','#FFF3C4'][l],{opacity:(.92*fire).toFixed(2)});
+  }
+  for(let i=0;i<8;i++){const k=(t*.5+i/8)%1,x=Math.sin(i*3.1+t)*120,y=-200-k*260;g+=C(x.toFixed(1),y.toFixed(1),4+3*(1-k),'#FFE9A8',{opacity:(fire*(1-k)).toFixed(2)});}
+  return G(`translate(${cx} ${cy}) scale(${s})`,g);
+}
+function sheep(t,x,y,s,flip=1){
+  const b=Math.sin(t*2+x)*2;let g='';
+  [[-34,-50],[0,-62],[34,-50],[-18,-30],[20,-30],[-44,-24],[44,-26]].forEach(([a,c])=>g+=C(a,c+b,30,'#F4EFE2'));
+  g+=L(-28,-8,-28,22,'#2A2420',8)+L(26,-8,26,22,'#2A2420',8)+Ell(64,-56+b,22,18,'#3A3430')+Ell(56,-70+b,9,6,'#2A2420')+C(72,-60+b,3,'#fff');
+  return G(`translate(${x} ${y}) scale(${s*flip} ${s})`,g);
+}
+// A person with a shepherd's staff (the staff follows the figure's transform, not its breathing).
+function moses(t,x,y,s,o={}){
+  return G(`translate(${x} ${y}) scale(${s})`,L(70,-250,80,4,'#6A4026',12)+P('M70 -250Q66 -300 30 -296Q10 -292 16 -270','none',{stroke:'#6A4026','stroke-width':12}))+
+    E.chubby(x,y,s,Object.assign({tunic:'#C9935A',tunic2:'#7A4E2A',hair:'#2A1A12',skin:'#D9965E',shade:'#A86A3E',aura:'#FFB04C',auraOp:.35,reach:.18},o));
+}
+function veil(x,y,s,flip){
+  return G(`translate(${x} ${y}) scale(${s*flip} ${s})`,P('M-70 -205Q0 -262 70 -205L92 -70Q0 -44 -92 -70Z','#FFFFFF',{opacity:.5})+C(0,-238,14,'#FFE9F0')+C(-18,-232,9,'#FFB8D0')+C(18,-232,9,'#FFB8D0'));
+}
+// A small paper city (for the nations): towers with crenellations.
+function city(x,y,s,c1,c2,seed){
+  const r=rng(seed);let g='';
+  for(let i=0;i<4;i++){const w=50+r()*30,h=90+r()*120,x0=-110+i*58;g+=R(x0,-h,w,h,3,i%2?c1:c2);
+    for(let k=0;k<3;k++)g+=R(x0+4+k*(w/3),-h-14,w/3-8,16,2,i%2?c1:c2);g+=R(x0+w/2-8,-h+30,16,22,8,'#FFE9A8',{opacity:.7});}
+  return G(`translate(${x} ${y}) scale(${s})`,R(-130,-6,300,14,4,'#3A2C20')+g);
+}
+const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,10)+mark(`M${cx+r} ${cy-r}L${cx-r} ${cy+r}`,p*2-1,CORAL,10);
+
+// ---------- 0. Cold open: is it about swearing? ----------
+function coldOpen(t){
+  let g=stars(t,.4,300)+fireflies(t,0,-600,1920,700,'#FFE9A8',14,.4);
+  const dim=ease.inOut(prog(t,AT.swear,AT.swear+1.2)),glowIn=ease.out(prog(t,0,AT.most+1));
+  const lit=k=>k===2?glowIn*(1+.2*Math.sin(t*3)*dim):glowIn*(1-.85*dim);
+  g+=`<path d="${ridge(5,hv(930,vy(1250)),14,260)}" fill="#1E1A24"/>`;
+  const cy=Y(560,860),s=hv(1,1.36);
+  const tf=`translate(960 ${cy}) scale(${s}) translate(-960 -560)`;
+  g+=piece(t,0,960,cy,G(tf,tablets(960,560,1,lit)+mark(scribble(790,597,210,58,4),ease.inOut(prog(t,AT.v207,AT.v207+.8)),CORAL,8)),1,1.2);
+  // A speech bubble with a scribbled-out word: the usual reading. Gone before the verse arrives.
+  const bx=X(1520,760),by=Y(330,450);
+  g+=fade(t,AT.v207-.2,
+    tag(t,AT.most+.3,960,Y(150,250),'IS IT ABOUT SWEARING?',SZ(40,48),2)+
+    piece(t,AT.swear,bx,by,P(`M${bx-150} ${by-70}Q${bx-150} ${by-110} ${bx-110} ${by-110}H${bx+110}Q${bx+150} ${by-110} ${bx+150} ${by-70}V${by+20}Q${bx+150} ${by+60} ${bx+110} ${by+60}H${bx-40}L${bx-90} ${by+110}L${bx-80} ${by+60}H${bx-110}Q${bx-150} ${by+60} ${bx-150} ${by+20}Z`,'#F6EFDC',{stroke:INK,'stroke-width':6})+
+      T(bx,by+12,'#!%',{size:84,font:'Segoe UI Black',weight:900,anchor:'middle',fill:INK})+mark(scribble(bx,by-20,120,50,9),ease.inOut(prog(t,AT.partOf,AT.partOf+.6)),CORAL,8),3,1.4)+
+    tag(t,AT.partOf,X(420,330),Y(330,420),'PART OF IT',SZ(34,42),4,{rot:-3}));
+  g+=verse(t,AT.v207-.15,300,40,['You shall not take the name of the LORD your God in vain,','for the LORD will not hold him guiltless','who takes his name in vain.'],'EXODUS 20:7 ESV',{size:46,hl:'in vain,',hlAt:AT.v207+2.4,hlDur:.7,seed:5,id:5});
+  g+=tag(t,AT.beyond,960,Y(860,1420),'BIGGER THAN YOUR MOUTH',SZ(36,44),6);
+  g+=tag(t,AT.without,960,Y(940,1520),'YOU CAN BREAK IT WITHOUT A WORD',SZ(36,40),7,{bg:CORAL});
+  return g;
+}
+
+// ---------- 1. The bush that burned ----------
+function bushSheet(t,lt){
+  let g=stars(t,.6,600)+glow(1500,140,120,'#FFF6DA',.5);
+  g+=mountain(17,1300,hv(220,vy(560)),'#2A1C2E',.9);
+  g+=`<path d="${ridge(21,hv(780,vy(1150)),14,240)}" fill="#7A4A26"/><path d="${ridge(22,hv(880,vy(1200)),10,180)}" fill="#5E3A1E"/>`;
+  const fire=ease.out(prog(t,AT.bushW-.3,AT.bushW+.8)),flare=prog(t,AT.iam-.2,AT.iam+.3)*(1-prog(t,AT.iamEnd+.4,AT.iamEnd+1.4));
+  g+=bush(t,X(1200,620),Y(780,1160),hv(1.1,1.35)*(1+.12*flare),fire);
+  if(flare>0)g+=glow(X(1200,620),Y(620,900),hv(700,900),'#FFF6DA',.55*flare);
+  const turn=t>AT.asked?1:-1;
+  g+=moses(t,X(560,290),Y(820,1180),hv(1.1,1.25),{flip:t<AT.moses?1:1,reach:t>AT.yourName&&t<AT.iam?.7:.18,lean:t>AT.iam&&t<AT.forever?-8:0});
+  g+=sheep(t,X(260,100),Y(860,1185),hv(.9,1.05))+sheep(t,X(420,450),Y(880,1205),hv(.8,.9),-1);
+  g+=fade(t,AT.iam-.3,tag(t,AT.bushW+.4,960,Y(140,380),'BURNING, NOT BURNED UP',SZ(36,44),1));
+  g+=fade(t,AT.asked-.2,tag(t,AT.moses,960,Y(920,1420),'MOSES: BACK TO EGYPT',SZ(36,44),2));
+  g+=fade(t,AT.forever-.2,tag(t,AT.yourName,960,Y(920,1440),'WHAT IS YOUR NAME?',SZ(42,52),3,{bg:CORAL,rot:-2}));
+  g+=verse(t,AT.iam-.15,500,40,['I AM WHO I AM.'],'EXODUS 3:14 ESV',{size:64,seed:9,id:6});
+  g+=verse(t,AT.forever-.15,260,620,['This is my name forever, and thus I am to be','remembered throughout all generations.'],'EXODUS 3:15 ESV',{size:46,hl:'This is my name forever,',hlAt:AT.forever,hlDur:1,seed:11,id:7});
+  return g;
+}
+
+// ---------- 2. A name given ----------
+function nameSheet(t,lt){
+  let g=stars(t,.4,1080)+glow(960,420,900,'#5A2A10',.5)+fireflies(t,0,-600,1920,2200,'#FFB04C',14,.5)+`<path d="${ridge(35,hv(900,vy(1380)),12,240)}" fill="#2A1A14"/>`;
+  const ly=Y(380,720),lp=ease.out(prog(t,AT.four-.2,AT.four+.6));
+  // Four letters on a torn strip, each lit in turn.
+  if(lp>0){let s=strip(X(560,180),ly-110,hv(800,720),220,41,'#1C1420',{edge:'#3A2A30'})+tape(960,ly-108,140,-3);
+    ['Y','H','W','H'].forEach((c,i)=>{const on=ease.out(prog(t,AT.four+i*.25,AT.four+i*.25+.4)),x=960+(i-1.5)*hv(170,160);
+      s+=glow(x,ly-10,110,'#FFD86B',.6*on)+T(x,ly+40,c,{size:140,font:'Georgia',weight:700,anchor:'middle',fill:mix('#5A4A40','#FFF1C0',on)});});
+    g+=G('',s,lp);}
+  // the LORD in small capitals.
+  const sy=Y(640,980),sp=t>=AT.prints?1:0;
+  if(sp)g+=piece(t,AT.prints,960,sy,strip(960-hv(300,290),sy-80,hv(600,580),160,43,'#F6EFDC')+tape(960-hv(240,230),sy-78,90,-6)+
+    T(960-hv(150,145),sy+30,'the',{size:76,font:'Georgia',anchor:'middle',fill:INK})+T(960+hv(80,75),sy+30,'LORD',{size:96,font:'Georgia',anchor:'middle',fill:INK,ls:6})+
+    mark(`M${960+hv(-30,-30)} ${sy+52}L${960+hv(200,190)} ${sy+48}`,ease.inOut(prog(t,AT.capitals,AT.capitals+.5)),CORAL,9),2,1.2);
+  g+=fade(t,AT.aLabel-.3,tag(t,AT.yahweh,960,Y(120,300),'OFTEN WRITTEN YAHWEH',SZ(38,44),1)+
+    tag(t,AT.capitals+.3,960,Y(200,400),'LORD = THE NAME',SZ(40,48),3,{bg:CORAL}));
+  g+=fade(t,AT.handed-.3,tag(t,AT.aLabel,960,Y(120,320),'A NAME, NOT A LABEL',SZ(44,52),4,{bg:CORAL})+
+    tag(t,AT.someone,960,Y(200,430),'IT TELLS YOU WHO',SZ(38,46),5));
+  // The name handed to a crowd of slaves.
+  const hp=ease.out(prog(t,AT.handed,AT.handed+.8));
+  if(hp>0){g+=G('',crowd(t,X(300,120),Y(1000,1660),hv(8,6),hv(180,150),hv(.8,.9),{aura:'#FFD86B',auraOp:.2+.4*prog(t,AT.callOn,AT.callOn+.8),reach:t>AT.callOn?.6:0}),hp);
+    g+=tag(t,AT.slaves,960,Y(880,1430),'GIVEN TO A CROWD OF SLAVES',SZ(34,40),6);}
+  return g;
+}
+
+// ---------- 3. Lift and carry ----------
+function liftSheet(t,lt){
+  const dy=hv(0,vy(560)-120);
+  let m=glow(960,120,460,'#FF7A3C',.45)+mountain(7,960,100,'#2E2A36',1)+mountain(8,1400,330,'#221F2A',.8)+mountain(9,500,350,'#26222E',.8);
+  for(let i=0;i<7;i++){const f=Math.sin(t*9+i*1.7),x=900+i*20;m+=P(`M${x} 120Q${x-20+f*8} 70 ${x+10} 20Q${x+30} 70 ${x+20} 120Z`,['#FF5A2C','#FFB04C','#FFE36B'][i%3],{opacity:.85});}
+  let g=G(`translate(0 ${dy.toFixed(1)})`,m);
+  g+=`<path d="${ridge(31,hv(900,vy(1190)),10,220)}" fill="#3A3040"/>`;
+  // A person lifts the name; then it turns hollow.
+  const lifted=ease.inOut(prog(t,AT.lift-.2,AT.lift+.8)),hollow=ease.inOut(prog(t,AT.empty,AT.empty+1))*(1-ease.inOut(prog(t,AT.talk-1,AT.talk)));
+  const px=X(960,540),py=Y(860,1180),ny=lerp(Y(560,880),Y(420,760),lifted);
+  g+=E.chubby(px,py,hv(1.05,1.2),{tunic:'#7CD4FF',tunic2:'#2F6FD0',aura:'#7CFFE6',auraOp:.3,reach:lerp(.3,1,lifted),phase:.4});
+  const plate=ease.out(prog(t,AT.guards-.2,AT.guards+.5));
+  if(plate>0)g+=G('',namePlate(t,px,ny,hv(.8,.85),1-hollow),plate);
+  if(hollow>.5)g+=T(px,ny+hv(130,140),'nothing inside',{size:SZ(30,34),font:'Georgia',style:'italic',anchor:'middle',fill:'#F6EFDC',op:((hollow-.5)*2).toFixed(2)});
+  g+=fade(t,AT.otherWords-.3,tag(t,AT.two,960,Y(120,250),'TWO WORDS',SZ(40,48),1));
+  g+=tag(t,AT.take,960,Y(880,1420),'TAKE = LIFT UP, CARRY',SZ(38,46),2);
+  g+=tag(t,AT.vain,960,Y(960,1520),'IN VAIN = EMPTY',SZ(42,50),3,{bg:CORAL});
+  g+=tag(t,AT.otherWords,960,Y(120,250),"DON'T CARRY HIS NAME EMPTILY",SZ(36,42),4,{bg:CORAL,rot:-2});
+  return g;
+}
+
+// ---------- 4. Empty words: a market handshake ----------
+function marketSheet(t,lt){
+  let g=glow(1500,120,260,'#FFF2C8',.5)+C(1500,120,70,'#FFE9A8',{opacity:.9});
+  [[300,560],[620,520],[1300,540],[1640,560]].forEach(([x,y],k)=>g+=R(x-110,y-200,220,200+hv(0,300),4,['#C98A4E','#B07A44','#D49A5A','#A86E3A'][k])+R(x-130,y-220,260,26,4,'#8A5A32')+R(x-30,y-120,60,120,30,'#5A3A22'));
+  g+=`<path d="${ridge(41,hv(760,vy(1170)),8,240)}" fill="#C99C5E"/><path d="${ridge(42,hv(860,vy(1250)),6,200)}" fill="#B0864A"/>`;
+  // Two traders over a balance; one crosses his fingers behind his back.
+  const ax=X(700,250),bx=X(1220,830),fy=Y(860,1180),shake=t>AT.swore&&t<AT.lying?.65:.2;
+  const sx=(ax+bx)/2,sy=Y(700,1010),tilt=Math.sin(t*1.3)*4;
+  g+=G(`translate(${sx} ${sy})`,R(-8,0,16,hv(160,190),3,'#6A4026')+R(-60,hv(150,180),120,18,4,'#6A4026')+G(`rotate(${tilt})`,L(-130,0,130,0,'#B07E1E',10)+
+    L(-120,0,-150,70,'#8A5A32',3)+L(-120,0,-90,70,'#8A5A32',3)+Ell(-120,74,44,12,GOLD)+L(120,0,90,70,'#8A5A32',3)+L(120,0,150,70,'#8A5A32',3)+Ell(120,74,44,12,GOLD)));
+  g+=E.chubby(ax,fy,hv(1.05,1.15),{tunic:'#7CD4FF',tunic2:'#2F6FD0',aura:'#7CFFE6',auraOp:.25,reach:shake,phase:.2});
+  g+=E.chubby(bx,fy,hv(1.05,1.15),{flip:-1,tunic:'#FFC24C',tunic2:'#E0623C',hair:'#4A2A16',aura:'#FFB04C',auraOp:.25,reach:shake,phase:1.3});
+  const fp=ease.out(prog(t,AT.falsely[0],AT.falsely[1]));
+  if(fp>0){const hx=bx+hv(70,80),hy=fy-hv(70,80);
+    g+=G('',L(hx,hy,hx+14,hy-34,'#F5BE8E',10)+L(hx+12,hy,hx-2,hy-34,'#E0A070',10)+C(hx+6,hy+4,12,'#F5BE8E'),fp)+
+      mark(scribble(hx+6,hy-14,60,60,13),ease.inOut(prog(t,AT.falsely[1]-.2,AT.falsely[1]+.5)),CORAL,7);}
+  g+=fade(t,AT.v1912-.3,tag(t,AT.curse,X(560,300),Y(150,300),'AS A CURSE',SZ(36,44),1,{rot:-3})+
+    tag(t,AT.shrug,X(1360,760),Y(230,420),'AS A SHRUG',SZ(36,44),2,{rot:2}));
+  g+=fade(t,AT.lying-.3,tag(t,AT.promises,960,Y(880,1420),'PROMISES',SZ(40,48),3)+
+    tag(t,AT.swore,960,Y(960,1520),"SWORN BY GOD'S NAME",SZ(36,44),4));
+  g+=verse(t,AT.v1912-.15,300,40,['You shall not swear by my name falsely, and so profane','the name of your God: I am the LORD.'],'LEVITICUS 19:12 ESV',{size:46,hl:'swear by my name falsely,',hlAt:AT.falsely[0],hlDur:AT.falsely[1]-AT.falsely[0],seed:15,id:5});
+  g+=tag(t,AT.dragged,960,Y(900,1450),'DRAGGED INTO THE LIE',SZ(42,50),6,{bg:CORAL,rot:-2});
+  return g;
+}
+
+// ---------- 5. Wearing the name ----------
+function wearSheet(t,lt){
+  let g=glow(960,380,1000,'#7A3A8A',.4)+stars(t,.3,500)+fireflies(t,0,-600,1920,2200,'#FFE9F0',14,.5);
+  g+=`<path d="${ridge(51,hv(880,vy(1190)),10,240)}" fill="#3A2450"/>`;
+  const bride=ease.inOut(prog(t,AT.bride-.3,AT.bride+.5));
+  // Israel under a band of light: the name settles on them.
+  const settle=ease.out(prog(t,AT.upon[0],AT.upon[1]+.6));
+  let a=crowd(t,X(380,220),Y(860,1170),hv(7,5),hv(190,190),hv(.85,.95),{aura:'#FFD86B',auraOp:.25+.35*settle,reach:t>AT.priests&&t<AT.v627?.5:0});
+  const by=lerp(Y(200,620),Y(560,930),settle);
+  if(t>AT.wore-.2){a+=P(`M${X(300,40)} ${by}Q960 ${by-60} ${X(1620,1040)} ${by}L${X(1620,1040)} ${by+40}Q960 ${by-20} ${X(300,40)} ${by+40}Z`,'#FFE9A8',{opacity:(.35+.4*settle).toFixed(2)})+glow(960,by,hv(700,640),'#FFD86B',.3*settle);
+    a+=namePlate(t,960,by-hv(110,120),hv(.55,.6),1);}
+  a+=tag(t,AT.wore,960,Y(900,1420),'ISRAEL WORE THE NAME',SZ(40,48),1,{bg:CORAL});
+  a+=tag(t,AT.priests,960,Y(980,1520),'THE PRIESTLY BLESSING',SZ(34,40),2);
+  g+=G('',a,1-bride);
+  g+=verse(t,AT.v627-.15,300,40,['So shall they put my name upon the people of Israel,','and I will bless them.'],'NUMBERS 6:27 ESV',{size:46,hl:'put my name upon',hlAt:AT.upon[0],hlDur:AT.upon[1]-AT.upon[0],seed:17,id:6});
+  // The bride takes her husband's name.
+  if(bride>0){let b='';const gx=X(720,330),wx=X(1200,760),fy=Y(860,1180);
+    b+=glow(960,Y(600,1000),hv(600,560),'#FFB8D0',.3);
+    b+=E.chubby(gx,fy,hv(1.1,1.2),{tunic:'#3A3A6A',tunic2:'#1A1A3A',aura:'#B98CFF',auraOp:.3,reach:t>AT.takes&&t<AT.goes?.55:.15,phase:.3});
+    b+=E.chubby(wx,fy,hv(1.1,1.2),{flip:-1,f:true,tunic:'#FFFFFF',tunic2:'#E6D8F0',hair:'#4A2A16',aura:'#FFB8D0',auraOp:.4,phase:1.6});
+    b+=veil(wx,fy,hv(1.1,1.2),-1);
+    // The name tag passes from him to her.
+    const tp=ease.inOut(prog(t,AT.takes+.2,AT.takes+1.2)),nx=lerp(gx+hv(60,50),wx-hv(10,0),tp),ny=Y(560,880)-Math.sin(tp*3.14)*hv(60,80);
+    if(t>AT.takes)b+=G(`translate(${nx} ${ny}) rotate(${(-6+tp*12).toFixed(1)})`,R(-90,-34,180,68,10,'#F6EFDC',{stroke:INK,'stroke-width':4})+T(0,14,'HIS NAME',{size:30,font:'Segoe UI Black',weight:900,anchor:'middle',fill:INK}));
+    b+=tag(t,AT.bride+.4,960,Y(140,560),'LIKE A BRIDE',SZ(40,48),3);
+    b+=fade(t,AT.readers-.2,tag(t,AT.goes,960,Y(880,1420),'SHE CARRIES IT EVERYWHERE',SZ(36,44),4));
+    b+=tag(t,AT.readers,960,Y(880,1420),'MANY READERS HEAR IT THIS WAY',SZ(32,38),5);
+    b+=tag(t,AT.world,960,Y(960,1520),"ISRAEL CARRIED GOD'S NAME",SZ(36,44),6,{bg:CORAL});
+    g+=G('',b,bride);}
+  return g;
+}
+
+// ---------- 6. Without a word: the nations are watching ----------
+function worldSheet(t,lt){
+  let g=stars(t,.3,400)+glow(960,300,900,'#2A4A6A',.4);
+  [[X(300,170),Y(420,640),.9,'#5A6A8A','#3A4A6A',3],[X(980,540),Y(380,600),1,'#8A6A5A','#6A4A3A',5],[X(1640,910),Y(420,640),.9,'#6A5A8A','#4A3A6A',7]].forEach(([x,y,s,a,b,sd])=>g+=city(x,y,hv(s,s*1.1),a,b,sd));
+  g+=tag(t,AT.nations,960,Y(120,330),'THE NATIONS ARE WATCHING',SZ(36,44),1);
+  g+=`<path d="${ridge(61,hv(820,vy(1190)),10,240)}" fill="#2A3A4A"/>`;
+  // The people walk out under the name; then some of them go grey.
+  const grey=ease.inOut(prog(t,AT.saying,AT.saying+1)),walk=t<AT.canCarry,wx=lerp(-40,40,prog(t,AT.lived,AT.canCarry));
+  g+=G(`translate(${wx.toFixed(1)} 0)`,crowd(t,X(380,220),Y(860,1170),hv(7,5),hv(190,190),hv(.85,.95),{walk,aura:'#FFD86B',auraOp:.45,grey:i=>i%2===0?grey:0}));
+  const shrink=ease.inOut(prog(t,AT.small,AT.small+1));
+  g+=namePlate(t,960,Y(600,880),hv(.7,.75),1-.6*grey,{halo:1-.9*shrink});
+  if(shrink>0)g+=glow(960,Y(600,880),hv(700,700),'#0A1020',.6*shrink);
+  g+=fade(t,AT.same-.3,tag(t,AT.canCarry,960,Y(880,1420),'EMPTY, WITHOUT A WORD',SZ(40,48),2,{bg:CORAL})+
+    tag(t,AT.calling,960,Y(960,1520),"HIS NAME, BUT LIVING AS IF HE ISN'T THERE",SZ(30,32),3));
+  g+=tag(t,AT.same,960,Y(880,1420),'THE NAME STAYS THE SAME',SZ(38,46),4);
+  g+=tag(t,AT.small,960,Y(960,1520),'BUT WE CAN MAKE IT LOOK SMALL',SZ(34,40),5,{bg:CORAL});
+  return g;
+}
+
+// ---------- 7. Hallowed, then the end card ----------
+function hallowSheet(t,lt){
+  let g=glow(960,560,1200,'#FFE9B0',.55)+fireflies(t,0,-600,1920,2300,'#FFF6DA',20,.7);
+  g+=`<path d="${ridge(71,hv(960,vy(1380)),12,240)}" fill="#5AD890" opacity=".55"/><path d="${ridge(72,hv(1010,vy(1470)),10,200)}" fill="#3BBF7A" opacity=".6"/>`;
+  for(let i=0;i<14;i++){const a=i/14*6.283+t*.04;g+=P(`M960 560L${(960+Math.cos(a)*1800).toFixed(0)} ${(560+Math.sin(a)*1800).toFixed(0)}L${(960+Math.cos(a+.08)*1800).toFixed(0)} ${(560+Math.sin(a+.08)*1800).toFixed(0)}Z`,'#FFF6DA',{opacity:.12});}
+  g+=fade(t,AT.father-.3,tag(t,AT.firstThing,960,Y(880,1420),'THE FIRST REQUEST',SZ(40,48),1));
+  g+=verse(t,AT.father-.15,420,140,['Our Father in heaven,','hallowed be your name.'],'MATTHEW 6:9 ESV',{size:58,hl:'hallowed be your name.',hlAt:AT.hallowedBe[0],hlDur:AT.hallowedBe[1]-AT.hallowedBe[0],seed:22,id:9});
+  // The name plate, full; then the tablets with the third line brightest.
+  const np=ease.out(prog(t,AT.means-.2,AT.means+.6))*(1-ease.inOut(prog(t,AT.weighs-.6,AT.weighs)));
+  if(np>0)g+=G('',namePlate(t,960,Y(560,860),hv(.9,1),1),np);
+  g+=fade(t,AT.christians-.3,tag(t,AT.means,960,Y(880,1420),'HALLOWED = HOLY, SET APART',SZ(38,44),2,{bg:CORAL})+
+    tag(t,AT.full,960,Y(960,1520),'FULL, NOT EMPTY',SZ(42,50),3));
+  g+=fade(t,AT.weighs-.3,tag(t,AT.prayer-.4,960,Y(880,1440),'A COMMANDMENT, TURNED INTO A PRAYER',SZ(30,34),4));
+  const tb=ease.out(prog(t,AT.weighs-.2,AT.weighs+1));
+  if(tb>0){const ty=Y(420,700),s=hv(.62,.9),lit=k=>k===2?1.2:.45;g+=G('',glow(960,ty,700,'#FFD86B',.4*tb)+G(`translate(960 ${ty}) scale(${s}) translate(-960 -560)`,tablets(960,560,1,lit)),tb);}
+  g+=fade(t,AT.last+.5,tag(t,AT.carryIt,960,Y(900,1440),'CARRY IT LIKE TREASURE',SZ(42,50),5,{bg:CORAL}));
+  // End card after the last word.
+  const ec=prog(t,AT.last+.6,AT.last+1.2);
+  if(ec>0){g+=G('',R(-200,-800,2400,2800,0,'#08060F',{opacity:.86})+
+    T(960,Y(380,700),'THE TEN COMMANDMENTS · PART 3',{size:SZ(40,40),font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
+    T(960,Y(470,810),'NOT IN VAIN',{size:SZ(84,84),font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
+    g+=tag(t,AT.last+1.6,960,Y(620,960),'NEXT: THE SABBATH',SZ(42,42),6,{bg:CORAL});
+    if(t>AT.last+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
+      .forEach((ln,i)=>{g+=T(960,Y(760,1080)+i*SZ(34,36),ln,{size:SZ(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});}
+  return g;
+}
+
+const wide=(a,b)=>[shot(a,b,...WIDE)];
+E.start({
+  cast:{},
+  sheets:[
+    {name:'cold open',draw:coldOpen,bg:['#1A1622','#07060C'],cam:wide(0,AT.seeWhy-.3)},
+    {name:'the bush',at:AT.seeWhy-.1,draw:bushSheet,bg:['#1A1030','#6A3A22'],cam:wide(AT.seeWhy,AT.hebrew-.3)},
+    {name:'the name',at:AT.hebrew-.1,draw:nameSheet,bg:['#140C20','#2A1410'],cam:wide(AT.hebrew,AT.speaks-.3)},
+    {name:'lift and carry',at:AT.speaks-.1,draw:liftSheet,bg:['#141020','#2A1C2A'],cam:wide(AT.speaks,AT.talk-.3)},
+    {name:'empty words',at:AT.talk-.1,draw:marketSheet,bg:['#F0C88A','#C0783E'],stars:false,cam:wide(AT.talk,AT.bigger-.3)},
+    {name:'wearing the name',at:AT.bigger-.1,draw:wearSheet,bg:['#1E1036','#4A2050'],cam:wide(AT.bigger,AT.lived-.3)},
+    {name:'without a word',at:AT.lived-.1,draw:worldSheet,bg:['#0E1A2A','#1A2A3A'],cam:wide(AT.lived,AT.centuries-.3)},
+    {name:'hallowed',at:AT.centuries-.1,draw:hallowSheet,bg:['#FFE9B0','#E8A060'],stars:false,vIn:'cut',cam:wide(AT.centuries,AT.last+6)},
+  ],
+  talk:[],
+  focus:[[AT.without,.8],[AT.iam,1.2],[AT.empty,.8],[AT.dragged,.7],[AT.wore,.8],[AT.canCarry,.9],[AT.hallowedBe[0],.8],[AT.carryIt,1.0]],
+  flashes:[[AT.iam-.05,.9,'#FFF3D0'],[AT.centuries-.1,.9,'#FFFBEC']],
+  tail:7,
+  fadeOut:1.2,
+});
+</script>
