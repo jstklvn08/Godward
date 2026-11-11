@@ -200,11 +200,11 @@ const king=(t,o,prop=null)=>{const r=PPL.rig(o);return r.draw('back')+r.draw('bo
 const ahabO=(x,y,s,o={})=>person(0,x,y,s,Object.assign({},AHAB,o));
 const jezO=(x,y,s,o={})=>person(0,x,y,s,Object.assign({},JEZ,o));
 const jar=(x,y,s=1,c='#C8703A')=>P(`M${x-22*s} ${y}Q${x-34*s} ${y-40*s} ${x-16*s} ${y-62*s}H${x+16*s}Q${x+34*s} ${y-40*s} ${x+22*s} ${y}Z`,c,{stroke:mix(c,'#000000',.5),'stroke-width':3*s})+R(x-18*s,y-72*s,36*s,12*s,4*s,mix(c,'#000000',.15))+P(`M${x-14*s} ${y-50*s}Q${x-20*s} ${y-30*s} ${x-12*s} ${y-12*s}`,'none',{stroke:'#FFFFFF','stroke-width':3*s,opacity:.25});
-const bench=(x0,x1,y,c='#8A8070',d='#4A4438')=>R(x0+20,y+20,36,FY-y-14,4,d)+R(x1-56,y+20,36,FY-y-14,4,d)+R(x0,y,x1-x0,30,8,c,{stroke:d,'stroke-width':4})+L(x0+10,y+6,x1-10,y+6,mix(c,'#FFFFFF',.3),3,{opacity:.6});
+const bench=(x0,x1,y,c='#8A8070',d='#4A4438',fy=y+52*2.2)=>R(x0+20,y+20,36,fy-y-14,4,d)+R(x1-56,y+20,36,fy-y-14,4,d)+R(x0,y,x1-x0,30,8,c,{stroke:d,'stroke-width':4})+L(x0+10,y+6,x1-10,y+6,mix(c,'#FFFFFF',.3),3,{opacity:.6});
 const EL=[{tunic:'#C8A06A',tunic2:'#7A5430'},{tunic:'#A8B0C8',tunic2:'#5A6280',hair:'#B8B0A0'},{tunic:'#B89A7A',tunic2:'#6A5440'}];
 // Elders seated on a stone bench (feet on FY), looking at `look`.
-function seated(t,xs,s,look,o={}){const sy=FY-52*s;let g=o.bench===false?'':bench(xs[0]-80*s,xs[xs.length-1]+80*s,sy,o.bc,o.bd);
-  xs.forEach((x,i)=>g+=elder(x,FY,s,Object.assign({sit:1,seat:sy,look,expr:'calm',phase:i*1.1,face:o.face||1,tilt:o.tilt?o.tilt(i):0},EL[(i+(o.k||0))%3],o.each?o.each(i):{})));return g;}
+function seated(t,xs,s,look,o={}){const fy=FY+(o.dy||0),sy=fy-52*s;let g=o.bench===false?'':bench(xs[0]-80*s,xs[xs.length-1]+80*s,sy,o.bc,o.bd,fy);
+  xs.forEach((x,i)=>g+=elder(x,fy,s,Object.assign({sit:1,seat:sy,look,expr:'calm',phase:i*1.1,face:o.face||1,tilt:o.tilt?o.tilt(i):0},EL[(i+(o.k||0))%3],o.each?o.each(i):{})));return g;}
 
 // ---------- skies and land ----------
 function land(t,o={}){
@@ -264,6 +264,8 @@ const foreGate=(t,cx,z,o={})=>{const [xl,xr]=EDG(cx,z),night=!!o.night,pc=night?
   else g+=jar(xr-80,1620,2.6)+SC.animal(t,'dove',cx+(o.dx??120),1500,2.2,{graze:'auto'})+SC.animal(t,'dove',cx+(o.dx??120)+130,1540,2.0,{graze:'auto',face:-1,phase:1.3});
   return g+(o.over||'');};
 
+// Onlookers seen from behind, close to the camera (dark heads and shoulders at the frame's lower corners): [x, y, s, i].
+const backs=(t,list,col)=>list.map(([x,y,s,i])=>{const sw=Math.sin(t*1.1+i)*4*s;return G(`translate(${x+sw} ${y}) scale(${s})`,R(-70,-60,140,150,60,mix(TUN[i%5][1],col,.75))+C(0,-110,58,mix(HAIR[i%3],col,.5))+P('M-52 -140Q0 -178 52 -140','none',{stroke:'#FFB04C','stroke-width':4,opacity:.45})+P('M-66 -40Q0 -70 66 -40','none',{stroke:'#FFB04C','stroke-width':4,opacity:.3}));}).join('');
 // ---------- the vineyard below the palace hill (Jezreel) ----------
 function vine(x,y,sc,gr=true,leaf=['#3FA04A','#4CB858','#3A9A44'],t=0){const sw=Math.sin(t*1.2+x*.01)*3*sc;
   let g=L(x,y,x+4*sc,y-120*sc,'#6A4A2A',8*sc)+L(x-80*sc,y-100*sc,x+80*sc,y-100*sc,'#6A4A2A',3*sc);
@@ -361,7 +363,7 @@ function street(t,o={}){
   return g;}
 const foreStreet=(t,cx,z,o={})=>{const d=o.d||0,[xl,xr]=EDG(cx,z);
   return SC.fore(t,{y:1050,edges:[xl,xr],cols:o.cols||(d>.5?['#141A24','#22283A','#3A4258']:d>0?['#3A2E2A','#5A4A3A','#8A7A5A']:['#5A4A22','#8A7A3A','#C8B060']),flowers:o.flowers||(d>.5?[]:['#FFFFFF','#FFD84A']),rocks:0,
-    rockAt:o.rockAt||[[xl+60,1520,150]],density:.75,seed:o.seed||71,over:(o.goats===false||d>.5?'':SC.pair(t,'goat',xr-120,1640,2.1,{face:-1,graze:'auto',gap:80,dy:-30}))+(o.over||'')});};
+    rockAt:o.rockAt||[[xl+60,1520,150]],density:.75,seed:o.seed||71,over:(o.pets||'')+(o.over||'')});};
 
 // ---------- the night hall of the high priest ----------
 function hall(t,o={}){
@@ -407,27 +409,24 @@ function courtNight(t,lt){
   const st=1-ease.inOut(prog(t,AT.standsUp,AT.standsUp+.7)),pt=ease.inOut(prog(t,AT.points-.2,AT.points+.3)),lookW=t>AT.standsUp+.2;
   let g=gateSet(t,{mood:'night',crowd:[[0,560,1.3,{look:{x:WIT,y:600}}],[2,1240,1.25],[4,1720,1.3],[3,1830,1.2]],look:lookW?{x:WIT,y:600}:{x:ACC,y:600}});
   g+=seated(t,[560],2.3,lookW?{x:WIT,y:560}:{x:ACC,y:560},{bc:'#5A5268',bd:'#2A2436',each:()=>({expr:lookW?['calm','surprised',pt]:'calm'})});
-  const w=wifeO(ACC+170,FY-24,2.1,{face:-1,look:lookW?{x:WIT,y:560}:{x:ACC,y:500},expr:lookW?['calm','fear',pt]:'calm'});
   const a=nab(ACC,FY,2.45,{face:lookW?1:-1,look:lookW?{x:WIT,y:560}:{x:560,y:600},expr:lookW?['calm','surprised',pt]:'calm'});
-  w.near=PPL.handOn(w,a,'back');
-  const Wr=PPL.rig(w);g+=Wr.draw('back')+Wr.draw('body')+Wr.draw('head')+Wr.draw('front')+PPL.fig(a);
+  g+=PPL.fig(a);
   g+=R(WIT-110,FY-120,220,120,20,'#5A4E6A',{stroke:'#2A2238','stroke-width':5});
-  g+=grey(0,WIT,FY,2.4,{face:-1,sit:st,seat:FY-118,look:{x:ACC,y:560},near:pt>0?{x:lerp(WIT-60,ACC+60,pt),y:lerp(FY-200,FY-420,pt)}:null,expr:'calm',lean:-4*pt});
+  g+=grey(0,WIT,FY,2.4,{face:-1,sit:st,seat:FY-118,look:{x:ACC,y:560},near:pt>0?{x:lerp(WIT-80,WIT-260,pt),y:lerp(FY-180,FY-290,pt)}:null,expr:'calm',lean:-4*pt});
   // every word he says: grey strips leave his mouth and drift toward the accused; on "lie" they crack
   if(t>AT.everyWord-.1){const cr=ease.out(prog(t,AT.lie1+.9,AT.lie1+1.3));
-    for(let k=0;k<5;k++){const a0=AT.everyWord+k*.36;if(t<a0)continue;const u=ease.out(prog(t,a0,a0+1.3)),x=lerp(1400,1300-k*50,u),y=lerp(FY-420,FY-700+k*70-(k%2)*30,u);
+    for(let k=0;k<5;k++){const a0=AT.everyWord+k*.36;if(t<a0)continue;const u=ease.out(prog(t,a0,a0+1.3)),x=lerp(1380,1240-k*30,u),y=lerp(FY-520,FY-760-k*60-(k%2)*30,u);
       g+=wordStrip(x,y,lerp(80,230,u),40+k,lerp(0,k%2?-8:7,u),{crack:cr,h:56});}}
-  return g+foreGate(t,1050,1.06,{night:true});
+  return g+foreGate(t,1050,1.06,{night:true,over:backs(t,[[480,1700,3.2,0],[1660,1720,3.4,2]],'#140E1C')});
 }
 // ---- An innocent man dies: the accused and his wife under the arch; the lamp at their feet goes out ----
 function accusedClose(t,lt){
   let g=gateSet(t,{mood:'night',dim:.15});
   const down=ease.inOut(prog(t,AT.innocent-.2,AT.innocent+.6)),out=t>AT.dies+.25,dim=ease.inOut(prog(t,AT.dies+.2,AT.dies+1.2));
-  g+=lamp(t,700,FY,2.2,out?0:1,AT.dies+.25);
-  const a=nab(900,FY,HS,{look:down>.5?'down':{x:1100,y:500},expr:['calm','sad',down],aura:'#FFE9A8',auraOp:.35*(1-dim)+.1});
+    const a=nab(900,FY,HS,{look:down>.5?'down':{x:1100,y:500},expr:['calm','sad',down],aura:'#FFE9A8',auraOp:.35*(1-dim)+.1});
   const w=wifeO(1210,FY-10,2.4,{face:-1,look:{x:900,y:480},expr:['fear','sad',down],lean:6});
   w.near=PPL.handOn(w,a,'arm');
-  const Wr=PPL.rig(w);g+=Wr.draw('back')+Wr.draw('body')+Wr.draw('head')+PPL.fig(a)+Wr.draw('front');
+  const Wr=PPL.rig(w);g+=Wr.draw('back')+Wr.draw('body')+Wr.draw('head')+PPL.fig(a)+Wr.draw('front')+lamp(t,1050,FY+70,2.2,out?0:1,AT.dies+.25);
   if(t>AT.innocent-.1)g+=glow(900,560,400,'#FFF6DA',.25*(1-dim));
   return g+foreGate(t,1000,1.1,{night:true})+R(-120,-760,2160,2600,0,'#05040C',{opacity:(.45*dim).toFixed(2)});
 }
@@ -473,26 +472,26 @@ function homeTalk(t,lt){
 function neighbours(t,lt){
   let g=street(t,{hx0:500,hx1:1480,treeX:980});
   const a=Math.sin(t*10)*24;
-  g+=folk(0,740,FY,HS,{look:{x:1200,y:500},expr:'joy',near:{x:870,y:FY-430+a},phase:.3});
+  g+=folk(0,740,FY,HS,{look:{x:1200,y:500},expr:'joy',far:{x:760+a,y:FY-480},phase:.3});
   g+=wallRow(900,1060,FY+10,'#C8B898','#8A7A5A');
-  const dad=person(4,1220,FY,HS,{face:-1,look:{x:740,y:500},expr:'joy',near:{x:1090,y:FY-430-a}});
+  const dad=person(4,1220,FY,HS,{face:-1,look:{x:740,y:500},expr:'joy',near:{x:1060,y:FY-280}});
   const kid=person(1,1370,FY+6,1.45,{face:-1,look:{x:740,y:560},expr:'joy'});
   g+=PPL.holdHands(dad,kid,{armA:'far'}).svg;
-  return g+foreStreet(t,1000,1.08);
+  return g+foreStreet(t,1000,1.08,{pets:SC.pair(t,'sheep',1320,1620,1.9,{face:-1,graze:'auto',gap:90,dy:-30})});
 }
 // ---- What your words do: a whisper (grey strips) arcs over the lane and lands on the neighbour ----
 function wordsDo(t,lt){
   let g=street(t,{houses:[[420,.95],[1620,.95]],treeX:1100});
   const a0=AT.wordsDo-.3;
-  g+=folk(2,520,FY,HS,{lean:14,look:{x:840,y:460},near:{x:690,y:FY-420},expr:'joy'});
+  g+=folk(2,520,FY,HS,{lean:14,look:{x:840,y:460},near:{x:720,y:FY-290},expr:'joy'});
   g+=folk(3,860,FY,2.5,{face:-1,look:{x:1450,y:500},expr:['calm','joy',prog(t,a0,a0+1)],near:{x:960,y:FY-300},phase:2});
   const hit=ease.inOut(prog(t,AT.someone-.4,AT.someone+.6));
-  for(let k=0;k<4;k++){const s0=a0+k*.45;if(t<s0)continue;const u=ease.inOut(prog(t,s0,s0+1.6)),x=lerp(800,1400+k*30,u),y=lerp(FY-420,FY-500+k*40,u)-Math.sin(u*Math.PI)*300;
+  for(let k=0;k<4;k++){const s0=a0+k*.45;if(t<s0)continue;const u=ease.inOut(prog(t,s0,s0+1.6)),x=lerp(820,1400+k*30,u),y=lerp(FY-620,FY-680+k*40,u)-Math.sin(u*Math.PI)*260;
     g+=wordStrip(x,y,200,60+k,lerp(-10,k%2?20:-15,u),{op:1-.4*prog(u,.9,1),h:52});}
   const dad=person(4,1440,FY,HS,{face:-1,lean:lerp(0,16,hit),look:hit>.5?'down':{x:860,y:460},expr:['calm','sad',hit]});
   const kid=person(1,1590,FY+6,1.45,{face:-1,look:{x:1440,y:500},expr:['joy','sad',hit]});
   g+=PPL.holdHands(dad,kid,{armA:'far'}).svg;
-  return g+foreStreet(t,1000,1.12,{seed:73,rockAt:[[1000,1560,160]]});
+  return g+foreStreet(t,1000,1.12,{seed:73,rockAt:[[1000,1560,160]],pets:SC.animal(t,'dove',700,1520,2.2,{graze:'auto'})+SC.animal(t,'dove',1500,1560,2.1,{graze:'auto',face:-1,phase:1})});
 }
 
 // ========== ACT 1: trials at the city gate ==========
@@ -515,22 +514,22 @@ function town(t,lt){
   g+=cutout(t,AT.cameras-.4,960,240,camIcon(960,240),1)+xMark(960,240,120,ease.inOut(prog(t,AT.cameras+.2,AT.cameras+.6)));
   g+=cutout(t,AT.fingerW-.3,1360,300,fingerIcon(1360,300),2,190,190)+xMark(1360,300,115,ease.inOut(prog(t,AT.fingerW+.3,AT.fingerW+.7)));
   g+=cutout(t,AT.videoW-.3,560,300,videoIcon(560,300),3)+xMark(560,300,120,ease.inOut(prog(t,AT.videoW+.2,AT.videoW+.6)));
-  return g+foreStreet(t,960,1.04,{seed:75,cols:['#5A4A2A','#8A6A3A','#D8A870'],flowers:['#FFD0E0','#FFFFFF']});
+  return g+foreStreet(t,960,1.04,{seed:75,cols:['#5A4A2A','#8A6A3A','#D8A870'],flowers:['#FFD0E0','#FFFFFF'],pets:SC.pair(t,'goat',1180,1640,2.0,{face:-1,graze:'auto',gap:80,dy:-30})});
 }
 // ---- Trials happened at the city gate, in front of everyone (day) ----
 function gateDay(t,lt){
   let g=gateSet(t,{mood:'day',crowd:[[0,1240,1.25],[2,1360,1.2],[4,1560,1.3],[3,1720,1.2]],look:{x:640,y:700}});
-  g+=seated(t,[520,720],2.15,{x:1100,y:560});
-  [[0,1160,2.3],[3,1420,2.2]].forEach(([i,x,s],k)=>{const a0=AT.trials-.2+k*.5,u=ease.out(prog(t,a0,a0+1.6)),xx=lerp(1700,x,u);
-    g+=G('',folk(i,xx,FY,s,{face:-1,walk:u<1?t*7+i:0,look:{x:640,y:560},expr:'calm',f:i===3}),clamp(1-prog(xx,1480,1640)).toFixed(2));});
+  g+=seated(t,[620,800],1.9,{x:1100,y:560},{dy:-30});
+  [[0,1200,2.35,FY],[3,1400,1.5,950]].forEach(([i,x,s,y],k)=>{const a0=AT.trials-.2+k*.5,u=ease.out(prog(t,a0,a0+1.6)),xx=lerp(1700,x,u);
+    g+=G('',folk(i,xx,y,s,{face:-1,walk:u<1?t*7+i:0,look:{x:640,y:560},expr:'calm',f:i===3}),clamp(1-prog(xx,1480,1640)).toFixed(2));});
   return g+foreGate(t,960,1.04,{dx:-80});
 }
 // ---- Every case rested on one thing: witnesses. Two step forward; one raises a hand ----
 function witnessesCome(t,lt){
   let g=gateSet(t,{mood:'day',crowd:[[2,1500,1.2],[4,1640,1.25]],look:{x:640,y:700}});
-  g+=seated(t,[560],2.3,{x:1040,y:560});
-  [[0,980],[1,1300]].forEach(([i,x],k)=>{const u=ease.out(prog(t,AT.andEvery+k*.4,AT.andEvery+1.6+k*.4)),xx=lerp(1640,x,u),oath=ease.out(prog(t,AT.witnessesW-.2,AT.witnessesW+.3));
-    g+=G('',folk(i+2,xx,FY,2.4,{face:-1,walk:u<1?t*7+k:0,look:{x:600,y:560},near:oath>0&&k===0?{x:xx-60,y:lerp(FY-250,FY-430,oath)}:null,expr:'calm'}),clamp(1-prog(xx,1440,1600)).toFixed(2));});
+  g+=seated(t,[620],2.2,{x:1040,y:560});
+  [[0,1010],[1,1290]].forEach(([i,x],k)=>{const u=ease.out(prog(t,AT.andEvery+k*.4,AT.andEvery+1.6+k*.4)),xx=lerp(1640,x,u),oath=ease.out(prog(t,AT.witnessesW-.2,AT.witnessesW+.3));
+    g+=G('',folk(i+2,xx,FY-20*k,k?2.1:2.35,{face:-1,walk:u<1?t*7+k:0,look:{x:600,y:560},far:oath>0&&k===0?'up':null,expr:'calm'}),clamp(1-prog(xx,1440,1600)).toFixed(2));});
   return g+foreGate(t,940,1.08,{dx:-200});
 }
 // ---- So God built in a safeguard: light falls on the scroll of the law in an elder's hands ----
@@ -558,7 +557,7 @@ function twoThree(t,lt){
 function oneVoice(t,lt){
   let g=gateSet(t,{mood:'day'});
   const sh=t>AT.oneVoice-.1?Math.sin((t-AT.oneVoice)*9)*10*(1-prog(t,AT.aLie-.8,AT.aLie-.3)):0;
-  g+=seated(t,[600,830],2.1,{x:1140,y:560},{tilt:i=>sh*(i%2?-1:1),each:i=>i===1?{near:{x:960,y:FY-300}}:{}});
+  g+=seated(t,[600,830],2.1,{x:1140,y:560},{tilt:i=>sh*(i%2?-1:1)});
   g+=glow(1150,760,260,'#FFF6DA',.3)+folk(0,1150,FY,HS,{face:-1,look:{x:700,y:560},expr:['calm','sad',prog(t,AT.oneVoice,AT.oneVoice+1)],near:'chest'});
   return g+foreGate(t,880,1.06,{dx:-160});
 }
@@ -566,8 +565,8 @@ function oneVoice(t,lt){
 function partner(t,lt){
   let g=alley(t,{litDoor:1});
   const lean=ease.inOut(prog(t,AT.aLie-.2,AT.aLie+.6));
-  const b=greyO(1,1130,FY,HS,{face:-1,lean:6*lean,look:{x:820,y:520},expr:'calm'});
-  const a=greyO(0,800,FY,HS,{lean:8*lean,look:{x:1120,y:520},near:{x:930,y:FY-300},expr:'joy'});
+  const b=greyO(1,1200,FY,HS,{face:-1,lean:3*lean,look:{x:730,y:520},expr:'calm'});
+  const a=greyO(0,730,FY,HS,{lean:4*lean,look:{x:1170,y:520},near:{x:930,y:FY-270},expr:'joy'});
   b.near=PPL.handOn(b,a,'shoulder');
   const Br=PPL.rig(b);g+=Br.draw('back')+Br.draw('body')+Br.draw('head')+PPL.fig(a)+Br.draw('front');
   const k=ease.inOut(prog(t,AT.partner1,AT.partner1+1));
@@ -582,8 +581,8 @@ function bought(t,lt){
   const drop=ease.out(prog(t,AT.butEven,AT.butEven+.5)),grab=ease.inOut(prog(t,AT.bought-.6,AT.bought));
   g+=purse([bx,lerp(-200,top-40,drop)],2);
   for(let k=0;k<6;k++){const sp=prog(t,AT.butEven+.5,AT.butEven+1);if(sp>0)g+=C(bx-60+k*24,top-6-(k%2)*8,14,GOLD,{stroke:'#8A5A12','stroke-width':3})+(t>AT.bought?glow(bx-60+k*24,top-8,44,'#FFE9A8',.6*Math.abs(Math.sin(t*8+k))):'');}
-  g+=grey(0,730,FY,HS,{look:{x:bx,y:top},near:{x:lerp(800,900,grab),y:lerp(FY-230,top-20,grab)},expr:['calm','joy',grab],lean:12*grab});
-  g+=grey(1,1190,FY,HS,{face:-1,look:{x:bx,y:top},near:{x:lerp(1120,1020,grab),y:lerp(FY-230,top-20,grab)},expr:['calm','joy',grab],lean:12*grab});
+  g+=grey(0,680,FY,HS,{look:{x:bx,y:top},near:{x:lerp(800,900,grab),y:lerp(FY-230,top-20,grab)},expr:['calm','joy',grab],lean:12*grab});
+  g+=grey(1,1240,FY,HS,{face:-1,look:{x:bx,y:top},near:{x:lerp(1120,1020,grab),y:lerp(FY-230,top-20,grab)},expr:['calm','joy',grab],lean:12*grab});
   return g+foreAlley(t,960,1.1);
 }
 
@@ -603,7 +602,8 @@ function balcony(t,lt){
   g+=R(-120,FY-330,2160,40,8,'#E8D0A0',{stroke:'#8A6A4A','stroke-width':4});
   for(let x=-100;x<2040;x+=110)g+=R(x,FY-290,54,250,22,'#D8C090',{stroke:'#8A6A4A','stroke-width':3});
   g+=R(-120,FY-40,2160,50,6,'#E8D0A0')+R(-120,FY+10,2160,1800,0,'#4A2A48');
-  for(let k=0;k<6;k++)g+=Ell(960,1200+k*110,800+k*140,70+k*14,'none',{stroke:'#E8B53A','stroke-width':6,opacity:.4});
+  for(let r=0;r<7;r++){const y=FY+40+r*r*12+r*60,k=1+r*.3;for(let x=-120+(r%2)*60*k;x<2040;x+=120*k)g+=R(x,y,116*k,r*12+50,4,(r+Math.round(x/120))%2?'#5A3458':'#6A4068',{opacity:.9});}
+  g+=SC.tree(t,560,1640,2.2,{kind:'palm',col:'#3A7A3A'})+jar(560,1660,3.4,'#C8A050')+SC.tree(t,1440,1700,2.4,{kind:'palm',col:'#3A8A3A'})+jar(1440,1720,3.6,'#C8A050');
   return g+jar(1300,FY-330,1.8,'#C8A050')+SC.tuft(t,1300,FY-450,1.4,{cols:['#2E5A26','#4A8A3A','#8AC060'],n:7});
 }
 // ---- It belonged to a man named Naboth: picking grapes with his daughter ----
@@ -627,8 +627,8 @@ function wouldntSell(t,lt){
 function familyLand(t,lt){
   let g=vineyard(t,{mood:'golden',house:false,px:420,seed:65})+bigHouse(t,1000,FY-40,1.3,{vine:true,wall:'#E2C08C'});
   const k=ease.inOut(prog(t,AT.itWas-.2,AT.itWas+1));
-  g+=PPL.fig(nab(740,FY,HS,{look:{x:1140,y:520},expr:'joy',near:{x:880,y:FY-260+Math.sin(t*3)*10}}));
-  g+=carryHip(wifeO(1140,FY,2.45,{face:-1,expr:'tender',look:{x:740,y:520}}),kidO(0,0,1.45,{expr:['calm','joy',k],look:{x:740,y:520}}));
+  g+=PPL.fig(nab(700,FY,HS,{look:{x:1220,y:520},expr:'joy',near:{x:900,y:FY-260+Math.sin(t*3)*10}}));
+  g+=carryHip(wifeO(1220,FY,2.45,{face:-1,expr:'tender',look:{x:700,y:520}}),kidO(0,0,1.45,{expr:['calm','joy',k],look:{x:700,y:520}}));
   return g+foreVine(t,960,1.06,{basket:true,bx:-300})+SC.pair(t,'goat',1340,1600,2,{face:-1,graze:'auto'});
 }
 // ---- Queen Jezebel wrote letters: by lamplight in the palace, a seal pressed into wax ----
@@ -640,7 +640,7 @@ function jezebel(t,lt){
   g+=P('M1190 -200Q1250 300 1180 700L1260 700Q1280 300 1240 -200Z','#C0384A')+P('M1720 -200Q1660 300 1730 700L1650 700Q1630 300 1680 -200Z','#C0384A');
   [220,780].forEach(x=>g+=R(x-60,-760,120,1760,8,'#E8D0A0')+R(x-80,-60,160,40,6,F));
   g+=R(-120,1000,2160,800,0,'#3A1424');
-  const w=prog(t,AT.soQueen,AT.arranged),n=Math.min(5,Math.floor(w*6)),seal=ease.out(prog(t,AT.letters-.1,AT.letters+.3)),pen=Math.sin(t*14)*12*(seal<1?1:0),dy=FY-300;
+  const w=prog(t,AT.soQueen,AT.arranged),n=Math.min(5,Math.floor(w*6)),seal=ease.out(prog(t,AT.letters-.1,AT.letters+.3)),pen=Math.sin(t*14)*12*(seal<1?1:0),dy=FY-200;
   g+=glow(780,dy,500,'#FFB04C',.35)+lamp(t,700,dy,1.8,1);
   g+=king(t,jezO(980,FY,HS,{lean:14,look:{x:1180,y:dy},expr:['calm','joy',seal],near:seal>0&&seal<1?{x:1200,y:lerp(dy-110,dy-10,seal)}:{x:1150+pen,y:dy-10},far:{x:1070,y:dy}}));
   g+=R(560,dy,860,36,6,'#8A5A2A',{stroke:'#4A2A10','stroke-width':4})+R(590,dy+36,800,FY-dy-36,6,'#6A3A1A')+[...Array(5)].map((_,i)=>R(620+i*160,dy+70,120,200,10,'#5A2E14')).join('');
@@ -655,8 +655,8 @@ function messenger(t,lt){
   const hand={x:lerp(780,880,give),y:FY-300};
   const mx=lerp(660,420,go),ms=person(4,mx,FY,2.4,{look:{x:1000,y:500},expr:'calm',near:read<.05?hand:null,walk:go>0&&go<1?t*7:0,face:go>0?-1:1,tunic:'#C8A060',tunic2:'#7A5A30'});
   g+=G('',PPL.fig(ms),(1-prog(go,.5,.9)).toFixed(2));
-  const L0={x:lerp(hand.x,1010,read),y:lerp(hand.y,FY-380,read)};
-  const b=greyO(1,1270,FY-24,2.25,{face:-1,look:read>.5?L0:{x:700,y:500},expr:['calm','joy',read]});
+  const L0={x:lerp(hand.x,920,read),y:lerp(hand.y,FY-250,read)};
+  const b=greyO(1,1310,FY-24,2.2,{face:-1,look:read>.5?L0:{x:700,y:500},expr:['calm','joy',read]});
   const a=greyO(0,1040,FY,HS,{face:-1,look:read>.5?L0:{x:700,y:500},near:L0,expr:['calm','joy',read]});
   b.near=PPL.handOn(b,a,'shoulder');
   const Br=PPL.rig(b),Ar=PPL.rig(a);
@@ -673,10 +673,10 @@ function nabothTrial(t,lt){
   const n=nab(1000,FY,VS,{face:1,look:{x:1380,y:520},near:'chest',tilt:no,expr:['calm',lie>0?'sad':'fear',Math.max(gasp,pt)]});
   w.near=PPL.handOn(w,n,'back');
   const Wr=PPL.rig(w);g+=Wr.draw('back')+Wr.draw('body')+Wr.draw('head')+Wr.draw('front')+PPL.fig(n);
-  g+=grey(1,1540,FY-24,2.0,{face:-1,look:{x:1000,y:500},near:pt>0?{x:lerp(1480,1300,pt),y:lerp(FY-200,FY-420,pt)}:null,expr:'calm'});
-  g+=grey(0,1360,FY,VS,{face:-1,look:{x:1000,y:500},near:pt>0?{x:lerp(1300,1140,pt),y:lerp(FY-200,FY-400,pt)}:null,expr:'calm'});
+  g+=grey(1,1540,FY-24,2.0,{face:-1,look:{x:1000,y:500},near:pt>0?{x:lerp(1480,1360,pt),y:lerp(FY-200,FY-280,pt)}:null,expr:'calm'});
+  g+=grey(0,1360,FY,VS,{face:-1,look:{x:1000,y:500},near:pt>0?{x:lerp(1300,1170,pt),y:lerp(FY-200,FY-260,pt)}:null,expr:'calm'});
   for(let k=0;k<4;k++){const a0=AT.saying+k*.7;if(t<a0)continue;const u=ease.out(prog(t,a0,a0+1.1)),fall=sq(prog(t,AT.itWasALie+.3+k*.08,AT.itWasALie+1.4));
-    g+=wordStrip(lerp(1300,1150+k*40,u),lerp(FY-420,FY-560+k*60,u)+fall*600,lerp(70,210,u),70+k,lerp(0,k%2?-9:8,u)+fall*60*(k%2?-1:1),{crack:lie,op:1-prog(fall,.6,1),h:52});}
+    g+=wordStrip(lerp(1300,1160+k*40,u),lerp(FY-470,FY-760+k*70,u)+fall*700,lerp(70,210,u),70+k,lerp(0,k%2?-9:8,u)+fall*60*(k%2?-1:1),{crack:lie,op:1-prog(fall,.6,1),h:52});}
   return g+foreGate(t,1180,1.06,{dx:-60});
 }
 // ---- On that lie, Naboth was put to death: his basket on the ground; his family's grief ----
@@ -700,9 +700,9 @@ function kingTakes(t,lt){
 // ---- The rule of two witnesses was kept: the elder ticks it off ----
 function ruleKept(t,lt){
   let g=gateSet(t,{mood:'day',crowd:[[0,1660,1.2],[2,1780,1.25]]});
-  g+=seated(t,[700],2.3,{x:1100,y:560},{each:()=>({tilt:t>AT.ruleKept-.3?Math.sin((t-AT.ruleKept)*5)*5:0,near:{x:830,y:FY-170}})});
+  g+=seated(t,[640],2.3,{x:1100,y:560},{each:()=>({tilt:t>AT.ruleKept-.3?Math.sin((t-AT.ruleKept)*5)*5:0,near:{x:830,y:FY-170}})});
   [0,1].forEach(k=>g+=Ell(560+k*46,FY-112,18,11,'#F2EEE4',{stroke:'#8A8070','stroke-width':2}));
-  g+=grey(0,1060,FY,2.4,{face:-1,look:{x:700,y:560},expr:'calm'})+grey(1,1300,FY-20,2.2,{face:-1,look:{x:700,y:560},expr:'calm'});
+  g+=grey(0,1090,FY,2.4,{face:-1,look:{x:700,y:560},expr:'calm'})+grey(1,1330,FY-20,2.1,{face:-1,look:{x:700,y:560},expr:'calm'});
   g+=mark('M520 -10L560 40L650 -60',ease.inOut(prog(t,AT.ruleKept-.1,AT.ruleKept+.3)),CORAL,16);
   return g+foreGate(t,1000,1.06,{dx:200});
 }
@@ -735,7 +735,7 @@ function village(t,lt){
 // ---- Not just bending the truth: a grey man bends a rod of light in a dark street ----
 function bendTruth(t,lt){
   let g=street(t,{mood:'night',houses:[[420,.95],[1500,.95]],lit:.6,tree:false,seed:29})+glow(960,500,700,'#5A3A8A',.3);
-  const b=ease.inOut(prog(t,AT.bend-.2,AT.bend+.6)),y=FY-300,x0=760,x1=1160,mid=(x0+x1)/2;
+  const b=ease.inOut(prog(t,AT.bend-.2,AT.bend+.6)),y=FY-200,x0=760,x1=1160,mid=(x0+x1)/2;
   const rod=`M${x0} ${y+b*60}Q${mid} ${y-b*260} ${x1} ${y+b*60}`;
   const o=greyO(0,960,FY,HS,{look:{x:mid,y:y-90*b},expr:['calm','joy',b],near:{x:lerp(1120,1090,b),y:y-b*40},far:{x:lerp(800,830,b),y:y-b*40},lean:4});
   const r=PPL.rig(o);
@@ -812,8 +812,8 @@ function guard(t,lt){
   let g=street(t,{mood:'night',houses:[[420,.95],[1600,.95]],lit:1,seed:37,treeX:1100});
   const st=ease.inOut(prog(t,AT.christians-.2,AT.christians+.8)),ring=ease.out(prog(t,AT.guarding-.3,AT.guarding+.6)),cx=1040;
   if(ring>0)g+=Ell(cx,FY-300,360*ring,380*ring,'none',{stroke:'#FFE36B','stroke-width':12,opacity:.9})+glow(cx,FY-300,420*ring,'#FFE9A8',.25);
-  g+=PPL.fig(person(0,1290,FY,2.4,{face:-1,look:{x:1000,y:500},expr:['sad','tender',ring],near:{x:1200,y:FY-280}}))+nameScroll(1200,FY-280,1.6,1);
-  g+=folk(1,lerp(1290,920,st),FY,HS,{face:-1,walk:st>0&&st<1?t*7:0,near:st>.8?'open':null,far:st>.8?'open':null,look:{x:500,y:520},expr:'calm'});
+  g+=PPL.fig(person(0,1360,FY,2.4,{face:-1,look:{x:1000,y:500},expr:['sad','tender',ring],near:{x:1250,y:FY-230}}))+nameScroll(1250,FY-230,1.6,1);
+  g+=folk(1,lerp(1360,940,st),FY,HS,{face:-1,walk:st>0&&st<1?t*7:0,near:st>.8?{x:780,y:FY-280}:null,far:st>.8?{x:1080,y:FY-280}:null,look:{x:500,y:520},expr:'calm'});
   for(let k=0;k<5;k++){const a0=AT.christians+.4+k*.55;if(t<a0)continue;const u=prog(t,a0,a0+1),hitX=cx-360*Math.max(ring,.6)-20,x=u<.6?lerp(400,hitX,u/.6):lerp(hitX,hitX-240,(u-.6)/.4),y=FY-520+k*70+(u<.6?0:-(u-.6)*500);
     g+=wordStrip(x,y,180,90+k,u<.6?0:-30*(u-.6)*5,{op:1-prog(u,.7,1),h:50});}
   return g+foreStreet(t,1060,1.08,{d:1,seed:87});
@@ -857,14 +857,14 @@ function grove(t,lt){
 // ---- The leaders went looking for witnesses: knocking at a door; it opens ----
 function knocking(t,lt){
   let g=street(t,{mood:'night',houses:[[600,.9]],tree:false,lit:.5,seed:39});
-  const dx=1320,op=ease.out(prog(t,AT.looking+.3,AT.looking+.9));
+  const dx=1420,op=ease.out(prog(t,AT.looking+.3,AT.looking+.9));
   g+=R(dx-300,FY-760,600,760,8,'#4A4660')+[...Array(6)].map((_,r)=>[...Array(4)].map((_,c)=>R(dx-290+c*150+(r%2)*70,FY-740+r*120,130,100,8,'#544E6A',{opacity:.5})).join('')).join('')+R(dx-320,FY-780,640,30,6,'#5A5672');
   g+=R(dx-90,FY-400,180,400,80,'#1A1220')+R(dx-90,FY-400,180*(1-.8*op),400,80,'#3A2A1A');
   g+=glow(dx,FY-200,360,'#FFD27A',.55*op);
   if(op>0)g+=G('',folk(2,dx+20,FY,2.2,{face:-1,look:{x:1100,y:500},expr:'surprised',near:{x:dx-70,y:FY-260}}),op.toFixed(2));
   const kn=t<AT.looking+.3?Math.abs(Math.sin(t*14))*30:0;
-  g+=capped(person(0,1060,FY,HS,{look:{x:dx,y:FY-300},expr:'calm',near:{x:1180+kn,y:FY-330},tunic:'#3A2A6A',tunic2:'#1E1440',lean:6}),'#2A1E50');
-  g+=capped(person(1,750,FY-20,2.35,{look:{x:dx,y:FY-300},expr:'calm',near:{x:850,y:FY-220},tunic:'#6A2A3A',tunic2:'#3A1420'}),'#4A1424',h=>lamp(t,h[0]-40,h[1]+30,1.4,1));
+  g+=capped(person(0,1100,FY,HS,{look:{x:dx,y:FY-300},expr:'calm',near:{x:1290+kn,y:FY-280},tunic:'#3A2A6A',tunic2:'#1E1440',lean:6}),'#2A1E50');
+  g+=capped(person(1,820,FY-20,2.2,{look:{x:dx,y:FY-300},expr:'calm',near:{x:910,y:FY-200},tunic:'#6A2A3A',tunic2:'#3A1420'}),'#4A1424',h=>lamp(t,h[0]-40,h[1]+30,1.4,1));
   return g+foreStreet(t,1020,1.06,{d:1,seed:89});
 }
 // ---- "Many bore false witness": the night hall; witnesses speak one by one; a column of light stands silent ----
@@ -1010,11 +1010,11 @@ function square(t,lt){
   g+=Ell(1350,FY-40,110,30,'#8A7A64')+R(1250,FY-130,200,90,10,'#A89A80',{stroke:'#6A5A44','stroke-width':4});
   g+=folk(2,1240,950,1.2,{look:{x:1360,y:800},expr:'joy',near:{x:1300,y:880}})+folk(0,1440,950,1.2,{face:-1,look:{x:1240,y:800},expr:'joy',near:'open'});
   const k=ease.inOut(prog(t,AT.speakTruth[0]-.3,AT.speakTruth[1]+.3));
-  const A=person(1,780,FY,VS,{look:{x:1130,y:520},expr:'joy'}),B=person(4,1130,FY,VS,{face:-1,look:{x:780,y:520},expr:['calm','joy',k]});
-  B.near=PPL.handOn(B,A,'shoulder');A.near={x:900,y:FY-330+Math.sin(t*6)*12};
+  const A=person(1,760,FY,VS,{look:{x:1170,y:520},expr:'joy'}),B=person(4,1170,FY,VS,{face:-1,look:{x:780,y:520},expr:['calm','joy',k]});
+  B.near={x:1010,y:FY-260};A.near={x:900,y:FY-270+Math.sin(t*6)*12};
   const Br=PPL.rig(B);g+=Br.draw('back')+Br.draw('body')+Br.draw('head')+PPL.fig(A)+Br.draw('front');
   if(k>0)g+=truthStrip(955,FY-560-k*30,lerp(60,240,k),140,-4,{h:54});
-  return g+foreStreet(t,960,1.06,{seed:95,flowers:['#FFD84A','#FFFFFF','#FF8AB0']});
+  return g+foreStreet(t,960,1.06,{seed:95,flowers:['#FFD84A','#FFFFFF','#FF8AB0'],pets:SC.pair(t,'goat',1200,1640,2.0,{face:-1,graze:'auto',gap:80,dy:-30})});
 }
 // ---- Members of one another: hand in hand; tear down a name and the line tears ----
 function members(t,lt,o={}){
@@ -1079,7 +1079,7 @@ function speakUp(t,lt){
   const up=ease.inOut(prog(t,AT.speakingUp-.3,AT.speakingUp+.5)),turn=prog(t,AT.speakingUp,AT.speakingUp+.5);
   [[0,690],[3,920]].forEach(([i,x],k)=>g+=folk(i,x,FY,2.25,{sit:1,seat:FY-120,face:1,look:turn>.3?{x:1250,y:400}:{x:1000,y:FY-200},expr:turn>.3?'surprised':'joy',near:k===0&&turn<.3?{x:960,y:FY-200}:null}));
   g+=lowTable(1000,640,190,'#8A6A4A')+phoneP([1000,FY-200],1.6,1)+Ell(860,FY-196,40,12,'#F0E8D8')+R(1120,FY-240,40,50,6,'#E8E0D0');
-  g+=folk(2,1260,FY,HS,{face:-1,sit:1-up,seat:FY-120,look:turn>.3?{x:800,y:500}:{x:1000,y:FY-200},near:up>.5?{x:1130,y:FY-420}:null,expr:up>.5?'calm':'sad'});
+  g+=folk(2,1260,FY,HS,{face:-1,sit:1-up,seat:FY-120,look:turn>.3?{x:800,y:500}:{x:1000,y:FY-200},near:up>.5?{x:1080,y:FY-290}:null,expr:up>.5?'calm':'sad'});
   return g+foreModern(t,980,1.06,{floor:'#3A2E2E',rug:'#8A4A3A'});
 }
 
@@ -1101,7 +1101,7 @@ function isTrue(t,lt){
   let g=modernRoom(t,{wall:'#1E2E5A',winX:1460,lampX:0,poster:false});
   g+=lowTable(1000,700,300,'#7A5A3A')+L(1250,FY-300,1250,FY-560,'#2A2A34',8)+P(`M1190 ${FY-560}L1310 ${FY-560}L1280 ${FY-630}L1220 ${FY-630}Z`,'#F0D8A0')+glow(1250,FY-540,300,'#FFD27A',.5);
   g+=G(`rotate(-4 1060 ${FY-320})`,R(1000,FY-330,180,24,4,'#1A1A24'))+[0,1,2].map(k=>Ell(760+k*12,FY-310-k*16,70,10,'#E8E0D0')).join('');
-  g+=folk(1,800,FY,HS,{sit:1,seat:FY-130,look:{x:1050,y:300},expr:'calm',near:{x:860,y:FY-480},far:{x:900,y:FY-310},lean:4});
+  g+=folk(1,800,FY,HS,{sit:1,seat:FY-130,look:{x:1050,y:300},expr:'calm',near:'chest',far:{x:900,y:FY-310},lean:4});
   return g+check(1280,300,ease.inOut(prog(t,AT.isTrue+.2,AT.isTrue+.6)))+foreModern(t,1000,1.12,{rug:'#2A3A6A'});
 }
 // Is it fair: in the market a merchant's scales settle level.
@@ -1109,32 +1109,32 @@ function isFair(t,lt){
   let g=street(t,{mood:'golden',houses:[[300,.9],[1650,.9]],tree:false,seed:47});
   g+=R(560,FY-520,800,40,6,'#C8483A')+[...Array(8)].map((_,i)=>P(`M${560+i*100} ${FY-480}l50 60l50 -60z`,i%2?'#F6EFDC':'#C8483A')).join('')+L(580,FY-480,580,FY,'#6A4A2A',10)+L(1340,FY-480,1340,FY,'#6A4A2A',10);
   g+=R(600,FY-220,720,30,6,'#8A5A30')+[...Array(9)].map((_,i)=>C(640+i*30,FY-240,18,['#FF8A3A','#E8C060','#6AA84A'][i%3])).join('');
-  const sw=Math.sin(t*4)*12*(1-prog(t,AT.isFair,AT.isFair+.8)),cx=1120,cy=FY-560;
+  const sw=Math.sin(t*4)*12*(1-prog(t,AT.isFair,AT.isFair+.8)),cx=1120,cy=FY-440;
   g+=L(cx,FY-220,cx,cy,'#E8B53A',10)+G(`rotate(${sw.toFixed(1)} ${cx} ${cy})`,L(cx-220,cy,cx+220,cy,'#E8B53A',12)+
     L(cx-220,cy,cx-260,cy+170,'#C8952A',3)+L(cx-220,cy,cx-180,cy+170,'#C8952A',3)+P(`M${cx-290} ${cy+170}Q${cx-220} ${cy+230} ${cx-150} ${cy+170}Z`,'#E8B53A')+L(cx+220,cy,cx+180,cy+170,'#C8952A',3)+L(cx+220,cy,cx+260,cy+170,'#C8952A',3)+P(`M${cx+150} ${cy+170}Q${cx+220} ${cy+230} ${cx+290} ${cy+170}Z`,'#E8B53A'))+C(cx,cy-4,18,'#FFF1B0');
-  g+=elder(820,FY,HS,{look:{x:cx,y:cy},expr:['calm','joy',prog(t,AT.isFair,AT.isFair+.8)],near:{x:cx-240,y:cy+60},tunic:'#3A8ABF',tunic2:'#1E4A7A'});
+  g+=elder(700,FY,HS,{look:{x:cx,y:cy},expr:['calm','joy',prog(t,AT.isFair,AT.isFair+.8)],near:{x:880,y:FY-250},tunic:'#3A8ABF',tunic2:'#1E4A7A'});
   return g+check(1360,200,ease.inOut(prog(t,AT.isFair+.2,AT.isFair+.6)))+foreStreet(t,960,1.1,{seed:97,goats:false});
 }
 // Would I say it to their face: two friends face to face in a courtyard.
 function toFace(t,lt){
   let g=street(t,{mood:'day',houses:[[400,.95],[1560,.95]],treeX:960,seed:49});
   const k=prog(t,AT.faceW,AT.faceW+.6);
-  g+=folk(1,780,FY,HS,{look:{x:1160,y:500},expr:['calm','tender',k],near:'chest'})+folk(0,1160,FY,2.55,{face:-1,look:{x:780,y:500},expr:['calm','joy',k]});
-  return g+check(1300,240,ease.inOut(prog(t,AT.faceW,AT.faceW+.4)))+foreStreet(t,970,1.1,{seed:99});
+  g+=folk(1,780,FY,HS,{look:{x:1160,y:500},expr:['calm','tender',k]})+folk(0,1160,FY,2.55,{face:-1,look:{x:780,y:500},expr:['calm','joy',k]});
+  return g+check(1300,240,ease.inOut(prog(t,AT.faceW,AT.faceW+.4)))+foreStreet(t,970,1.1,{seed:99,pets:SC.animal(t,'dove',760,1520,2.2,{graze:'auto'})+SC.animal(t,'dove',890,1560,2.0,{graze:'auto',face:-1,phase:1})});
 }
 // ---- Your words are a witness: standing in the old gate today, golden words go out ----
 function witnessToday(t,lt){
   let g=gateSet(t,{mood:'golden',vines:true});
   const k=ease.out(prog(t,AT.yourWords,AT.aWitness+.6));
   for(let j=0;j<4;j++){const a0=AT.yourWords+.3+j*.5;if(t<a0)continue;const u=ease.out(prog(t,a0,a0+1.2));g+=truthStrip(lerp(1040,1040+(j%2?1:-1)*(240+j*60),u),lerp(FY-460,FY-640-j*60,u),lerp(40,220,u),170+j,lerp(0,(j%2?1:-1)*10,u),{op:1-prog(u,.8,1)*.4,h:50});}
-  return g+folk(1,960,FY,HS,{look:{x:1240,y:300},expr:['calm','joy',k],near:{x:1080,y:FY-380+Math.sin(t*5)*12}})+foreGate(t,960,1.08,{dx:-300});
+  return g+folk(1,960,FY,HS,{look:{x:1240,y:300},expr:['calm','joy',k],near:{x:1120,y:FY-280+Math.sin(t*5)*12}})+foreGate(t,960,1.08,{dx:-300});
 }
 // ---- Make sure they tell the truth about your neighbor: a kind word, then a hug ----
 function kindWord(t,lt){
   let g=street(t,{mood:'day',houses:[[440,.95],[1560,.95]],treeX:1200,seed:51});
   const k=ease.inOut(prog(t,AT.truthAbout,AT.truthAbout+.8)),hugK=ease.out(prog(t,AT.truthAbout+1.4,AT.truthAbout+2.4));
   g+=folk(3,1400,FY-30,2.0,{face:-1,look:{x:1040,y:500},expr:'joy',near:'chest'});
-  const A=person(1,lerp(780,880,hugK),FY,HS,{look:{x:1160,y:500},expr:'joy',near:hugK>0?null:{x:900,y:FY-340+Math.sin(t*6)*12}}),B=person(4,lerp(1160,1030,hugK),FY,2.5,{face:-1,look:{x:780,y:500},expr:['sad','joy',k]});
+  const A=person(1,lerp(780,880,hugK),FY,HS,{look:{x:1160,y:500},expr:'joy',near:hugK>0?null:{x:960,y:FY-270+Math.sin(t*6)*12}}),B=person(4,lerp(1160,1030,hugK),FY,2.5,{face:-1,look:{x:780,y:500},expr:['sad','joy',k]});
   for(let j=0;j<3;j++){const a0=AT.makeSure+.3+j*.5;if(t<a0||hugK>.2)continue;const u=ease.out(prog(t,a0,a0+1));g+=truthStrip(lerp(900,1100,u),lerp(FY-360,FY-560-j*50,u),lerp(40,190,u),180+j,-5+j*5,{h:50});}
   g+=hugK>0?PPL.hug(A,B,{k:hugK}).svg:PPL.fig(A)+PPL.fig(B);
   return g+foreStreet(t,1000,1.06,{seed:101,flowers:['#FFFFFF','#FF8AB0']});
@@ -1156,7 +1156,7 @@ function wanting(t,lt){
   const r=ease.inOut(prog(t,AT.wanted2-.2,AT.wasntHis+.2));
   g+=king(t,ahabO(780,FY+20,HS,{lean:lerp(4,16,r),look:{x:1160,y:FY-200},expr:['calm','tender',r],near:{x:lerp(900,960,r),y:FY-200},far:{x:900,y:FY-180}}));
   g+=wallRow(-120,1040,FY+60,'#B0A898','#6A6458');
-  return g+(r>.2?heart(830,FY-380,40*r,r):'')+foreVine(t,960,1.08,{dark:1});
+  return g+(r>.2?heart(845,FY-230,36*r,r):'')+foreVine(t,960,1.08,{dark:1});
 }
 // ---- That's the last commandment, and it's next: line X glows ----
 const SIN2=FX.peak(18,960,-160,{halfW:820});
@@ -1254,10 +1254,10 @@ const SH=[
   {name:'witnesses',at:AT.andEvery-.1,draw:witnessesCome,bg:['#A8D4EC','#F4E6C8'],stars:false,vIn:'cut',cam:H(940,1.06)},
   {name:'a safeguard',at:AT.soGod-.1,draw:safeguard,bg:['#B8DCF0','#F8ECD0'],stars:false,vIn:'cut',cam:M(960,1.06,940,1.16)},
   {name:'two witnesses',at:AT.only-.1,draw:twoThree,bg:['#94C8E4','#EEDCB8'],stars:false,vIn:'cut',cam:H(840,1.04)},
-  {name:'or three',at:AT.threeW-.4,draw:twoThree,bg:['#A0D0EA','#F0E0BC'],stars:false,vIn:'cut',cam:H(1130,1.08)},
+  {name:'or three',at:AT.threeW-.4,draw:twoThree,bg:['#A0D0EA','#F0E0BC'],stars:false,vIn:'cut',cam:H(1160,1.08)},
   {name:'one voice',at:AT.oneVoice-.1,draw:oneVoice,bg:['#B0D8EE','#F4E4C4'],stars:false,vIn:'cut',cam:H(880,1.06)},
-  {name:'a partner',at:AT.aLie-.1,draw:partner,bg:['#0E2A2A','#041010'],stars:false,vIn:'cut',cam:M(965,1.06,965,1.16)},
-  {name:'bought',at:AT.butEven-.1,draw:bought,bg:['#123232','#061414'],stars:false,vIn:'cut',cam:H(960,1.08)},
+  {name:'a partner',at:AT.aLie-.1,draw:partner,bg:['#0E2A2A','#041010'],stars:false,vIn:'cut',cam:M(965,1.04,965,1.1)},
+  {name:'bought',at:AT.butEven-.1,draw:bought,bg:['#123232','#061414'],stars:false,vIn:'cut',cam:H(960,1.04)},
   // act 2
   {name:'king ahab',at:AT.ahab-.1,draw:balcony,bg:['#5A3A7A','#E89A7A'],stars:false,cam:M(1000,1.06,960,1.14)},
   {name:'naboth',at:AT.belonged-.1,draw:nabothPick,bg:['#9AD4F0','#E8F6FF'],stars:false,vIn:'cut',cam:H(1000,1.08)},
@@ -1283,7 +1283,7 @@ const SH=[
   {name:'jerusalem',at:AT.centuries-.1,draw:jerusalem,bg:['#0A0E2A','#1A1A4A'],vIn:'cut',cam:CW(960,600,.84,960,560,1.0)},
   // act 4
   {name:'the olive grove',at:AT.night-.1,draw:grove,bg:['#0A1420','#04080E'],vIn:'cut',cam:H(980,1.04)},
-  {name:'looking for witnesses',at:AT.leaders-.1,draw:knocking,bg:['#141838','#060818'],vIn:'cut',cam:M(1000,1.06,1040,1.1)},
+  {name:'looking for witnesses',at:AT.leaders-.1,draw:knocking,bg:['#141838','#060818'],vIn:'cut',cam:M(1080,1.06,1110,1.1)},
   {name:'many bore false witness',at:AT.many-.1,draw:nightHall,bg:['#16163A','#08081A'],stars:false,vIn:'cut',cam:M(1000,1.04,1010,1.1)},
   {name:'lies do not match',at:AT.theyCouldnt-.1,draw:noMatch,bg:['#1A1640','#08061A'],stars:false,vIn:'cut',cam:H(960,1.1)},
   {name:'the truth stood silent',at:AT.theOne-.1,draw:silentTruth,bg:['#14143A','#060618'],stars:false,vIn:'cut',cam:M(960,1.04,960,1.12)},
