@@ -313,8 +313,10 @@
   }
   // One sheet through the vertical camera, held inside its paper so the wall never shows.
   // Zoom 0.845 or less is a deliberate wide shot; anything else is raised to at least 1.12.
+  // cfg.gentleZoom: true keeps every zoom as written (only the paper-edge clamps below apply), so a slow push
+  // from the wide shot (.84) to e.g. 1.05 is possible.
   function sheetView(i, t, tc) {
-    const c = camAt(i, tc), z = c.z <= .845 ? c.z : Math.max(c.z, 1.12);
+    const c = camAt(i, tc), z = st.cfg.gentleZoom ? c.z : c.z <= .845 ? c.z : Math.max(c.z, 1.12);
     let x = c.x, y = c.y;
     const xa = 540 / z - 30, xb = 1950 - 540 / z; x = xa < xb ? clamp(x, xa, xb) : 960;
     const ya = -640 + BANDY / z, yb = 1720 - (FH - BANDY) / z; y = ya < yb ? clamp(y, ya, yb) : 540;

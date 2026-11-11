@@ -19,7 +19,10 @@ draft against this list before sending it; it is cheaper than another round of n
   with a header, rather than showing a grid of small panels.
 - Not stagnant: something always moves. Characters breathe, shift weight and gesture while their
   line is spoken; verses appear and leave about a second after they are narrated.
-- Camera shake and punch-in only on a few focus beats (about one every 10 s); steady otherwise.
+- Camera shake and punch-in only on 2-3 big focus beats per episode; steady otherwise.
+- Calm camera ("in the first few sec of the vid, there is too much motion, zoom in and out"): at most one slow
+  push-in or pan per shot (2-3 s or longer), or a still hold. No zooming in and back out; cut to change framing.
+  Visual pace comes from cuts, new scenes and characters acting, not from the camera.
 - Frame the subject of the line ("this scene should focus on the man"). Don't go too tight
   ("too zoomed in ... see the whole picture"): use a wide shot when the whole scene matters.
 - Scale and motion must make sense: the serpent was too big and moved back and forth; it should
