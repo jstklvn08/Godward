@@ -1217,7 +1217,7 @@ function rainbowHome(t){
   const SUN={x:1560,y:-40};
   let g=SC.sky(t,{mood:'clearing',hz:800})+SC.godRays(t,SUN.x,SUN.y,{n:9,a0:1.75,a1:2.8,op:.16})+SC.sun(t,SUN.x,SUN.y,60,{rays:1});
   g+=SC.rainbow(t,960,820,640,{w:20,op:.95,p:ease.inOut(prog(t,AT.because-.2,AT.because+1.3))});
-  g+=SC.clouds(t,{seed:105,n:6,y:-600,h:380,mood:'clearing',sun:SUN,drift:8,storm:true});
+  g+=SC.clouds(t,{seed:105,n:6,y:-600,h:380,mood:'clearing',sun:SUN,drift:8});
   g+=SC.range(106,{y:800,h:260,peaks:5,mood:'clearing',snow:true,hazeOp:.6,sunX:SUN.x})+SC.hills(107,{y:860,amp:28,wave:300,col:'#6AA452',trees:9,fields:true,hazeOp:.3});
   g+=SC.ground(t,108,{y:920,col:'#5E9E46',col2:'#3E7432',wet:.8,stones:10,tufts:24,flowers:['#FFFFFF','#FFD84A']});
   g+=home(t,960,950,.85,{lit:.4})+SC.pair(t,'sheep',1450,960,.7,{face:-1,graze:'auto'});
