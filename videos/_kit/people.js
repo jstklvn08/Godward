@@ -186,15 +186,18 @@
       g += `<circle cx="0" cy="-165" r="56" fill="url(#${b})"/>`;
       if (f) g += `<path d="M-58 -168 C-66 -252 66 -256 60 -172 C34 -196 -20 -198 -58 -168Z" fill="${pal.hair}"/><circle cx="40" cy="-214" r="11" fill="#FFD36B"/><circle cx="40" cy="-214" r="5" fill="#FF7A5C"/>`;
       else g += `<path d="M-58 -172 C-66 -252 66 -256 60 -174 C28 -194 -24 -194 -58 -172Z" fill="${pal.hair}"/><path d="M-44 -136 C-34 -102 34 -96 56 -142 C40 -128 28 -130 8 -132 C-12 -132 -30 -130 -44 -136Z" fill="${pal.hair}"/>`;
-      // eyes: the house's plain dots, the same on every face in every mood (only a line while blinking); they shift a
-      // little toward the look target. Emotion is carried by the brows and the mouth, never by the eyes.
+      // eyes: dots that look at the target (white rings when wide open, arcs when laughing, a line when blinking)
       const blink = ((t * .29 + hash(Math.floor(ph * 10), 3)) % 1) < .03;
       const lx = lv[0] * 3.6 - .6, ly = lv[1] * 4.2;
       [18, 42].forEach(x => {
         if (blink) g += `<path d="M${x - 6} -165 L${x + 6} -165" stroke="${e}" stroke-width="3.4" stroke-linecap="round"/>`;
-        else g += `<circle cx="${f2(x + lx)}" cy="${f2(-165 + ly)}" r="5.6" fill="${e}"/>`;
+        else if (fc.happy > .5) g += `<path d="M${x - 7} -162 Q${x} -173 ${x + 7} -162" fill="none" stroke="${e}" stroke-width="3.6" stroke-linecap="round"/>`;
+        else {
+          if (fc.wide > .4) g += `<circle cx="${x}" cy="-165" r="${f2(8 + fc.wide)}" fill="#FFFDF4"/>`;
+          g += `<circle cx="${f2(x + lx)}" cy="${f2(-165 + ly)}" r="${fc.wide > .4 ? 4.4 : 5.6}" fill="${e}"/>`;
+        }
         // brows: the inner end lifts for worry and awe
-        const inner = x < 30 ? 1 : -1, by = -180 - fc.brow - fc.wide * 4, lift = fc.tilt * .3;
+        const inner = x < 30 ? 1 : -1, by = -180 - fc.brow - fc.wide * 2, lift = fc.tilt * .3;
         g += `<line x1="${x - 7}" y1="${f2(by + (inner < 0 ? -lift : 0))}" x2="${x + 7}" y2="${f2(by + (inner > 0 ? -lift : 0))}" stroke="${e}" stroke-width="3" stroke-linecap="round" opacity=".85"/>`;
       });
       // cheeks and mouth
