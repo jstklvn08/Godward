@@ -63,7 +63,10 @@ function scene(){
   g+=P(`M-40 ${VY+20*k}Q400 ${VY-10*k} 1120 ${VY+30*k}V${H}H-40Z`,'#0E0B1C');
   // the man: a small dark figure standing behind his low fence, arms at his sides, a red glow in his chest
   const mx=V?250:240,my=VY+150*k,ms=.95*k;
+  g+=glow(mx+10*ms,my-90*ms,120*ms,'#FF3A4A',.55);
   g+=PPL.fig({x:mx,y:my,s:ms,face:1,tunic:'#2A2E58',tunic2:'#1A1C3A',skin:'#4A3A48',shade:'#3A2C3A',hair:'#0E0A16',expr:'sad',look:{x:hx,y:hy-80*hs},filter:''});
+  const hs2=12*ms,cx=mx+6*ms,cy=my-84*ms;
+  g+=P(`M${cx} ${cy+hs2*.9}C${cx-hs2*1.7} ${cy-hs2*.1} ${cx-hs2*.95} ${cy-hs2*1.35} ${cx} ${cy-hs2*.42}C${cx+hs2*.95} ${cy-hs2*1.35} ${cx+hs2*1.7} ${cy-hs2*.1} ${cx} ${cy+hs2*.9}Z`,'#FF4A5C');
   // a low fence in front of his legs only (below the waist)
   let f='';for(let x=mx-120*ms;x<mx+340*ms;x+=46*ms)f+=R(x-5*ms,my-62*ms,10*ms,66*ms,3,'#1E1626');
   [48,22].forEach(h=>f+=R(mx-130*ms,my-h*ms,480*ms,9*ms,3,'#2A1E30'));
