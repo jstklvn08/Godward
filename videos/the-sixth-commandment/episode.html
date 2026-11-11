@@ -936,8 +936,8 @@ function everyS(t,lt){
   g+=SC.animal(t,'camel',1820,950,.9,{face:-1})+SC.animal(t,'donkey',140,955,.8,{graze:'auto'});
   const lk={x:960,y:600};let k=0;
   const glintOn=(q)=>{const on=ease.out(prog(t,AT.every1+.2+k*.22,AT.every1+.6+k*.22));k++;const [cx,cy]=chestOf(q);return glint(cx,cy,q.s,on);};
-  [[780,1.4,{i:2}],[1140,1.45,{elderF:1}]].forEach(([x,s,o])=>{const face=x<960?1:-1;
-    const on=ease.out(prog(t,AT.every1+.2+k*.22,AT.every1+.6+k*.22)),q=o.elderF?elderOpts(x,935,s,{face,f:true,look:lk,expr:['calm','joy',on],tunic:'#B98CFF',tunic2:'#6A4CD8',hair:'#D8D4CC'}):person(o.i,x,935,s,{face,look:lk,expr:['calm','joy',on]});
+  [[420,.8,{i:2}],[1520,.8,{elderF:1}]].forEach(([x,s,o])=>{const face=x<960?1:-1;
+    const on=ease.out(prog(t,AT.every1+.2+k*.22,AT.every1+.6+k*.22)),q=o.elderF?elderOpts(x,915,s,{face,f:true,look:lk,expr:['calm','joy',on],tunic:'#B98CFF',tunic2:'#6A4CD8',hair:'#D8D4CC'}):person(o.i,x,915,s,{face,look:lk,expr:['calm','joy',on]});
     g+=PPL.fig(q)+glintOn(q);});
   [[600,2.25,{elder:1}],[960,1.45,{i:3,kid:1}],[1320,2.25,{i:1,f:true}]].forEach(([x,s,o])=>{const face=x<960?1:-1;
     const on=ease.out(prog(t,AT.every1+.2+k*.22,AT.every1+.6+k*.22)),q=o.elder?elderOpts(x,FY,s,{face,look:lk,expr:['calm','joy',on]}):person(o.i,x,FY,s,{face,look:lk,expr:['calm','joy',on],f:o.f});
@@ -1223,8 +1223,8 @@ function protectS(t,lt){
   let g=SC.env(t,'desert',{seed:441,mood:'golden',gy:900})+P('M-120 1000Q960 930 2040 1010L2040 1100Q960 1010 -120 1090Z','#E0C090',{opacity:.7});
   g+=SC.animal(t,'donkey',1600,960,1.3,{face:-1,graze:'auto'})+R(1430,FY-70,120,70,20,'#8A6A4A',{stroke:'#4A3420','stroke-width':4});
   const up=ease.inOut(prog(t,AT.protect-.3,AT.protect+1.2)),s=2.45;
-  const tr=person(4,1200,FY,s,{face:-1,sit:1-up,seat:FY-40,lean:lerp(20,4,up),expr:['sad','tender',up],look:{x:820,y:FY-400}});
-  const hlp=person(0,820,FY,s,{kneel:1-up*.8,lean:lerp(14,4,up),expr:'tender',look:{x:1180,y:FY-360}});
+  const tr=person(4,1300,FY,s,{face:-1,sit:1-up,seat:FY-40,lean:lerp(14,0,up),expr:['sad','tender',up],look:{x:820,y:FY-400}});
+  const hlp=person(0,710,FY,s,{kneel:1-up*.8,lean:lerp(10,0,up),expr:'tender',look:{x:1180,y:FY-360}});
   g+=PPL.holdHands(hlp,tr,{drop:30}).svg;
   return g+foreG(t,960,1.04,{cols:GR.dry,seed:95,rockAt:[[600,1560,170],[1360,1620,150]]});
 }
@@ -1249,7 +1249,7 @@ function giftS(t,lt){
   const o=person(2,x,FY,s,{expr:['calm','sad',th],look:th>.5?{x:500,y:200}:{x:1300,y:FY-200},lean:4});
   const lx=x+60*s,ly=FY-100*s;o.near={x:lx+20,y:ly-40};o.far={x:lx-30,y:ly-46};
   g+=withProp(o,SC.animal(t,'sheep',lx-10,ly+20,.95,{face:1}));
-  if(th>0){const cx=520,cy=220;g+=G('',cloud(cx,cy+60,460,'#FFFDF4','#D8D0C8',1,7)+C(cx+200,cy+190,26,'#FFFDF4')+C(cx+250,cy+250,16,'#FFFDF4')+
+  if(th>0){const cx=700,cy=200;g+=G('',cloud(cx,cy+60,460,'#FFFDF4','#D8D0C8',1,7)+C(cx+200,cy+190,26,'#FFFDF4')+C(cx+250,cy+250,16,'#FFFDF4')+
     G(`translate(${cx} ${cy+110}) scale(.62) translate(${-cx} ${-cy-110})`,folk(4,cx,cy+110,1,{face:-1,expr:'sad',near:'chest',far:'chest',look:'down'})),th);}
   return g+foreG(t,920,1.08,{cols:GR.gold,flowers:['#FFFFFF'],seed:99,rockAt:[[1360,1560,160]]});
 }
@@ -1258,7 +1258,7 @@ function peaceS(t,lt){
   let g=land(t,{mood:'golden',seed:471,sun:{x:1500,y:520,r:66},hill:'#9A8A6A',gc:'#8A8A4A',gc2:'#5A5A30',treeKind:'olive',mid:SC.pair(t,'goat',300,905,.6,{graze:'auto',flat:true})});
   g+=tentB(1620,950,1.6,'#B07A4A','#6A3A1E',.3);
   const w=ease.inOut(prog(t,AT.go,AT.makePeace+.6)),k=ease.out(prog(t,AT.makePeace+.5,AT.first+.2)),s=HS;
-  const ax=lerp(460,760,w),b=person(4,1160,FY,s,{face:-1,expr:['sad','tender',k],near:k>0?null:'chest',far:k>0?null:'chest',look:{x:ax,y:FY-450}});
+  const ax=lerp(580,780,w),b=person(4,1180,FY,s,{face:-1,expr:['sad','tender',k],near:k>0?null:'chest',far:k>0?null:'chest',look:{x:ax,y:FY-450}});
   const a=person(2,ax,FY,s,{walk:w>0&&w<1?t*5:0,expr:['calm','tender',k],look:{x:1160,y:FY-450}});
   g+=k>0?PPL.hug(a,b,{k}).svg:PPL.fig(a)+PPL.fig(b);
   return g+foreG(t,940,1.08,{cols:GR.gold,flowers:['#FF8AA8','#FFFFFF'],seed:101,rockAt:[[560,1560,160]]});
@@ -1271,7 +1271,7 @@ function mealS(t,lt){
   const xs=[[560,1,0],[960,-1,2],[1360,-1,4]];
   xs.forEach(([x,face,i],k)=>{const near=Math.abs(bx-x)<220?{x:bx+(x<bx?-24:24),y:by+8}:null;g+=folk(i,x,FY,VS,{face,expr:'joy',look:{x:bx,y:by},near,f:k===1});});
   g+=loaf(bx,by,1.6)+tableT(960,1100,'#7A4A2A')+[600,820,1100,1320].map((x,i)=>i%2?cupS(x,FY-190,1.2):Ell(x,FY-196,60,14,'#E8E0D0')).join('');
-  return g+floorF(t,960,1.0,{c1:'#6A5038',c2:'#4A3424',rug:false,items:false,over:jar(400,1520,2.6)+jar(1520,1560,2.2,'#D88A4A')});
+  return g+floorF(t,960,1.0,{c1:'#6A5038',c2:'#4A3424',rug:false,items:false,over:jar(560,1500,2.4)+jar(1380,1540,2.0,'#D88A4A')+Ell(960,1480,260,60,'#9A3A2A',{opacity:.9})+Ell(900,1460,70,18,'#E8E0D0')+loaf(1020,1450,1.3)+SC.animal(t,'bird',720,1420,1.5,{graze:'auto',col:'#E8E0D0'})+SC.animal(t,'bird',1200,1430,1.4,{face:-1,graze:'auto',phase:2,col:'#C88A4A'})});
 }
 // 7g. ...love one another: a line of people on a hill at sunset lift their joined hands.
 function chain(ps,up){let g='';const rs=ps.map(o=>Object.assign({},o));
@@ -1282,7 +1282,7 @@ function chain(ps,up){let g='';const rs=ps.map(o=>Object.assign({},o));
 function loveS(t,lt){
   let g=land(t,DUSKL(491,{sun:{x:960,y:640,r:96},rayOp:.22,glowH:[960,680,'#FF9A6A',.55],hill:'#5A3A4A',gc:'#5A4A3A',gc2:'#3A2E2E'}));
   const up=prog(t,AT.loveOne[0]-.2,AT.loveOne[0]+.4)>.5;
-  const ps=[[500,0,2.2],[810,3,1.5],[1110,1,2.15],[1420,2,2.2]].map(([x,i,s],k)=>person(i,x,FY-(s<2?10:0),s,{face:k<2?1:-1,f:i===1,expr:up?'joy':'tender',look:up?'up':{x:960,y:640}}));
+  const ps=[[520,0,1.9],[820,3,1.3],[1110,1,1.85],[1420,2,1.9]].map(([x,i,s],k)=>person(i,x,FY-(s<2?10:0),s,{face:k<2?1:-1,f:i===1||i===3,expr:up?'joy':'tender',look:up?'up':{x:960,y:640}}));
   g+=chain(ps,up);
   return g+foreG(t,960,.92,{cols:['#1A1216','#3A2A2A','#8A5A4A'],flowers:['#FFD08A'],seed:103,rockAt:[[1440,1580,170]]});
 }
@@ -1290,8 +1290,8 @@ function loveS(t,lt){
 function nextS(t,lt){
   let g=deskRoom(t,{seed:25,wx:300,view:'dusk',lx:1500});
   const on=ease.out(prog(t,AT.nextVerse,AT.nextVerse+.6));
-  g+=scroll(860,FY-330,780,440,9,4,on)+G('translate(1640 860) scale(1.6) translate(-1640 -860)',lamp(t,1640,860));
-  g+=piece(t,AT.names,1420,FY-460,strip(1310,FY-640,220,320,17,'#F6EFDC')+tape(1420,FY-636,90,-4)+B('cain',1420,FY-350,1.1,{expr:'sad',aura:RED,auraOp:.4,face:-1,filter:''}),33,1.4);
+  g+=scroll(820,FY-330,700,440,9,4,on)+G('translate(1640 860) scale(1.6) translate(-1640 -860)',lamp(t,1640,860));
+  g+=piece(t,AT.names,1330,FY-460,strip(1220,FY-640,220,320,17,'#F6EFDC')+tape(1330,FY-636,90,-4)+B('cain',1330,FY-350,1.1,{expr:'sad',aura:RED,auraOp:.4,face:-1,filter:''}),33,1.4);
   return g+jar(300,FY-140,2.2,'#8A5A3A');
 }
 // 7i. Cain asked if he was his brother's keeper: alone in the night field, the light beside him, he shrugs.
@@ -1342,7 +1342,7 @@ function weakS(t,lt){
   const w=lt*24,s=2.4,ex=1100+w;
   const old=elderOpts(ex,FY,s,{walk:t*3,lean:14,expr:'tender',look:{x:ex-300,y:FY-450}});
   old.near={x:ex+56*s,y:FY-100*s};
-  const yg=person(2,ex-290,FY-14,s*.96,{walk:t*3+1.5,expr:'tender',look:{x:ex,y:FY-450}});
+  const yg=person(2,ex-350,FY-14,s*.96,{walk:t*3+1.5,expr:'tender',look:{x:ex,y:FY-450}});
   yg.near=PPL.handOn(yg,old,'back');
   const Y=PPL.rig(yg);
   g+=Y.draw('back')+Y.draw('body')+Y.draw('head')+withProp(old,L(ex+60*s,FY+6,ex+56*s,FY-100*s,'#7A5230',14))+Y.draw('front');
@@ -1524,7 +1524,7 @@ const SH=[
   ['our hearts',AT.itsAbout-.1,heartsS,['#5A3A5A','#FFB890'],H(920,1.2),{stars:false,vIn:'cut'}],
   // 7. my brother's keeper
   ['the flip side',AT.flipW-.1,flipS,['#F8D8A8','#E8A870'],H(960,1.0),{stars:false,vIn:'cut'}],
-  ['protect life',AT.christians-.1,protectS,['#A8D0F0','#F0E0B8'],M(1000,.98,1000,1.1),{stars:false,vIn:'cut'}],
+  ['protect life',AT.christians-.1,protectS,['#A8D0F0','#F0E0B8'],M(1000,.96,1000,1.04),{stars:false,vIn:'cut'}],
   ['the stream',AT.notJust-.1,streamS,['#9AD0F0','#E0F0C8'],H(1020,1.08),{stars:false,vIn:'cut'}],
   ['the gift',AT.jesusSaid-.1,giftS,['#E8C8A8','#E8A070'],M(940,.98,960,1.08),{stars:false,vIn:'cut'}],
   ['make peace',AT.go-.1,peaceS,['#E8B8A0','#E89060'],H(940,1.04),{stars:false,vIn:'cut'}],
