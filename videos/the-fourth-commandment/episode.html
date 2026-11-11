@@ -184,8 +184,28 @@ function donkey(t,x,y,s,o={}){
   g+=G(`translate(0 ${f1(lie*50)})`,b);
   return G(`translate(${f1(x)} ${y}) scale(${s*(o.flip||1)} ${s})`,g);
 }
-const sheep=(x,y,s,o={})=>G(`translate(${f1(x)} ${y}) scale(${s*(o.flip||1)} ${s})`,(o.lie?'':R(-40,-40,12,40,4,'#4A4A52')+R(28,-40,12,40,4,'#4A4A52'))+
-  G(`translate(0 ${o.lie?30:0})`,[[-40,-70],[-10,-82],[22,-74],[-26,-50],[10,-52],[40,-56]].map(([a,b])=>C(a,b,30,'#F6F2EA',{stroke:'#B8B0A0','stroke-width':3})).join('')+Ell(66,-74,22,18,'#3A3A42')+C(72,-78,3,'#FFFFFF')));
+// A sheep: woolly body of overlapping puffs with a soft underside shadow, a dark head with ears and a pale muzzle,
+// legs standing or folded under when lying down. o.lie, o.flip, o.v (variation seed), o.head (-1 down .. 1 up).
+const sheep=(x,y,s,o={})=>{
+  const v=o.v??Math.round(x+y),r=rng(v*7+3),lie=!!o.lie,hd=o.head??(lie?.2:0);
+  const body=lie?[[-44,-46],[-16,-56],[14,-54],[40,-46],[-30,-30],[2,-32],[30,-30]]:[[-40,-70],[-10,-82],[22,-74],[-26,-52],[10,-54],[40,-58]];
+  let g='';
+  // contact shadow
+  g+=Ell(0,0,lie?78:62,10,'#000',{opacity:.18});
+  if(lie){ // folded legs peeking out in front and behind
+    g+=R(-58,-12,30,12,6,'#3A3A42')+R(30,-12,32,12,6,'#3A3A42');
+  }else g+=R(-40,-40,12,40,4,'#3A3A42')+R(-22,-40,12,40,4,'#4A4A52')+R(18,-40,12,40,4,'#3A3A42')+R(32,-40,12,40,4,'#4A4A52');
+  // wool: a shadow layer, then the puffs, each slightly different
+  const oy=lie?0:0;
+  g+=body.map(([a,b])=>C(a,b+6,30,'#C8BFAE')).join('');
+  g+=body.map(([a,b])=>C(a+(r()-.5)*6,b+oy,27+r()*6,'#F7F3EA',{stroke:'#D2C9B8','stroke-width':2.5})).join('');
+  // head: dark, slightly long, with ears and a pale muzzle; tilted by hd
+  const hx=lie?62:66,hy=lie?-44:-72;
+  g+=G(`translate(${hx} ${hy}) rotate(${(-hd*18).toFixed(1)})`,
+    Ell(-4,-14,13,7,'#2E2E36',{transform:'rotate(-30 -4 -14)'})+Ell(14,-16,12,6,'#2E2E36',{transform:'rotate(25 14 -16)'})+
+    Ell(6,0,17,22,'#3A3A42')+Ell(10,14,11,8,'#5A5A62')+C(12,-4,3.2,'#FFFFFF')+C(12.6,-4,1.6,'#141416')+
+    C(4,-14,8,'#F7F3EA',{stroke:'#D2C9B8','stroke-width':2}));
+  return G(`translate(${f1(x)} ${y}) scale(${s*(o.flip||1)} ${s})`,g);};
 const bird=(t,x,y,s,k)=>{const w=Math.sin(t*10+k)*14;return P(`M${f1(x-30*s)} ${f1(y+w*s)}Q${f1(x-14*s)} ${f1(y-12*s)} ${f1(x)} ${f1(y)}Q${f1(x+14*s)} ${f1(y-12*s)} ${f1(x+30*s)} ${f1(y+w*s)}`,'none',{stroke:'#2A2A3A','stroke-width':5*s});};
 function wheat(seed,x0,x1,y,h,t,col){
   const r=rng(seed);let g='';
@@ -640,9 +660,14 @@ function blessedDay(t,lt){
 function finishedWorld(t,lt){
   let g=glow(960,-200,1000,'#FFFBEA',.6)+clouds(t,38,-420,'#FFFFFF',.6,5);
   g+=P('M-60 300Q400 160 800 260T1500 200T1980 240L1980 1800L-60 1800Z','#5AA0C8')+P('M-60 420Q500 320 1000 400T1980 380L1980 1800L-60 1800Z','#4AAA6A');
-  g+=P('M700 1800Q860 1200 1020 900T1100 420L1160 420Q1100 700 1080 900T980 1800Z','#7CC8F0')+P('M1080 900Q1060 1200 980 1800','none',{stroke:'#E8FFFF','stroke-width':6,opacity:.5});
-  g+=gnd(103,800,'#3A9A5A','#2E8A4E')+tree(500,800,1,'#3A8A4A','#4A9A5A')+tree(1480,790,.9,'#3A8A4A','#4A9A5A');
-  g+=sheep(700,800,.7,{lie:true})+sheep(1280,806,.7,{lie:true,flip:-1});
+  g+=gnd(103,800,'#3A9A5A','#2E8A4E');
+  // a winding river: narrow at the far hills, widening toward us and running out of the frame, with darker banks
+  const RIV='M1090 405C1080 520 1010 600 1000 700S1110 860 1060 980S860 1200 840 1400S940 1700 900 1900L1160 1900C1180 1700 1090 1440 1120 1300S1300 1050 1220 950S1110 760 1130 650S1150 480 1122 405Z';
+  g+=P(RIV,'#2E7A4A',{transform:'translate(-10 6)'})+P(RIV,'#6CC0EA')+
+    [0,1,2,3,4].map(i=>{const y=560+i*230,x=1080+Math.sin(i*1.7)*70,w=30+i*18,ph=Math.sin(t*1.2+i)*8;
+      return P(`M${f1(x-w+ph)} ${y}Q${f1(x+ph)} ${y-6} ${f1(x+w+ph)} ${y}`,'none',{stroke:'#E8FFFF','stroke-width':3+i,opacity:.45,'stroke-linecap':'round'});}).join('');
+  g+=tree(500,800,1,'#3A8A4A','#4A9A5A')+tree(1480,790,.9,'#3A8A4A','#4A9A5A');
+  g+=sheep(660,800,.78,{lie:true,head:.5})+sheep(1330,812,.62,{flip:-1,head:-.8,v:9});
   for(let i=0;i<4;i++)g+=bird(t,1380+i*40,520+i*6,.7,i);
   return g+rings(t,AT.restedFrom[0],960,-260,1600,4,3);
 }

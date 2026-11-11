@@ -523,12 +523,34 @@ function vineyard(t){
 }
 // P5. For Israel, life in the land: olive harvest on terraced hills.
 function harvest(t){
-  let g=sun(400,0,80,'#FFF0C0')+glow(800,200,800,'#FFE2A0',.3);
-  g+=`<path d="${ridge(201,420,40,300)}" fill="#B89A60"/><path d="${ridge(202,560,30,260)}" fill="#A08A50"/>`+gnd(203,770,'#8A7A44','#7A6A3A');
-  for(let i=0;i<4;i++)g+=P(`M-60 ${520+i*60}Q960 ${490+i*60} 1980 ${520+i*60}`,'none',{stroke:'#8A7A50','stroke-width':6,opacity:.5});
-  g+=olive(1050,790,1.5,21)+olive(400,700,.7,22)+olive(1600,700,.8,23);
+  // sky: warm morning gradient, a low sun, drifting clouds and a few birds
+  let g=`<linearGradient id="hvSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9CC8E0"/><stop offset=".55" stop-color="#F4D9A0"/><stop offset="1" stop-color="#E8B878"/></linearGradient>`+
+    R(-80,-700,2080,1400,0,'url(#hvSky)')+sun(420,120,80,'#FFF0C0')+glow(800,260,900,'#FFE2A0',.35)+clouds(t,205,-160,'#FFFFFF',.55,6,6);
+  for(let i=0;i<4;i++){const bx=1350+i*46+Math.sin(t*.6+i)*20,by=170+i*14,w=Math.sin(t*9+i)*10;
+    g+=P(`M${bx-18} ${by+w}Q${bx-8} ${by-8} ${bx} ${by}Q${bx+8} ${by-8} ${bx+18} ${by+w}`,'none',{stroke:'#4A3A3A','stroke-width':4});}
+  // far hills with a hilltop village
+  g+=`<path d="${ridge(201,400,46,320)}" fill="#C9AE7A"/>`;
+  [[1460,392,.42,1],[1560,384,.36,0],[1650,398,.4,0],[1380,402,.32,0]].forEach(([x,y,sc,on])=>g+=house(t,x,y,sc,on*.3,{wall:'#D8A878',roof:'#B8583A'}));
+  // terraced middle slopes: stone walls with rows of small olive trees
+  g+=`<path d="${ridge(202,500,30,280)}" fill="#B49A62"/>`;
+  for(let i=0;i<4;i++){const y=540+i*58;
+    g+=P(`M-60 ${y}Q960 ${y-24} 1980 ${y}`,'none',{stroke:'#8C7650','stroke-width':10,opacity:.8})+P(`M-60 ${y-6}Q960 ${y-30} 1980 ${y-6}`,'none',{stroke:'#D8C08A','stroke-width':3,opacity:.6});
+    for(let k=0;k<9;k++){const x=((k*230+i*115)%2100)-60;if(x>820&&x<1300&&i>1)continue;g+=olive(x,y-4,.22+i*.04,40+i*9+k);}}
+  // the near grove floor
+  g+=gnd(203,770,'#9A8A50','#86763F');
+  // a path winding up through the grove
+  g+=P('M1500 800Q1620 700 1560 640T1700 540L1760 540Q1660 620 1720 680T1680 800Z','#D8C08A',{opacity:.75});
+  // the big olive tree, a ladder against it, a cloth spread to catch the olives
+  g+=Ell(1000,812,300,28,'#E8E0C8',{opacity:.9})+Ell(1000,812,300,28,'none',{stroke:'#B8A888','stroke-width':4});
+  g+=olive(1050,790,1.5,21)+olive(400,700,.7,22)+olive(1650,710,.8,23);
+  g+=L(1160,800,1215,480,'#7A5430',9)+L(1210,800,1265,480,'#7A5430',9)+[0,1,2,3,4,5].map(i=>L(1166+i*9,770-i*54,1216+i*9,770-i*54,'#7A5430',7)).join('');
+  // olives on the cloth
+  for(let k=0;k<18;k++)g+=C(780+hash(k,7)*440,800+hash(k,8)*22,6,'#3A3A4A');
+  // foreground: stones and wild flowers
+  for(let k=0;k<14;k++){const x=hash(k,31)*2000-40,y=860+hash(k,32)*140;g+=k%3?C(x,y,6,['#FFD45E','#FFFFFF','#FF8FB1'][k%3]):Ell(x,y,22,10,'#8A7A5A');}
+  // the father shakes a branch with both hands raised into the tree; olives fall
   const sh=Math.sin(E.held(t,10)*6);
-  g+=folk(0,960,800,1.08,{look:{x:1050,y:400},expr:'joy',near:{x:1010+sh*6,y:600},far:{x:990,y:610}});
+  g+=folk(0,960,800,1.08,{look:{x:1050,y:420},expr:'joy',near:{x:1000+sh*6,y:560},far:{x:930+sh*6,y:570}});
   for(let k=0;k<5;k++){const ph=((t*1.3+k*.2)%1);g+=C(1040+(hash(k,3)-.5)*160,lerp(500,800,ph),7,'#3A3A4A');}
   g+=P('M1180 800L1170 740H1290L1280 800Z','#B88A4A',{stroke:'#6A4A22','stroke-width':4});
   g+=folk(3,1160,806,.62,{face:1,kneel:.5,look:{x:1230,y:740},expr:'joy',near:{x:1220,y:744}});
