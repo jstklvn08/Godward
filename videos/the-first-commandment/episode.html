@@ -897,7 +897,7 @@ function waiting(t,lt){
   const yawn=Math.abs(Math.sin(E.held(t,6)*.9));
   g+=R(560,740,400,46,20,'#7A4A2A',{stroke:'#4A2A14','stroke-width':4});
   g+=folk(0,630,800,.95,{sit:1,seat:742,lean:24,near:{x:680,y:735},far:{x:660,y:738},look:'down',expr:'sad'});
-  const kidO=person(3,870,800,.62,{sit:1,seat:742,face:-1,lean:-16,tilt:-14,near:yawn>.5?'cover':{x:820,y:720},expr:yawn>.5?'surprised':'sad',look:{x:630,y:650}});
+  const kidO=person(3,870,800,.62,{sit:1,seat:742,face:-1,lean:-16,tilt:-14,near:yawn>.5?'cover':{x:820,y:720},expr:'sad',look:{x:630,y:650}});
   const momO=person(1,770,800,.9,{f:true,flip:-1,sit:1,seat:742,lean:8,look:{x:650,y:640},expr:'sad'});momO.far=PPL.handOn(momO,kidO,'head');
   g+=PPL.fig(momO)+PPL.fig(kidO);
   const ph=Math.sin((t-AT.camp)*1.7),px=1170+ph*80,dir=Math.cos((t-AT.camp)*1.7)>0?1:-1;
