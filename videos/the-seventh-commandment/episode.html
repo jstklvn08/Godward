@@ -363,9 +363,9 @@ function leaveHome(t){
   let g=glow(1400,200,500,'#FFD9A0',.6)+clouds(t,-540,3,'#FFE8D0',.5)+gnd(31,760,'#B88A4A','#9A7038')+house(1300,790,1.0,.6,{open:1});
   g+=tree(440,780,1.2,'#7A9A4A','#6A8A3E');
   const son=pp(MAN,860,800,1.1,{lean:4}),mom=pp(OLDW,965,800,.96,{face:-1,expr:'tender'});
-  const dad=pp(OLDM,735,800,1.02,{look:{x:870,y:600},expr:'tender'});dad.near=PPL.handOn(dad,son,'back');
+  const dad=pp(OLDM,700,800,1.02,{look:{x:870,y:600},expr:'tender'});dad.near=PPL.handOn(dad,son,'back');
   const D=PPL.rig(dad);
-  g+=D.draw('noFront')+G('',Ell(800,640,40,52,'#A8784A',{stroke:'#6A4A2A','stroke-width':4})+L(800,590,840,610,'#6A4A2A',5));
+  g+=D.draw('noFront')+G('',Ell(806,706,30,40,'#A8784A',{stroke:'#6A4A2A','stroke-width':4})+L(812,668,846,690,'#6A4A2A',5));
   g+=PPL.hug(son,mom,{k:ease.out(prog(t,AT.therefore-.2,AT.therefore+.4))}).svg+D.draw('front');
   return g;
 }
@@ -543,7 +543,7 @@ function abrahamStars(t){
   let g=stars(t,1,900)+glints(t,22,60,340,-650,1240,1300,'#FFF6D8',11);
   g+=`<path d="${ridge(66,700,20,280)}" fill="#2A2050"/>`+gnd(67,790,'#3A2E4A','#2A2038');
   g+=P('M380 800L560 560L740 800Z','#8A6A5A')+P('M560 560L520 800L600 800Z','#3A2418')+glow(560,760,120,'#FFB04C',.4);
-  const ab=pp(OLDM,1000,800,1.05,{expr:['awe','joy',prog(t,AT.makes+.6,AT.makes+1.5)],look:{x:1150,y:250},near:{x:1100,y:560}}),sa=pp(OLDW,880,800,.96,{expr:'awe',look:{x:1150,y:250}});
+  const ab=pp(OLDM,1000,800,1.05,{expr:['awe','joy',prog(t,AT.makes+.6,AT.makes+1.5)],look:{x:1150,y:250},near:{x:1100,y:560}}),sa=pp(OLDW,850,800,.96,{expr:'awe',look:{x:1150,y:250}});
   sa.near=PPL.handOn(sa,ab,'arm');const Sr=PPL.rig(sa);
   return g+Sr.draw('noFront')+fig(ab)+Sr.draw('front');
 }
@@ -592,8 +592,8 @@ function sleepingCamp(t){
   g+=R(1090,560,180,110,4,'#D8C8A0',{stroke:'#A88A5A','stroke-width':4});
   [[520,760],[1420,780]].forEach(([x,y],k)=>g+=tent(x,y,['#6A4A4A','#5A3A3E'][k],1.1));
   g+=glow(700,820,140,'#FF9A3C',.5)+FX.flames(t,[[680,830],[700,822],[720,830]],{H:40,sp:9,seed:5});
-  g+=R(560,836,520,30,10,'#5A4A6A');
-  g+=sleeper(620,826,.9,MAN,'#4A6AA0')+sleeper(860,830,.75,BOY,'#C88A4A');
+  g+=R(480,846,720,34,10,'#5A4A6A');
+  g+=sleeper(560,826,1.15,MAN,'#4A6AA0')+sleeper(900,834,.95,BOY,'#C88A4A');
   return g+fireflies(t,500,300,1000,500,'#FFD27A',10,.5);
 }
 // ---- 6d. Even when his people don't: they walk away into the dark; one looks back; the light stays ----
@@ -823,6 +823,9 @@ function court(t,light=0){
   const [fl,fld]=E.vgrad('#8C867A','#5A564E');g+=fld+R(-100,726,2120,1100,0,fl);
   [760,820,900,1000,1140,1320,1540].forEach(y=>g+=L(-100,y,2020,y,'#4E4A44',4));
   for(let i=0;i<12;i++)g+=L(-100+i*190,726,-300+i*230,1800,'#4E4A44',4);
+  g+=[[380,1180],[1540,1200]].map(([x,y])=>R(x-80,y-120,160,120,12,'#9A5A3A',{stroke:'#6A3A20','stroke-width':5})+C(x-40,y-160,52,'#4E8A4A')+C(x+38,y-170,58,'#3E7A3E')+C(x,y-210,52,'#5A9A52')+C(x-10,y-190,10,'#FF8FB1')).join('');
+  g+=R(-100,1520,2120,36,4,'#B4AC9C')+R(-100,1556,2120,260,0,'#7E786C');for(let x=-60;x<2000;x+=170)g+=L(x,1556,x,1800,'#5E5A52',4);
+  [[520,1380],[1400,1420],[760,1500],[1180,1460],[980,1330]].forEach(([x,y],k)=>g+=Ell(x,y,26+k*3,14+k,'#8A847A',{stroke:'#4E4A44','stroke-width':3}));
   // the warm light at the edge of the scene where Jesus is (he is never shown)
   if(light>0)g+=glow(240,600,600,'#FFE9A8',.45*light)+P('M-60 -700L520 -700L700 1800L-60 1800Z','#FFF6DA',{opacity:(.12*light).toFixed(2)});
   return g;}
@@ -1063,7 +1066,7 @@ const SH=[
   {name:'heart holds',at:AT.heartHolds-.1,draw:heartHolds,bg:['#FFB070','#7A3A3A'],stars:false,vIn:'cut',cam:mv(960,800-180,1.12,960,800-150,1.3)},
   {name:'none of us',at:AT.noneOfUs-.1,draw:noneOfUs,bg:['#5A5070','#2A2434'],stars:false,vIn:'cut',fore:FG('#3A3450','#2E2840','#4A4460'),cam:mv(960,600,.84,960,640,1.0)},
   {name:'any hope',at:AT.hope-.1,draw:anyHope,bg:['#0A0C2A','#1A2040'],vIn:'cut',fore:FG('#1A2040','#141834','#2A3050'),cam:PF(960,.96,1.22,1170,820)},
-  {name:'brought in',at:AT.oneDay-.1,draw:broughtIn,bg:['#8EC2E6','#F2E6CC'],stars:false,vIn:'cut',cam:aimH(1120,800,1170,1.0)},
+  {name:'brought in',at:AT.oneDay-.1,draw:broughtIn,bg:['#8EC2E6','#F2E6CC'],stars:false,vIn:'cut',cam:aimH(1120,800,1170,1.1)},
   {name:'stones up',at:AT.broken-.1,draw:stonesUp,bg:['#8EC2E6','#E8D8BC'],stars:false,vIn:'cut',cam:PF(960,.9,1.05)},
   {name:'first stone',at:AT.jesusSaid-.1,draw:firstStone,bg:['#8EC2E6','#F2E6CC'],stars:false,vIn:'cut',cam:mv(1000,700,1.12,1000,700,1.22)},
   {name:'one by one',at:AT.oneByOne-.1,draw:oneByOne,bg:['#8EC2E6','#F2E6CC'],stars:false,vIn:'cut',cam:hold(960,600,.86)},

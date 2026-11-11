@@ -353,15 +353,13 @@ function secondLine(t){
   for(let i=0;i<90;i++){const x=-40+rr()*2000,y=-680+rr()*2460,a=rr()*3;g+=L(x,y,x+Math.cos(a)*40,y+Math.sin(a)*40,i%2?'#6A665E':'#A8A498',4,{opacity:.6});}
   const on=ease.out(prog(t,AT.comes2,AT.comes2+.6));
   g+=glow(1050,560,900,'#FFB04C',.2+.3*on);
-  g+=T(560,410,'I',{size:150,font:'Georgia',weight:700,anchor:'middle',fill:'#C8B488'});
-  let q='M700 360';for(let x=700;x<1500;x+=30)q+=`L${x+15} ${360+(hash(x,5)-.5)*18}L${x+30} 360`;g+=P(q,'none',{stroke:'#8A7A58','stroke-width':10})+P(q,'none',{stroke:'#FFE9A8','stroke-width':4,opacity:.5});
-  g+=T(560,700,'II',{size:240,font:'Georgia',weight:700,anchor:'middle',fill:mix('#3A3732','#FFF4C8',on)});
-  let d='M740 610';for(let x=740;x<1560;x+=30)d+=`L${x+15} ${610+(hash(x,3)-.5)*22}L${x+30} 610`;
+  g+=T(720,410,'I',{size:150,font:'Georgia',weight:700,anchor:'middle',fill:'#C8B488'});
+  let q='M840 360';for(let x=840;x<1500;x+=30)q+=`L${x+15} ${360+(hash(x,5)-.5)*18}L${x+30} 360`;g+=P(q,'none',{stroke:'#8A7A58','stroke-width':10})+P(q,'none',{stroke:'#FFE9A8','stroke-width':4,opacity:.5});
+  g+=T(720,700,'II',{size:240,font:'Georgia',weight:700,anchor:'middle',fill:mix('#3A3732','#FFF4C8',on)});
+  let d='M880 610';for(let x=880;x<1560;x+=30)d+=`L${x+15} ${610+(hash(x,3)-.5)*22}L${x+30} 610`;
   const p=ease.inOut(prog(t,AT.comes2,AT.comes2+1.4));
-  g+=P(d,'none',{stroke:'#3A3732','stroke-width':16})+mark(d,p,'#FFE9A8',9)+(p>0?glow(lerp(740,1560,p),610,160,'#FFB04C',.6):'');
-  if(p>0&&p<1)g+=FX.flames(t,[[lerp(740,1560,p)-30,616],[lerp(740,1560,p),600],[lerp(740,1560,p)+30,616]],{H:90,sp:9,seed:4});
-  g+=T(560,1000,'III',{size:150,font:'Georgia',weight:700,anchor:'middle',fill:'#4A4740'});
-  let e='M700 940';for(let x=700;x<1500;x+=30)e+=`L${x+15} ${940+(hash(x,7)-.5)*18}L${x+30} 940`;g+=P(e,'none',{stroke:'#4A4740','stroke-width':10});
+  g+=P(d,'none',{stroke:'#3A3732','stroke-width':16})+mark(d,p,'#FFE9A8',9)+(p>0?glow(lerp(880,1560,p),610,160,'#FFB04C',.6):'');
+  if(p>0&&p<1)g+=FX.flames(t,[[lerp(880,1560,p)-30,616],[lerp(880,1560,p),600],[lerp(880,1560,p)+30,616]],{H:90,sp:9,seed:4});
   return g+fireflies(t,500,-200,1100,900,'#FFB04C',16,.6*on);
 }
 // B3. "a carved image": a stone carver in a quarry yard brings a statue out of the block.
@@ -455,8 +453,8 @@ function shrines(t){
 function firstJob(t){
   const rr=rng(78);let g='';
   for(let i=0;i<80;i++){const x=-40+rr()*2000,y=-680+rr()*2460,a=rr()*3;g+=L(x,y,x+Math.cos(a)*40,y+Math.sin(a)*40,i%2?'#6A665E':'#A8A498',4,{opacity:.6});}
-  g+=glow(1000,330,700,'#FFB04C',.45)+T(560,400,'I',{size:220,font:'Georgia',weight:700,anchor:'middle',fill:'#FFF4C8'});
-  let d='M700 330';for(let x=700;x<1520;x+=30)d+=`L${x+15} ${330+(hash(x,3)-.5)*22}L${x+30} 330`;g+=P(d,'none',{stroke:'#FFE9A8','stroke-width':10})+glow(1100,330,300,'#FFD86B',.4);
+  g+=glow(1000,330,700,'#FFB04C',.45)+T(720,400,'I',{size:220,font:'Georgia',weight:700,anchor:'middle',fill:'#FFF4C8'});
+  let d='M840 330';for(let x=840;x<1520;x+=30)d+=`L${x+15} ${330+(hash(x,3)-.5)*22}L${x+30} 330`;g+=P(d,'none',{stroke:'#FFE9A8','stroke-width':10})+glow(1100,330,300,'#FFD86B',.4);
   g+=R(420,760,1080,40,6,'#5A564E');
   const [F2,def]=foil(t);g+=def;
   const gods=[k=>C(0,-60,40,F2)+[...Array(10)].map((_,i)=>{const a=i/10*6.283;return L(Math.cos(a)*48,-60+Math.sin(a)*48,Math.cos(a)*64,-60+Math.sin(a)*64,GOLD,6);}).join(''),
@@ -485,7 +483,7 @@ function how(t){
   g+=gnd(117,770,'#5A4436','#4A382C');
   const turn=Math.sin(t*1.6)*12;
   const dad=person(0,920,800,1.12,{near:{x:1000,y:640},far:{x:990,y:650},look:t<AT.how?{x:1000,y:610}:{x:1000,y:120},expr:'surprised'});
-  const mom=person(1,1110,800,1.04,{face:-1,f:true,look:{x:1000,y:100},expr:'awe'});mom.near=PPL.handOn(mom,dad,'arm');
+  const mom=person(1,1150,800,1.04,{face:-1,f:true,look:{x:1000,y:100},expr:'awe'});mom.near=PPL.handOn(mom,dad,'arm');
   const M=PPL.rig(mom);
   g+=M.draw('back')+M.draw('body')+M.draw('head')+withProp(dad,()=>G(`rotate(${turn.toFixed(1)} 1012 620)`,R(970,570,84,100,8,'#9A6A3C',{stroke:'#5A3A1C','stroke-width':3})+L(984,590,1040,600,'#6A4422',3)+L(988,630,1030,640,'#6A4422',3)))+M.draw('front');
   return g;
@@ -508,7 +506,7 @@ function wrongWay(t){
 function skyShot(t){
   let g=glow(1300,0,500,'#FFF6C8',.7)+C(1300,0,90,'#FFE9A0');
   for(let i=0;i<4;i++)g+=Ell(400+i*400,-200+(i%2)*120,170,50,'#FFFFFF',{opacity:.8});
-  for(let i=0;i<7;i++)g+=bird(t,(500+i*130+t*120)%1900,150+(i%3)*80+Math.sin(t+i)*20,1,i);
+  for(let i=0;i<7;i++)g+=bird(t,500+((i*150+t*90)%950),120+(i%3)*90+Math.sin(t+i)*20,1.6,i);
   g+=gnd(121,780,'#5AB04A','#4A9A3A');
   const kid=person(3,900,800,.66,{near:'up',look:{x:1100,y:150},expr:'joy'}),mom=person(1,1010,800,1.0,{face:-1,f:true,look:{x:1100,y:150},expr:'joy'});
   mom.near=PPL.handOn(mom,kid,'shoulder');const M=PPL.rig(mom);
@@ -533,14 +531,14 @@ function seaShot(t){
 // C4. "That's the whole creation": a paper world with sky, land and sea, seen whole (a slow pull back).
 function creation(t){
   let g=stars(t,1,1800)+glow(960,560,800,'#9AD8FF',.25);
-  const id='world';g+=`<clipPath id="${id}"><circle cx="960" cy="560" r="560"/></clipPath>`;
+  const id='world';g+=`<clipPath id="${id}"><circle cx="960" cy="380" r="400"/></clipPath>`;
   let w=R(380,0,1160,1120,0,'#2A7AD0')+R(380,0,1160,380,0,'#8AD0FF')+glow(1260,160,160,'#FFE9A0',.8)+C(1260,160,60,'#FFE07A');
   for(let i=0;i<5;i++)w+=bird(t,560+i*110,180+(i%2)*40,.9,i);
   w+=P('M380 420Q700 330 960 400Q1240 330 1540 420V640H380Z','#6ABF4A')+ox(960,600,.7)+sheep(700,600,.7)+sheep(1250,610,.6);
   for(let i=0;i<4;i++)w+=C(560+i*270,410,44,'#3A8A3A');
   for(let i=0;i<8;i++)w+=P(`M${420+i*140} ${700+(i%3)*80}q30 -12 60 0t60 0`,'none',{stroke:'#BFE8FF','stroke-width':5});
   w+=G('translate(760 860)',Ell(0,0,40,18,'#FFB04C')+P('M-36 0l-26 -16v32z','#FFB04C'))+G('translate(1200 960)',Ell(0,0,40,18,'#FF8FB1')+P('M36 0l26 -16v32z','#FF8FB1'));
-  g+=`<g clip-path="url(#${id})">${w}</g>`+C(960,560,560,'none',{stroke:'#FFF6DA','stroke-width':10})+glow(960,560,700,'#FFFFFF',.1);
+  g+=`<g clip-path="url(#${id})">${G('translate(960 380) scale(.714) translate(-960 -560)',w)}</g>`+C(960,380,400,'none',{stroke:'#FFF6DA','stroke-width':10})+glow(960,560,700,'#FFFFFF',.1);
   return g;
 }
 // C5. "Nothing God made can stand in for the God who made it": the made things on pedestals are crossed out; light from above.
@@ -564,9 +562,9 @@ function standIn(t){
 function whyStrict(t){
   let g=workshop(t);
   const sh=Math.max(0,Math.sin((t-AT.why)*3))*.6;
-  const o=carpO(940,795,1.15,{near:'open',far:{x:1020,y:640},look:{x:1200,y:560},expr:'surprised',lean:-4,tilt:8*sh});
+  const o=carpO(920,795,1.15,{near:'open',far:'open',look:{x:1200,y:560},expr:'surprised',lean:-4,tilt:8*sh});
   const r=PPL.rig(o);
-  g+=r.draw('back')+r.draw('body')+idol(t,1040,700,130)+r.draw('head')+r.draw('front');
+  g+=r.draw('back')+r.draw('body')+r.draw('head')+r.draw('front')+idol(t,1060,795,150);
   return g;
 }
 // D2. "Go back to the mountain": Sinai burns over the camp at night.
@@ -604,7 +602,6 @@ const BND=FX.peak(53,420,60,{halfW:420,rough:10,bottom:900});
 function bndBack(t,k=1){
   let g=glow(420,60,520,'#FF7A3C',.45)+FX.summitFire(t,BND,.9,0,{fill:'#2E2A36',H:130,cap:80,smokeH:700,light:420,seed:53,embers:20,rows:2,rocks:false,drift:60});
   g+=gnd(129,770,'#5A4430','#4A3826')+waves(t,420,80,1600,k,4,.45);
-  for(let i=0;i<9;i++){const x=640+i*30,y=700+i*12;if(x<900)g+=Ell(x,y,20,10,'#D8D0C0');}
   return g;
 }
 // D5. "You heard the sound of words": she cups her ear; her daughter holds on to her; he holds his hands to his chest.
@@ -697,8 +694,8 @@ function starSky(t){
   let g=stars(t,1,1000)+P('M-60 -300Q600 -100 1200 -500Q1600 -700 1980 -600V-200Q1500 0 1000 -100Q400 100 -60 0Z','#B9A8FF',{opacity:.15})+glow(1300,-300,500,'#B9A8FF',.25);
   const rr=rng(5);for(let i=0;i<140;i++){const x=rr()*2000-40,y=-680+rr()*1300;g+=C(x,y,1.5+rr()*2.5,'#FFFFFF',{opacity:(.4+.5*Math.abs(Math.sin(t+i))).toFixed(2)});}
   g+=P('M-60 800Q500 700 960 690Q1400 700 1980 800V1800H-60Z','#1A1430');
-  g+=idol(t,1010,700,60);
-  return g+carp(940,700,.6,{look:{x:1100,y:-200},expr:'awe',near:'open',far:'open'});
+  g+=idol(t,1030,700,80);
+  return g+carp(940,700,.78,{look:{x:1100,y:-200},expr:'awe',near:'open',far:'open'});
 }
 // E4. "And it makes God quieter": he talks to it; it only says back what he said.
 function quieter(t){
@@ -888,12 +885,12 @@ function thoughtCarve(t){
   g+=R(640,700,90,20,4,'#5A4A3A')+R(680,720,12,70,3,'#3A2E24');
   const tk=ease.out(prog(t,AT.stillCarve-.2,AT.stillCarve+.6));
   g+=folk(4,700,800,1.05,{sit:1,seat:702,near:{x:830,y:640},far:{x:820,y:646},look:{x:1060,y:240},expr:'calm',lean:4});
-  if(tk>0){const cx=1100,cy=230;let c='';[[0,0,150],[-130,40,90],[130,40,100],[-60,-90,90],[80,-90,90]].forEach(([a,b,r])=>c+=C(cx+a,cy+b,r,'#2E2E5A',{stroke:'#B9A8FF','stroke-width':5}));
+  if(tk>0){const cx=1120,cy=250;let c='';[[0,0,150],[-130,40,90],[130,40,100],[-60,-90,90],[80,-90,90]].forEach(([a,b,r])=>c+=C(cx+a,cy+b,r,'#2E2E5A',{stroke:'#B9A8FF','stroke-width':5}));
     c+=C(870,470,18,'#2E2E5A',{stroke:'#B9A8FF','stroke-width':4})+C(920,400,28,'#2E2E5A',{stroke:'#B9A8FF','stroke-width':4});
     const sh=prog(t,AT.stillCarve+.4,AT.weCarve);
     c+=G('',idol(t,cx,cy+110,200).replace(/#9A6A3C/g,'#FFE9A8').replace(/#5A3A1C/g,'#B9A8FF'),(.3+.7*sh).toFixed(2))+glow(cx,cy,200,'#FFE9A8',.3);
     const kx=cx+70+Math.sin(t*6)*24,ky=cy-30+Math.cos(t*6)*30;c+=L(kx,ky,kx+70,ky-60,'#FFF6DA',10)+P(`M${kx} ${ky}L${kx-46} ${ky+20}L${kx-8} ${ky-14}Z`,'#FFFFFF')+glow(kx,ky,60,'#FFFFFF',.6);
-    g+=G(`translate(${cx} ${cy}) scale(${tk.toFixed(3)}) translate(${-cx} ${-cy})`,c);}
+    g+=G(`translate(${cx} ${cy}) scale(${(1.35*tk).toFixed(3)}) translate(${-cx} ${-cy})`,c);}
   return g;
 }
 // G3. "We carve a God who always agrees with us": the gold mask with his own face nods every time he speaks.
@@ -994,7 +991,7 @@ function balance(t){
   const pan=(x,y,inner)=>L(x,y,x-110,y+260,'#C8A060',4)+L(x,y,x+110,y+260,'#C8A060',4)+inner+P(`M${x-140} ${y+260}Q${x} ${y+330} ${x+140} ${y+260}Z`,'#B08848',{stroke:'#E8C080','stroke-width':4});
   let L1='';[[-80,0],[-26,4],[26,0],[78,6]].forEach(([dx,dy],i)=>L1+=folk(i,lx+dx,ly+262+dy,.3,{look:'down',expr:'sad',aura:'#000',auraOp:0}));
   const st=ease.back(prog(t,AT.heavy+.1,AT.heavy+.6));
-  if(st>0)L1+=G(`translate(${lx} ${ly+lerp(-400,230,Math.min(1,st))})`,P('M-60 30L-50 -26L-10 -46L46 -30L62 30Z','#4A4A54',{stroke:'#2A2A30','stroke-width':3})+T(0,18,'3·4',{size:36,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#E6E6EE'}));
+  if(t>AT.heavy+.1)L1+=G(`translate(${lx} ${ly+lerp(-400,230,Math.min(1,st))})`,P('M-60 30L-50 -26L-10 -46L46 -30L62 30Z','#4A4A54',{stroke:'#2A2A30','stroke-width':3})+T(0,18,'3·4',{size:36,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#E6E6EE'}));
   let Rr='';const mc=ease.out(prog(t,AT.heavier-.2,AT.heavier+1));
   for(let i=0;i<40;i++){const ang=hash(i,5)*3.14,rr=hash(i,6)*100,k=Math.min(1,.55+mc*1.6-i*.02);if(k<=0)continue;Rr+=C(rx+Math.cos(ang)*rr*1.1,ry+250-Math.sin(ang)*rr*.7-lerp(300,0,k),10+hash(i,7)*8,['#FFE9A8','#FFD45E','#FFFFFF'][i%3],{opacity:k.toFixed(2)});}
   Rr+=glow(rx,ry+220,200+120*mc,'#FFD86B',.5+.3*mc);
@@ -1151,7 +1148,7 @@ const LIST=[
   ['sky',AT.notice-.1,skyShot,['#5AB0F0','#BFE8FF'],[fr(960,1.0)],{stars:false,fore:FG('#4A9A3A','#3A8A30','#5AB04A',['#FFFFFF','#FFD45E'])}],
   ['land',AT.land-.1,landShot,['#8AD0FF','#DFF4FF'],[fr(1000,.9,1178)],{stars:false,vIn:'cut',fore:FG('#4A8A30','#3A7A28','#5AA040')}],
   ['sea',AT.sea+.06,seaShot,['#8AD0FF','#1E7AB8'],[fr(980,.95,1010,640)],{stars:false,vIn:'cut'}],
-  ['whole creation',AT.whole-.1,creation,['#0A0C30','#141848'],[fr(960,1.05,1010,560),fr(960,.84,1010,600)],{vIn:'cut'}],
+  ['whole creation',AT.whole-.1,creation,['#0A0C30','#141848'],[[960,560,.95],[960,600,.84]],{vIn:'cut'}],
   ['stand in',AT.nothing-.1,standIn,['#3A2A5A','#7A5A8A'],[fr(960,.86,1178),fr(960,.98)],{fore:FG('#4A3A5A','#3A2E4A','#5A4A6A')}],
   // ---- act 3: no form, only a voice ----
   ['why so strict',AT.why-.1,whyStrict,['#7A4E30','#4A2E1C'],[fr(960,1.2)],{stars:false,fore:FG('#6A4426','#5A3A20','#8A5A34')}],
@@ -1199,9 +1196,9 @@ const LIST=[
   ['a promise',AT.butThen-.1,promise,['#3A3050','#E8A070'],[fr(960,1.15)],{stars:false,vIn:'cut',fore:FG('#B08458','#9A7048','#C89A6A')}],
   ['steadfast love',AT.showing-.1,steadfast,['#FFE9B0','#E8A060'],[fr(1000,1.0),fr(1000,1.16)],{stars:false,vIn:'cut',fore:FG('#D89A58','#C88A48','#E8B070',['#FFFFFF','#FFD45E'])}],
   ['thousands',AT.thousands1-.3,thousands,['#FFE9B0','#E8A060'],[fr(960,1.08),fr(960,.84,1178)],{stars:false,vIn:'cut',fore:FG('#9A7048','#8A6040','#B08458',['#FFE9A8'])}],
-  ['four vs thousands',AT.fourGen-.1,balance,['#141030','#2A2050'],[[960,560,.86]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
-  ['heavy',AT.heavy-.1,balance,['#141030','#2A2050'],[[620,600,1.25]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
-  ['heavier',AT.heavier-.1,balance,['#141030','#2A2050'],[[960,560,.86]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
+  ['four vs thousands',AT.fourGen-.1,balance,['#141030','#2A2050'],[[960,450,1.0]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
+  ['heavy',AT.heavy-.1,balance,['#141030','#2A2050'],[[600,560,1.3]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
+  ['heavier',AT.heavier-.1,balance,['#141030','#2A2050'],[[960,450,1.0]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
   ['the carving knife',AT.putDown-.1,knifeDown,['#7A4E30','#4A2E1C'],[fr(1000,1.2)],{stars:false,fore:FG('#6A4426','#5A3A20','#8A5A34')}],
   ['out the door',AT.realGod-.1,outDoor,['#7A4E30','#4A2E1C'],[fr(1000,.9,1178)],{stars:false,vIn:'cut',fore:FG('#6A4426','#5A3A20','#8A5A34')}],
   ['waiting to be heard',AT.heard-.1,heardHill,['#0A0C28','#1A1A40'],[fr(1000,1.0),fr(1020,1.2)],{fore:FG('#1E2440','#161C34','#2A3050')}],
