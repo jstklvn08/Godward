@@ -11,8 +11,9 @@
 <script src="../_kit/fire.js"></script>
 <script src="../_kit/scenery.js"></script>
 <script>
-// Thumbnail for part 10 (the finale): a man leans on his fence at dusk, staring at his neighbour's glowing house;
-// a small red heart glows in his chest (the wanting). The ten lines hang in the sky, line X burning coral.
+// Thumbnail for part 10 (the finale), one idea in one picture: a man in cool night light grips his fence with both
+// hands and stares across at his neighbour's warm, golden yard (house, fig tree, ox, donkey, family at their table);
+// a faint glowing thread runs from his heart to it all.
 //   thumbnail.html      Instagram feed 4:5 (1080x1350), key content inside the centre 1012 px
 //   1080x1920 viewport  9:16 cover for TikTok / Reels / Shorts
 const V=window.innerHeight>1500;
@@ -21,70 +22,72 @@ const {G,R,C,L,P,T,mix,rng}=K;
 const {tw,glow,strip,tape,label,paperDefs,hash}=S;
 const INK='#141416',YEL='#FFE100',CORAL='#FF5A48';
 const svg=document.querySelector('svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.width=W+'px';svg.style.height=H+'px';
-const GY=V?1520:1190, BIG=V?2.15:1.8;   // ground line, man's scale
+const GY=V?1440:1100;            // the neighbour's ground line
+const MY=V?1700:1330, MS=V?2.6:2.2, MX=V?250:235;   // the man: feet, scale, x
+const RAIL=MY-92*MS;            // top rail of his fence, at his chest
+const HX=V?690:720;              // the neighbour's house
 const defs=`<defs><radialGradient id="vig" cx="50%" cy="50%" r="75%"><stop offset=".55" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".55"/></radialGradient>
-  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141038"/><stop offset=".5" stop-color="#4A2A5A"/><stop offset=".8" stop-color="#C8604A"/><stop offset="1" stop-color="#F0A060"/></linearGradient>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E1230"/><stop offset=".45" stop-color="#2A2A5A"/><stop offset=".75" stop-color="#C87850"/><stop offset="1" stop-color="#F2B868"/></linearGradient>
+  <linearGradient id="cool" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0A0E2A" stop-opacity=".75"/><stop offset="1" stop-color="#0A0E2A" stop-opacity="0"/></linearGradient>
   <filter id="grain2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="2" seed="38"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="2.6" intercept="-.8"/><feFuncG type="linear" slope="2.6" intercept="-.8"/><feFuncB type="linear" slope="2.6" intercept="-.8"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter></defs>`;
-const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
-function tabletsSky(cx,cy,s){
-  // two small glowing tablets; lines I-IX soft gold, line X burning coral
-  let g=glow(cx,cy,260*s,'#FFD86B',.25);
-  [[-1,0],[1,5]].forEach(([side,first])=>{const x=cx+side*95*s,w=170*s,h=240*s;
-    g+=P(`M${x-w/2} ${cy+h/2}V${cy-h/2+w*.3}Q${x-w/2} ${cy-h/2} ${x} ${cy-h/2}Q${x+w/2} ${cy-h/2} ${x+w/2} ${cy-h/2+w*.3}V${cy+h/2}Z`,'#8E8A80',{stroke:'#5A564E','stroke-width':4*s});
-    for(let i=0;i<5;i++){const k=first+i,ly=cy-h/2+w*.48+i*(h-w*.5)/5.1,last=k===9,c=last?CORAL:'#FFE9A8';
-      g+=T(x-w/2+24*s,ly+7*s,NUM[k],{size:18*s,font:'Georgia',weight:700,anchor:'middle',fill:last?'#FFD0C8':'#FFF4C8'})+
-        L(x-w/2+46*s,ly,x+w/2-16*s,ly,c,(last?5:3)*s,{opacity:last?1:.75})+(last?glow((x),ly,90*s,CORAL,.8):'');}
-  });
+function yard(){
+  // the neighbour's yard: warm and golden, the only light in the world
+  let g=R(0,0,W,H,0,'url(#sky)');
+  const r=rng(31);for(let i=0;i<60;i++)g+=C(r()*W,r()*H*.3,1+r()*2.2,'#fff',{opacity:.2+.5*r()});
+  g+=glow(HX,GY-200,700,'#FFC870',.55)+glow(HX,GY-120,380,'#FFE6A8',.45);
+  g+=C(880,V?560:440,30,'#FFF2D8',{opacity:.95})+glow(880,V?560:440,140,'#FFE9C8',.3);
+  if(V)g+=SC.clouds(t,{seed:4,n:5,y:640,h:260,x0:-100,x1:1180,s:1.2,cols:['#4A4A7A','#2E2E58','#B8A8C8'],sun:{x:880,y:560},op:.85});
+  const HU=V?380:0;
+  g+=P(`M-40 ${GY-230-HU}Q240 ${GY-330-HU} 520 ${GY-260-HU}T1120 ${GY-300-HU}V${GY+20}H-40Z`,'#4A3450');
+  [[90,GY-262-HU],[180,GY-286-HU],[300,GY-292-HU],[420,GY-270-HU],[980,GY-288-HU],[1050,GY-276-HU]].forEach(([x,y],k)=>g+=SC.house(x,y,.55+.1*(k%2),{col:'#7A5A6A'})+R(x-4,y-34,10,9,2,'#FFD27A',{opacity:.9}));
+  g+=P(`M-40 ${GY-120}Q260 ${GY-200} 560 ${GY-140}T1120 ${GY-170}V${GY+20}H-40Z`,'#6A4A5A');
+  g+=R(-40,GY-10,W+80,H,0,'#B88A50');
+  // fig tree heavy with fruit, the house with lamplit windows and door
+  const ts=V?2.3:1.6;
+  g+=SC.tree(t,HX+250,GY+10,ts,{kind:'round',col:'#4A8A3A',col2:'#3A7A2E'});
+  for(let k=0;k<12;k++)g+=C(HX+250+(hash(k,3)-.5)*200*ts,GY-(200+hash(k,4)*130)*ts,9,'#7A3A6A');
+  const s=V?3.3:2.5;
+  g+=SC.house(HX,GY,s,{col:'#E2B880'});
+  [-1,1].forEach(k=>g+=R(HX+k*42*s-12*s,GY-82*s,24*s,22*s,4,'#FFE29A')+glow(HX+k*42*s,GY-70*s,60*s,'#FFD27A',.7));
+  g+=glow(HX,GY-30*s,80*s,'#FFD27A',.6);
+  // a fat ox and a donkey with packs
+  g+=SC.animal(t,'ox',HX-90,GY+60,V?1.0:.85,{face:1})+SC.animal(t,'donkey',HX+120,GY+80,V?.9:.78,{face:-1});
   return g;
 }
-function scene(){
-  let g=R(0,0,W,H,0,'url(#sky)');
-  const r=rng(31);for(let i=0;i<70;i++)g+=C(r()*W,r()*H*.35,1+r()*2.2,'#fff',{opacity:.2+.5*r()});
-  g+=C(860,V?520:400,26,'#FFF2D8',{opacity:.9})+glow(860,V?520:400,120,'#FFE9C8',.3);
-  // far hills and a village on them, in the dusk haze
-  const hy=GY-(V?330:260);
-  g+=P(`M-40 ${hy+40}Q200 ${hy-40} 420 ${hy+10}T860 ${hy-20}T1120 ${hy+20}V${H}H-40Z`,'#5A3A5A',{opacity:.9});
-  [[120,hy+30,.5],[260,hy+10,.42],[760,hy,.45],[980,hy+20,.4]].forEach(([x,y,s])=>g+=SC.house(x,y,s,{col:'#8A6A7A'}));
-  g+=P(`M-40 ${hy+120}Q300 ${hy+60} 600 ${hy+110}T1120 ${hy+90}V${H}H-40Z`,'#4A3048');
-  // the neighbour's house: warm, big, every window glowing; a fig tree by it
-  const nx=V?800:790,ny=GY-30,ns=V?1.25:1.05,nw=300*ns,nh=210*ns;
-  g+=glow(nx,ny-nh*.6,nw*1.4,'#FFC870',.5);
-  g+=SC.tree(t,nx+nw*.62,ny+10,V?1.1:.95,{kind:'olive'});
-  g+=R(nx-nw/2,ny-nh,nw,nh,8,'#E8C890',{stroke:'#6A4A2A','stroke-width':5})+P(`M${nx-nw/2-26} ${ny-nh+6}L${nx} ${ny-nh-150*ns}L${nx+nw/2+26} ${ny-nh+6}Z`,'#C8483A',{stroke:'#5A1A10','stroke-width':5});
-  g+=R(nx-34*ns,ny-118*ns,68*ns,118*ns,30*ns,'#FFD27A',{stroke:'#6A4A2A','stroke-width':4});
-  [-1,1].forEach(k=>{const wx=nx+k*nw*.31;g+=R(wx-34*ns,ny-nh+52*ns,68*ns,62*ns,6,'#FFE29A',{stroke:'#6A4A2A','stroke-width':4})+glow(wx,ny-nh+82*ns,80*ns,'#FFD27A',.6);});
-  g+=SC.animal(t,'donkey',nx-nw*.85,ny+20,V?.85:.72,{face:1});
-  // ground and the man's fence
-  g+=R(-40,GY-20,W+80,H-GY+40,0,'#2A1E2C');
-  g+=SC.ground(t,7,{y:GY-10,col:'#3A2A38',col2:'#2A1E2C',stones:true,tufts:true});
-  // the man: big, leaning on his fence, staring at the house; a red heart glows in his chest
-  const look={x:nx,y:ny-nh*.6};
-  const man={x:V?250:240,y:GY+40,s:BIG,face:1,tunic:'#7CD4FF',tunic2:'#2F6FD0',skin:'#F5BE8E',shade:'#C4835E',hair:'#4A2A16',look,expr:'sad',lean:4,phase:.3,
-    near:null,far:null};
-  const rg=PPL.rig(man);
-  g+=rg.draw('back')+rg.draw('body')+rg.draw('head');
-  const hx=(V?250:240)+12*BIG,hy2=GY+40-120*BIG,hs=26*BIG/1.8;
-  g+=glow(hx,hy2,110*BIG/1.8,'#FF4A5C',.6)+P(`M${hx} ${hy2+hs*.9}C${hx-hs*1.7} ${hy2-hs*.1} ${hx-hs*.95} ${hy2-hs*1.35} ${hx} ${hy2-hs*.42}C${hx+hs*.95} ${hy2-hs*1.35} ${hx+hs*1.7} ${hy2-hs*.1} ${hx} ${hy2+hs*.9}Z`,'#FF4A5C',{stroke:'#FFD0C8','stroke-width':3});
-  // fence in front of his body, his hands on the top rail
-  const fy=GY+30,fs=BIG*.62;let fg='';
-  [62,30].forEach(h=>{fg+=R(-30,fy-h*fs*1.6-6,(V?640:620),12*fs,4,'#8A5A34',{stroke:'#4A2A14','stroke-width':3});});
-  for(let x=-10;x<(V?620:600);x+=70){const hh=118*fs;fg+=P(`M${x-9} ${fy+6}V${fy-hh+9}L${x} ${fy-hh}L${x+9} ${fy-hh+9}V${fy+6}Z`,'#7A4E2C',{stroke:'#4A2A14','stroke-width':3});}
-  g+=fg+rg.draw('front');
-  // the ten lines in the sky
-  g+=tabletsSky(V?820:830,V?820:640,V?1.15:.95);
+function man(){
+  // the man's side of the fence: cool night shadow
+  let g=R(0,0,W*.6,H,0,'url(#cool)');
+  const look={x:HX,y:GY-150};
+  const q={x:MX,y:MY,s:MS,face:1,tunic:'#7CD4FF',tunic2:'#2F6FD0',skin:'#E8B088',shade:'#B87A58',hair:'#4A2A16',expr:'sad',look,lean:6,phase:.3,
+    near:null,far:null,hideNear:true,hideFar:true};
+  const r=PPL.rig(q);
+  g+=r.draw('back')+r.draw('body')+r.draw('head');
+  // his fence in front of his body; his hands on the top rail
+  let f='';const x1=W*.5;
+  for(let x=20;x<x1;x+=88)f+=P(`M${x-11} ${H+20}V${RAIL-24}L${x} ${RAIL-38}L${x+11} ${RAIL-24}V${H+20}Z`,'#6A4426',{stroke:'#2A1608','stroke-width':4});
+  [0,90].forEach(d=>f+=R(-30,RAIL+d-10,x1+40,22,5,'#7A5030',{stroke:'#2A1608','stroke-width':4})+L(-30,RAIL+d-6,x1+10,RAIL+d-6,'#A87A50',3,{opacity:.6}));
+  g+=f;
+  // the heart in his chest and a thread of wanting to the golden yard
+  const cx=MX+12*MS,cy=MY-126*MS,hs=13*MS;
+  g+=P(`M${cx} ${cy}C${cx+260} ${cy-140} ${HX-260} ${GY-360} ${HX} ${GY-180}`,'none',{stroke:'#FFB0A0','stroke-width':5,'stroke-dasharray':'2 14','stroke-linecap':'round',opacity:.85})+
+    glow(cx,cy,60*MS,'#FF4A5C',.55)+P(`M${cx} ${cy+hs*.9}C${cx-hs*1.7} ${cy-hs*.1} ${cx-hs*.95} ${cy-hs*1.35} ${cx} ${cy-hs*.42}C${cx+hs*.95} ${cy-hs*1.35} ${cx+hs*1.7} ${cy-hs*.1} ${cx} ${cy+hs*.9}Z`,'#FF4A5C',{stroke:'#FFD0C8','stroke-width':3});
+  // arms drawn by hand: from the shoulder down to a bent elbow, then forward to the hand resting on the top rail
+  const arm=(side,hx,col,w)=>{const S0=r.shoulder(side),H0=[hx,RAIL-4],E0=[(S0[0]+H0[0])/2-6*MS,Math.max(S0[1],H0[1])+22*MS];
+    return P(`M${S0[0].toFixed(1)} ${S0[1].toFixed(1)}Q${E0[0].toFixed(1)} ${E0[1].toFixed(1)} ${H0[0]} ${H0[1]}`,'none',{stroke:col,'stroke-width':w,'stroke-linecap':'round'})+C(H0[0],H0[1],13*MS,col,{stroke:'#6A4A3A','stroke-width':2});};
+  g+=arm('far',MX+96*MS,'#B87A58',19*MS)+arm('near',MX+80*MS,'#E8B088',21*MS);
   return g;
 }
 function title(){
-  const x0=V?80:70,y0=V?150:60,s1='The one about',s2='your heart',a=V?78:68,b=V?134:120;
+  const x0=V?80:70,y0=V?150:56,s1='Wanting',s2="what's theirs",a=V?84:72,b=V?128:110;
   const w1=tw(s1,a,'Georgia',700)+90,w2=tw(s2,b,'Georgia',700)+96;
   let g=`<g transform="rotate(-2.5 ${W/2} ${y0+60})">${strip(x0,y0,w1,a*1.55,3,'#F6EFDC',{ax:12,ay:4})}${T(x0+45,y0+a*1.12,s1,{size:a,font:'Georgia',weight:700,fill:INK})}${tape(x0+w1-30,y0+2,130,9)}</g>`;
   const y1=y0+a*1.55+14;
   g+=`<g transform="rotate(1.5 ${W/2} ${y1+80})">${strip(x0-20,y1,w2,b*1.32,5,'#F6EFDC',{ax:14,ay:5})}${S.highlight(x0+28,y1+20,tw(s2,b,'Georgia',700)+8,b*1.03,1,YEL)}${T(x0+30,y1+b*1.0,s2,{size:b,font:'Georgia',weight:700,fill:INK})}${tape(x0+10,y1,140,-10)}</g>`;
   g+=label(x0+10,y1+b*1.32+34,'THE TEN COMMANDMENTS · PART 10',{size:V?34:30,rot:-2});
-  g+=label(V?86:74,V?1650:1268,'YOU SHALL NOT COVET',{size:V?48:40,bg:CORAL,rot:-3});
+  g+=label(V?470:560,V?1690:1270,'YOU SHALL NOT COVET',{size:V?44:36,bg:CORAL,rot:-3});
   return g;
 }
-svg.innerHTML=paperDefs(t)+defs+scene()+title()+R(0,0,W,H,0,'url(#vig)')+
+svg.innerHTML=paperDefs(t)+defs+yard()+man()+title()+R(0,0,W,H,0,'url(#vig)')+
   `<rect width="${W}" height="${H}" filter="url(#grain2)" opacity=".2" style="mix-blend-mode:overlay"/>`;
 window.ready=true;
 </script>
