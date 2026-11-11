@@ -181,12 +181,12 @@ const F2=(x,z,F=1190,fy=FY)=>[x,fy+(1010-F)/z,z];          // frame: sheet point
 const sAt=(x,y,s,inner)=>G(`translate(${x} ${y}) scale(${s}) translate(${-x} ${-y})`,inner);
 const axeS=(hx,hy,a,s,len=95)=>sAt(hx,hy,s,axe(hx,hy,a,len));
 const chiselS=(hx,hy,a,s,len=70)=>sAt(hx,hy,s,chisel(hx,hy,hx+Math.cos(a)*len,hy+Math.sin(a)*len));
-const malletS=(hx,hy,a,s)=>sAt(hx,hy,s,mallet(hx,hy,a));
+const malletS=(hx,hy,a,s)=>sAt(hx,hy,s*.62,mallet(hx,hy,a));
 const f1=v=>(+v).toFixed(1);
 // a curl of wood shaving (or a fern frond) drawn at the origin, rotated
-const curl=(x,y,r,rot,col='#F0CF98',op=1)=>`<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)})" opacity="${op}">`+
-  P(`M${f1(-r)} 0A${f1(r)} ${f1(r*.8)} 0 1 1 ${f1(r*.7)} ${f1(-r*.4)}A${f1(r*.55)} ${f1(r*.45)} 0 1 1 ${f1(-r*.1)} ${f1(r*.15)}`,'none',{stroke:'#8A5A2A','stroke-width':f1(r*.55),opacity:.5})+
-  P(`M${f1(-r)} 0A${f1(r)} ${f1(r*.8)} 0 1 1 ${f1(r*.7)} ${f1(-r*.4)}A${f1(r*.55)} ${f1(r*.45)} 0 1 1 ${f1(-r*.1)} ${f1(r*.15)}`,'none',{stroke:col,'stroke-width':f1(r*.36)})+'</g>';
+const curl=(x,y,r,rot,col='#F0CF98',op=1)=>{const d=`M${f1(-r*.94)} ${f1(-r*.34)}A${f1(r)} ${f1(r*.82)} 0 1 0 ${f1(r*.5)} ${f1(-r*.72)}`;
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)})" opacity="${op}">`+P(d,'none',{stroke:'#7A4A1E','stroke-width':f1(r*.62),opacity:.5})+P(d,'none',{stroke:col,'stroke-width':f1(r*.46)})+
+    P(`M${f1(-r*.7)} ${f1(r*.3)}A${f1(r*.75)} ${f1(r*.6)} 0 0 0 ${f1(r*.6)} ${f1(r*.2)}`,'none',{stroke:'#FFF6E0','stroke-width':f1(r*.12),opacity:.75})+'</g>';};
 // wood chips flying from a strike at time c (dir -1 = to the left)
 const chips=(t,c,x,y,s,seed,dir=-1,n=10,col='#F0CF98')=>{const p=prog(t,c,c+.85);if(p<=0||p>=1)return '';let g='';
   for(let i=0;i<n;i++){const d=i%4===3?-dir:dir,vx=(110+300*hash(i,seed))*d*s,vy=(150+300*hash(i,seed+1))*s,x1=x+vx*p,y1=y-vy*p+620*s*p*p,r=(p*900+i*47)%360;
@@ -300,7 +300,8 @@ function forestBG(t,o={}){
   let g=SC.sky(t,{mood:m,hz:800});
   g+=SC.godRays(t,sun.x,sun.y,{n:10,a0:1.75,a1:3.05,op:.17,col:'#FFE4A8',len:2600});
   g+=SC.sun(t,sun.x,sun.y,66,{col:'#FFE6A0',rays:1});
-  g+=SC.clouds(t,{seed:o.seed||21,n:6,y:-660,h:560,mood:m,sun,drift:6,s:1.05});
+  g+=SC.clouds(t,{seed:o.seed||21,n:7,y:30,h:260,mood:m,sun,drift:6,s:.7});
+  [[640,150,440,1],[1300,60,380,2],[980,300,300,3],[1700,230,360,4]].forEach(([cx,cy,w,k])=>g+=SC.cloud(cx+t*6*(1+k*.2),cy,w,['#FFE8CC','#D0907C','#FFD890'],sun,k*17,.95));
   g+=SC.birds(t,{x:o.birdX||620,y:o.birdY||60,n:6,s:1,dx:22,col:'#3A2A3A',seed:9});
   g+=SC.range(22,{y:700,h:280,peaks:5,mood:m,hazeOp:.62,sunX:sun.x});
   g+=SC.hills(23,{y:760,amp:30,wave:300,col:'#8A9050',trees:9,treeKind:'cypress',treeS:.4,hazeOp:.5,haze:'#F6CC98',fields:true});
@@ -338,7 +339,7 @@ function fallenTree(t,x,y,bx){
   [[1100,-120,180],[1020,-200,150],[1180,-40,150]].forEach(([dx,dy,r])=>g+=C(x+dx,y+dy,r,'#46702A')+C(x+dx+30,y+dy-40,r*.55,'#8AAE42',{opacity:.7}));
   return g;
 }
-const forestFore=(t,o)=>SC.fore(t,Object.assign({y:1056,bottom:1780,cols:['#2A3A16','#4A6226','#9AAE4A'],flowers:['#FFE36B','#FFFFFF','#FF9A6A'],rocks:0,seed:31},o));
+const forestFore=(t,o)=>SC.fore(t,Object.assign({y:1056,bottom:1780,cols:['#2A3A16','#4A6226','#9AAE4A'],flowers:['#FFE36B','#FFFFFF','#FF9A6A'],rocks:0,seed:31,density:.5},o));
 
 // A0. Opening: a man chops a big tree at golden hour; it falls on "tree"; birds burst out, the goat looks up.
 function treeFall(t){
@@ -402,7 +403,7 @@ function dinner(t){
   const SUN={x:560,y:800};
   let g=SC.sky(t,{mood:'dusk',hz:820,stars:true});
   g+=SC.sun(t,SUN.x,SUN.y,64,{col:'#FFB070',rays:0,k:.75});
-  g+=SC.clouds(t,{seed:33,n:5,y:-660,h:520,mood:'dusk',sun:SUN,drift:5,op:.9});
+  g+=SC.clouds(t,{seed:33,n:6,y:40,h:240,mood:'dusk',sun:SUN,drift:5,op:.9,s:.7});
   g+=SC.range(34,{y:730,h:240,peaks:5,mood:'dusk',hazeOp:.55,sunX:SUN.x});
   const vil=SC.ridgePts(35,800,26,320);
   g+=SC.hills(35,{pts:vil,col:'#4A3848',trees:5,treeS:.4,hazeOp:.3,haze:'#D87A70'});
@@ -411,10 +412,10 @@ function dinner(t){
     g+=SC.house(hx,hy,s,{col:'#8A6A6A',roof:'#A08080',door:'#2A1A1A'})+glow(hx+30*s,hy-60*s,40,'#FFC870',.8)+R(f1(hx+28*s),f1(hy-80*s),f1(18*s),f1(16*s),2,'#FFD27A');});
   g+=SC.ground(t,36,{y:930,col:'#5A4636',col2:'#2A2018',stones:10,tufts:22,grassCols:['#2E2A22','#4A4230','#8A6A40'],amp:8});
   // his house: the door open on lamplight, his wife in the doorway; an olive tree; the goat bedded down
-  g+=SC.house(600,968,1.9,{col:'#A88060',roof:'#C09A74',door:'#5A3018'})+glow(600,880,170,'#FFB860',.5);
-  g+=PPL.fig(person(1,600,968,1.0,{f:true,look:{x:900,y:800},expr:'tender',near:'chest',tunic:'#9AC8B0',tunic2:'#4A7A6A'}));
-  g+=SC.tree(t,1560,972,.95,{kind:'olive',col:'#4A5A44',col2:'#7A8A6A',trunk:'#3A2A1E'});
-  g+=SC.animal(t,'goat',1520,990,.8,{face:-1,graze:'auto',phase:2});
+  g+=SC.tree(t,560,960,1.0,{kind:'olive',col:'#4A5A44',col2:'#7A8A6A',trunk:'#3A2A1E'});
+  g+=SC.house(1420,936,1.3,{col:'#A88060',roof:'#C09A74',door:'#FFB860'})+glow(1420,880,150,'#FFB860',.5);
+  g+=PPL.fig(person(1,1420,938,.8,{f:true,face:-1,look:{x:900,y:800},expr:'tender',near:'chest',tunic:'#9AC8B0',tunic2:'#4A7A6A'}));
+  g+=SC.animal(t,'goat',640,972,.75,{face:1,graze:'auto',phase:2});
   // the fire under the pot: stones, logs, flames, sparks, smoke, steam
   const fx=1240,fy=1000;
   g+=SC.light(fx,fy-60,620,'#FF8A3C',.35);
@@ -426,13 +427,13 @@ function dinner(t){
   g+=wisp(t,fx-10,fy-240,560,1.6,4,'#FFFFFF',.55)+wisp(t,fx+40,fy-200,380,1.1,9,'#C8B8C0',.3);
   [[-150,0],[-100,8],[-40,12],[30,12],[95,8],[150,0]].forEach(([dx,dy],i)=>g+=SC.rock(fx+dx,fy+dy+8,34,22,{col:'#6A6060',seed:90+i,edge:false}));
   // the carpenter on a split log, warming his hands at the fire and over the steaming pot
-  g+=G('rotate(-2 860 966)',logPiece(860,966,320,74,'#7A4E2C'));
+  g+=G('rotate(-2 830 950)',logPiece(830,950,440,96,'#7A4E2C'));
   const rub=Math.sin(t*5)*10*(1-prog(t,AT.dinner-.3,AT.dinner+.2));
-  const o=carpO(820,FY,2.6,{sit:1,seat:934,near:{x:1060+rub,y:800},far:{x:1050-rub,y:786},look:{x:fx,y:fy-180},expr:['calm','joy',prog(t,AT.burns,AT.dinner)],lean:12});
+  const o=carpO(830,FY,2.6,{sit:1,seat:902,near:{x:1060+rub,y:800},far:{x:1050-rub,y:786},look:{x:fx,y:fy-180},expr:['calm','joy',prog(t,AT.burns,AT.dinner)],lean:12});
   g+=PPL.fig(o)+glow(1040,800,220,'#FFB060',.22);
   // fore: dark grass in the firelight, the stacked half-logs and the axe in its block
   const stack=[0,1,2,3,4].map(i=>G(`translate(${1430+(i%3)*70} ${1330-Math.floor(i/3)*56}) rotate(${i%2?4:-3})`,R(-80,-28,160,56,26,'#6A4428',{stroke:'#3A2414','stroke-width':4})+Ell(78,0,15,27,'#C89458',{stroke:'#6A4428','stroke-width':3}))).join('');
-  g+=SC.fore(t,{y:1060,bottom:1780,edges:[540,1520],cols:['#140F0A','#2E2416','#7A5A34'],rocks:0,seed:43,density:.8,under:stump(640,1380,240,100)+axeS(640,1270,-1.2,2.2,60)+stack,over:glow(fx,1100,420,'#FF8A3C',.18)});
+  g+=SC.fore(t,{y:1060,bottom:1780,edges:[540,1520],cols:['#2A1E12','#4A3A22','#A07A44'],rocks:0,seed:43,density:.45,under:stump(640,1380,240,100)+axeS(640,1270,-1.2,2.2,60)+stack,over:glow(fx,1100,420,'#FF8A3C',.18)});
   return g;
 }
 // The carpenter's workshop: plastered mud-brick, beams, a door onto the village, a window with a sunbeam and dust,
@@ -488,7 +489,7 @@ function floorFore(t,o={}){
   let g=d+R(-120,y,2160,bottom-y,0,u);
   for(let i=0;i<14;i++){const yy=y+Math.pow(i/14,1.5)*(bottom-y);g+=L(-120,f1(yy),2040,f1(yy+(hash(i,seed)-.5)*12),cols[0],f1(2+i*.5),{opacity:.4});}
   g+=o.under||'';
-  const it=[];for(let k=0;k<(o.n||70);k++){const yy=y+20+Math.pow(hash(k,seed+1),.8)*(bottom-y-60),xx=-60+hash(k,seed+2)*2040;it.push([yy,xx,k]);}
+  const it=[];for(let k=0;k<(o.n||40);k++){const yy=y+20+Math.pow(hash(k,seed+1),.8)*(bottom-y-60),xx=-60+hash(k,seed+2)*2040;it.push([yy,xx,k]);}
   it.sort((a,b)=>a[0]-b[0]).forEach(([yy,xx,k])=>{const sz=lerp(.9,3.2,(yy-y)/(bottom-y));
     if(o.kind==='home')g+=L(f1(xx),f1(yy),f1(xx+(hash(k,3)-.5)*40*sz),f1(yy-(4+6*hash(k,4))*sz),k%2?'#D8B870':'#B8944A',f1(2.2*sz),{opacity:.8});
     else g+=k%4===0?Ell(f1(xx),f1(yy),f1(16*sz),f1(5*sz),'#C8A070',{opacity:.6}):curl(xx,yy,(8+6*hash(k,seed+3))*sz,hash(k,seed+4)*360,k%3?'#F0CF98':'#DDB27A');});
@@ -548,7 +549,7 @@ function kneeling(t){
   const k=ease.inOut(prog(t,AT.kneels,AT.kneels+.7)),wk=prog(t,AT.kneels-.9,AT.kneels);
   g+=PPL.fig(carpO(lerp(760,840,wk),FY,CS,{kneel:k,near:k>.4?'chest':null,far:k>.4?'chest':null,lean:k*14,look:{x:1270,y:440},expr:['calm','awe',k],walk:wk>0&&wk<1?t*7:0}));
   g+=SC.light(980,760,420,'#FFB060',.16);
-  g+=shrineFore(t,{over:oilLamp(t,1520,1460,2.4,5)});
+  g+=shrineFore(t,{over:oilLamp(t,1330,1470,2.4,5)+basket(760,1520,1.8,['#C0392B','#E8B53A','#8A2A4A'])});
   return g;
 }
 // A5. "Deliver me, for you are my god!": the reverse angle; he pleads with raised hands; the statue does nothing.
@@ -558,7 +559,7 @@ function pleading(t){
   const head={x:700,y:470};
   g+=PPL.fig(carpO(1190+jit,FY,CS,{face:-1,kneel:1,near:up>.5?{x:1000,y:560}:'chest',far:up>.5?{x:1010,y:520}:'chest',lean:lerp(16,-4,up),look:head,expr:['calm','fear',up]}));
   g+=SC.light(1080,700,420,'#FFB060',.14);
-  g+=shrineFore(t,{seed:17,over:oilLamp(t,420,1480,2.4,6)});
+  g+=shrineFore(t,{seed:17,over:oilLamp(t,680,1480,2.4,6)});
   return g;
 }
 // A6. Same tree, same afternoon: the cut stump, his cooking fire, the statue; he looks from one to the other.
@@ -660,7 +661,7 @@ function marketBG(t,o={}){
   const tx=o.tx||620,ty=o.ty||560,ts=o.ts||1;
   let g=SC.sky(t,{mood:'day',hz:780});
   g+=SC.sun(t,1560,-80,60,{rays:1})+SC.godRays(t,1560,-80,{n:7,a0:1.8,a1:2.8,op:.1});
-  g+=SC.clouds(t,{seed:41,n:6,y:-640,h:480,mood:'day',sun:{x:1560,y:-80},drift:8});
+  g+=SC.clouds(t,{seed:41,n:7,y:20,h:260,mood:'day',sun:{x:1560,y:-80},drift:8,s:.7});
   g+=SC.birds(t,{x:1100,y:40,n:8,s:1.1,dx:-30,col:'#4A4A5A',seed:13});
   g+=SC.range(42,{y:640,h:200,peaks:5,mood:'day',hazeOp:.65,sunX:1560});
   const hill=SC.ridgePts(43,ty+20,40,360);
@@ -727,7 +728,7 @@ function question(t){
 // a father and his child look up; the child points.
 function bigStatue(t){
   let g=SC.sky(t,{mood:'dusk',hz:900,stars:true});
-  g+=SC.clouds(t,{seed:52,n:5,y:-660,h:420,mood:'dusk',sun:{x:400,y:700},drift:4,op:.85});
+  g+=SC.clouds(t,{seed:52,n:5,y:-330,h:300,mood:'dusk',sun:{x:400,y:700},drift:4,op:.7});
   // the temple front: columns, lintel, steps
   g+=R(160,-120,1600,1020,0,'#3A2438')+R(160,-200,1600,90,4,'#5A3A50')+R(140,-230,1640,40,4,'#6A4A5A');
   for(let i=0;i<7;i++){const cx=240+i*240;if(i===4)continue;g+=R(cx-40,-110,80,1000,4,'#5A3E50')+R(cx-40,-110,26,1000,4,'#7A5A64')+R(cx-56,-130,112,30,4,'#6A4A5A')+R(cx-52,860,104,30,4,'#6A4A5A');}
@@ -744,7 +745,7 @@ function bigStatue(t){
   // father and child, hand in hand, in the foreground
   const hh=PPL.holdHands(person(0,690,FY,2.45,{look:{x:sx,y:200},expr:'calm'}),person(3,930,FY,1.6,{look:{x:sx,y:200},expr:'surprised',near:{x:1060,y:FY-300}}));
   g+=hh.svg;
-  g+=cobbleFore(t,{seed:9,big:1,base:'#3A2A34',stone:'#6A5260',over:[...Array(14)].map((_,i)=>Ell(f1(420+hash(i,7)*1100),f1(1300+hash(i,8)*400),f1(8+hash(i,9)*10),5,['#FF8A3C','#FFD86B','#E84A6A'][i%3],{opacity:.9})).join('')+SC.animal(t,'dove',1500,1520,2.4,{face:-1,graze:'auto',phase:3})});
+  g+=cobbleFore(t,{seed:9,big:1,base:'#3A2A34',stone:'#6A5260',over:[...Array(14)].map((_,i)=>Ell(f1(420+hash(i,7)*1100),f1(1300+hash(i,8)*400),f1(8+hash(i,9)*10),5,['#FF8A3C','#FFD86B','#E84A6A'][i%3],{opacity:.9})).join('')+SC.animal(t,'dove',1500,1520,2.4,{face:-1,graze:'auto',phase:3})+SC.animal(t,'dove',1380,1600,2.2,{phase:1.2,graze:'auto'})+SC.animal(t,'dove',lerp(560,760,prog(t,AT.whats,AT.whats+3)),lerp(1250,1180,prog(t,AT.whats,AT.whats+3))-Math.sin(prog(t,AT.whats,AT.whats+3)*3.14)*120,2.0,{fly:true,phase:.5})+L(480,1700,560,1380,'#2A1A20',14)+L(640,1700,560,1380,'#2A1A20',14)+Ell(560,1370,110,34,'#5A4048',{stroke:'#2A1A20','stroke-width':5})+FX.flames(t,[[470,1362],[560,1348],[650,1362]],{H:150,sp:12,seed:44})+glow(560,1300,300,'#FFB04C',.45)+wisp(t,560,1240,900,2.2,45,'#8A7A84',.35)});
   return g;
 }
 
@@ -819,14 +820,14 @@ function forge(t){
   g+=[1260,1340].map(x=>L(x,380,x+10,560,'#4A4A52',8)+L(x+30,380,x+20,560,'#4A4A52',8)).join('')+L(1480,380,1480,520,'#7A5230',10)+R(1452,380,56,40,6,'#4A4A52');
   // the bellows boy
   const pump=(Math.sin(t*5)+1)/2;
-  g+=P(`M600 ${930-pump*30}L760 ${900-pump*50}L760 ${960}L600 ${980}Z`,'#7A4A2A',{stroke:'#3A2010','stroke-width':4})+L(560,980,620,955,'#3A2010',10);
-  g+=PPL.fig(person(2,800,FY,1.55,{face:-1,kneel:1,near:{x:760,y:900-pump*50},far:{x:770,y:912-pump*50},look:{x:400,y:800},expr:'calm'}));
+  g+=P(`M600 ${930-pump*30}L720 ${900-pump*50}L720 ${960}L600 ${980}Z`,'#7A4A2A',{stroke:'#3A2010','stroke-width':4})+L(560,980,620,955,'#3A2010',10);
+  g+=PPL.fig(person(2,800,FY,1.55,{face:-1,kneel:1,near:{x:720,y:900-pump*50},far:{x:730,y:912-pump*50},look:{x:400,y:800},expr:'calm'}));
   // the goldsmith pouring from the crucible held in tongs; the gold runs into the mould
   g+=R(1200,860,300,140,8,'#4A4048',{stroke:'#1A161A','stroke-width':4})+R(1200,860,300,20,4,'#6A6070');
   const fill=prog(t,AT.likeness-.2,AT.heaven-.4),tilt=ease.inOut(prog(t,AT.likeness-.7,AT.likeness))*(1-ease.inOut(prog(t,AT.heaven-.8,AT.heaven-.3)));
   const mx0=1350;g+=P(`M${mx0-70} 860Q${mx0-50} 820 ${mx0} 840Q${mx0+50} 820 ${mx0+70} 860Z`,'#2A1A12')+G('',P(`M${mx0-70} 860Q${mx0-50} 820 ${mx0} 840Q${mx0+50} 820 ${mx0+70} 860Z`,GOLD)+glow(mx0,850,110,'#FFD86B',.8),fill.toFixed(2));
-  const s=2.5,cx=1250,cy=700;
-  const o=pplOpts(1,1000,FY,s,{f:false,near:{x:cx-150,y:cy+30},far:{x:cx-170,y:cy+10},look:{x:mx0,y:850},expr:'calm',lean:12,tunic:'#8A6A5A',tunic2:'#4A3028'});
+  const s=2.5,cx=1270,cy=700;
+  const o=pplOpts(1,1080,FY,s,{f:false,near:{x:cx-150,y:cy+30},far:{x:cx-170,y:cy+10},look:{x:mx0,y:850},expr:'calm',lean:12,tunic:'#8A6A5A',tunic2:'#4A3028'});
   g+=withProp(o,r=>{const h=r.hand('near');return L(h[0],h[1],cx-10,cy,'#3A3A40',10)+L(h[0]-10,h[1]-14,cx-14,cy-12,'#3A3A40',8)+G(`rotate(${(tilt*60).toFixed(1)} ${cx} ${cy})`,P(`M${cx-30} ${cy-50}L${cx+70} ${cy-50}L${cx+58} ${cy+40}Q${cx+20} ${cy+60} ${cx-18} ${cy+40}Z`,'#5A5A60',{stroke:'#2A2A30','stroke-width':4})+Ell(cx+20,cy-50,50,12,'#FFD86B')+glow(cx+20,cy-40,120,'#FFB04C',.6));});
   if(tilt>.6){g+=P(`M${cx+70} ${cy-10}Q${cx+110} ${cy+60} ${mx0} 840`,'none',{stroke:'#FFD86B','stroke-width':16})+P(`M${cx+70} ${cy-10}Q${cx+110} ${cy+60} ${mx0} 840`,'none',{stroke:'#FFFBE0','stroke-width':6})+glow(mx0,820,140,'#FFB04C',.8);
     for(let i=0;i<8;i++){const k=(t*2+hash(i,5))%1;g+=C(f1(mx0+(hash(i,6)-.5)*160*k),f1(840-Math.sin(k*3.14)*80),3,'#FFE9A8',{opacity:(1-k).toFixed(2)});}}
@@ -1567,7 +1568,7 @@ const LIST=[
   ['the tree falls',0,treeFall,['#FFB04C','#7A3A1E'],[F2(1040,1.0),F2(1060,1.08)],{stars:false}],
   ['split',AT.splits-.1,splitLog,['#FF8A4C','#5A1E10'],[F2(1000,1.15)],{stars:false,vIn:'cut'}],
   ['dinner',AT.half1-.1,dinner,['#0A1028','#2A1408'],[F2(1010,1.06),F2(1030,1.14)],{stars:false}],
-  ['carving',AT.otherHalf-.1,carving,['#7A4E30','#4A2E1C'],[F2(880,1.1),F2(890,1.16)],{stars:false,vIn:'cut'}],
+  ['carving',AT.otherHalf-.1,carving,['#7A4E30','#4A2E1C'],[F2(850,1.1),F2(870,1.16)],{stars:false,vIn:'cut'}],
   ['kneels',AT.kneels-.1,kneeling,['#2A1A3A','#140C1E'],[F2(1000,1.05),F2(1020,1.12)],{stars:false}],
   ['deliver me',AT.prays-.1,pleading,['#3A1E32','#1A0C16'],[F2(940,1.02),F2(1000,1.12)],{stars:false,vIn:'cut'}],
   ['same tree',AT.sameTree-.1,sameTree,['#BFE8FF','#FFF2C0'],[F2(980,.93),F2(980,1.0)],{stars:false}],
