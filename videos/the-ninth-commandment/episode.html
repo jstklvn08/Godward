@@ -689,10 +689,43 @@ function aHome(t,lt){
 }
 const taskShadowGrey=(x,y,s)=>G(`translate(${x.toFixed(0)} ${y}) skewX(-38) scale(${s} ${(s*.42).toFixed(3)})`,C(0,-330,62,'#1A1A24')+R(-58,-272,116,272,44,'#1A1A24'),.5);
 function aLife(t,lt){
-  let g=R(-60,-700,2040,2500,0,'#0C0A18')+R(-60,746,2040,1060,0,'#141022');
-  const out=t>AT.lifeW+.15;
-  g+=R(700,730,520,26,6,'#4A3020')+R(730,756,30,70,4,'#3A2414')+R(1160,756,30,70,4,'#3A2414');
-  return g+lamp(t,920,730,1.5,out?0:clamp(1-prog(t,AT.lifeW-.4,AT.lifeW+.15)*.6),AT.lifeW+.15);
+  // A humble home at night (visible sheet area in the vertical cut: x ~400-1520, y ~-480-1520). The lamp on the low
+  // table is the warm heart of the room; when it goes out, only cold moonlight from the window is left.
+  const out=t>AT.lifeW+.15, lk=out?0:clamp(1-prog(t,AT.lifeW-.4,AT.lifeW+.15)*.6), warm=lk;
+  let g=R(-60,-700,2040,2500,0,mix('#2A2234','#5A3E2C',warm*.8));
+  // ceiling beams and mud-brick wall
+  for(let k=0;k<4;k++)g+=R(-60,-560+k*40,2040,26,4,mix('#1A1420','#3A2618',warm*.7));
+  for(let r=0;r<13;r++){const y=-420+r*86,off=(r%2)*70;for(let x=340+off;x<1600;x+=140)g+=R(x,y,132,78,8,mix('#241C2E','#6A4A34',warm*.7),{opacity:.5});}
+  // a woven wall hanging
+  g+=R(500,-380,300,380,8,mix('#2E2440','#8A3A2E',warm*.8),{stroke:'#120E18','stroke-width':6});
+  for(let k=0;k<6;k++)g+=R(520,-350+k*58,260,20,3,[mix('#3A3050','#E0A040',warm*.8),mix('#3A3050','#2E6A8A',warm*.8)][k%2]);
+  for(let k=0;k<7;k++)g+=L(520+k*42,0,520+k*42,26,'#5A4A3A',3);
+  // the window: moonlit village and stars outside
+  g+=R(1080,-320,360,320,10,'#1A2A4A',{stroke:'#120E18','stroke-width':14})+glow(1260,-240,200,'#BFD8FF',.25);
+  for(let k=0;k<14;k++)g+=C(1100+hash(k,4)*320,-300+hash(k,5)*150,2+hash(k,6)*2.5,'#FFFFFF',{opacity:.5+.4*Math.sin(t*2+k)});
+  g+=C(1370,-250,26,'#F2F0E0')+P('M1090 -10L1090 -80L1150 -110L1200 -80L1250 -120L1320 -90L1380 -110L1430 -80L1430 -10Z','#0E1424');
+  [1120,1240,1340].forEach((x,k)=>g+=R(x,-60,18,14,2,'#FFD27A',{opacity:.6*(.6+.4*Math.sin(t*1.5+k))}));
+  g+=L(1260,-320,1260,0,'#120E18',10)+L(1080,-160,1440,-160,'#120E18',10);
+  g+=P('M1090 0L1430 0L1600 760L900 760Z','#BFD8FF',{opacity:.05+.08*(1-warm)});
+  // shelf with jars and bowls; herbs hanging to dry
+  g+=R(460,160,440,20,4,'#4A3020')+[[500,150,1],[580,140,1.3],[670,152,.9],[760,146,1.1],[850,152,.8]].map(([x,y,sc],k)=>
+    P(`M${x-22*sc} ${y}Q${x-30*sc} ${y-50*sc} ${x} ${y-60*sc}Q${x+30*sc} ${y-50*sc} ${x+22*sc} ${y}Z`,mix('#3A3040',['#9A5A3A','#B8743E','#7A4A2E','#C8964A','#8A5A3A'][k],.3+.7*warm),{stroke:'#2A1C12','stroke-width':3})).join('');
+  for(let k=0;k<4;k++){const x=1120+k*70,sw=Math.sin(t*.8+k)*3;g+=L(x,60,x+sw,170,'#5A4A30',3)+Ell(x+sw,190,16,30,mix('#2A3A2A',['#5A7A3A','#6A8A4A','#7A6A3A'][k%3],.3+.7*warm));}
+  // a loom in the corner with a half-woven cloth
+  g+=R(1360,260,16,500,3,'#3A2414')+R(1500,260,16,500,3,'#3A2414')+R(1360,260,156,14,3,'#3A2414')+R(1376,300,124,240,4,mix('#2E2440','#B85A3A',warm*.8))+
+    [0,1,2,3,4,5].map(k=>L(1380+k*22,540,1380+k*22,700,'#8A7A60',2)).join('');
+  // floor: a woven mat, a rolled sleeping mat, a water jar, a child's toy cart
+  g+=R(-60,746,2040,1060,0,mix('#1C1628','#4A3424',warm*.75));
+  g+=Ell(940,800,380,44,mix('#3A2E3A','#9A6A3A',warm),{opacity:.9});
+  for(let k=-6;k<=6;k++)g+=L(940+k*54,770,940+k*58,830,mix('#2A2030','#6A4A28',warm),3);
+  g+=R(420,700,230,70,34,mix('#3A3248','#B8A078',warm*.8),{stroke:'#1A1420','stroke-width':4})+
+    P('M1300 800Q1280 690 1330 670Q1380 650 1400 690Q1420 750 1390 800Z',mix('#3A2E3A','#B8743E',warm),{stroke:'#1A1420','stroke-width':4});
+  g+=R(560,860,80,34,6,mix('#3A3040','#C8964A',warm))+C(574,898,11,'#2A2030')+C(626,898,11,'#2A2030');
+  // the low table and the lamp; its warm glow fills the room until it goes out
+  g+=glow(920,700,900,'#FFB45C',.45*warm)+glow(920,700,380,'#FFD27A',.35*warm);
+  g+=R(700,730,520,26,6,'#4A3020')+R(730,756,30,70,4,'#3A2414')+R(1160,756,30,70,4,'#3A2414')+
+    Ell(1060,724,44,10,mix('#2A2030','#C8964A',warm))+Ell(800,724,30,8,mix('#2A2030','#B8743E',warm))+R(1100,690,40,36,6,mix('#2A2030','#9A5A3A',warm));
+  return g+lamp(t,920,730,1.5,lk,AT.lifeW+.15)+R(-60,-700,2040,2500,0,'#05040C',{opacity:(.3*(1-warm)).toFixed(2)});
 }
 // ---- 28. Guarding your neighbor's good name: a friend steps in front; the lies bounce off ----
 function guard(t,lt){
@@ -1137,7 +1170,7 @@ const SH=[
   {name:'he takes',at:AT.heTakes-.1,draw:takes,bg:['#3A2448','#1A0E24'],stars:false,vIn:'cut',cam:HD(960,FT,FF,1.35)},
   {name:'a name',at:AT.aName-.1,draw:aName,bg:['#6A3A2A','#2A140C'],stars:false,vIn:'cut',cam:HD(960,520,900,1.3)},
   {name:'a home',at:AT.aHome-.1,draw:aHome,bg:['#6A80B0','#B8C8E0'],stars:false,vIn:'cut',fore:FG('#4A6A3A','#3E5A30','#5A7A4A'),cam:HD(960,600,950,1.0)},
-  {name:'a life',at:AT.aLife-.1,draw:aLife,bg:['#0C0A18','#000000'],stars:false,vIn:'cut',cam:HD(960,700,1000,1.4)},
+  {name:'a life',at:AT.aLife-.1,draw:aLife,bg:['#0C0A18','#000000'],stars:false,vIn:'cut',cam:HD(960,560,1000,.95)},
   {name:'a good name',at:AT.christians-.1,draw:guard,bg:['#1E2A5A','#0A1030'],stars:false,vIn:'cut',cam:MV(1000,FT,FF,1.05,1000,FT,FF,1.2)},
   {name:'jerusalem',at:AT.centuries-.1,draw:jerusalem,bg:['#0A0E2A','#1A1A4A'],vIn:'cut',cam:CW(960,600,.84,960,560,1.0)},
   // act 4
