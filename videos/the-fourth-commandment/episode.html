@@ -277,7 +277,7 @@ function weeks(t,lt){
     if(gold&&on>0)g+=glow(x,y-10*s,110*s,'#FFD86B',.8*on);
     g+=Ell(x,y,58*s,20*s,gold?mix('#8A7A6A','#FFD86B',on):mix('#6A5A7A','#C8B8D8',on*.6),{stroke:gold?'#FFF4C8':'#2A1E3A','stroke-width':Math.max(1,4*s)});}
   // a walker going up the path, smaller as he goes
-  const u=lerp(.1,.3,prog(t,AT.oneDay-.6,AT.fourth)),[x,y]=PATH(u),[x2]=PATH(u+.01),s=lerp(1.25,.16,Math.pow(u,.55))*.9;
+  const u=lerp(.5,.62,prog(t,AT.oneDay-.6,AT.fourth)),[x,y]=PATH(u),[x2]=PATH(u+.01),s=lerp(1.25,.16,Math.pow(u,.55))*1.3;
   g+=folk(4,x,y,s,{walk:t*7,flip:x2>x?1:-1,expr:'calm',tunic:DAD.tunic,tunic2:DAD.tunic2});
   return g+fireflies(t,300,-300,1400,900,'#FFE9A8',12,.5);
 }
@@ -729,19 +729,20 @@ function slaveLine(t,lt){
 function outOfEgypt(t,lt){
   let g=glow(1500,-500,900,'#FFFBEA',.6);
   const beam=ease.out(prog(t,AT.mighty-.6,AT.mighty+.6));
-  g+=P(`M1980 -700L2100 -500L${f1(lerp(1700,1000,beam))} 760L${f1(lerp(1600,860,beam))} 760Z`,'#FFF6DA',{opacity:(.35*beam).toFixed(2)});
-  const wv=(x,k)=>{let d=`M${x} 760`;for(let y=760;y>=-700;y-=40)d+=`L${f1(x+Math.sin(t*2.4+y*.02+k)*14)} ${y}`;return d;};
-  g+=R(560,-700,800,1460,0,'#D9B878');
-  g+=P(wv(560,0)+'L-60 -700L-60 760Z','#0B4A9A')+P(wv(1360,2)+'L1980 -700L1980 760Z','#0B4A9A')+P(wv(560,0),'none',{stroke:NEON,'stroke-width':9})+P(wv(1360,2),'none',{stroke:NEON,'stroke-width':9});
+  
+  const wv=(x,k)=>{let d=`M${x} 840`;for(let y=840;y>=-700;y-=40)d+=`L${f1(x+Math.sin(t*2.4+y*.02+k)*14)} ${y}`;return d;};
+  g+=R(540,-700,840,1540,0,'#D9B878');
+  g+=P(wv(560,0)+'L-60 -700L-60 840Z','#0B4A9A')+P(wv(1360,2)+'L1980 -700L1980 840Z','#0B4A9A')+P(wv(560,0),'none',{stroke:NEON,'stroke-width':9})+P(wv(1360,2),'none',{stroke:NEON,'stroke-width':9});
   for(let k=0;k<14;k++){const x=k%2?200+hash(k,5)*300:1460+hash(k,5)*400,y=700-((t*90+hash(k,4)*1400)%1400);g+=C(x,y,6+hash(k,6)*8,'none',{stroke:'#9AE8FF','stroke-width':3,opacity:.6});}
   for(let i=0;i<12;i++){const y=-600+i*110,x=600+((t*400+i*170)%760);g+=L(x,y,x+120,y-10,'#FFFFFF',3,{opacity:.35});}
   g+=gnd(121,800,'#C9A060','#B08848');
+  if(beam>0)g+=P(`M1700 -700L1900 -700L${f1(lerp(1500,1060,beam))} 780L${f1(lerp(1380,880,beam))} 780Z`,'#FFF6DA',{opacity:(.45*beam).toFixed(2)})+glow(lerp(1440,970,beam),760,300*beam,'#FFFBEA',.6*beam);
   const sn=ease.out(prog(t,AT.brought+.15,AT.brought+.6)),walk=prog(t,AT.brought+.6,AT.therefore);
   // the people walk out: a mother with her child on her hip, a father and son hand in hand
-  g+=PPL.carry(who(MUM,lerp(700,800,walk),790,.9,{walk:walk>0&&walk<1?t*6:0,expr:'joy'}),who(GIRL,0,0,.58,{expr:'joy'}),{out:true}).svg;
-  g+=PPL.holdHands(who(DAD,lerp(1130,1230,walk),800,.95,{walk:walk>0?t*6:0,expr:'joy',look:{x:1260,y:700}}),who(SON,lerp(1250,1350,walk),806,.62,{walk:walk>0?t*6+1:0,expr:'joy',look:{x:1150,y:600}})).svg;
+  g+=PPL.carry(who(MUM,lerp(640,700,walk),790,.9,{walk:walk>0&&walk<1?t*6:0,expr:'joy'}),who(GIRL,0,0,.58,{expr:'joy'}),{out:true}).svg;
+  g+=PPL.holdHands(who(DAD,lerp(1160,1220,walk),800,.95,{walk:walk>0?t*6:0,expr:'joy',look:{x:1260,y:700}}),who(SON,lerp(1280,1340,walk),806,.62,{walk:walk>0?t*6+1:0,expr:'joy',look:{x:1150,y:600}})).svg;
   // the front man: chained hands lifted; the chain flies apart
-  const cx=960,hx=cx+lerp(64,110,sn),hy=800-lerp(110,180,sn);
+  const cx=920,hx=cx+lerp(64,110,sn),hy=800-lerp(110,180,sn);
   g+=fig(who(SERV,cx,800,1.05,{near:{x:hx,y:hy},far:{x:hx-10,y:hy+6},look:{x:hx,y:hy-40},expr:['sad','joy',sn],lean:lerp(6,-8,sn)}));
   g+=C(hx,hy,15,'none',{stroke:'#8A8A90','stroke-width':8});
   if(sn<.05)g+=P(`M${hx} ${hy+14}Q${hx+40} ${hy+60} ${hx+10} ${hy+90}`,'none',{stroke:'#8A8A90','stroke-width':6,'stroke-dasharray':'12 6'});

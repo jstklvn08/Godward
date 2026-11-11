@@ -464,8 +464,8 @@ function alley(t){
 function partner(t,lt){
   let g=alley(t);
   const lean=ease.inOut(prog(t,AT.aLie-.2,AT.aLie+.6));
-  const b=greyO(1,1040,800,1,{face:-1,lean:10*lean,look:{x:880,y:600},expr:'calm'});
-  const a=greyO(0,870,800,1,{lean:14*lean,look:{x:1030,y:600},near:{x:950,y:640},expr:'joy'});
+  const b=greyO(1,1065,800,1,{face:-1,lean:5*lean,look:{x:860,y:600},expr:'calm'});
+  const a=greyO(0,850,800,1,{lean:7*lean,look:{x:1050,y:600},near:{x:930,y:640},expr:'joy'});
   b.near=PPL.handOn(b,a,'shoulder');
   const Br=PPL.rig(b);g+=Br.draw('back')+Br.draw('body')+Br.draw('head')+PPL.fig(a)+Br.draw('front');
   const k=ease.inOut(prog(t,AT.partner1,AT.partner1+1));
@@ -622,11 +622,11 @@ function ruleKept(t,lt){
 function walkOff(t,lt){
   let g=alley(t);
   const u=prog(t,AT.theLie-.3,AT.thatsWhy),x=lerp(1180,860,u);
-  const a=greyO(0,x,800,1,{face:-1,walk:t*7,look:{x:x+120,y:600},expr:'joy'}),b=greyO(1,x+130,800,1,{face:-1,walk:t*7+1.6,look:{x:x,y:600},expr:'joy'});
+  const a=greyO(0,x,800,1,{face:-1,walk:t*7,look:{x:x+120,y:600},expr:'joy'}),b=greyO(1,x+150,800,1,{face:-1,walk:t*7+1.6,look:{x:x,y:600},expr:'joy'});
   b.near=PPL.handOn(b,a,'shoulder');
   const Br=PPL.rig(b),Ar=PPL.rig(Object.assign({},a,{near:{x:x-30,y:700}}));
   g+=Br.draw('back')+Br.draw('body')+Br.draw('head')+Ar.draw('back')+Ar.draw('body')+Ar.draw('head')+purse(Ar.hand('near'),1)+Ar.draw('front')+Br.draw('front');
-  const k=ease.inOut(prog(t,AT.foundPartner-.3,AT.foundPartner+.9)),cx=x+58;
+  const k=ease.inOut(prog(t,AT.foundPartner-.3,AT.foundPartner+.9)),cx=x+75;
   if(k>0)g+=mark(`M${cx-130} 700C${cx-140} 500 ${cx+140} 500 ${cx+130} 700C${cx+120} 820 ${cx-120} 820 ${cx-130} 700`,k,'#6A6A7A',8,{opacity:.85});
   return g;
 }
@@ -891,13 +891,13 @@ function square(t,lt){
 // ---- 44-45. Members of one another: hand in hand; tear down a name and the line tears ----
 function members(t,lt,o={}){
   let g=glow(960,-200,1000,'#FFE9B0',.6)+`<path d="${ridge(141,500,30,300)}" fill="#E8B060"/>`+R(-60,700,2040,1100,0,'#D8A048')+gnd(142,800,'#C89040','#B88038');
-  const xs=[440,613,787,960,1133,1307,1480],rip=o.tear?ease.inOut(prog(t,AT.tearDown,AT.tearDown+.7)):0,wide=o.tear?ease.inOut(prog(t,AT.tear2-.2,AT.tear2+.6)):0;
-  const ps=xs.map((x,k)=>{const side=x<960?-1:1,mid=k===3||k===4,dx=(k>=4?1:0)*(rip*40+wide*60)-(k<4?1:0)*(rip*20+wide*40)*(k===3?1.4:.6);
-    return person(k,x+dx,800,.85,{face:k<3?1:k>4?-1:k===3?1:-1,look:rip>.3?{x:1047,y:700}:{x:x+side*-100+(k===3?100:k===4?-100:0),y:600},expr:rip>.3?'fear':'joy',lean:rip>.3?(k>=4?-8:8):0,free:false});});
-  if(rip>.15){ps[3].free=true;ps[4].free=true;ps[3].near='chest';ps[4].near='open';}
-  g+=rip>.15?chain(ps.slice(0,4))+chain(ps.slice(4)):chain(ps);
-  if(rip>0){let d='M1047 -700';for(let y=-700;y<1800;y+=60)d+=`L${1047+(hash(y,3)-.5)*40*rip+(y>700?wide*20:0)} ${y}`;g+=P(d,'none',{stroke:'#1A0A10','stroke-width':6+30*rip+50*wide})+P(d,'none',{stroke:'#FFF6DA','stroke-width':3,opacity:.6});}
-  for(let k=0;k<12;k++)g+=glow(360+k*110,720-Math.abs(Math.sin(t+k))*60,20,'#FFF6DA',.6*(1-rip));
+  const xs=[580,770,960,1150,1340],rip=o.tear?ease.inOut(prog(t,AT.tearDown,AT.tearDown+.7)):0,wide=o.tear?ease.inOut(prog(t,AT.tear2-.2,AT.tear2+.6)):0;
+  const ps=xs.map((x,k)=>{const side=x<960?-1:1,dx=(k>=3?1:0)*(rip*40+wide*60)-(k<3?1:0)*(rip*20+wide*40)*(k===2?1.4:.6);
+    return person(k,x+dx,800,1,{face:k<2?1:k>3?-1:k===2?1:-1,look:rip>.3?{x:1055,y:700}:{x:x+side*-100+(k===2?100:k===3?-100:0),y:600},expr:rip>.3?'fear':'joy',lean:rip>.3?(k>=3?-8:8):0,free:false});});
+  if(rip>.15){ps[2].near='chest';ps[3].near='open';}
+  g+=rip>.15?chain(ps.slice(0,3))+chain(ps.slice(3)):chain(ps);
+  if(rip>0){let d='M1055 -700';for(let y=-700;y<1800;y+=60)d+=`L${1055+(hash(y,3)-.5)*40*rip+(y>700?wide*20:0)} ${y}`;g+=P(d,'none',{stroke:'#1A0A10','stroke-width':6+30*rip+50*wide})+P(d,'none',{stroke:'#FFF6DA','stroke-width':3,opacity:.6});}
+  for(let k=0;k<8;k++)g+=glow(560+k*120,720-Math.abs(Math.sin(t+k))*60,20,'#FFF6DA',.6*(1-rip));
   return g;
 }
 const membersTear=(t,lt)=>members(t,lt,{tear:true});
@@ -1028,7 +1028,7 @@ function lastOne(t,lt){
   let g=glow(960,-160,800,'#FF7A3C',.3)+FX.summitFire(t,SIN2,.7,0,{fill:'#2E2638',H:160,cap:120,rows:2,smokeH:700,smoke:.7,light:700,seed:18,embers:24,rocks:false});
   g+=gnd(181,760,'#22182A','#1A1222');
   const on=ease.out(prog(t,AT.lastCmd,AT.lastCmd+1)),lit=k=>k===9?on*(1.4+.2*Math.sin(t*4)):k===8?.5:.15;
-  return g+tablets(960,520,1.05,lit);
+  return g+tablets(960,520,1.05,lit)+glow(1190,708,240,'#FFD86B',.6*on);
 }
 
 // ---------- frame-space overlays: verse cards, the one short label on screen at a time, and the end card ----------
@@ -1154,13 +1154,13 @@ const SH=[
   {name:'a comment',at:AT.comment-.1,draw:videoS,bg:['#120E30','#06040E'],stars:false,vIn:'cut',cam:PHONE},
   {name:'a rumour',at:AT.rumour-.1,draw:rumour,bg:['#C8D0E0','#8A7A6A'],stars:false,vIn:'cut',cam:CW(650,667,1.2,1300,667,1.2)},
   {name:'just saying',at:AT.justSaying-.1,draw:shrug,bg:['#D0D8E8','#9A8A7A'],stars:false,vIn:'cut',cam:HD(1080,FT,FF,1.35)},
-  {name:'cropped',at:AT.sometimesHalf-.1,draw:cropped,bg:['#2A2A3A','#101018'],stars:false,vIn:'cut',cam:HD(960,550,880,1.4)},
-  {name:'shared',at:AT.andOnce-.1,draw:shared,bg:['#141A3A','#060818'],stars:false,vIn:'cut',cam:HD(960,FT,FF,1.1)},
+  {name:'cropped',at:AT.sometimesHalf-.1,draw:cropped,bg:['#2A2A3A','#101018'],stars:false,vIn:'cut',cam:HD(960,550,880,1.3)},
+  {name:'shared',at:AT.andOnce-.1,draw:shared,bg:['#141A3A','#060818'],stars:false,vIn:'cut',cam:HD(960,FT,FF,1.02)},
   // act 6
   {name:'what god wants',at:AT.instead-.1,draw:sunrise,bg:['#FFB46A','#E8785A'],stars:false,vIn:'cut',cam:CW(960,600,.84,960,640,1.0)},
   {name:'speak the truth',at:AT.therefore-.1,draw:square,bg:['#A8DCF4','#FFF2D8'],stars:false,vIn:'cut',fore:FG('#C8A06A','#B08858','#D8B07A'),cam:MV(960,FT,1190,.95,960,FT,1190,1.0)},
-  {name:'members of one another',at:AT.forWe-.1,draw:members,bg:['#FFE0A0','#F0B060'],stars:false,vIn:'cut',fore:FG('#C89040','#B88038','#D8A048',['#FFFFFF','#FFD45E']),cam:CW(960,600,.84,960,610,.87)},
-  {name:'tear the body',at:AT.tearDown-.1,draw:membersTear,bg:['#F0C890','#C88848'],stars:false,vIn:'cut',fore:FG('#C89040','#B88038','#D8A048'),cam:HD(1047,FT,FF,1.0)},
+  {name:'members of one another',at:AT.forWe-.1,draw:members,bg:['#FFE0A0','#F0B060'],stars:false,vIn:'cut',fore:FG('#C89040','#B88038','#D8A048',['#FFFFFF','#FFD45E']),cam:MV(960,FT,FF,.98,960,FT,FF,1.08)},
+  {name:'tear the body',at:AT.tearDown-.1,draw:membersTear,bg:['#F0C890','#C88848'],stars:false,vIn:'cut',fore:FG('#C89040','#B88038','#D8A048'),cam:HD(960,FT,FF,1.0)},
   {name:'paul',at:AT.andPaul-.1,draw:paul,bg:['#5A4A3A','#2A2018'],stars:false,vIn:'cut',cam:HD(960,FT,FF,1.25)},
   {name:'truth in love',at:AT.rather-.1,draw:gentle,bg:['#FFE2A8','#A8D088'],stars:false,vIn:'cut',fore:FG('#5A904A','#4A803A','#6AA05A',['#FF8FB1','#FFFFFF']),cam:HD(970,FT,1180,1.25)},
   {name:'grow up into him',at:AT.grow-.4,draw:growing,bg:['#FFF2C8','#C8E8A0'],stars:false,vIn:'cut',fore:FG('#4A8A3A','#3E7A30','#5A9A4A',['#FFD45E','#FFFFFF']),cam:CW(960,650,1.0,960,450,1.0)},
