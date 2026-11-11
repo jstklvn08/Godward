@@ -62,3 +62,15 @@ out at 147 words a minute, 4:21.
   narration was lost when a Downloads file was overwritten.
 - Changing script wording after the video is timed: re-render voice, re-run align_words.py, and the
   page re-times itself (all animation uses cue()). Re-check stills around the changed lines.
+
+## CPU-only machines (cloud sessions)
+
+- Chatterbox runs on CPU at about 20-30 s per take (4 cores); one 4-minute episode takes 1-2 hours.
+  Pip installs: `chatterbox-tts`, `setuptools<81` (perth needs pkg_resources), `pyloudnorm praat-parselmouth librosa`.
+- Whisper steps (check_styled, fix_lines, align_words) use `voice/asr_fast.py` (faster-whisper, int8) when it is
+  installed and there is no CUDA GPU: about 3 minutes for a full check instead of over an hour with transformers.
+  Set GODWARD_ASR=transformers to force the old path.
+- A "filled" stretch in align_words' report is often only the recogniser skipping a window edge: transcribe that
+  passage's chunk on its own (asr_fast.text) before re-rendering it.
+- fix_lines accepts numerals and joined words ("40" = "forty", "anymore" = "any more").
+- A `> [grave] “...”` line that is one whole quotation keeps its tag for every sentence in it.
