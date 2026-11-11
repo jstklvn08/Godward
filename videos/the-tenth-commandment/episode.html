@@ -83,8 +83,6 @@ const TENC=k=>k===9?'#FF8A6B':'#FFD86B';
 let foilN=0;
 const foil=(t)=>{const id='foil'+(foilN++),sh=.5+.5*Math.sin(t*1.7);
   return [`url(#${id})`,`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B0"/><stop offset="${(.3+.2*sh).toFixed(2)}" stop-color="${GOLD}"/><stop offset="1" stop-color="#8A5A12"/></linearGradient>`];};
-const shake=(t,a,d,amp)=>{const p=prog(t,a,a+d);return p>0&&p<1?(hash(Math.floor(t*24),a)-.5)*2*amp*(1-p):0;};
-const gnd=(s,y,c1,c2)=>`<path d="${ridge(s,y,10,230)}" fill="${c1}"/><path d="${ridge(s+1,y+120,8,200)}" fill="${c2}"/>`;
 // God is never a figure: his presence is a soft oval of light.
 const presence=(t,x,y,r,k=1)=>k<=0?'':glow(x,y,r*2.6,'#FFF6DA',.5*k)+glow(x,y,r*1.2,'#FFFFFF',.65*k)+
   Ell(x,y,r*.74,r,'none',{stroke:'#FFFBEA','stroke-width':8,opacity:(.75*k).toFixed(2)})+Ell(x,y,r*.6,r*.82,'#FFFBEA',{opacity:(.22*k*(1+.25*Math.sin(t*2))).toFixed(2)});
@@ -141,38 +139,13 @@ function house(x,y,s,lit=1,o={}){
   [-1,1].forEach(k=>{const wx=x+k*w*.3;g+=R(wx-32*s,y-h+50*s,64*s,58*s,6*s,mix('#3A2A20','#FFE29A',lit),{stroke:'#6A4A2A','stroke-width':4*s})+L(wx,y-h+50*s,wx,y-h+108*s,'#6A4A2A',4*s)+glow(wx,y-h+80*s,70*s,'#FFD27A',.35*lit);});
   return g;
 }
-// A low fence of posts and two rails from x0 to x1, ground y.
-function fence(x0,x1,y,s=1,col='#8A5A3A'){let g=L(x0,y-56*s,x1,y-56*s,col,9*s)+L(x0,y-26*s,x1,y-26*s,col,9*s);
-  for(let x=x0;x<=x1;x+=70*s)g+=R(x-8*s,y-84*s,16*s,88*s,3*s,mix(col,'#000000',.15))+P(`M${x-8*s} ${y-84*s}L${x} ${y-96*s}L${x+8*s} ${y-84*s}Z`,mix(col,'#000000',.15));return g;}
 const tent=(x,y,c,k=1)=>P(`M${x-90*k} ${y}L${x} ${y-120*k}L${x+90*k} ${y}Z`,c)+P(`M${x} ${y-120*k}L${x-13*k} ${y}L${x+13*k} ${y}Z`,'#2A1A10');
-const beast=(col,dark,o={})=>{ // a side-on ox (horns) or donkey (long ears), facing right, feet at y 58
-  let g=R(-60,6,14,52,5,dark)+R(-34,8,14,50,5,col)+R(26,6,14,52,5,dark)+R(48,8,14,50,5,col);
-  g+=Ell(0,0,74,40,col,{stroke:dark,'stroke-width':4})+P('M-72 -8Q-96 4 -90 34','none',{stroke:dark,'stroke-width':6});
-  if(o.ears)g+=P('M70 -40L62 -96L84 -48Z',col,{stroke:dark,'stroke-width':3})+P('M84 -40L92 -94L100 -42Z',col,{stroke:dark,'stroke-width':3});
-  g+=Ell(88,-26,o.ears?26:30,o.ears?32:26,col,{stroke:dark,'stroke-width':4})+C(96,-30,4,'#1A1410');
-  if(o.horns)g+=P('M70 -44Q56 -76 76 -86Q70 -64 84 -48Z','#F6EFDC',{stroke:'#8A7A5A','stroke-width':2})+P('M100 -44Q118 -74 104 -88Q104 -64 92 -48Z','#F6EFDC',{stroke:'#8A7A5A','stroke-width':2});
-  return g;
-};
-const ox=(x,y,s,t=0,walk=0)=>G(`translate(${x} ${y-58*s+(walk?Math.abs(Math.sin(walk))*3:0)}) scale(${s})`,beast('#8A5A3A','#4A2A16',{horns:true}));
-const donkey=(x,y,s,load=false,flip=1)=>G(`translate(${x} ${y-58*s}) scale(${s*flip} ${s})`,beast('#9A9490','#5A5450',{ears:true})+
-  (load?R(-50,-74,90,40,8,'#C8884A',{stroke:'#6A3A1A','stroke-width':4})+R(-30,-100,56,30,6,'#E8C070',{stroke:'#6A3A1A','stroke-width':4}):''));
 const jar=(x,y,s=1)=>P(`M${x-22*s} ${y}Q${x-34*s} ${y-40*s} ${x-16*s} ${y-62*s}H${x+16*s}Q${x+34*s} ${y-40*s} ${x+22*s} ${y}Z`,'#C8703A',{stroke:'#6A2E14','stroke-width':4*s})+R(x-18*s,y-72*s,36*s,12*s,4*s,'#A85A2A');
 const coinsP=(x,y,F,n=5,s=1)=>{let g='';for(let i=0;i<n;i++)g+=Ell(x,y-i*12*s,40*s,12*s,F,{stroke:'#8A5A12','stroke-width':3});return g;};
 const purse=(x,y,s=1,F='#9A6A30')=>Ell(x,y,34*s,28*s,F,{stroke:'#4A2A14','stroke-width':4})+P(`M${x-18*s} ${y-22*s}q18 -16 36 0`,'none',{stroke:'#4A2A14','stroke-width':5})+C(x+8*s,y+4*s,6*s,GOLD);
 const loaf=(x,y,s=1)=>Ell(x,y,54*s,24*s,'#D8963E',{stroke:'#8A5A1E','stroke-width':4})+[...Array(3)].map((_,i)=>L(x-26*s+i*24*s,y-14*s,x-14*s+i*24*s,y+4*s,'#F0C070',4*s)).join('');
 const cup=(x,y,s=1)=>P(`M${x-20*s} ${y-44*s}H${x+20*s}L${x+14*s} ${y}H${x-14*s}Z`,'#C8C0B0',{stroke:'#6A6458','stroke-width':4*s});
 const table=(x,y,w,c='#8A5A30')=>R(x-w/2,y-120,w,22,6,c,{stroke:'#4A2A14','stroke-width':4})+R(x-w/2+20,y-100,18,100,4,mix(c,'#000000',.25))+R(x+w/2-38,y-100,18,100,4,mix(c,'#000000',.25));
-// Vineyard rows (sheet coords) with grapes; k = how many vines are still green (1) or picked bare (0).
-function vines(t,x0,x1,y,s=1,k=1){let g='';for(let x=x0;x<=x1;x+=110*s){const sw=Math.sin(t*1.3+x)*2*s;
-  g+=L(x,y,x,y-120*s,'#6A4A2A',7*s)+C(x-24*s+sw,y-120*s,34*s,'#3FA04A')+C(x+26*s+sw,y-132*s,32*s,'#4CB858')+C(x+sw,y-156*s,30*s,'#3A9A44');
-  if(k>0)for(let j=0;j<5;j++)g+=C(x-8*s+(j%2)*14*s+sw,y-98*s+Math.floor(j/2)*12*s,8*s,j%2?'#7A3AA8':'#9A4ACB',{opacity:k.toFixed(2)});}
-  return g+L(x0-40*s,y-110*s,x1+40*s,y-110*s,'#5A3A1E',4*s);}
-// A palace skyline (base y).
-function palace(x,y,s,F){let g=R(x-360*s,y-360*s,720*s,360*s,6,'#E8C898',{stroke:'#8A6A3A','stroke-width':6})+R(x-420*s,y-460*s,140*s,460*s,6,'#D8B080')+R(x+280*s,y-460*s,140*s,460*s,6,'#D8B080');
-  g+=P(`M${x-430*s} ${y-460*s}L${x-350*s} ${y-560*s}L${x-270*s} ${y-460*s}Z`,F)+P(`M${x+270*s} ${y-460*s}L${x+350*s} ${y-560*s}L${x+430*s} ${y-460*s}Z`,F)+P(`M${x-200*s} ${y-360*s}Q${x} ${y-620*s} ${x+200*s} ${y-360*s}Z`,F);
-  for(let i=0;i<6;i++)g+=R(x-300*s+i*110*s,y-300*s,40*s,300*s,4,'#F4E0B8',{stroke:'#B89A6A','stroke-width':3});
-  return g+R(x-90*s,y-170*s,180*s,170*s,80*s,'#5A3A1E');}
-
 // ---------- scenery kit (videos/_kit/scenery.js): big figures, layered settings, a different foreground per act ----------
 // Framing standard (as in the prototypes, ep. 6 floodS / ep. 7 rainbowArk): the main figures stand with their feet on
 // sheet y FY=1000 at PPL scale HS (2.7) and the camera holds them with the feet at frame ~1190 (zoom 1.05-1.2), so they
@@ -349,24 +322,24 @@ function nbServants(t,lt){
 function nbOx(t,lt){
   let g=SC.env(t,'village',{seed:57,mood:'golden',gy:880});
   for(let i=0;i<9;i++)g+=P(`M-100 ${930+i*i*9+i*20}Q960 ${910+i*i*9+i*20} 2020 ${936+i*i*9+i*20}`,'none',{stroke:'#6A4A1A','stroke-width':5+i,opacity:.45});
-  const w=prog(t,AT.ox-.3,AT.donkey+.4),x=lerp(1000,1130,w);
-  g+=SC.animal(t,'ox',x+210,970,1.75,{walk:t*4.5,face:1});
-  g+=L(x+40,850,x-60,930,'#5A3A1A',10)+P(`M${x-60} 930L${x-120} 990L${x-90} 990Z`,'#7A7A80');
-  g+=fig('nei',x-150,975,1.65,{walk:t*4.5,lean:14,near:{x:x-60,y:820},far:{x:x-74,y:826},look:{x:x+300,y:800},expr:'joy'});
-  g+=withProp(who('cov',680,FY,VS,{look:{x:x+200,y:760},expr:['calm','awe',.6],near:{x:790,y:FY-330}}),r=>L(r.hand('near')[0]+4,r.hand('near')[1]-40,r.hand('near')[0]+20,FY+14,'#6A4A2A',14));
+  const w=prog(t,AT.ox-.3,AT.donkey+.4),x=lerp(1130,1060,w);
+  g+=SC.animal(t,'ox',x,960,1.6,{walk:t*4.5,face:-1});
+  g+=L(x+160,880,x+250,930,'#5A3A1A',10)+P(`M${x+250} 930L${x+300} 990L${x+270} 990Z`,'#7A7A80');
+  g+=fig('nei',x+330,966,1.55,{face:-1,walk:t*4.5,lean:14,near:{x:x+260,y:830},far:{x:x+250,y:836},look:{x:x-150,y:800},expr:'joy'});
+  g+=withProp(who('cov',620,FY,VS,{look:{x:x-120,y:760},expr:['calm','awe',.6],near:{x:740,y:FY-200}}),r=>L(r.hand('near')[0]+4,r.hand('near')[1]-140,r.hand('near')[0]+16,FY+14,'#6A4A2A',14));
   return g+foreYard(t,980,1.08,{cols:['#4A3A1A','#7A5A2A','#B8904A'],flowers:['#FFD84A'],seed:47,rockAt:[[1340,1500,190]]});
 }
 // B6. his donkey: the neighbour leads his loaded donkey down the road; the man turns to watch it pass.
 function nbDonkey(t,lt){
   let g=dayV(t,{mood:'day',house:false,seed:59});
   g+=P('M-100 960Q960 900 2020 960L2020 1060Q960 1000 -100 1060Z','#D8B888',{opacity:.9});
-  const w=prog(t,AT.donkey-.4,AT.anything),x=lerp(1180,1040,w),ds=1.9;
-  const pack=G(`translate(${x+190} 980) scale(${-ds} ${ds})`,R(-44,-132,80,30,8,'#C8884A',{stroke:'#6A3A1A','stroke-width':3})+R(-56,-112,30,52,8,'#B87838',{stroke:'#6A3A1A','stroke-width':3})+R(10,-112,30,52,8,'#B87838',{stroke:'#6A3A1A','stroke-width':3})+R(-26,-156,48,26,6,'#E8C070',{stroke:'#6A3A1A','stroke-width':3}));
-  g+=SC.animal(t,'donkey',x+190,980,ds,{walk:t*6,face:-1})+pack;
-  const N=who('nei',x,986,1.7,{face:-1,walk:t*6,look:{x:x+180,y:800},expr:'calm',far:{x:x+80,y:860}});
+  const w=prog(t,AT.donkey-.4,AT.anything),x=lerp(1060,980,w),ds=1.75,dx=x+270;
+  const pack=G(`translate(${dx} 980) scale(${-ds} ${ds})`,R(-48,-156,84,22,6,'#C8483A',{stroke:'#6A1A1A','stroke-width':3})+R(-44,-150,26,50,8,'#B87838',{stroke:'#6A3A1A','stroke-width':3})+R(-8,-150,26,50,8,'#C8884A',{stroke:'#6A3A1A','stroke-width':3})+R(-34,-180,52,26,8,'#E8C070',{stroke:'#6A3A1A','stroke-width':3}));
+  g+=SC.animal(t,'donkey',dx,980,ds,{walk:t*6,face:-1})+pack;
+  const N=who('nei',x,986,1.6,{face:-1,walk:t*6,look:{x:dx,y:760},expr:'calm',far:{x:x+90,y:840}});
   const r=PPL.rig(N),h=r.hand('far');
-  g+=L(h[0],h[1],x+90,880,'#6A3A1A',5)+PPL.fig(N);
-  g+=fig('cov',690,FY+20,VS,{look:{x:x+190,y:820},expr:['calm','sad',.5],near:'chest',far:'chest'});
+  g+=L(h[0],h[1],dx-150,760,'#6A3A1A',5)+PPL.fig(N);
+  g+=fig('cov',660,FY+20,VS,{look:{x:dx,y:820},expr:['calm','sad',.5],near:'chest',far:'chest'});
   return g+foreYard(t,960,1.08,{cols:['#5A4A2A','#8A7A44','#D8C080'],flowers:['#FFFFFF'],seed:49,rockAt:[[1320,1480,170],[600,1640,140]]});
 }
 // B7. "or anything that is your neighbour's": his courtyard at dusk, a table of his good things; the man's eyes go along them.
@@ -378,7 +351,7 @@ function nbAnything(t,lt){
     x=>coinsP(x,876,F,6),x=>P(`M${x-44} 880L${x-22} 770L${x+22} 770L${x+44} 880Z`,'#3DE0B8',{stroke:'#1787A8','stroke-width':4}),x=>P(`M${x-32} 880V790Q${x} 760 ${x+32} 790V880`,'none',{stroke:F,'stroke-width':8})+[0,1,2].map(i=>L(x-16+i*16,794,x-16+i*16,880,'#FFF1B0',2)).join('')];
   items.forEach((f,i)=>{const x=880+i*110;g+=glow(x,830,70,'#FFE9A8',.3+.2*Math.sin(t*4+i))+f(x);});
   const k=Math.floor(prog(t,AT.anything-.2,AT.toCovet)*5)%5,lx=880+k*110;
-  g+=fig('nei',1430,960,1.6,{face:-1,look:{x:1100,y:820},expr:'calm'});
+  g+=fig('nei',1370,960,1.5,{face:-1,look:{x:1100,y:820},expr:'calm'});
   g+=fig('cov',690,FY+20,VS,{look:{x:lx,y:820},expr:['calm','awe',.8],lean:10,near:'chest'});
   return g+foreYard(t,960,1.08,{cols:['#2A1E2A','#4A3A3A','#8A6A5A'],flowers:['#FFD45E'],seed:51,rockAt:[[1380,1560,170]]});
 }
@@ -388,8 +361,8 @@ function liking(t,lt){
   g+=SC.tree(t,960,930,2.6,{kind:'round',col:'#6AC060',col2:'#B8F0A0'});
   for(let i=0;i<20;i++)g+=C(780+hash(i,4)*360,300+hash(i,5)*300,13,['#FF7BD5','#FFFFFF','#FFD45E'][i%3]);
   const p=ease.out(prog(t,AT.liking-.3,AT.liking+.5));
-  g+=fig('cov',760,FY,HS,{look:{x:960,y:400},expr:['calm','joy',p],near:{x:880,y:FY-360-40*(1-p)}});
-  g+=fig('nei',1170,FY,HS,{face:-1,look:{x:760,y:520},expr:'joy',near:'open'});
+  g+=fig('cov',700,FY,2.5,{look:{x:960,y:400},expr:['calm','joy',p],near:{x:930,y:FY-230-30*(1-p)}});
+  g+=fig('nei',1230,FY,2.5,{face:-1,look:{x:760,y:520},expr:'joy',near:'open'});
   return g+SC.fore(t,{y:1040,edges:EDG(960,1.1),cols:['#1E4A1E','#3A7A2E','#7AB850'],flowers:['#FF7BD5','#FFFFFF','#FFD45E'],rocks:0,rockAt:[[600,1520,160]],density:.9,seed:53,
     over:SC.pair(t,'sheep',1330,1560,1.9,{face:-1,graze:'auto',gap:90,dy:-30,phase:2})});
 }
@@ -591,7 +564,7 @@ function eveBeat(mode){return (t,lt)=>{
 };}
 // D10. "Coveting is the seed": a coral seed drops into the dark soil under the garden and splits.
 function seedSoil(t,lt){
-  let g=glow(960,200,700,'#FFB070',.25)+SC.sky(t,{mood:'golden',hz:560,y1:620});
+  let g=SC.sky(t,{mood:'golden',hz:560,y1:620,sun:{x:1400,y:200,r:60}})+SC.clouds(t,{seed:82,n:5,y:-500,h:500,mood:'golden',sun:{x:1400,y:200}})+SC.birds(t,{x:700,y:100,n:5});
   g+=SC.hills(81,{y:520,amp:20,wave:260,col:'#5E9A46',trees:8,treeS:.5});
   g+=R(-120,600,2160,1200,0,'#3A2414');
   for(let i=0;i<14;i++)g+=P(`M${hash(i,3)*1900} ${640+hash(i,4)*900}q${30+hash(i,5)*80} ${40+hash(i,6)*80} ${hash(i,7)*60} ${120+hash(i,8)*80}`,'none',{stroke:'#5A3A22','stroke-width':4,opacity:.6});
@@ -599,7 +572,7 @@ function seedSoil(t,lt){
   g+=P(`M-120 600${[...Array(14)].map((_,i)=>`q80 ${(i%2?-14:14)} 160 0`).join('')}V640H-120Z`,'#4A7A30');
   for(let i=0;i<30;i++)g+=SC.tuft(t,hash(i,12)*1920,606,1,{cols:['#2E5A26','#4A8A3A','#8AC060']});
   const d=ease.inOut(prog(t,AT.coveting-.2,AT.seed+.2)),sp=ease.out(prog(t,AT.seed+.3,AT.other));
-  const y=lerp(150,820,d);
+  const y=lerp(150,760,d);
   g+=glow(960,y,260,'#FF5A48',.55)+Ell(960,y,64,86,'#FF5A48',{stroke:'#8A1A10','stroke-width':6})+Ell(940,y-26,16,24,'#FFB0A0');
   if(sp>0)g+=mark(`M960 ${y-70}Q930 ${y-200} 990 ${y-320}`,sp,'#3BBF7A',14)+(sp>.7?Ell(1020,y-320,40,18,'#3BBF7A',{transform:`rotate(-30 1020 ${y-320})`}):'')+mark(`M960 ${y+70}Q920 ${y+180} 860 ${y+260}M960 ${y+70}Q1000 ${y+190} 1070 ${y+240}`,sp,'#8A5A3A',8);
   return g;
@@ -1073,8 +1046,8 @@ function loveGod(t,lt){
   for(let k=0;k<4;k++){const [lx,ly]=lineAt(960,200,.45,k),p=clamp(up*1.4-k*.12);if(p>0)g+=mark(`M${lx} ${ly}Q${lx-40} ${ly-160} 760 -60`,p,'#FFF6DA',9,{opacity:.9})+glow(760,-60,200*p,'#FFFFFF',.5*p);}
   if(up>.6)g+=presence(t,760,-80,80,prog(up,.6,1));
   const lift=ease.out(prog(t,AT.loveGod-.3,AT.loveGod+.5)),L0={x:760,y:0};
-  g+=fig('cov',700,FY,HS,{look:L0,expr:['calm','joy',lift],near:lift>.3?{x:960,y:FY-640}:null,far:lift>.3?{x:860,y:FY-660}:null});
-  g+=fig('neiW',1180,FY,2.5,{tunic:'#3DE0B8',tunic2:'#1787A8',skin:'#F5BE8E',shade:'#C4835E',face:-1,look:L0,expr:['calm','joy',lift],near:lift>.3?{x:980,y:FY-600}:'chest',far:lift>.3?{x:1080,y:FY-640}:null});
+  g+=fig('cov',700,FY,HS,{look:L0,expr:['calm','joy',lift],near:lift>.3?{x:1000,y:FY-470}:null});
+  g+=fig('neiW',1180,FY,2.5,{tunic:'#3DE0B8',tunic2:'#1787A8',skin:'#F5BE8E',shade:'#C4835E',face:-1,look:L0,expr:['calm','joy',lift],near:lift>.3?{x:900,y:FY-470}:'chest'});
   return g+foreVillage(t,960,1.04,{seed:155});
 }
 // H3. "And the second as love for our neighbour": lines V-X spread down into a line of neighbours joining hands.
@@ -1264,8 +1237,6 @@ function endCard(t){
 const hud=t=>{let g='';VERSES.forEach(v=>g+=verse(t,v[0],v[1],v[2],v[3],v[4],v[5]));TAGS.forEach((x,k)=>g+=ftag(t,x,k));return g+endCard(t);};
 
 // ---------- the sheet list: one setting per beat, a cut or scroll between, one camera move or a hold each ----------
-const FG=(a,b,c,fl=[])=>({grass:[a,b,c],flowers:fl});
-const W0=(x=960,y=800,F=1170)=>H(x,y,.86,F);
 const SH=[];
 const sh=(name,at,draw,bg,cam,o={})=>SH.push(Object.assign({name,at,draw,bg,camF:cam},o));
 // act 0
@@ -1300,7 +1271,7 @@ sh('she took',AT.tookFruit-.12,eveTook,['#0A2A1A','#04140A'],H(1060,FY,1.12,1190
 sh('saw it',AT.sawIt-.1,eveBeat(0),['#2A4A8A','#0A1A3A'],H(1000,FY,1.15,1190),{vIn:'cut',stars:false});
 sh('wanted it',AT.wantedIt-.1,eveBeat(1),['#8A2A3A','#2A0A12'],H(1000,FY,1.15,1190),{vIn:'cut',stars:false});
 sh('took it',AT.tookIt-.1,eveBeat(2),['#8A6A3A','#2A1A0A'],H(1000,FY,1.15,1190),{vIn:'cut',stars:false});
-sh('the seed',AT.coveting-.12,seedSoil,['#5A3A24','#120A04'],(a,b)=>[[a,960,560,1.0],[b,960,640,1.1]],{vIn:'cut',stars:false});
+sh('the seed',AT.coveting-.12,seedSoil,['#5A3A24','#120A04'],(a,b)=>[[a,960,620,1.0],[b,960,700,1.08]],{vIn:'cut',stars:false});
 sh('what grows',AT.other-.12,sinVine,['#2A3A2A','#0A100A'],(a,b)=>[[a,960,560,.95],[b,960,470,1.08]],{stars:false});
 // act 4
 sh('king ahab',AT.centuries-.12,ahabPalace,['#E2B87A','#A9703E'],M(940,FY,1.0,920,FY,1.1,1190),{vIn:'cut',stars:false});
