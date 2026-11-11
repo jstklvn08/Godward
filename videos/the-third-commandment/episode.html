@@ -284,11 +284,11 @@ function roadside(t){
   g+=R(1560,360,40,420,8,'#6A4A2A')+C(1580,330,130,'#4A8A4A')+C(1490,380,90,'#3A7A3A')+C(1670,380,90,'#3A7A3A');
   g+=gnd(27,770,'#D8B070','#C09858');
   const w=prog(t,AT.youCan-.4,AT.seeWhy-.3),mx=lerp(560,1380,w),k=1-ease.inOut(prog(t,AT.without-.3,AT.without+.7));
-  g+=sashed(person(2,mx,768,.92,{walk:t*7,look:{x:mx+300,y:520},expr:'calm'}),k);
-  // the old woman on her knees gathering the fruit; she looks up at him as he goes by
-  for(let i=0;i<6;i++)g+=C(1000+(i-2.5)*46,846+(i%2)*8,14,'#FF9A3C',{stroke:'#B85A1A','stroke-width':3});
-  g+=P('M1110 846L1180 830L1196 800L1130 790L1100 820Z','#B8864A',{stroke:'#6A4A2A','stroke-width':4});
-  g+=PPL.fig(elderOpts(930,848,.92,{f:true,tunic:'#9A7AB8',tunic2:'#5A4A7A',kneel:1,lean:24,near:{x:990,y:842},far:{x:972,y:845},look:w>.35&&w<.7?{x:mx,y:560}:{x:1000,y:846},expr:w>.4?'sad':'calm'}));
+  // the old woman on her knees at the far side of the road gathering the fruit; she looks up at him as he goes by
+  for(let i=0;i<6;i++)g+=C(1010+(i-2.5)*40,738+(i%2)*7,12,'#FF9A3C',{stroke:'#B85A1A','stroke-width':3});
+  g+=P('M1110 738L1170 724L1184 698L1128 690L1100 714Z','#B8864A',{stroke:'#6A4A2A','stroke-width':4});
+  g+=PPL.fig(elderOpts(950,740,.85,{f:true,tunic:'#9A7AB8',tunic2:'#5A4A7A',kneel:1,lean:24,near:{x:1000,y:734},far:{x:985,y:737},look:w>.3&&w<.7?{x:mx,y:600}:{x:1010,y:738},expr:w>.4?'sad':'calm'}));
+  g+=sashed(person(2,mx,830,1,{walk:t*7,look:{x:mx+300,y:560},expr:'calm'}),k);
   return g;
 }
 
@@ -320,7 +320,7 @@ function egypt(t,lt){
   g+=gnd(37,770,'#B0602E','#9A522A');
   for(let i=0;i<4;i++)for(let j=0;j<3-i%2;j++)g+=R(1640+j*76+(i%2)*38,730-i*34,72,32,3,'#C2703A',{stroke:'#6A2E14','stroke-width':3});
   g+=taskShadow(lerp(2000,1720,prog(t,AT.moses,AT.moses+2)),820,1.1,.55);
-  for(let i=2;i>=0;i--){const x=1280+i*140+lt*14,s=.9;g+=folk(i,x,800,s,{lean:18,walk:t*5+i,reach:.95,expr:'sad'})+brick(x-12-75*s,800-262*s,s);}
+  for(let i=1;i>=0;i--){const x=1220+i*130+lt*14,s=.9;g+=folk(i,x,800,s,{lean:18,walk:t*5+i,reach:.95,expr:'sad'})+brick(x-12-75*s,800-262*s,s);}
   const w=prog(t,AT.moses,AT.free),mx=lerp(460,640,w),hope=prog(t,AT.free-.6,AT.free+.4);
   g+=moses(mx,800,1.0,{walk:w<1?t*6:0,look:{x:1050,y:620},expr:'tender'});
   g+=folk(3,1060,806,.7,{face:-1,expr:['sad','joy',hope],look:{x:mx,y:600},near:hope>.3?'up':'chest',far:'chest'});
@@ -351,7 +351,7 @@ function campfire(t){
   g+=R(700,758,180,26,10,'#6A4026')+R(1060,758,170,26,10,'#6A4026');
   const gm=elderOpts(790,800,1.0,{f:true,tunic:'#B85A6A',tunic2:'#7A2A3A',sit:1,seat:760,near:'open',look:{x:1140,y:640},expr:'tender'});
   g+=PPL.fig(gm)+folk(4,1140,800,.66,{face:-1,sit:1,seat:768,expr:['calm','joy',prog(t,AT.forever+1.5,AT.forever+2.5)],look:{x:790,y:600},near:'chest'});
-  g+=lightWords(t,AT.forever+.2,850,600,1090,640,4);
+  g+=lightWords(t,AT.forever+.2,860,480,1080,500,3);
   return g;
 }
 // ---- 14. "remembered throughout all generations": a line of grandparents, parents, children, hands joined ----
@@ -380,23 +380,23 @@ function scribe(t){
 function bedtime(t){
   let g=R(-60,-700,2040,1480,0,'#1E2A4A')+R(1300,200,260,300,10,'#0A1430',{stroke:'#4A5A7A','stroke-width':12})+C(1460,300,40,'#F2F4FF')+glow(1460,300,120,'#DDE6FF',.4);
   g+=glow(560,500,300,'#FFD27A',.45)+R(540,560,40,200,8,'#8A6A4A')+P('M500 560L620 560L590 480L530 480Z','#FFE2A0');
-  g+=R(-60,780,2040,1000,0,'#2A3A5A')+R(620,760,880,60,20,'#E8E0F0');
-  const kid=person(3,900,820,1.1,{f:true,look:{x:1100,y:770},expr:'joy',near:{x:1090,y:770}});
-  const mom=person(1,700,820,1.05,{look:{x:1050,y:760},expr:'tender',hairStyle:'veil'});mom.near=PPL.handOn(mom,kid,'shoulder');
+  g+=R(-60,800,2040,1000,0,'#2A3A5A')+R(560,800,1000,60,20,'#E8E0F0');
+  const kid=person(3,900,770,1.1,{f:true,look:{x:1100,y:790},expr:'joy',near:{x:1110,y:800}});
+  const mom=person(1,700,770,1.05,{look:{x:1050,y:790},expr:'tender',hairStyle:'veil'});mom.near=PPL.handOn(mom,kid,'shoulder');
   const M=PPL.rig(mom),K2=PPL.rig(kid);
   g+=M.draw('noFront')+K2.draw('noFront');
   // the open book in front of them
   let b=P('M640 640Q800 610 960 650Q1120 610 1280 640L1280 900Q1120 870 960 910Q800 870 640 900Z','#FFFDF2',{stroke:'#8A7A60','stroke-width':4})+L(960,650,960,910,'#C8B898',4);
   for(let i=0;i<6;i++){b+=L(670,680+i*34,930,680+i*34,'#8A8A98',5,{opacity:.6});if(i!==2)b+=L(990,680+i*34,1250,680+i*34,'#8A8A98',5,{opacity:.6});}
   b+=T(1030,762,'the',{size:30,font:'Georgia',anchor:'middle',fill:INK})+T(1072,762,'L',{size:36,font:'Georgia',fill:INK})+T(1096,762,'ORD',{size:27,font:'Georgia',fill:INK,ls:2});
-  b+=mark('M1068 772L1160 770',ease.inOut(prog(t,AT.capitals,AT.capitals+.5)),CORAL,6)+glow(1110,754,80,'#FFE36B',.5*prog(t,AT.capitals+.3,AT.capitals+.9));
+  b+=mark('M1068 772L1160 770',ease.inOut(prog(t,AT.capitals,AT.capitals+.5)),CORAL,6)+glow(1110,754,80,'#FFE36B',.5*prog(t,AT.capitals+.3,AT.capitals+.9));b='<g transform="translate(0 40) scale(1.15) translate(-144 -110)">'+b+'</g>';
   g+=b+M.draw('front')+K2.draw('front');
   return g;
 }
 // ---- 17. "a name isn't just a label": a man ties paper tags on jars ----
 function jars(t){
   let g=R(-60,-700,2040,1480,0,'#8A9A5A')+R(-60,480,2040,24,0,'#5A6A3A')+R(-60,780,2040,1000,0,'#6A5A3A');
-  [300,560,1360,1620].forEach((x,i)=>g+=jar(x,480,.8,{c:['#C2703A','#B8864A','#A86A3E','#C8904A'][i]}));
+  [600,740,1180,1320].forEach((x,i)=>g+=jar(x,480,.7,{c:['#C2703A','#B8864A','#A86A3E','#C8904A'][i]}));
   g+=R(600,700,640,24,4,'#7A4A26')+R(620,724,16,76,3,'#5A3418')+R(1200,724,16,76,3,'#5A3418');
   const tags=['JAR','JAR','JAR'];
   [700,820,940].forEach((x,i)=>{g+=jar(x,700,.82,{c:['#C2703A','#B8864A','#C8904A'][i]});const p=i<2?1:prog(t,AT.label-.4,AT.label);
@@ -465,11 +465,11 @@ function well(t){
   g+=Ell(1330,770,150,36,'#8A7A6A')+R(1180,690,300,80,10,'#A8988A')+Ell(1330,690,150,30,'#6A5A4A')+R(1220,560,14,130,3,'#6A4A2A')+R(1426,560,14,130,3,'#6A4A2A')+R(1210,550,240,16,4,'#5A3A22');
   return g;
 }
-const jarHold=(x,y,s,p)=>({jx:lerp(x+86*s,x+74*s,p),jy:lerp(y,y-70*s,p)});   // jar bottom: on the ground -> held at the chest
+const jarHold=(x,y,s,p)=>({jx:lerp(x+86*s,x+74*s,p),jy:lerp(y,y-28*s,p)});   // jar bottom: on the ground -> held at the chest
 function lift(t){
   let g=well(t);
   const p=ease.inOut(prog(t,AT.lift-.25,AT.lift+.5)),x=880,s=1.05,{jx,jy}=jarHold(x,800,s,p);
-  g+=withFront(person(1,x,800,s,{f:true,lean:lerp(24,0,p),near:{x:jx+30*s,y:jy-70*s},far:{x:jx-26*s,y:jy-60*s},look:{x:jx,y:jy-60},expr:['calm','joy',p]}),()=>jar(jx,jy,.8));
+  g+=withFront(person(1,x,800,s,{f:true,lean:lerp(24,0,p),near:{x:jx+34*s,y:jy-64*s},far:{x:jx-28*s,y:jy-56*s},look:{x:jx,y:jy-60},expr:['calm','joy',p]}),()=>jar(jx,jy,.8));
   g+=folk(4,1110,806,.64,{face:-1,look:{x:jx,y:jy-60},expr:'joy',near:p>.8?'up':null});
   return g;
 }
@@ -478,16 +478,16 @@ function carryHome(t){
   let g=glow(1400,200,500,'#FFD27A',.6)+C(1400,220,110,'#FFE2A0',{opacity:.9})+`<path d="${ridge(57,560,30,360)}" fill="#7A3A5A"/>`+gnd(58,780,'#B8705A','#9A5A48');
   g+=P('M-60 820Q600 780 1200 800T1980 790L1980 860Q1200 850 600 860T-60 870Z','#D89A7A',{opacity:.6});
   const w=prog(t,AT.orTo-.1,AT.inVain-.1),x=lerp(700,1000,w),s=1.05,{jx,jy}=jarHold(x,800,s,1);
-  g+=withFront(person(1,x,800,s,{f:true,walk:t*6,near:{x:jx+30*s,y:jy-70*s},far:{x:jx-26*s,y:jy-60*s},look:{x:x-150,y:700},expr:'tender'}),()=>jar(jx,jy,.8));
+  g+=withFront(person(1,x,800,s,{f:true,walk:t*6,near:{x:jx+34*s,y:jy-64*s},far:{x:jx-28*s,y:jy-56*s},look:{x:x-150,y:700},expr:'tender'}),()=>jar(jx,jy,.8));
   const kx=x-150;g+=withFront(person(4,kx,806,.64,{walk:t*8+1,near:{x:kx+56*.64,y:806-80*.64},look:{x:x,y:620},expr:'joy'}),()=>jar(kx+60*.64,806-28*.64,.4,{c:'#B8864A'}));
   return g;
 }
 // ---- 25. "in vain means empty, or hollow": at home she looks into the jar: nothing ----
 function emptyJar(t){
   let g=R(-60,-700,2040,1480,0,'#3A4A5A')+R(1250,280,200,240,10,'#7A8AA0',{opacity:.6})+R(-60,780,2040,1000,0,'#2A3440')+glow(960,500,500,'#8AA8C8',.25);
-  const p=ease.inOut(prog(t,AT.inVain-.2,AT.empty+.2)),x=880,s=1.05,jx=x+74*s,jy=800-70*s;
+  const p=ease.inOut(prog(t,AT.inVain-.2,AT.empty+.2)),x=880,s=1.05,jx=x+74*s,jy=800-28*s;
   g+=Ell(1130,800,70,16,'#7A5A3A')+Ell(1130,790,60,12,'#3A2A1A');
-  g+=withFront(person(1,x,800,s,{f:true,lean:lerp(0,12,p),near:{x:jx+30*s,y:jy-70*s},far:{x:jx-26*s,y:jy-60*s},look:{x:jx+30,y:jy-130},expr:['calm','sad',prog(t,AT.empty,AT.empty+.5)]}),()=>jar(jx,jy,.8,{rot:lerp(0,-28,p)}));
+  g+=withFront(person(1,x,800,s,{f:true,lean:lerp(0,12,p),near:{x:jx+34*s,y:jy-64*s},far:{x:jx-28*s,y:jy-56*s},look:{x:jx+30,y:jy-130},expr:['calm','sad',prog(t,AT.empty,AT.empty+.5)]}),()=>jar(jx,jy,.8,{rot:lerp(0,-28,p)}));
   const e=prog(t,AT.empty,AT.empty+2);if(e>0&&e<1)for(let k=0;k<3;k++){const q=clamp(e*1.6-k*.25);if(q>0&&q<1)g+=Ell(jx+20,jy-110-q*40,30+q*90,10+q*30,'none',{stroke:'#CFE0F0','stroke-width':4,opacity:(1-q).toFixed(2)});}
   return g;
 }
@@ -508,7 +508,7 @@ function hollowBanner(t){
   let g=R(-60,200,2040,600,0,'#B0605A')+house(520,780,300,380,'#C87A6A')+house(1480,780,320,360,'#B86A5A')+gnd(61,780,'#8A4A48','#6A3A3A');
   const w=prog(t,AT.inOther,AT.thatCovers-.2),x=lerp(640,1060,w),s=1.02;
   g+=withFront(person(0,x,800,s,{walk:t*6,near:{x:x+50*s,y:800-120*s},look:{x:x+300,y:560},expr:'joy'}),r=>{const h=r.hand('near');return L(h[0],h[1]+70,h[0],h[1]-250,'#6A4026',10)+namePlate(t,h[0],h[1]-300,.5,0,{letters:0,hollow:'#E0D8D0'});});
-  g+=folk(3,1340,806,.95,{face:1,f:true,look:{x:1600,y:700},expr:'sad',near:'chest'})+folk(2,1470,806,.95,{face:-1,look:'down',expr:'calm',near:'open',far:'open'});
+  g+=folk(3,1230,806,.95,{face:1,f:true,look:{x:1600,y:700},expr:'sad',near:'chest'})+folk(2,1350,806,.95,{face:-1,look:'down',expr:'calm',near:'open',far:'open'});
   return g;
 }
 
@@ -528,7 +528,7 @@ function curse(t){
   let g=R(-60,-700,2040,1480,0,'#8A2A1A')+glow(960,300,600,'#FF6A4A',.25)+house(1500,780,340,400,'#6A2418')+gnd(65,780,'#5A2014','#3A1208');
   g+=R(500,660,300,80,8,'#7A4A26')+C(540,760,40,'none',{stroke:'#4A2A14','stroke-width':10})+G('rotate(30 820 790)',C(820,790,40,'none',{stroke:'#4A2A14','stroke-width':10}));
   const f=Math.sin(E.held(t,10)*8)*12;
-  g+=folk(0,860,800,1.02,{near:{x:900,y:560+f},lean:6,look:{x:1100,y:640},expr:'fear'})+folk(2,1110,806,1,{face:-1,lean:-10,look:{x:860,y:620},expr:'surprised',near:'chest'});
+  g+=folk(0,860,800,1.02,{near:{x:990,y:600+f},far:'chest',lean:6,look:{x:1100,y:640},expr:'fear'})+folk(2,1110,806,1,{face:-1,lean:-10,look:{x:860,y:620},expr:'surprised',near:'chest'});
   g+=bubble(t,AT.using+.3,960,420,300,170,curseTxt(920,420,80)+namePlate(t,1040,420,.18,1,{halo:0,rot:12}),900,560,10);
   return g;
 }
@@ -552,11 +552,11 @@ function deal(t){
 // ---- 32. "people swore by God's name": at the city gate a man raises his hand before the elders ----
 function gate(t){
   let g=R(-60,-700,2040,1480,0,'#D8B080')+R(-60,140,2040,660,0,'#B08058')+P('M760 800L760 380Q960 200 1160 380L1160 800Z','#4A2A16')+gnd(71,780,'#A87A50','#8A6040');
-  g+=R(1220,740,360,24,6,'#8A7A6A')+R(1240,764,20,40,3,'#6A5A4A')+R(1540,764,20,40,3,'#6A5A4A');
-  [1290,1410,1530].forEach((x,i)=>g+=PPL.fig(elderOpts(x,800,.95,{face:-1,sit:1,seat:742,look:{x:860,y:560},expr:'calm',phase:i})));
+  g+=R(1140,740,340,24,6,'#8A7A6A')+R(1160,764,20,40,3,'#6A5A4A')+R(1440,764,20,40,3,'#6A5A4A');
+  [1200,1310,1420].forEach((x,i)=>g+=PPL.fig(elderOpts(x,800,.95,{face:-1,sit:1,seat:742,look:{x:860,y:560},expr:'calm',phase:i})));
   const up=ease.out(prog(t,AT.swore-.2,AT.swore+.4)),nm=ease.out(prog(t,AT.godsName,AT.godsName+.5));
   g+=withFront(person(0,860,800,1.05,{near:up>.1?'up':null,look:{x:1300,y:620},expr:'calm'}),r=>{const h=r.hand('near');return nm>0?glow(h[0],h[1]-80,120,'#FFE9A8',.7*nm)+namePlate(t,h[0],h[1]-90,.22,1,{op:nm}):'';});
-  g+=folk(2,1060,806,1,{face:-1,look:{x:860,y:560},expr:'calm',near:'chest'});
+  g+=folk(2,1030,806,1,{face:-1,look:{x:860,y:560},expr:'calm',near:'chest'});
   return g;
 }
 // ---- 33. Leviticus 19:12: he swears with one hand up and crosses his fingers behind his back ----
@@ -606,7 +606,7 @@ function family(t){
   const kid=person(4,1110,806,.64,{face:-1,look:talk?{x:900,y:500}:'down',expr:'joy'});
   g+=sashed(dad,wore)+sashed(mom,wore)+sashed(kid,wore);
   if(wore>0)g+=fireflies(t,700,400,500,400,'#FFE9A8',12,wore);
-  g+=bubble(t,AT.israelDidnt+.3,860,430,240,150,namePlate(t,860,430,.36,1,{halo:.4}),870,555,12);
+  if(talk)g+=bubble(t,AT.israelDidnt+.3,860,430,240,150,namePlate(t,860,430,.36,1,{halo:.4}),870,555,12);
   return g;
 }
 // ---- 38. "After the priests' blessing": Aaron lifts his hands over the people ----
@@ -617,7 +617,7 @@ function blessing(t){
   g+=withFront(a,r=>{let q='';for(let i=0;i<4;i++)for(let j=0;j<3;j++){const p=r.W([-18+j*16,-100+i*14]);q+=R(p[0]-6,p[1]-6,12,12,2,['#E83A3A','#3AB0E8','#E8C83A','#3AC86A'][(i+j)%4]);}
     return q+Ell(r.head[0],r.head[1]-42*r.s,58*r.s,26*r.s,'#FFFDF2',{stroke:'#C8C0A8','stroke-width':3});});
   const bow=prog(t,AT.after,AT.after+1);
-  [[620,830],[740,840],[1180,840],[1300,830],[520,846],[1400,846]].forEach(([x,y],i)=>g+=folk(i,x,y,.86,{face:x>960?-1:1,kneel:bow,lean:18*bow,look:'down',near:'chest',far:'chest',expr:'calm'}));
+  [[640,830],[760,840],[1160,840],[1280,830]].forEach(([x,y],i)=>g+=folk(i,x,y,.86,{face:x>960?-1:1,kneel:bow,lean:18*bow,look:'down',near:'chest',far:'chest',expr:'calm'}));
   return g;
 }
 // ---- 39. Numbers 6:27: the name comes down on the people as a band of light ----
@@ -752,7 +752,7 @@ function hillside(t){
   let g=glow(1300,100,700,'#FFE9B0',.6)+R(-60,380,2040,180,0,'#3A8AB8')+R(-60,380,2040,8,0,'#BFE8FF',{opacity:.6});
   g+=`<path d="${ridge(101,560,24,360)}" fill="#7AB060"/>`+gnd(102,780,'#5A9A4A','#4A8A3A');
   g+=glow(1340,480,400,'#FFFBEA',.85)+P('M1270 -700L1410 -700L1440 800L1240 800Z','#FFFBEA',{opacity:.5})+glow(1340,600,200,'#FFFFFF',.8*(1+.15*Math.sin(t*2)));
-  [[560,.95],[700,1],[850,.95],[990,.92],[1110,.64]].forEach(([x,s],i)=>g+=folk(i,x,800,s,{kneel:1,look:{x:1340,y:560},expr:'tender',near:i===2?'open':null}));
+  [[640,.95],[770,1],[900,.95],[1030,.92],[1140,.64]].forEach(([x,s],i)=>g+=folk(i,x,800,s,{kneel:1,look:{x:1340,y:560},expr:'tender',near:i===2?'open':null}));
   return g;
 }
 // ---- 51. "the first thing he asked for": the friends lean in; words of light come to them ----
@@ -787,10 +787,10 @@ function setApart(t){
 // ---- 54. "Full, not empty": the jar from before, now full; water and light pour into the bowl ----
 function fullJar(t){
   let g=R(-60,-700,2040,1480,0,'#5AB0E0')+glow(960,400,600,'#FFFBEA',.6)+R(-60,780,2040,1000,0,'#2E6AA8');
-  const x=880,s=1.05,jx=x+74*s,jy=800-70*s,p=ease.out(prog(t,AT.full-.2,AT.full+.4));
+  const x=880,s=1.05,jx=x+74*s,jy=800-28*s,p=ease.out(prog(t,AT.full-.2,AT.full+.4));
   g+=Ell(1130,800,70,16,'#7A5A3A')+Ell(1130,790,60,12,p>.5?'#7CD4FF':'#3A2A1A')+glow(1130,790,90,'#FFFBEA',.6*p);
   if(p>0)g+=P(`M${jx+50} ${jy-118}Q${1120} ${jy-120} 1130 788`,'none',{stroke:'#BFE8FF','stroke-width':14*p,opacity:.9})+glow(jx+60,jy-110,80,'#FFFFFF',.6*p);
-  g+=withFront(person(1,x,800,s,{f:true,lean:6,near:{x:jx+30*s,y:jy-70*s},far:{x:jx-26*s,y:jy-60*s},look:{x:1130,y:790},expr:'joy'}),()=>jar(jx,jy,.8,{rot:-40*p,water:1}));
+  g+=withFront(person(1,x,800,s,{f:true,lean:6,near:{x:jx+34*s,y:jy-64*s},far:{x:jx-28*s,y:jy-56*s},look:{x:1130,y:790},expr:'joy'}),()=>jar(jx,jy,.8,{rot:-40*p,water:1}));
   return g+fireflies(t,800,500,500,300,'#FFFFFF',10,p);
 }
 // ---- 55. "the third commandment turned into a prayer": line III lifts off the stone as a ribbon of light ----
@@ -920,7 +920,7 @@ const SHOTS=[
   // act 1
   ['a desert',AT.seeWhy-.1,desertNight,['#0E1238','#6A3A22'],MOVE(860,.9,940,.9),{fore:FG('#8A5A3A','#6A4430','#9A6A48')}],
   ['the burning bush',AT.bushW-.15,burningBush,['#2A0E1A','#8A3A1A'],MOVE(990,1.0,1000,1.2),{vIn:'cut',fore:FG('#7A4A2E','#5A3420','#8A5A3A')}],
-  ['back to egypt',AT.moses-.1,egypt,['#5A1410','#E0702A'],MOVE(700,1.1,1250,1.1),{stars:false,fore:FG('#B0602E','#9A522A','#C0703A')}],
+  ['back to egypt',AT.moses-.1,egypt,['#5A1410','#E0702A'],HOLD(930,.9),{stars:false,fore:FG('#B0602E','#9A522A','#C0703A')}],
   ['what is your name',AT.asked-.1,question,['#3A0E08','#1A0604'],HOLD(1030,1.15),{fore:FG('#6A3A26','#4A2818','#7A4A30')}],
   ['I AM',AT.iam-.15,iAm,['#3A0A04','#120402'],HOLD(990,1.1),{vIn:'cut',stars:false,fore:FG('#4A1A0E','#2A0E08','#5A2414')}],
   ['by the fire',AT.forever-.15,campfire,['#0A0A2A','#2A1A3A'],HOLD(960,1.15),{vIn:'cut',fore:FG('#2A2040','#1E1830','#3A2E50',['#FFB04C'])}],
@@ -938,13 +938,13 @@ const SHOTS=[
   ['to carry',AT.orTo-.1,carryHome,['#FFB060','#8A3A5A'],MOVE(720,1.1,980,1.1),{stars:false,fore:FG('#B8705A','#9A5A48','#C8806A')}],
   ['empty',AT.inVain-.1,emptyJar,['#2A3A4A','#141A26'],HOLD(980,1.25),{vIn:'cut',stars:false}],
   ['a promise',AT.likeA-.1,promiseBox,['#B8E0A0','#5A9A6A'],HOLD(960,1.3),{vIn:'cut',stars:false,fore:FG('#5A9A5A','#4A8A4A','#6AAA6A',['#FF7BD5','#FFD45E'])}],
-  ['carried emptily',AT.inOther-.1,hollowBanner,['#C87A6A','#4A2030'],MOVE(700,1.0,1040,1.0),{stars:false,fore:FG('#8A4A48','#6A3A3A','#9A5A58')}],
+  ['carried emptily',AT.inOther-.1,hollowBanner,['#C87A6A','#4A2030'],HOLD(880,.95),{stars:false,fore:FG('#8A4A48','#6A3A3A','#9A5A58')}],
   // act 3
   ['how we talk',AT.thatCovers-.1,wellTalk,['#FFE2A0','#D8985A'],HOLD(960,1.1),{stars:false,fore:FG('#D8A868','#C09050','#E8B878')}],
   ['a curse',AT.using-.1,curse,['#8A1A1A','#2A0808'],HOLD(960,1.15),{vIn:'cut',stars:false,fore:FG('#5A2014','#3A1208','#6A2A1A')}],
   ['a shrug',AT.orAs-.1,shrug,['#6A7A8A','#2A3440'],HOLD(1010,1.2),{vIn:'cut',stars:false,fore:FG('#3A4450','#2A3440','#4A5460')}],
   ['promises',AT.itCovers-.1,deal,['#E8D060','#8A6A20'],HOLD(965,1.25),{vIn:'cut',stars:false,fore:FG('#A8862A','#8A6A20','#B8963A')}],
-  ['at the gate',AT.inIsrael-.1,gate,['#D8B080','#8A5A3A'],MOVE(1000,1.0,1060,1.15),{vIn:'cut',stars:false,fore:FG('#A87A50','#8A6040','#B88A60')}],
+  ['at the gate',AT.inIsrael-.1,gate,['#D8B080','#8A5A3A'],MOVE(980,1.0,1020,1.12),{vIn:'cut',stars:false,fore:FG('#A87A50','#8A6040','#B88A60')}],
   ['falsely',AT.v1912-.15,falsely,['#5A1A4A','#1A0618'],MOVE(980,1.05,930,1.2),{vIn:'cut',fore:FG('#3A1838','#2A1028','#4A2448')}],
   ['dragged into the lie',AT.lying-.1,dragged,['#4A3A2A','#1A120A'],HOLD(900,.98),{vIn:'cut',stars:false,fore:FG('#4A3A28','#3A2C1E','#5A4A34')}],
   // act 4
@@ -962,15 +962,15 @@ const SHOTS=[
   ['the nations watch',AT.how-.1,nations,['#A0C8E8','#5A6A8A'],MOVE(1000,.9,1060,1.05),{stars:false,fore:FG('#8A8A6A','#6A6A50','#9A9A7A')}],
   ['empty, no word',AT.soYou-.1,alley,['#141E2E','#0A0E18'],MOVE(780,1.05,1140,1.05),{vIn:'cut',fore:FG('#2A3040','#1E2430','#3A4050')}],
   ['his back turned',AT.calling-.1,backTurned,['#3A2A1A','#1A100A'],HOLD(870,1.15),{vIn:'cut',stars:false}],
-  ['the name stays',AT.hisName-.1,staysSame,['#0A0820','#2A1A4A'],HOLD(960,1.1),{vIn:'cut',fore:FG('#8A6A4A','#6A5038','#9A7A5A')}],
+  ['the name stays',AT.hisName-.1,staysSame,['#0A0820','#2A1A4A'],HOLD(960,1.3,1120),{vIn:'cut',fore:FG('#8A6A4A','#6A5038','#9A7A5A')}],
   ['made small',AT.but2-.1,looksSmall,['#6A5A7A','#2A2030'],HOLD(1010,.95),{vIn:'cut',stars:false,fore:FG('#4A3A5A','#3A2A4A','#5A4A6A')}],
   // act 6
-  ['jesus teaches',AT.centuries-.1,hillside,['#FFD8A0','#3A8AB8'],MOVE(900,.92,1000,1.08),{vIn:'cut',stars:false,fore:FG('#5A9A4A','#4A8A3A','#6AAA5A',['#FFFFFF','#FFD45E'])}],
+  ['jesus teaches',AT.centuries-.1,hillside,['#FFD8A0','#3A8AB8'],MOVE(940,.92,1000,1.08),{vIn:'cut',stars:false,fore:FG('#5A9A4A','#4A8A3A','#6AAA5A',['#FFFFFF','#FFD45E'])}],
   ['the first request',AT.andThe-.1,firstThing,['#C8864A','#6A3A20'],HOLD(1040,1.2),{vIn:'cut',stars:false,fore:FG('#9A6A40','#8A5A30','#AA7A50')}],
   ['our father',AT.father-.15,homePrayer,['#1A1A3A','#4A2A1A'],HOLD(960,1.1),{vIn:'cut'}],
   ['set apart',AT.hallowedM-.1,setApart,['#F6EFDC','#C8A070'],HOLD(1040,1.1),{vIn:'cut',stars:false}],
   ['full',AT.full-.1,fullJar,['#7CD4FF','#1E6AB0'],HOLD(1000,1.25),{vIn:'cut',stars:false}],
-  ['into a prayer',AT.christians-.1,intoPrayer,['#4A0A14','#1A0408'],HOLD(900,.98),{vIn:'cut',stars:false,fore:FG('#3A0A14','#2A060E','#4A1420')}],
+  ['into a prayer',AT.christians-.1,intoPrayer,['#4A0A14','#1A0408'],HOLD(910,1.1),{vIn:'cut',stars:false,fore:FG('#3A0A14','#2A060E','#4A1420')}],
   ['weighs nothing',AT.dontCarry2-.1,swinging,['#A8C8A0','#4A6A4A'],HOLD(960,1.25),{vIn:'cut',stars:false,fore:FG('#5A8A5A','#4A7A4A','#6A9A6A')}],
   ['treasure',AT.carryIt-.1,treasure,['#FFE9B0','#E8A060'],MOVE(960,1.0,960,1.22,1170,1150),{vIn:'cut',stars:false,fore:FG('#E8B070','#D89A58','#F0C080',['#FFFFFF','#FFD45E'])}],
   ['a day of rest',AT.next-.1,restDay,['#FF8A5C','#3A2A5A'],MOVE(940,1.08,960,.86),{stars:false,fore:FG('#5A2A4A','#4A2040','#6A3458')}],

@@ -395,8 +395,8 @@ function sheepS(t,lt){
 function bringS(t,lt){
   let g=glow(1500,-200,800,'#FFE2A0',.55)+skyClouds(t,91,-500,'#FFF8EC','#E8D0B0',.75);
   g+=hill(92,560,'#8AA05A')+gnd(93,680,'#7A9A3A','#647E30');
-  g+=altar(1150,760,1.1)+altar(1360,760,1.1);
-  const w=lt*55,s=1.1,cx=430+w,ax=cx+190;
+  g+=altar(1120,760,1.1)+altar(1300,760,1.1);
+  const w=lt*55,s=1.1,cx=560+w,ax=cx+190;
   const cain=bro('cain',cx,800,s,{walk:t*7,expr:'calm',look:{x:1150,y:640}});
   const bx=cx+62*s,by=800-112*s;cain.near={x:bx+8,y:by-30};cain.far={x:bx-20,y:by-32};
   g+=withProp(cain,basket(bx,by,.85));
@@ -411,11 +411,11 @@ function acceptS(t,lt){
   let g=glow(1260,-200,700,'#FFF2C8',.3)+skyClouds(t,101,-480,'#E8E4F0','#C8C0D8',.8);
   g+=hill(102,560,'#7A8E5A')+gnd(103,690,'#6A8A3A','#567430');
   const acc=ease.out(prog(t,AT.accepted,AT.accepted+1.2)),no=ease.inOut(prog(t,AT.notCains,AT.notCains+.8));
-  g+=shaft(t,1260,-700,700,60,150,acc);
-  g+=smoke(t,720,690,1.3,0,1)+smoke(t,1260,690,1.3,acc,1);
-  g+=altar(720,780,1.2)+altarFire(t,720,780,1.2,1)+altar(1260,780,1.2)+altarFire(t,1260,780,1.2,1);
-  g+=B('abel',1520,800,1.2,{face:-1,kneel:acc,near:acc>.3?'up':'chest',far:acc>.3?'up':'chest',look:acc>.3?{x:1260,y:200}:{x:1260,y:680},expr:['calm','joy',acc],aura:'#FFE9A8',auraOp:.4*acc});
-  g+=B('cain',470,800,1.2,{look:no>.3?{x:1260,y:600}:{x:720,y:660},expr:['calm','sad',no],near:'chest'});
+  g+=shaft(t,1160,-700,700,60,150,acc);
+  g+=smoke(t,780,690,1.3,0,1)+smoke(t,1160,690,1.3,acc,1);
+  g+=altar(780,780,1.2)+altarFire(t,780,780,1.2,1)+altar(1160,780,1.2)+altarFire(t,1160,780,1.2,1);
+  g+=B('abel',1360,800,1.2,{face:-1,kneel:acc,near:acc>.3?'up':'chest',far:acc>.3?'up':'chest',look:acc>.3?{x:1160,y:200}:{x:1160,y:680},expr:['calm','joy',acc],aura:'#FFE9A8',auraOp:.4*acc});
+  g+=B('cain',580,800,1.2,{look:no>.3?{x:1160,y:600}:{x:780,y:660},expr:['calm','sad',no],near:'chest'});
   return g;
 }
 // 1f. And Cain burned with anger: close, red aura flaring, the ember blazing, storm marks over his head.
@@ -587,7 +587,7 @@ function shortS(t,lt){
 // 2e. There are no details: the empty field, wind in the grass, the staff lying where it fell, the flock gone quiet.
 function noDetailS(t,lt){
   let g=farField(t,161);
-  g+=G('',L(840,812,1060,790,'#5A3A22',10)+P('M1060 790q30 -6 28 -36','none',{stroke:'#5A3A22','stroke-width':10}),.9);
+  g+=G('',L(840,812,1060,790,'#9A7A50',10)+P('M1060 790q30 -6 28 -36','none',{stroke:'#9A7A50','stroke-width':10}),.9);
   g+=sheepFlock(t,[[1360,740,-1],[1460,750,-1]],.6);
   return g;
 }
@@ -595,7 +595,7 @@ function noDetailS(t,lt){
 function goneS(t,lt){
   let g=farField(t,171);
   const q=prog(t,AT.lifeGone,AT.lifeGone+2.2);
-  g+=G('',L(780,812,1100,786,'#5A3A22',14)+P('M1100 786q40 -8 38 -50','none',{stroke:'#5A3A22','stroke-width':14}),.9);
+  g+=G('',L(780,812,1100,786,'#9A7A50',14)+P('M1100 786q40 -8 38 -50','none',{stroke:'#9A7A50','stroke-width':14}),.9);
   g+=lamb(1060,800,1.7,-1,{look:1});
   g+=glow(930,800-q*340,60,'#FFE9A8',.7*(1-q))+C(930,800-q*340,6,'#FFF4C8',{opacity:(1-q).toFixed(2)});
   return g;
@@ -686,11 +686,12 @@ function babyS(t,lt){
   return g;
 }
 // 4b. After the flood: the ark resting high on the mountain, a rainbow; Noah's family walks down with the sheep.
+const ARARAT=FX.peak(25,1380,190,{halfW:520,rough:12,bottom:800,x0:700,x1:2100});
 function floodS(t,lt){
   let g=glow(960,-200,1000,'#E8F4FF',.5);
   [['#FF5A48',0],['#FFB04C',22],['#FFE36B',44],['#5AD890',66],['#4A9AFF',88],['#9A6AFF',110]].forEach(([c,d])=>g+=P(`M-200 ${640}A1200 900 0 0 1 2120 640`,'none',{stroke:c,'stroke-width':22,opacity:.55,transform:`translate(0 ${d})`}));
   g+=skyClouds(t,251,-560,'#F4F4FA','#B8C4D8',.8);
-  g+=P('M1000 600L1340 160L1460 200L1700 420L1980 600Z','#5A6A7A')+hill(252,590,'#6A8A5A');
+  g+=P(ARARAT.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1].toFixed(0)).join('')+'L2100 800L700 800Z','#5A6A7A')+hill(252,590,'#6A8A5A');
   g+=G('translate(1380 170)',P('M-150 0L150 0L120 50L-120 50Z','#7A4A26',{stroke:'#4A2A14','stroke-width':5})+R(-90,-50,180,52,6,'#9A6234',{stroke:'#4A2A14','stroke-width':4})+P('M-100 -50L0 -90L100 -50Z','#6A3E1E'));
   g+=gnd(253,690,'#5E8E4A','#4E7E3E');
   const w=lt*40;
@@ -788,8 +789,8 @@ function olderS(t,lt){
 }
 // 5d. But the Hebrew word points to taking an innocent life: a shepherd girl hugs a lamb in the sun.
 function innocentS(t,lt){
-  let g=glow(1100,-200,900,'#FFF2C8',.6)+sunDisc(1300,-240,80,'#FFE2A0','#FFF8E0')+skyClouds(t,311,-540,'#FFFFFF','#D8E4F0',.75);
-  g+=hill(312,560,'#9AC86A')+gnd(313,690,'#7AB050','#6A9E44');
+  let g=glow(1100,-200,900,'#FFF2C8',.6)+sunDisc(1240,300,80,'#FFE2A0','#FFF8E0')+skyClouds(t,311,-200,'#FFFFFF','#D8E4F0',.75);
+  g+=hill(312,560,'#9AC86A')+tree(560,640,1.5,'#5E9A4A',t,.3)+tree(1380,620,1.1,'#6AA850',t,.3)+gnd(313,690,'#7AB050','#6A9E44');
   const k=ease.out(prog(t,AT.innocent,AT.innocent+.6));
   const girl=person(3,880,800,.85,{f:true,kneel:1,expr:'joy',lean:10,look:{x:1000,y:720},aura:'#FFE9A8',auraOp:.3+.4*k,hair:'#4A2A16'});
   girl.near={x:990,y:720};girl.far={x:960,y:728};
@@ -828,7 +829,7 @@ function jesusS(t,lt){
   let g=glow(1150,200,900,'#FFE9B0',.6)+rays(t,1150,200,14,'#FFFFFF',.07,-3.1,.1)+skyClouds(t,321,-540,'#FFF8EC','#F0C890',.7);
   g+=P('M-60 760Q600 640 1150 300Q1500 420 1980 560L1980 1800L-60 1800Z','#B8C870')+P('M-60 860Q700 760 1980 700L1980 1800L-60 1800Z','#9AB45A');
   g+=presence(t,1150,240,80,1)+rings(t,AT.jesus+.3,1150,240,1300);
-  [[420,740,.7],[560,700,.68],[700,660,.66],[830,610,.64]].forEach(([x,y,s],i)=>g+=folk(i,x,y,s,{sit:1,seat:y-12,look:{x:1150,y:240},expr:'calm',face:1}));
+  [[440,820,.95],[590,812,.9],[740,806,.95],[890,800,.62]].forEach(([x,y,s],i)=>g+=folk(i,x,y,s,{sit:1,seat:y-14,look:{x:1150,y:240},expr:i===3?'surprised':'awe',face:1,near:i===3?{x:960,y:640}:null}));
   return g;
 }
 // 6b. On a hillside he quoted the old command: the crowd sits on the slope, listening; the light speaks in rings.
@@ -854,7 +855,7 @@ function underS(t,lt){
   const rp=ease.inOut(prog(t,AT.under,AT.under+1.6));
   [-1,-.5,0,.5,1].forEach(k=>g+=mark(`M${960+k*30} ${760}Q${960+k*110} ${860} ${960+k*230} ${980-Math.abs(k)*40}`,rp,'#8A1A10',9));
   g+=ember(t,960,740,40,0,up);
-  const st=G(`translate(960 520) rotate(${(-28*up).toFixed(1)} -260 60) translate(${(-120*up).toFixed(0)} ${(-260*up).toFixed(0)})`,
+  const st=G(`translate(960 520) translate(${(-90*up).toFixed(0)} ${(-170*up).toFixed(0)}) rotate(${(-16*up).toFixed(1)} 300 60)`,
     P('M-300 -60L300 -60L320 60L-320 60Z','#8A867C',{stroke:'#5E5A52','stroke-width':5})+T(-230,18,'VI',{size:56,font:'Georgia',weight:700,anchor:'middle',fill:'#FFF4C8'})+scriptLine(-170,250,4,61,'#4A4740',5));
   return g+st;
 }
@@ -931,11 +932,11 @@ function silenceS(t,lt){
 }
 // 6l. They all grow from the same root: underground, one ember; three red stems rise to the word, the name, the silence.
 function rootS(t,lt){
-  let g=glow(960,-200,800,'#C8D8F0',.35)+skyClouds(t,401,-560,'#8A7A9A','#C8A0A0',.6)+soil(t,520);
-  g+=ember(t,960,900,42,0,1);
+  let g=glow(960,-200,800,'#C8D8F0',.35)+skyClouds(t,401,-560,'#8A7A9A','#C8A0A0',.6)+soil(t,480);
+  g+=ember(t,960,660,42,0,1);
   const gr=ease.inOut(prog(t,AT.they,AT.root+.6));
-  const tips=[[640,180],[960,110],[1280,180]];
-  tips.forEach(([x,y],i)=>{g+=mark(`M${960+(i-1)*24} 880Q${960+(i-1)*80} 600 ${x} ${y}`,gr,'#C82A1A',12);
+  const tips=[[700,190],[960,120],[1220,190]];
+  tips.forEach(([x,y],i)=>{g+=mark(`M${960+(i-1)*24} 640Q${960+(i-1)*80} 420 ${x} ${y}`,gr,'#C82A1A',12);
     const on=prog(gr,.85,1);if(on>0){g+=G('',i===0?P(`M${x-46} ${y}L${x-22} ${y-46}L${x+6} ${y-20}L${x+40} ${y-50}L${x+46} ${y+6}L${x+10} ${y+30}Z`,CORAL):
       i===1?label(x,y-40,'#@!',{size:34,anchor:'middle',bg:CORAL}):P(`M${x} ${y-50}L${x} ${y+50}M${x-44} ${y-25}L${x+44} ${y+25}M${x-44} ${y+25}L${x+44} ${y-25}`,'none',{stroke:'#BFE0FF','stroke-width':10}),on);}});
   return g;
@@ -945,7 +946,7 @@ function handsS(t,lt){
   let g=glow(1100,200,800,'#FFD8A0',.45)+skyClouds(t,411,-520,'#7A5A7A','#F0A880',.8);
   g+=hill(412,560,'#8A6A5A')+gnd(413,690,'#7A7A4A','#66663E');
   const s=1.4,x=860;
-  g+=folk(2,x,800,s,{expr:'calm',look:{x:x+90,y:620},near:{x:x+96,y:640},far:{x:x+76,y:648},lean:6});
+  g+=folk(2,x,800,s,{expr:'calm',look:{x:x+92,y:680},near:{x:x+100,y:680},far:{x:x+80,y:688},lean:6});
   return g;
 }
 // 6n. It's about our hearts: his hands go to his chest; a heart glows there.
@@ -1076,9 +1077,9 @@ function yesS(t,lt){
 function guardS(t,lt){
   let g=glow(960,300,900,'#FFD8A0',.45)+skyClouds(t,521,-540,'#8A6A8A','#FFC090',.8)+hill(522,580,'#9A7A6A')+gnd(523,700,'#8A8A4A','#76763E');
   const cool=ease.inOut(prog(t,AT.guard+.3,AT.grows+.6)),s=1.45,x=880;
-  const hx=x+70*s,hy=800-112*s;
+  const hx=x+72*s,hy=800-84*s;
   const o=person(1,x,800,s,{f:true,expr:['sad','tender',cool],look:{x:hx,y:hy},near:{x:hx+10,y:hy+10},far:{x:hx-16,y:hy+14},lean:6,hair:'#3A2216'});
-  g+=withProp(o,ember(t,hx,hy-8,22,cool,1));
+  g+=PPL.fig(o)+ember(t,hx+4,hy-12,26,cool,1);
   return g;
 }
 // 8b. Speak kindly: a girl gives a flower to a boy sitting alone; he looks up and smiles.
@@ -1093,11 +1094,11 @@ function kindS(t,lt){
 // 8c. Help the weak: a young man walks an old man along, a hand under his arm; the old man's stick in front of him.
 function weakS(t,lt){
   let g=glow(1300,-100,800,'#FFE2A0',.55)+skyClouds(t,541,-540,'#FFFFFF','#E8D8C0',.75)+hill(542,560,'#C8A870')+gnd(543,690,'#B8A060','#A89050');
-  const w=lt*30,s=1.15,ex=840+w;
-  const old=elderOpts(ex,800,s,{walk:t*3,lean:14,expr:'tender',look:{x:ex+180,y:600}});
+  const w=lt*30,s=1.15,ex=1000+w;
+  const old=elderOpts(ex,800,s,{walk:t*3,lean:14,expr:'tender',look:{x:ex-120,y:600}});
   old.near={x:ex+50*s,y:800-96*s};
-  const yg=person(2,ex+150,800,s*1.02,{walk:t*3+1.5,face:-1,expr:'tender',look:{x:ex,y:600}});
-  yg.near=PPL.handOn(yg,old,'arm');
+  const yg=person(2,ex-125,800,s*1.02,{walk:t*3+1.5,expr:'tender',look:{x:ex,y:600}});
+  yg.near=PPL.handOn(yg,old,'back');
   const Y=PPL.rig(yg);
   g+=Y.draw('back')+Y.draw('body')+Y.draw('head')+withProp(old,L(ex+52*s,800,ex+48*s,800-100*s,'#7A5230',10))+Y.draw('front');
   return g;
@@ -1117,7 +1118,7 @@ function facesS(t,lt){
   const on=k=>ease.out(prog(t,AT.imageL-.4+k*.12,AT.imageL+.1+k*.12));
   let k=0;const gl=(o)=>{const [cx,cy]=chestOf(o);return glint(cx,cy,o.s,on(k++));};
   // back row
-  [[420,1,.72],[560,4,.7],[1360,2,.72],[1500,0,.7]].forEach(([x,i,s])=>{const o=person(i,x,700,s,{face:x<960?1:-1,expr:'joy',look:{x:960,y:500}});g+=PPL.fig(o)+gl(o);});
+  [[520,1,.72],[630,4,.7],[1290,2,.72],[1400,0,.7]].forEach(([x,i,s])=>{const o=person(i,x,700,s,{face:x<960?1:-1,expr:'joy',look:{x:960,y:500}});g+=PPL.fig(o)+gl(o);});
   // a family: father's hand on the mother's shoulder, she holds the child's hand
   const dad=person(0,600,800,1,{expr:'joy',look:{x:820,y:600}}),mom=person(1,720,800,.96,{f:true,expr:'tender',look:{x:830,y:680}}),kid=person(3,830,800,.62,{expr:'joy',look:{x:720,y:600}});
   dad.near=PPL.handOn(dad,mom,'shoulder');const D=PPL.rig(dad),hh=PPL.holdHands(mom,kid);
@@ -1229,8 +1230,8 @@ const SH=[
   ['first brothers',AT.brothers-.1,brothersS,['#9AD0F0','#E8F0C8'],HOLDF(980,1.08),{stars:false,fore:DAY,vIn:'cut'}],
   ['cain works the ground',AT.ground-.1,ground,['#A8D8F8','#F0E0B0'],HOLDF(900,1.2),{stars:false,vIn:'cut',fore:FG('#7A5028','#6A4420','#8A5E34')}],
   ['abel keeps the sheep',AT.andAbel-.06,sheepS,['#8ACCF0','#E0F0C0'],HOLDF(980,1.12),{stars:false,vIn:'cut',fore:DAY}],
-  ['both brought',AT.both-.1,bringS,['#A8D0F0','#F0E0B8'],MOVE(820,fy(.9),.9,960,fy(1.0),1.0),{stars:false,fore:DAY}],
-  ['accepted',AT.accepted-.1,acceptS,['#8A98C8','#E8D8B8'],MOVE(1180,fy(1.0),1.0,820,fy(1.0),1.0),{stars:false,fore:DAY,vIn:'cut'}],
+  ['both brought',AT.both-.1,bringS,['#A8D0F0','#F0E0B8'],MOVE(800,fy(.9),.9,960,fy(1.0),1.0),{stars:false,fore:DAY}],
+  ['accepted',AT.accepted-.1,acceptS,['#8A98C8','#E8D8B8'],HOLD(960,fy(.86),.86),{stars:false,fore:DAY,vIn:'cut'}],
   ['burned with anger',AT.and1-.06,burnS,['#3A0E10','#8A2A1A'],HOLDF(900,1.38,1150),{stars:false,vIn:'cut',fore:FG('#2E1A12','#24140E','#3A2218')}],
   ['face fell',AT.faceFell-.1,faceFellS,['#4A2E4A','#D88A6A'],HOLDF(960,1.1),{stars:false,vIn:'cut',fore:FG('#4A5630','#3E4A28','#5E6A3A')}],
   ['god warns',AT.warned-.1,warnS,['#140E2A','#4A3458'],MOVE(960,fy(1.0),1.0,960,fy(1.2),1.2),{fore:NIGHT,vIn:'cut'}],
@@ -1270,7 +1271,7 @@ const SH=[
   ['jesus opens it up',AT.jesus-.1,jesusS,['#FFE8B8','#E8B070'],HOLD(960,600,.84),{stars:false,vIn:'cut',fore:FG('#88A24E','#789244','#9AB45A',['#FFFFFF','#FFD45E'])}],
   ['on a hillside',AT.hillside-.1,hillS,['#B8E0F8','#F8E8C0'],MOVE(900,fy(.9),.9,960,fy(1.04),1.04),{stars:false,fore:FG('#88A24E','#789244','#9AB45A',['#FFFFFF','#FFD45E'])}],
   ['underneath',AT.thenHe-.1,underS,['#F8E0B0','#E8B880'],HOLD(960,640,1.15),{stars:false,vIn:'cut'}],
-  ['angry with his brother',AT.v522-.12,angryS,['#4A2A2E','#2A1A1C'],HOLD(960,600,.84),{stars:false,vIn:'cut'}],
+  ['angry with his brother',AT.v522-.12,angryS,['#4A2A2E','#2A1A1C'],HOLDF(960,1.0),{stars:false,vIn:'cut'}],
   ['liable to judgment',AT.will-.1,judgeS,['#3A2024','#24161A'],HOLDF(960,1.3),{stars:false,vIn:'cut'}],
   ['where cain started',AT.goesBack-.1,startedS,['#C8A070','#8A6040'],HOLDF(860,1.12),{stars:false,vIn:'cut',fore:FG('#8A6A3E','#7A5E36','#9A7A4A')}],
   ['not the field',AT.notField-.1,notFieldS,['#1E1830','#8A4A3A'],HOLD(960,600,.84),{fore:DUSK,vIn:'cut'}],
@@ -1278,7 +1279,7 @@ const SH=[
   ['the angry word',AT.angryWord-.1,wordS,['#4A1E2E','#2A1018'],HOLDF(960,1.15),{stars:false,vIn:'cut'}],
   ['the cruel name',AT.cruelName-.1,nameS,['#8AC0E0','#F0E0B0'],HOLDF(930,1.25),{stars:false,vIn:'cut',fore:SAND}],
   ['the cold silence',AT.coldSilence-.1,silenceS,['#0E1430','#1A2440'],HOLDF(960,1.2),{vIn:'cut',fore:FG('#1E2A44','#18223A','#2A3A5A')}],
-  ['the same root',AT.they-.1,rootS,['#A8B8D8','#D8B8B0'],MOVE(960,560,1.0,960,420,1.05),{stars:false,vIn:'cut'}],
+  ['the same root',AT.they-.1,rootS,['#A8B8D8','#D8B8B0'],HOLD(960,480,1.0),{stars:false,vIn:'cut'}],
   ['our hands',AT.thisCmd-.1,handsS,['#4A3A5A','#F0A880'],HOLDF(960,1.38),{stars:false,vIn:'cut',fore:FG('#66663E','#58582E','#7A7A4A')}],
   ['our hearts',AT.itsAbout-.1,heartsS,['#5A3A5A','#FFB890'],HOLDF(920,1.55,1190),{stars:false,vIn:'cut',fore:FG('#76663E','#68582E','#8A7A4A')}],
   // 7. my brother's keeper
@@ -1297,7 +1298,7 @@ const SH=[
   ['speak kindly',AT.kindly-.1,kindS,['#A8D8F8','#F0F0C8'],HOLDF(960,1.4,1180),{stars:false,fore:FG('#6A9E44','#5A8E3A','#7AB050',['#FF7BD5','#FFD45E']),vIn:'cut'}],
   ['help the weak',AT.weak-.1,weakS,['#B8D8F0','#F0E0B8'],HOLDF(1000,1.18),{stars:false,fore:SAND,vIn:'cut'}],
   ['make peace quickly',AT.peaceQ-.1,peace2S,['#E8C0A8','#E89868'],HOLDF(960,1.25),{stars:false,fore:FG('#76863E','#687836','#8A9A4A'),vIn:'cut'}],
-  ['every face',AT.everyPerson-.1,facesS,['#A8E0FF','#F8F0D0'],MOVE(960,fy(1.06),1.06,960,610,.86),{stars:false,fore:FG('#6AA844','#5A9838','#7AB850',['#FFFFFF','#FFD45E','#FF7BD5'])}],
+  ['every face',AT.everyPerson-.1,facesS,['#A8E0FF','#F8F0D0'],MOVE(960,fy(.98),.98,960,610,.86),{stars:false,fore:FG('#6AA844','#5A9838','#7AB850',['#FFFFFF','#FFD45E','#FF7BD5'])}],
   ['next time',AT.next-.1,nextTimeS,['#6A4A7A','#FFB080'],MOVE(960,600,.86,960,600,.98),{stars:false,fore:FG('#66763E','#586836','#7A8A4A',['#FFD45E']),vIn:'cut'}],
 ];
 const sheets=SH.map(([name,at,draw,bg,cam,extra],i)=>{const a=at+.1,b=(i+1<SH.length?SH[i+1][1]:AT.last+7)-.15;

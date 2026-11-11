@@ -7,67 +7,91 @@
 <script src="../_kit/style-kit.js"></script>
 <script src="words.js"></script>
 <script src="../_kit/episode-engine.js"></script>
+<script src="../_kit/people.js"></script>
+<script src="../_kit/fire.js"></script>
 <script>
 // The Ten Commandments, part 2: the second commandment. Script: scripts/03-the-second-commandment.md (ESV fill).
 // Every time below comes from the spoken words (words.js), so a new narration re-times the episode.
-// Guide: .claude/skills/godward-episode/reference/engine.md. K.E is the ellipse helper (Ell), window.E the engine.
-// Layout: every sheet is filmed wide (zoom .84 on 960,560). Each sheet's art is drawn inside F(...), in vertical
-// FRAME pixels (1080x1920): verse cards 170-~520, art 560-1180, captions 1220-1340 (kept clear), lower labels
-// 1380-1560, ground below. Keep labels left of x 940 below y 800 (platform buttons). Landscape gets the same
-// column, scaled down and centred (vertical is the only delivered cut).
+// Guide: .claude/skills/godward-episode/reference/engine.md + scene-pacing.md. Built in episode 1's style:
+// a new setting every few seconds, one slow camera move (or a still hold) per shot, the round PPL people acting the
+// lines, fire on Sinai from FX, verse cards / the one label / the end card in frame space (hud).
 const {G,R,C,L,P,T,prog,ease,lerp,mix,clamp,rng}=K, Ell=K.E;
 const {hash,piece,glow,label,mark,scribble,arrow,strip,tape,torn}=S;
 const {cue,end,span,shot,ridge,verse,fade,hv,stars,fireflies,INK,YEL,CORAL}=E;
 const GOLD='#E8B53A', NEON='#2BF0FF';
+const sq=p=>p*p;
 
 const AT={
   // 0. half a log
-  cuts:cue('A man cuts'), splits:cue('splits the log'), burns:cue('he burns'), dinner:cue('his dinner'),
-  otherHalf:cue('The other half'), statue:cue('into a statue'), kneels:cue('kneels down'),
-  prays:cue('He prays to it'), myGod:span('you are my god'), sameTree:cue('Same tree'), firewood:cue('is firewood'), hisGod:cue('is his god'),
-  isaiah:cue('The prophet Isaiah'), joke:cue('as a joke'), question:cue('a real question'), whats:cue("What's actually wrong"),
+  tree:cue('tree'), splits:cue('splits the log'), half1:cue('Half of it'), burns:cue('he burns'), dinner:cue('his dinner'),
+  otherHalf:cue('The other half'), carves:cue('he carves'), statue:cue('into a statue'), kneels:cue('kneels down'),
+  prays:cue('He prays to it'), deliver:cue('Deliver'), myGod:span('you are my god'), sameTree:cue('Same tree'), sameAft:cue('same afternoon'),
+  oneHalf:cue('One half'), firewood:cue('is firewood'), otherHalf2:cue('the other half',2), hisGod:cue('is his god'),
+  isaiah:cue('The prophet Isaiah'), joke:cue('as a joke'), butBehind:cue('But behind'), question:cue('a real question'), whats:cue("What's actually wrong"),
   // 1. the second word
-  rightAfter:cue('Right after'), second:cue('comes the second'), v204:cue('You shall not make'), carved:span('a carved image'),
-  v205:cue('You shall not bow'), bowDown:span('bow down'), notMainly:cue("It's not mainly"), religions:cue('about other'), job:cue("first commandment's job"),
-  which:cue('which God you'), how:cue('is about how'), rightGod:cue('Even the right God'), wrongWay:cue('the wrong way'),
+  rightAfter:cue('Right after'), comes2:cue('comes the second'), v204:cue('You shall not make'), carved:span('a carved image'),
+  likeness:cue('or any likeness'), heaven:cue('in heaven above'), earthB:cue('in the earth beneath'), water:cue('in the water under'),
+  v205:cue('You shall not bow'), bowDown:span('bow down'), serve:cue('or serve them'),
+  notMainly:cue("It's not mainly"), thatWas:cue('That was the first'), jobW:cue('job'),
+  first:cue('The first is about'), which:cue('which God you'), second2:cue('The second is about'), how:cue('about how'),
+  even:cue('Even the right God'), wrongWay:cue('the wrong way'),
   // 2. the list
-  notice:cue('Notice the list'), sky:cue('sky'), land:cue('land and'), sea:cue('and sea'), whole:cue('the whole creation'), standIn:cue('stand in for'),
-  // 3. no form
-  why:cue('Why be so strict'), mountain:cue('Go back to the mountain'), moses:cue('Moses later'),
-  thenLORD:cue('Then the LORD spoke'), noForm:span('saw no form'), onlyVoice:span('there was only a voice'),
-  biggest:cue('Their biggest meeting'), shape:cue('saw a shape'), fireWords:cue('Just fire'), lookAt:cue('something to look at'), listen:cue('someone to listen'),
+  notice:cue('Notice the list'), sky:cue('sky'), land:cue('land and'), sea:cue('sea'), whole:cue("That's the whole creation"),
+  nothing:cue('Nothing God made'), standIn:cue('stand in for'), whoMade:cue('the God who made it'),
+  // 3. no form, only a voice
+  why:cue('Why be so strict'), goBack:cue('Go back to the mountain'), moses:cue('Moses later'),
+  thenLORD:cue('Then the LORD spoke'), youHeard:cue('You heard the sound'), noForm:span('saw no form'), onlyVoice:cue('there was only a voice'),
+  biggest:cue('Their biggest meeting'), nobody:cue('nobody saw a shape'), justFire:cue('Just fire'), wordsW:cue('and words'),
+  didnt:cue("God didn't give"), heGave:cue('He gave them'), listenW:cue('listen'),
   // 4. smaller and quieter
-  problem:cue("So here's the problem"), smaller:cue('It makes God smaller'), carve1:cue('anything you carve'),
-  quieter:cue('it makes God quieter'), putIn:cue('what you put into it'),
-  calf:cue('Remember the golden calf'), feast:cue('a feast to the LORD'), replacing:cue("weren't replacing"), hold:cue('trying to hold him'),
-  godHold:cue('A god you can hold'), control:cue('can control'), sinaiSpeaks:cue('The God of Sinai'), ratherNot:cue('rather not hear'),
+  problem:cue("So here's the problem"), smaller:cue('It makes God smaller'), anything:cue('anything you carve'),
+  quieter:cue('it makes God quieter'), onlySays:cue('only says what'),
+  calf:cue('Remember the golden calf'), called:cue('They called it'), feast:cue('a feast to the LORD'), weren:cue("They weren't replacing"),
+  trying:cue('They were trying'), holdHim:cue('hold him'), godHold:cue('A god you can hold'), control:cue('can control'),
+  sinaiSpk:cue('The God of Sinai'), whoSpeaks:cue('And a God who speaks'), ratherNot:cue('rather not hear'), hearEnd:end('rather not hear'),
   // 5. the image he already made
-  surprise:cue("But here's the surprise"), already:cue('already has an image'), soGod:cue('So God created'), ownImage:span('in his own image'),
-  maleFemale:cue('male and female'), notGold:cue("isn't gold or wood"), people:cue("it's people"),
+  surprise:cue("But here's the surprise"), already:cue('God already has'), soGod:cue('So God created'), ownImage:span('in his own image'),
+  maleFemale:cue('male and female'), imageIsnt:cue("The image of God isn't"), notGold:cue("isn't gold or wood"), people:cue("it's people"),
   christians:cue('Christians have long'), dontCarve:cue("you don't carve"), meetIt:cue('You meet it'), nextTo:cue('the person next to you'),
   // 6. the ones we still carve
-  mayNever:cue('We may never'), stillCarve:cue('we still carve'), notWood:cue('just not with wood'),
-  agrees:cue('always agrees'), neverSays:cue('never says what'), easy:cue('easy to live with'), tooSmall:cue('much too small'),
+  mayNever:cue('We may never'), stillCarve:cue('But we still carve'), weCarve:cue('We carve a God'), agrees:cue('always agrees'),
+  neverSays:cue('A God who never'), dontWant:cue("we don't want to hear"), those:cue('Those gods are easy'), easy:cue('easy to live with'), tooSmall:cue('much too small'),
   // 7. four against thousands
-  endsWarning:cue('ends with a warning'), echoes:cue('echoes'), third:cue('third and fourth'), promise:cue('comes a promise'),
-  showing:cue('but showing steadfast'), steadfast:span('steadfast love to thousands'), fourGen:cue('Four generations'), against:cue('against thousands'),
-  heavy:cue('warning is heavy'), heavier:cue('mercy is heavier'), knife:cue('put down the carving knife'),
-  made:cue('waiting to be made'), heard:cue('waiting to be heard'), nextTime:cue('And next time'), name:cue('about his name'),
+  endsWarn:cue('The commandment ends'), turning:cue('Turning away echoes'), echoes:cue('echoes'), third:cue('third and fourth'),
+  butThen:cue('But then comes a promise'), thousands1:cue('thousands'), showing:cue('but showing steadfast'), steadfast:span('steadfast love to thousands'), keep:cue('keep my commandments'),
+  fourGen:cue('Four generations'), against:cue('against thousands'), heavy:cue('The warning is heavy'), heavier:cue('The mercy is heavier'),
+  putDown:cue('So put down'), knife:cue('carving knife'), realGod:cue("The real God isn't"), made:cue('waiting to be made'),
+  heard:cue("He's waiting to be heard"), heardW:cue('heard'), nextTime:cue('And next time'),
 };
 AT.last=WORDS[WORDS.length-1][2];
+AT.strike=AT.splits+.42;        // the axe comes down on the log
 
-// ---------- frame-space drawing ----------
-// Sheet coordinates of the wide vertical camera: frame (fx, fy) = sheet (960+(fx-540)/.84, 560+(fy-1010)/.84).
-const F=inner=>`<g transform="${E.VERT?`translate(${(960-540/.84).toFixed(2)} ${(560-1010/.84).toFixed(2)}) scale(${(1/.84).toFixed(5)})`:'translate(656 0) scale(.5625)'}">${inner}</g>`;
-// A label that slaps on at `at`, centred on (x, y).
-const tag=(t,at,x,y,s,size,id,o={})=>piece(t,at,x,y,label(x,y-size*.81,s,Object.assign({size,anchor:'middle'},o)),id,1.3);
-const strike=(x0,y,x1,p)=>mark(`M${x0} ${y+6}L${x1} ${y-6}`,p,CORAL,9);
-const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,10)+mark(`M${cx+r} ${cy-r}L${cx-r} ${cy+r}`,p*2-1,CORAL,10);
-const WIDE=[960,560,.84];
-// Ground in frame space, down to the bottom of the frame.
-const groundF=(seed,y,fill,amp=12)=>`<path d="${ridge(seed,y,amp,200,-120,1200,2100)}" fill="${fill}"/>`;
+// ---------- people (videos/_kit/people.js), palettes as in episode 1 ----------
+const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
+const SKIN=[['#F5BE8E','#C4835E'],['#D9965E','#A86A3E'],['#B87444','#8A5230']], HAIR=['#2E1C52','#4A2A16','#1A1A2A'];
+const pplOpts=(i,x,y,s,o={})=>{const [a,b]=TUN[i%5],[sk,sh]=SKIN[i%3],face=o.flip||o.face||1,f=o.f??(i%2===1);
+  const q=Object.assign({x,y,s,face,f,tunic:a,tunic2:b,skin:sk,shade:sh,hair:HAIR[i%3],phase:i*.7},o);
+  q.face=face;delete q.flip;delete q.filter;delete q.reach;
+  if(!o.walk)delete q.walk;
+  if(o.reach!=null&&!o.near){const r=o.reach;q.near={x:x+lerp(52,116,r)*s*face,y:y-lerp(54,172,r)*s};}
+  return q;};
+const folk=(i,x,y,s,o={})=>PPL.fig(pplOpts(i,x,y,s,o));
+const person=pplOpts;
+const elderOpts=(x,y,s,o={})=>{const q=pplOpts(0,x,y,s,Object.assign({tunic:'#C8A06A',tunic2:'#7A5430',skin:'#D9965E',shade:'#A86A3E',f:false,phase:.4},o));q.hair=o.hair||'#ECE8DE';return q;};
+const elder=(x,y,s,o={})=>PPL.fig(elderOpts(x,y,s,o));
+// The carpenter of Isaiah 44 (the same man in every workshop scene).
+const CARP={tunic:'#FFC24C',tunic2:'#E0623C',hair:'#4A2A16',skin:'#D9965E',shade:'#A86A3E',f:false};
+const carpO=(x,y,s,o={})=>pplOpts(0,x,y,s,Object.assign({},CARP,o));
+const carp=(x,y,s,o={})=>PPL.fig(carpO(x,y,s,o));
+// Draw a person with a prop in the hand: the prop goes over the body and under the near (gripping) arm.
+const withProp=(o,fn)=>{const r=PPL.rig(o);return r.draw('back')+r.draw('body')+r.draw('head')+fn(r)+r.draw('front');};
+// A point beside the back of the head (cupping an ear), and in front of the brow (shading the eyes).
+const earPt=(o)=>{const r=PPL.rig(Object.assign({},o,{near:null,far:null}));return {x:r.head[0]-r.face*44*r.s,y:r.head[1]+6*r.s};};
+const browPt=(o)=>{const r=PPL.rig(Object.assign({},o,{near:null,far:null}));return {x:r.head[0]+r.face*40*r.s,y:r.head[1]-26*r.s};};
 
-// ---------- shared pieces (from part 1) ----------
+// ---------- shared pieces ----------
+const gnd=(s,y,c1,c2)=>`<path d="${ridge(s,y,10,230)}" fill="${c1}"/><path d="${ridge(s+1,y+120,8,200)}" fill="${c2}"/>`;
+const FG=(a,b,c,fl=[])=>({grass:[a,b,c],flowers:fl});
 const slab=(w,h)=>`M${-w/2} ${h/2}V${-h/2+w*.32}Q${-w/2} ${-h/2} 0 ${-h/2}Q${w/2} ${-h/2} ${w/2} ${-h/2+w*.32}V${h/2}Z`;
 const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
 function tablet(x,y,w,h,first,lit,seed){
@@ -82,14 +106,9 @@ function tablet(x,y,w,h,first,lit,seed){
   }
   return g;
 }
-// Two tablets centred on (cx, cy) at scale s (unscaled: 790 x 560).
-const tablets=(cx,cy,s,lit)=>G(`translate(${cx} ${cy}) scale(${s}) translate(-960 -560)`,
-  glow(960,560,560,'#FFD86B',.12)+tablet(755,560,380,560,0,lit,21)+tablet(1165,560,380,560,5,lit,33));
-function mountain(seed,px,py,fill,steep){
-  const r=rng(seed*91+7),pts=[];
-  for(let x=-140;x<=1220;x+=18){const d=Math.abs(x-px)/(520*steep);pts.push([x,py+Math.pow(d,1.25)*420+(r()-.5)*14]);}
-  return P('M'+pts.map(p=>p[0].toFixed(0)+' '+Math.min(p[1],2100).toFixed(0)).join('L')+'L1220 2100L-140 2100Z',fill);
-}
+const tablets=(cx,cy,s,lit)=>G(`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`,
+  glow(cx,cy,560,'#FFD86B',.12)+tablet(cx-205,cy,380,560,0,lit,21)+tablet(cx+205,cy,380,560,5,lit,33));
+const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,10)+mark(`M${cx+r} ${cy-r}L${cx-r} ${cy+r}`,p*2-1,CORAL,10);
 let foilN=0;
 const foil=(t)=>{const id='foil'+(foilN++),sh=.5+.5*Math.sin(t*1.7);
   return [`url(#${id})`,`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B0"/><stop offset="${(.3+.2*sh).toFixed(2)}" stop-color="${GOLD}"/><stop offset="1" stop-color="#8A5A12"/></linearGradient>`];};
@@ -106,291 +125,1102 @@ function calf(t,x,y,s){
     P('M140 -66Q174 -72 182 -104Q166 -84 138 -76Z','#FFF1B0',{stroke:'#E8D58A','stroke-width':2});
   return G(`translate(${x} ${y}) scale(${s})`,body);
 }
-const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
-function crowd(t,x0,y,n,gap,s,o={}){
-  let g='';
-  for(let i=0;i<n;i++){
-    const tr=o.tremble?(hash(Math.floor(t*12),i)-.5)*o.tremble:0,[a,b]=TUN[(i+(o.shift||0))%5];
-    g+=E.chubby(x0+i*gap+tr+(i%2)*10,y+(i%3)*12,s*(.92+.16*hash(i,4+(o.shift||0))),{f:i%2===1,flip:o.flip||(i%2?-1:1),tunic:a,tunic2:b,aura:o.aura||'#7CFFE6',auraOp:o.auraOp??.35,
-      lean:o.lean||0,reach:o.reach||0,phase:i*.7,hair:['#2E1C52','#4A2A16','#1A1A2A'][i%3],skin:['#F5BE8E','#D9965E','#B87444'][(i+(o.shift||0))%3],shade:['#C4835E','#A86A3E','#8A5230'][(i+(o.shift||0))%3]});
-  }
-  return g;
-}
-
-// ---------- new pieces ----------
-// A carved idol: feet at (x, y), height h. Hard shine, no glow of its own. o.gold for foil, o.mouth (0..1) circles the mouth.
+// A carved idol, feet (base) at (x, y), height h. o.gold foil, o.stone grey, o.mouth (0..1) scribbles the mouth shut.
 function idol(t,x,y,h,o={}){
-  const k=h/240;let fill='#9A6A3C',def='',st='#5A3A1C';
+  const k=h/240;let fill=o.stone?'#B8B2A4':'#9A6A3C',def='',st=o.stone?'#6A665C':'#5A3A1C';
   if(o.gold){[fill,def]=foil(t+x*.01);st='#8A5A12';}
-  let g=def+R(x-62*k,y-30*k,124*k,30*k,4,o.gold?'#8A5A12':'#5A3A1C')+
+  let g=def+R(x-62*k,y-30*k,124*k,30*k,4,o.gold?'#8A5A12':st)+
     P(`M${x-52*k} ${y-30*k}L${x-40*k} ${y-150*k}Q${x} ${y-172*k} ${x+40*k} ${y-150*k}L${x+52*k} ${y-30*k}Z`,fill,{stroke:st,'stroke-width':3});
-  if(!o.gold)for(let i=0;i<4;i++)g+=P(`M${x-30*k+i*20*k} ${y-140*k}Q${x-24*k+i*20*k} ${y-90*k} ${x-32*k+i*20*k} ${y-40*k}`,'none',{stroke:'#6A4422','stroke-width':3,opacity:.6});
+  if(!o.gold)for(let i=0;i<4;i++)g+=P(`M${x-30*k+i*20*k} ${y-140*k}Q${x-24*k+i*20*k} ${y-90*k} ${x-32*k+i*20*k} ${y-40*k}`,'none',{stroke:o.stone?'#8A867A':'#6A4422','stroke-width':3,opacity:.6});
   g+=P(`M${x-40*k} ${y-110*k}Q${x} ${y-80*k} ${x+40*k} ${y-110*k}`,'none',{stroke:st,'stroke-width':6});
   g+=C(x,y-200*k,46*k,fill,{stroke:st,'stroke-width':3})+P(`M${x-40*k} ${y-222*k}L${x-28*k} ${y-262*k}L${x-10*k} ${y-236*k}L${x} ${y-270*k}L${x+10*k} ${y-236*k}L${x+28*k} ${y-262*k}L${x+40*k} ${y-222*k}Z`,fill,{stroke:st,'stroke-width':3});
   g+=Ell(x-16*k,y-204*k,7*k,4*k,'#2A1A0A')+Ell(x+16*k,y-204*k,7*k,4*k,'#2A1A0A')+L(x-14*k,y-180*k,x+14*k,y-180*k,'#2A1A0A',4);
-  if(o.mouth>0)g+=mark(scribble(x,y-180*k,30*k,18*k,7),o.mouth,CORAL,6)+(o.mouth>=1?xMark(x,y-180*k,12*k,prog(o.mouthX||0,0,1)):'');
   return g;
 }
-function flames(t,x,y,s,k){
-  if(k<=0)return '';
-  let g=glow(x,y-50*s,190*s,'#FF8A3C',.55*k);
-  for(let i=0;i<7;i++){const f=Math.sin(t*9+i*1.7),xx=x+(i-3)*13*s,hh=(70+60*k+18*Math.sin(t*7+i))*s;
-    g+=P(`M${xx-16*s} ${y}Q${xx-24*s+f*8*s} ${y-hh*.55} ${xx+f*10*s} ${y-hh}Q${xx+22*s} ${y-hh*.5} ${xx+16*s} ${y}Z`,['#FF5A2C','#FFB04C','#FFE36B'][i%3],{opacity:(.92*k).toFixed(2)});}
-  return g;
-}
-const logPiece=(x,y,w,h)=>R(x-w/2,y-h/2,w,h,h/2,'#8A5A32',{stroke:'#5A3A1C','stroke-width':3})+
+const logPiece=(x,y,w,h,c='#8A5A32')=>R(x-w/2,y-h/2,w,h,h/2,c,{stroke:'#5A3A1C','stroke-width':3})+
   L(x-w/2+20,y-h/6,x+w/2-30,y-h/5,'#6A4422',3)+L(x-w/2+30,y+h/6,x+w/2-20,y+h/7,'#6A4422',3)+
   Ell(x+w/2-h*.28,y,h*.28,h/2-3,'#D9A86A',{stroke:'#8A5A32','stroke-width':3})+Ell(x+w/2-h*.28,y,h*.14,h*.24,'none',{stroke:'#A8743E','stroke-width':3});
-// The carpenter: a glowing round figure in a work tunic.
-const CARP={tunic:'#FFC24C',tunic2:'#E0623C',hair:'#4A2A16',skin:'#D9965E',shade:'#A86A3E',aura:'#FFB04C',auraOp:.4};
-const carpenter=(x,y,s,o={})=>E.chubby(x,y,s,Object.assign({},CARP,o));
-// Workshop wall and floor (frame space).
-function workshop(t){
-  let g='';
-  for(let i=0;i<9;i++)g+=R(-40+i*130,-200,124,1420,4,i%2?'#4E3220':'#563823',{opacity:.9})+L(-40+i*130+30,-200,-40+i*130+24,1220,'#3E2616',2);
-  g+=R(60,520,960,16,3,'#3A2414');
-  // hanging tools: saw, mallet, chisel
-  g+=P('M150 560L150 620L320 620L320 600Z','#9AA6B0')+R(130,560,40,70,8,'#6A4422')+R(470,560,14,90,3,'#6A4422')+R(440,630,74,46,8,'#7A5230')+R(760,560,12,70,3,'#6A4422')+P('M760 630L772 630L770 690L762 690Z','#B8C2CA');
-  g+=groundF(71,1185,'#6A4426',6)+groundF(72,1560,'#5E3C22',10)+L(-100,1300,1200,1296,'#5A3820',3)+L(-100,1460,1200,1466,'#5A3820',3)+L(-100,1650,1200,1644,'#5A3820',3);
-  // shavings
-  for(let i=0;i<34;i++){const x=30+hash(i,2)*1020,y=i<12?1200+hash(i,3)*90:1380+hash(i,3)*520;g+=P(`M${x} ${y}q14 -18 26 0q-10 10 -22 2`,'none',{stroke:'#E8C08A','stroke-width':5,opacity:.8});}
-  return g+fireflies(t,0,-600,1920,700,'#FFD8A0',10,.25);
-}
-
-// ---------- 0. Cold open: half a log ----------
-function coldOpen(t){
-  let g=workshop(t);
-  // chopping stump, bench
-  g+=R(500,1120,170,70,10,'#7A4E2C',{stroke:'#4A2E18','stroke-width':4})+Ell(585,1120,85,16,'#C89458');
-  g+=R(700,1050,230,26,4,'#7A4E2C',{stroke:'#4A2E18','stroke-width':3})+R(716,1076,18,108,3,'#5A3820')+R(896,1076,18,108,3,'#5A3820');
-  // fire with a pot on a tripod
-  const fk=ease.out(prog(t,AT.burns-.2,AT.burns+.8));
-  g+=Ell(170,1176,110,20,'#3A2414')+L(80,1180,170,960,'#3A2414',8)+L(260,1180,170,960,'#3A2414',8);
-  g+=flames(t,170,1170,1.1,fk);
-  g+=L(170,960,170,1010,'#2A1A10',4)+P('M120 1010H220L208 1080Q170 1096 132 1080Z','#3A3A44',{stroke:'#1A1A22','stroke-width':3});
-  if(t>AT.dinner)for(let i=0;i<3;i++){const k=(t*.5+i/3)%1;g+=P(`M${160+i*10} ${1000-k*140}q14 -20 0 -40`,'none',{stroke:'#FFF6E0','stroke-width':5,opacity:(.6*(1-k)).toFixed(2)});}
-  // the log: whole on the stump, then split into two halves
-  const sp=ease.inOut(prog(t,AT.splits,AT.splits+.5));
-  if(sp<=0)g+=logPiece(585,1080,300,84);
-  else{
-    const lh=ease.inOut(prog(t,AT.burns-.7,AT.burns-.1)),rh=ease.inOut(prog(t,AT.otherHalf-.6,AT.otherHalf));
-    const lx=lerp(510-sp*20,170,lh),ly=lerp(1080,1150,lh);
-    if(lh<1||fk<.6)g+=G('',logPiece(lx,ly,150,80),(1-fk*.9).toFixed(2));
-    else g+=logPiece(170,1160,110,40).replace(/#8A5A32/g,'#3A2414');
-    const sx=lerp(660+sp*20,815,rh),sy=lerp(1080,1010,rh),morph=ease.inOut(prog(t,AT.statue,AT.statue+.8));
-    if(morph<1)g+=G(`translate(${sx} ${sy}) rotate(${(-90*rh).toFixed(1)}) translate(${-sx} ${-sy})`,logPiece(sx,sy,150,80),(1-morph).toFixed(2));
-    if(morph>0)g+=G('',idol(t,815,1050,250,{}),morph.toFixed(2));
-    if(sp<1)g+=glow(585,1060,90,'#FFF6DA',.8*(1-sp));
-  }
-  // axe stroke
-  const ax=prog(t,AT.splits-.35,AT.splits+.1);
-  if(ax>0&&ax<1.6)g+=G(`rotate(${lerp(-70,0,((p)=>p*p*p)(ax)).toFixed(1)} 470 1150)`,L(470,1150,590,1000,'#6A4422',12)+P('M570 985L630 1000L606 1040L560 1020Z','#B8C2CA'),(1-prog(t,AT.splits+.3,AT.splits+.6)).toFixed(2));
-  // the carpenter: faces the fire, then the statue, then kneels
-  const kn=ease.inOut(prog(t,AT.kneels-.2,AT.kneels+.5)),toFire=t>AT.burns-.6&&t<AT.otherHalf-.6;
-  g+=carpenter(lerp(400,560,kn),1190+kn*26,1.35,{flip:toFire?-1:1,lean:kn*16,reach:t>AT.prays?.55+.1*Math.sin(t*3):kn*.35});
-  // same tree: the arrow and the labels
-  g+=arrow(190,930,470,620,720,840,ease.inOut(prog(t,AT.sameTree,AT.sameTree+.9)),CORAL,9);
-  g+=tag(t,AT.firewood,230,1420,'FIREWOOD',40,1);
-  g+=tag(t,AT.hisGod,760,1420,'HIS GOD',40,2,{rot:2});
-  g+=tag(t,AT.sameTree,500,1520,'SAME TREE.',46,3,{bg:CORAL,rot:-2});
-  g+=tag(t,AT.isaiah,540,300,'ISAIAH 44: A JOKE',40,4);
-  g+=tag(t,AT.whats,540,400,"WHAT'S WRONG WITH",46,5);
-  g+=tag(t,AT.whats+.5,540,490,'A STATUE OF GOD?',52,6,{bg:CORAL});
-  return F(g)+verse(t,AT.prays-.15,380,40,['He prays to it and says, Deliver me,','for you are my god!'],'ISAIAH 44:17 ESV',{size:50,hl:'for you are my god!',hlAt:AT.myGod[0]-.15,hlDur:AT.myGod[1]-AT.myGod[0]+.15,seed:3,id:9});
-}
-
-// ---------- 1. The second word ----------
-function secondWord(t){
-  let g=groundF(5,1210,'#1E1A24')+groundF(6,1420,'#2C2636',16)+groundF(4,1680,'#363042',18)+fireflies(t,0,1300,1080,600,'#FFE9A8',10,.35);
-  const dn=ease.inOut(prog(t,AT.v204-.5,AT.v204+.3))*(1-ease.inOut(prog(t,AT.notMainly,AT.notMainly+.6)));
-  const cy=lerp(880,990,dn),s=lerp(1.09,.74,dn);
-  const lit=k=>k===1?1+.25*Math.sin(t*3)*prog(t,AT.second,AT.second+.6):k===0?.7:.08;
-  g+=piece(t,0,540,cy,tablets(540,cy,s,lit)+G(`translate(540 ${cy}) scale(${s}) translate(-960 -560)`,mark(scribble(780,526,200,52,6),ease.inOut(prog(t,AT.second,AT.second+.8)),CORAL,9)),1,1.2);
-  g+=fade(t,AT.v204-.3,tag(t,AT.rightAfter,540,330,'COMMANDMENT I: NO OTHER GODS',38,2)+tag(t,AT.second,540,430,'NOW: COMMANDMENT II',44,3,{bg:CORAL}));
-  g+=fade(t,AT.which-.2,tag(t,AT.religions,540,1430,"OTHER RELIGIONS' IDOLS?",38,4)+
-    strike(330,1430,750,ease.inOut(prog(t,AT.job-.2,AT.job+.3)))+tag(t,AT.job,540,1520,"THAT'S COMMANDMENT I",40,5,{bg:CORAL,rot:-2}));
-  g+=tag(t,AT.which,540,1430,'I · WHICH GOD',44,6)+tag(t,AT.how,540,1520,'II · HOW',50,7,{bg:CORAL,rot:-2});
-  g+=tag(t,AT.rightGod,540,330,'THE RIGHT GOD,',44,8)+tag(t,AT.wrongWay,540,420,'THE WRONG WAY',48,9,{bg:CORAL});
-  return stars(t,.4,300)+F(g)+
-    verse(t,AT.v204-.15,300,40,['You shall not make for yourself a carved image,','or any likeness of anything that is in heaven above,','or that is in the earth beneath,','or that is in the water under the earth.'],'EXODUS 20:4 ESV',{size:42,hl:'a carved image,',hlAt:AT.carved[0],hlDur:AT.carved[1]-AT.carved[0],seed:5,id:10})+
-    verse(t,AT.v205-.15,300,400,['You shall not bow down to them or serve them.'],'EXODUS 20:5 ESV',{size:44,hl:'bow down',hlAt:AT.bowDown[0],hlDur:AT.bowDown[1]-AT.bowDown[0],seed:7,id:11});
-}
-
-// ---------- 2. Notice the list: sky, land, sea ----------
-function skyArt(t,cx,cy){return glow(cx+40,cy-30,80,'#FFD86B',.6)+C(cx+40,cy-30,30,'#FFC24C')+
-  [[-60,-40],[-20,-60],[-70,10]].map(([dx,dy],i)=>P(`M${cx+dx-18} ${cy+dy}q9 -12 18 0q9 -12 18 0`,'none',{stroke:'#FFFFFF','stroke-width':5})).join('')+
-  [[50,40],[-40,50],[80,-70]].map(([dx,dy])=>C(cx+dx,cy+dy,4,'#FFF6DA')).join('');}
-function landArt(t,cx,cy){return Ell(cx,cy+10,70,38,'#5A3A22')+C(cx+70,cy-12,26,'#5A3A22')+P(`M${cx+58} ${cy-34}q-10 -24 -26 -22M${cx+84} ${cy-34}q10 -24 26 -22`,'none',{stroke:'#F2E6C8','stroke-width':6})+
-  C(cx+80,cy-14,4,'#F2E6C8')+[-50,-20,20,50].map(dx=>R(cx+dx-6,cy+36,12,40,4,'#4A2E18')).join('')+P(`M${cx-70} ${cy}q-26 6 -22 34`,'none',{stroke:'#5A3A22','stroke-width':6})+
-  L(cx-110,cy+80,cx+110,cy+80,'#3A6A2A',8);}
-function seaArt(t,cx,cy){let g='';for(let i=0;i<3;i++)g+=P(`M${cx-100} ${cy-50+i*50}q25 -14 50 0t50 0t50 0t50 0`,'none',{stroke:['#3FB0FF','#7CD4FF','#2B8AE0'][i],'stroke-width':6,opacity:.8});
-  const fx=(x,y,c,d)=>Ell(x,y,30,16,c)+P(`M${x-26*d} ${y}l${-20*d} -14v28z`,c)+C(x+16*d,y-4,3.5,'#102030');
-  return g+fx(cx-30+Math.sin(t*1.3)*10,cy-24,'#FFB04C',1)+fx(cx+40-Math.sin(t*1.1)*10,cy+26,'#FF8FB1',-1);}
-function panel(t,at,cx,cy,w,h,paper,inner,name,id,xp){
-  return piece(t,at,cx,cy,strip(cx-w/2,cy-h/2,w,h,id*7,paper)+tape(cx,cy-h/2+4,90,-4)+inner+xMark(cx,cy,w*.36,xp)+
-    label(cx,cy+h/2+12,name,{size:34,anchor:'middle'}),id,1.4);
-}
-function theList(t){
-  let g=groundF(9,1230,'#1A1430')+groundF(10,1420,'#261E46',16)+groundF(11,1680,'#30285A',18)+fireflies(t,0,1300,1080,600,'#B98CFF',10,.4);
-  const X0=AT.standIn+.2;
-  g+=panel(t,AT.sky,290,720,300,250,'#1E3A7A',skyArt(t,290,720),'HEAVEN ABOVE',1,ease.inOut(prog(t,X0,X0+.4)));
-  g+=panel(t,AT.land,790,720,300,250,'#7A5A2E',landArt(t,790,720),'THE EARTH',2,ease.inOut(prog(t,X0+.3,X0+.7)));
-  g+=panel(t,AT.sea,540,1010,300,190,'#0E3A6A',seaArt(t,540,1010),'THE WATER',3,ease.inOut(prog(t,X0+.6,X0+1)));
-  g+=tag(t,AT.notice,540,330,'NOTICE THE LIST',44,4);
-  g+=tag(t,AT.whole,540,430,'THE WHOLE CREATION',44,5,{bg:CORAL,rot:-2});
-  g+=tag(t,AT.standIn,540,1450,'NO STAND-INS FOR THE MAKER',40,6,{bg:CORAL});
-  return stars(t,.4,600)+F(g);
-}
-
-// ---------- 3. No form, only a voice ----------
-function noForm(t){
-  const fireP=ease.out(prog(t,AT.why,AT.mountain+.8));
-  let g=glow(540,640,520,'#FF7A3C',.45*fireP)+glow(540,640,240,'#FFE9A8',.6*fireP);
-  g+=mountain(17,540,640,'#2E2A36',1)+mountain(18,880,860,'#221F2A',.8)+mountain(19,180,880,'#26222E',.8);
-  for(let i=0;i<8;i++){const k=(t*.12+i/8)%1,x=540+Math.sin(i*2.1+t*.4)*(40+k*200),y=620-k*520;g+=Ell(x,y,70+k*170,40+k*70,'#5A5260',{opacity:(.45*fireP*(1-k)).toFixed(3)});}
-  g+=flames(t,540,650,1.2,fireP);
-  // the empty dotted outline: nothing to see
-  const ol=ease.out(prog(t,AT.noForm[0]-.2,AT.noForm[0]+.6)),olOut=prog(t,AT.lookAt-.3,AT.lookAt+.3);
-  if(ol>0&&olOut<1)g+=G('',Ell(540,520,78,104,'none',{stroke:'#FFFBEA','stroke-width':6,'stroke-dasharray':'14 14'})+
-    T(540,556,'?',{size:96,font:'Georgia',weight:700,anchor:'middle',fill:'#FFFBEA'})+xMark(540,520,70,ease.inOut(prog(t,AT.shape,AT.shape+.5))),(ol*(1-olOut)).toFixed(2));
-  // words rise from the fire on scraps of paper
-  const wr=prog(t,AT.fireWords-.2,AT.fireWords+.4);
-  if(wr>0)for(let i=0;i<5;i++){const k=((t-AT.fireWords)*.18+i/5)%1,x=540+Math.sin(i*1.9)*90+Math.sin(t+i)*14,y=600-k*300;
-    g+=G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(i%2?4:-4)})`,strip(-60,-16,120,32,40+i,'#F6EFDC',{shadow:false})+L(-40,-2,30,-2,'#6A6458',4)+L(-40,8,10,8,'#6A6458',4),(Math.min(wr,1)*Math.sin(k*Math.PI)).toFixed(2));}
-  g+=groundF(52,1330,'#6A5236',10);
-  const ly=1420,lp=ease.inOut(prog(t,AT.mountain,AT.mountain+.6));
-  g+=mark(`M40 ${ly}L1040 ${ly}`,lp,NEON,7)+(lp>0?glow(540,ly,500,NEON,.1*lp):'');
-  g+=crowd(t,100,1650,6,170,.8,{flip:1,aura:'#7CFFE6',auraOp:.35,lean:-8});
-  g+=fade(t,AT.thenLORD-.3,tag(t,AT.mountain,540,330,'MOUNT SINAI',44,1)+tag(t,AT.moses,540,430,'MOSES REMEMBERS',38,2,{bg:CORAL}));
-  g+=fade(t,AT.lookAt-.3,tag(t,AT.shape+.2,540,330,'NO SHAPE.',46,3)+tag(t,AT.fireWords,540,430,'FIRE AND WORDS.',46,4,{bg:CORAL}));
-  g+=tag(t,AT.lookAt,540,330,'NOTHING TO LOOK AT',42,5)+strike(320,330,760,ease.inOut(prog(t,AT.listen-.3,AT.listen+.2)))+
-    tag(t,AT.listen,540,430,'SOMEONE TO LISTEN TO',46,6,{bg:CORAL,rot:-2});
-  return stars(t,.4,400)+F(g)+verse(t,AT.thenLORD-.15,300,40,['Then the LORD spoke to you out of the midst of the fire.','You heard the sound of words, but saw no form;','there was only a voice.'],'DEUTERONOMY 4:12 ESV',{size:46,hl:'saw no form;',hlAt:AT.noForm[0],hlDur:AT.noForm[1]-AT.noForm[0],seed:12,id:7});
-}
-
-// ---------- 4. Smaller and quieter ----------
-function shelf(t){
-  let g='';
-  for(let i=0;i<9;i++)g+=R(-40+i*130,-200,124,1420,4,i%2?'#2E2016':'#34241A');
-  g+=R(-40,1000,1160,40,4,'#7A4E2C',{stroke:'#3A2414','stroke-width':3})+R(-40,1040,1160,900,0,'#3A2618')+[0,1,2].map(i=>R(20+i*350,1080,320,380,8,'#4A3020',{stroke:'#2A1A10','stroke-width':4})+C(180+i*350,1270,12,'#C89458')).join('')+[0,1,2].map(i=>R(20+i*350,1500,320,300,8,'#442C1C',{stroke:'#2A1A10','stroke-width':4})+R(140+i*350,1560,80,14,6,'#C89458')).join('');
-  const dim=1-.6*ease.inOut(prog(t,AT.calf-.3,AT.calf+.3));
-  const sm=ease.inOut(prog(t,AT.smaller+.2,AT.smaller+1)),out=((p)=>p*p*p)(prog(t,AT.calf-.4,AT.calf+.2));
-  const mouth=prog(t,AT.quieter+.3,AT.quieter+1.1),mx=prog(t,AT.putIn,AT.putIn+.6);
-  let ids=idol(t,220,1000,250,{mouth,mouthX:mx})+idol(t,840,1000,230,{gold:true});
-  ids+=G(`translate(${(out*700).toFixed(1)} 0)`,G(`translate(540 1000) scale(${lerp(1,.42,sm).toFixed(3)}) translate(-540 -1000)`,idol(t,540,1000,280,{gold:true})));
-  g+=G('',ids,dim.toFixed(2));
-  // the calf slides onto the shelf
-  const ci=ease.out(prog(t,AT.calf,AT.calf+.7));
-  if(ci>0)g+=calf(t,lerp(-300,520,ci),912,1.05);
-  if(t>AT.feast)g+=piece(t,AT.feast,540,740,P('M330 715Q540 680 750 715L742 775Q540 742 338 775Z','#FF5A48')+T(540,760,'A FEAST TO THE LORD',{size:32,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#fff'}),8);
-  // the God of Sinai speaks: light and sound from above
-  const sp=ease.out(prog(t,AT.sinaiSpeaks-.2,AT.sinaiSpeaks+.8));
-  if(sp>0){g+=glow(540,120,620,'#FFF2C8',.55*sp);for(let i=0;i<4;i++){const k=((t-AT.sinaiSpeaks)*.5+i/4)%1;g+=Ell(540,160,120+k*460,40+k*150,'none',{stroke:'#FFF6DA','stroke-width':5,opacity:(.6*sp*(1-k)).toFixed(2)});}}
-  g+=fade(t,AT.calf-.3,tag(t,AT.smaller,300,330,'SMALLER',48,1)+tag(t,AT.quieter,760,430,'QUIETER',48,2,{bg:CORAL,rot:2}));
-  g+=fade(t,AT.godHold-.3,tag(t,AT.replacing,540,1430,'REPLACING GOD?',40,3)+strike(370,1430,710,ease.inOut(prog(t,AT.hold-.3,AT.hold+.1)))+
-    tag(t,AT.hold,540,1520,'TRYING TO HOLD HIM',44,4,{bg:CORAL,rot:-2}));
-  g+=fade(t,AT.sinaiSpeaks-.3,tag(t,AT.godHold,540,1430,'A GOD YOU CAN HOLD',42,5)+tag(t,AT.control,540,1520,'= A GOD YOU CAN CONTROL',42,6,{bg:CORAL}));
-  g+=tag(t,AT.sinaiSpeaks,540,430,'THE GOD WHO SPEAKS',46,7,{bg:CORAL});
-  g+=tag(t,AT.ratherNot,540,1460,"WHAT YOU'D RATHER NOT HEAR",38,9);
-  return F(g);
-}
-
-// ---------- 5. The image he already made ----------
-function imageSheet(t){
-  let g=glow(540,700,900,'#FFF2C8',.6)+fireflies(t,0,-600,1920,2300,'#FFF6DA',18,.6);
-  for(let i=0;i<12;i++){const a=Math.PI*(.12+.76*i/11)+Math.sin(t*.2)*.02;g+=P(`M540 -120L${(540+Math.cos(a)*2200).toFixed(0)} ${(-120+Math.sin(a)*2200).toFixed(0)}L${(540+Math.cos(a+.05)*2200).toFixed(0)} ${(-120+Math.sin(a+.05)*2200).toFixed(0)}Z`,'#FFFBEA',{opacity:.16});}
-  g+=glow(540,-80,420,'#FFFFFF',.5);
-  g+=groundF(81,1190,'#3BBF7A',10)+groundF(82,1600,'#2E9A62',14);
-  for(let i=0;i<34;i++){const x=hash(i,11)*1080,y=1220+hash(i,12)*680;g+=L(x,y,x+(hash(i,13)-.5)*10,y+26,'#1E7A4A',3)+C(x,y,6+3*Math.sin(t*2+i),['#FF7BD5','#FFD45E','#FFFFFF'][i%3],{opacity:.9});}
-  // more people fill the sheet on "people"
-  const cr=ease.out(prog(t,AT.people-.4,AT.people+.6));
-  if(cr>0)g+=G(`translate(0 ${((1-cr)*60).toFixed(1)})`,crowd(t,70,1090,6,180,.62,{aura:'#FFD86B',auraOp:.45,shift:2})+crowd(t,140,1160,2,700,.8,{aura:'#FFD86B',auraOp:.45,shift:4}),cr.toFixed(2));
-  // the first two people
-  const pp=ease.out(prog(t,AT.already-.2,AT.already+.6));
-  if(pp>0)g+=G('',E.chubby(400,1190,1.3,{tunic:'#3DE0B8',tunic2:'#1787A8',aura:'#FFE9A8',auraOp:.6,hair:'#2E1C52'})+
-    E.chubby(680,1190,1.3,{f:true,flip:-1,tunic:'#FF8FB1',tunic2:'#C8487A',aura:'#FFE9A8',auraOp:.6,hair:'#4A2A16',skin:'#D9965E',shade:'#A86A3E',phase:1.3}),pp.toFixed(2));
-  // a small gold idol, crossed out, as the contrast
-  g+=fade(t,AT.christians,piece(t,AT.notGold,900,700,idol(t,900,780,150,{gold:true})+xMark(900,700,60,ease.inOut(prog(t,AT.notGold+.3,AT.notGold+.8))),3));
-  g+=fade(t,AT.christians-.2,tag(t,AT.notGold+.3,540,330,'NOT GOLD OR WOOD',44,1)+tag(t,AT.people,540,430,'HIS IMAGE: PEOPLE',50,2,{bg:CORAL,rot:-2}));
-  g+=tag(t,AT.dontCarve,540,1430,"YOU DON'T CARVE IT",42,4)+tag(t,AT.meetIt,540,1520,'YOU MEET IT',50,5,{bg:CORAL,rot:-2});
-  g+=tag(t,AT.christians,540,330,'AS CHRISTIANS HAVE LONG READ IT:',34,6);
-  return F(g)+verse(t,AT.soGod-.15,300,40,['So God created man in his own image,','in the image of God he created him;','male and female he created them.'],'GENESIS 1:27 ESV',{size:48,hl:'in his own image,',hlAt:AT.ownImage[0],hlDur:AT.ownImage[1]-AT.ownImage[0],seed:22,id:8,end:AT.notGold});
-}
-
-// ---------- 6. The ones we still carve ----------
-function mask(t,cx,cy,s,F2){
+// An axe held at (hx, hy), pointing along angle a (radians, 0 = right); the blade faces the swing.
+const axe=(hx,hy,a,len=110)=>{const c=Math.cos(a),s=Math.sin(a),x0=hx-c*36,y0=hy-s*36,x1=hx+c*len,y1=hy+s*len,nx=-s,ny=c;
+  return L(x0,y0,x1,y1,'#6A4422',11)+P(`M${(x1-c*12-nx*6).toFixed(1)} ${(y1-s*12-ny*6).toFixed(1)}L${(x1-c*16+nx*40).toFixed(1)} ${(y1-s*16+ny*40).toFixed(1)}L${(x1+c*22+nx*44).toFixed(1)} ${(y1+s*22+ny*44).toFixed(1)}L${(x1+c*14-nx*6).toFixed(1)} ${(y1+s*14-ny*6).toFixed(1)}Z`,'#B8C2CA',{stroke:'#4A5460','stroke-width':3});};
+const chisel=(hx,hy,tx,ty)=>L(hx,hy,tx,ty,'#C8D0D8',7)+L(hx,hy,hx+(hx-tx)*.45,hy+(hy-ty)*.45,'#7A5230',12);
+const mallet=(hx,hy,a)=>{const c=Math.cos(a),s=Math.sin(a);return L(hx-c*10,hy-s*10,hx+c*70,hy+s*70,'#7A5230',9)+
+  G(`rotate(${(a*57.3).toFixed(1)} ${(hx+c*78).toFixed(1)} ${(hy+s*78).toFixed(1)})`,R(hx+c*78-16,hy+s*78-30,32,60,8,'#9A6A3C',{stroke:'#5A3A1C','stroke-width':3}));};
+const candle=(t,x,y,i=0)=>R(x-9,y-56,18,56,4,'#F2E6C8')+glow(x,y-70,70,'#FFC870',.6)+P(`M${x-6} ${y-58}Q${x+Math.sin(t*9+i)*4} ${y-92} ${x+6} ${y-58}Z`,'#FFD86B');
+const tent=(x,y,c,k=1)=>P(`M${x-90*k} ${y}L${x} ${y-120*k}L${x+90*k} ${y}Z`,c)+P(`M${x} ${y-120*k}L${x-13*k} ${y}L${x+13*k} ${y}Z`,'#2A1A10');
+// Rings of light going out from a point: the voice from the fire (God is never shown, only fire, light and words).
+const waves=(t,x,y,R0,k=1,n=4,sp=.45)=>{if(k<=0)return '';let g=glow(x,y,R0*.35,'#FFF6DA',.25*k);for(let i=0;i<n;i++){const p=(t*sp+i/n)%1;g+=C(x,y,40+p*R0,'none',{stroke:'#FFF6DA','stroke-width':(12*(1-p)+2).toFixed(1),opacity:(k*(1-p)*.8).toFixed(2)});}return g;};
+const rings=(t,a,x,y,R0=1300,n=4)=>{const sp=prog(t,a,a+2.2);if(sp<=0||sp>=1)return '';let g=glow(x,y,200+sp*700,'#FFFBEA',.6*(1-sp));
+  for(let k=0;k<n;k++){const p=clamp(sp*1.6-k*.18);if(p>0&&p<1)g+=C(x,y,60+p*R0,'none',{stroke:'#FFF6DA','stroke-width':12*(1-p)+2,opacity:(1-p).toFixed(2)});}return g;};
+const bolt=(t,a,x,y0,y1)=>{const p=prog(t,a,a+.4);if(p<=0||p>=1)return '';const m=(y0+y1)/2;
+  return P(`M${x} ${y0}L${x+46} ${m-80}L${x-24} ${m}L${x+34} ${y1}`,'none',{stroke:'#E9FFFF','stroke-width':9,opacity:(1-p).toFixed(2)})+glow(x,y1,280,'#CFFFFF',.55*(1-p));};
+const rays=(t,x,y,k=1,n=12,col='#FFFBEA')=>{let g='';for(let i=0;i<n;i++){const a=Math.PI*(.15+.7*i/(n-1))+Math.sin(t*.25+i)*.015;
+  g+=P(`M${x} ${y}L${(x+Math.cos(a)*2600).toFixed(0)} ${(y+Math.sin(a)*2600).toFixed(0)}L${(x+Math.cos(a+.045)*2600).toFixed(0)} ${(y+Math.sin(a+.045)*2600).toFixed(0)}Z`,col,{opacity:(.14*k).toFixed(3)});}return g+glow(x,y+200,500,'#FFFFFF',.4*k);};
+const pine=(x,y,h,c)=>P(`M${x} ${y-h}L${x-h*.28} ${y-h*.45}L${x-h*.16} ${y-h*.45}L${x-h*.34} ${y}L${x+h*.34} ${y}L${x+h*.16} ${y-h*.45}L${x+h*.28} ${y-h*.45}Z`,c);
+const bird=(t,x,y,s=1,i=0)=>{const f=Math.sin(t*10+i)*12*s;return P(`M${x-22*s} ${y-f}Q${x-10*s} ${y-6*s} ${x} ${y}Q${x+10*s} ${y-6*s} ${x+22*s} ${y-f}`,'none',{stroke:'#1A1A2A','stroke-width':5*s});};
+const workshopWall=(t,dark=0)=>{let g='';for(let i=0;i<16;i++)g+=R(-60+i*130,-700,124,1480,4,mix(i%2?'#6A4428':'#734A2C','#2A1A10',dark))+L(-60+i*130+30,-700,-60+i*130+24,780,mix('#4E3018','#1A100A',dark),2);
+  return g+R(-60,180,2040,16,3,mix('#4A2E18','#1A100A',dark));};
+// Speech bubble with scribbled words, popping in from k=0 to 1.
+const bubble=(x,y,w,h,k,dir=1,col='#FFFDF2')=>k<=0?'':G(`translate(${x} ${y}) scale(${ease.back(Math.min(1,k)).toFixed(3)}) translate(${-x} ${-y})`,
+  R(x-w/2,y-h/2,w,h,h/2,col,{stroke:INK,'stroke-width':5})+P(`M${x-dir*20} ${y+h/2-4}L${x-dir*58} ${y+h/2+44}L${x+dir*12} ${y+h/2-4}Z`,col,{stroke:INK,'stroke-width':5})+R(x-dir*24,y+h/2-10,40,14,0,col)+
+  [0,1].map(i=>{let d=`M${x-w/2+40} ${y-14+i*28}`;for(let xx=x-w/2+40;xx<x+w/2-40-i*40;xx+=24)d+=`q6 -12 12 0t12 0`;return P(d,'none',{stroke:'#3A3A50','stroke-width':5});}).join(''));
+function mask(cx,cy,s,F2){
   return G(`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`,
     Ell(cx,cy,92,118,F2,{stroke:'#8A5A12','stroke-width':4})+P(`M${cx-86} ${cy-40}C${cx-96} ${cy-150} ${cx+96} ${cy-150} ${cx+86} ${cy-40}C${cx+50} ${cy-80} ${cx-50} ${cy-80} ${cx-86} ${cy-40}Z`,'#4A2A16')+
-    Ell(cx-32,cy-6,12,9,'#3A2A10')+Ell(cx+32,cy-6,12,9,'#3A2A10')+P(`M${cx-44} ${cy+38}Q${cx} ${cy+80} ${cx+44} ${cy+38}`,'none',{stroke:'#3A2A10','stroke-width':7})+
-    R(cx-50,cy+118,100,22,4,'#8A5A12'));
+    Ell(cx-32,cy-6,12,9,'#3A2A10')+Ell(cx+32,cy-6,12,9,'#3A2A10')+P(`M${cx-44} ${cy+38}Q${cx} ${cy+80} ${cx+44} ${cy+38}`,'none',{stroke:'#3A2A10','stroke-width':7}));
 }
-function stillCarve(t){
+
+// ---------- ACT 0: half a log (Isaiah 44) ----------
+// A0. Opening: a man chops a tall tree at sunset; it falls on "tree".
+function treeFall(t){
+  let g=glow(1260,-260,1000,'#FFB04C',.6)+C(1260,-240,120,'#FFE2A0',{opacity:.92});
+  for(let i=0;i<16;i++){const x=-80+i*134+(i%2)*30,h=440+hash(i,3)*420;g+=pine(x+70,780,h,['#2E3A1A','#3A4620','#26301A'][i%3]);}
+  g+=gnd(11,760,'#5A6A26','#46561E');
+  const fall=sq(clamp(prog(t,AT.tree,AT.tree+.8))),cut=Math.min(1,prog(t,0,AT.tree)*1.1);
+  let tr=R(1095,-160,70,862,10,'#6A4428',{stroke:'#3A2414','stroke-width':4})+L(1112,-80,1114,690,'#4E3018',3)+L(1142,0,1140,660,'#4E3018',3);
+  [[1130,-290,230],[1000,-200,150],[1260,-190,160],[1070,-410,150],[1200,-400,140],[1130,-110,120]].forEach(([x,y,r],i)=>tr+=C(x,y,r,['#3E7A2A','#4E8A30','#2E6A22'][i%3],{stroke:'#1E4A16','stroke-width':4}));
+  g+=R(1095,690,70,104,6,'#6A4428',{stroke:'#3A2414','stroke-width':4})+Ell(1130,792,60,10,'#2A3A12',{opacity:.6});
+  g+=G(`rotate(${(86*fall).toFixed(1)} 1165 700)`,tr+P(`M1095 ${700-22*cut}L${1095+34*cut} 700L1095 ${700+16*cut}Z`,'#E8C08A'));
+  // the axe: raise and strike every half second until the tree goes
+  const per=.5,c0=.64,done=t>AT.tree+.05;
+  const ph=done?0:(((t-c0)%per)+per)%per/per,sw=done?1:(ph<.7?1-ease.inOut(ph/.7):sq((ph-.7)/.3));
+  const x=900,y=795,s=1.1,H=[lerp(x-5,x+100*s,sw),lerp(y-255*s,y-118*s,sw)+(done?prog(t,AT.tree+.2,AT.tree+.8)*40:0)],a=lerp(-2.0,.12,sw)+(done?prog(t,AT.tree+.2,AT.tree+.8)*.9:0);
+  const o=carpO(x,y,s,{near:{x:H[0],y:H[1]},far:{x:H[0]-Math.cos(a)*24,y:H[1]-Math.sin(a)*24},look:done?{x:1700,y:200}:{x:1100,y:690},expr:done?'surprised':'calm',lean:done?-6:6});
+  g+=withProp(o,()=>axe(H[0],H[1],a,95));
+  [.64,1.14,1.64].forEach((c,k)=>{const p=prog(t,c,c+.45);if(p>0&&p<1)for(let i=0;i<6;i++)g+=R(1095-p*(60+hash(i,k)*90),690-Math.sin(p*3)*70*hash(i,k+3)+p*p*60,16,9,3,'#E8C08A',{opacity:(1-p).toFixed(2),transform:`rotate(${(p*400+i*50).toFixed(0)} 1095 690)`});});
+  if(fall>.95){const p=prog(t,AT.tree+.8,AT.tree+1.6);for(let i=0;i<8;i++)g+=C(1300+i*60,790-p*60*hash(i,4),30+p*40,'#C8B080',{opacity:(.5*(1-p)).toFixed(2)});}
+  return g;
+}
+// A1. He splits the log on the chopping stump (a focus beat on the strike).
+function splitLog(t){
+  let g=glow(960,-100,900,'#FF7A3C',.5)+C(960,-60,150,'#FFB870',{opacity:.85});
+  for(let i=0;i<14;i++){const x=-80+i*150,h=380+hash(i,7)*300;g+=pine(x+70,780,h,['#4A1E14','#5A2618','#3A160E'][i%3]);}
+  g+=gnd(21,760,'#7A3A1E','#5A2A14');
+  g+=R(880,700,160,96,8,'#7A4E2C',{stroke:'#4A2E18','stroke-width':4})+Ell(960,700,80,16,'#C89458',{stroke:'#7A4E2C','stroke-width':3});
+  const sp=ease.out(prog(t,AT.strike,AT.strike+.55));
+  if(sp<=0)g+=logPiece(960,664,240,72);
+  else{const lx=lerp(900,800,sp),ly=lerp(664,760,sp)-Math.sin(sp*3.14)*90,rx=lerp(1020,1160,sp),ry=lerp(664,762,sp)-Math.sin(sp*3.14)*90;
+    g+=G(`rotate(${(-80*sp).toFixed(0)} ${lx} ${ly})`,logPiece(lx,ly,118,72))+G(`rotate(${(70*sp).toFixed(0)} ${rx} ${ry})`,logPiece(rx,ry,118,72));
+    if(sp<1)g+=glow(960,664,240,'#FFF6DA',.9*(1-sp));}
+  const sw=ease.inOut(prog(t,AT.strike-.2,AT.strike)),x=690,y=795,s=1.15,lift=1-ease.inOut(prog(t,AT.splits-.3,AT.strike-.25));
+  const H=[lerp(x+25,x+105*s,sw),lerp(y-262*s,y-122*s,sw)+lift*20],a=lerp(-1.75,.1,sw);
+  const o=carpO(x,y,s,{near:{x:H[0],y:H[1]},far:{x:H[0]-Math.cos(a)*24,y:H[1]-Math.sin(a)*24},look:{x:960,y:660},expr:t>AT.strike?'joy':'calm',lean:sw*14});
+  g+=withProp(o,()=>axe(H[0],H[1],a,140));
+  return g;
+}
+// A2. Half of it he burns to cook his dinner.
+function dinner(t){
+  let g=stars(t,.8,400)+glow(1060,700,600,'#FF8A3C',.35);
+  for(let i=0;i<14;i++){const x=-80+i*150,h=420+hash(i,9)*320;g+=pine(x+70,780,h,['#10182A','#141E30','#0C1222'][i%3]);}
+  g+=gnd(31,770,'#2A1E1A','#1E1612');
+  g+=[0,1,2,3,4,5].map(i=>Ell(990+i*28,792-(i%2)*4,22,12,'#5A5250')).join('');
+  g+=G('rotate(-8 1060 776)',logPiece(1060,776,130,46,'#3A2414'))+glow(1060,740,180,'#FFB04C',.7)+FX.flames(t,[[1010,780],[1060,766],[1110,780]],{H:130,sp:10,seed:3});
+  g+=L(990,792,1060,600,'#2A1A10',7)+L(1130,792,1060,600,'#2A1A10',7)+L(1060,600,1060,640,'#1A1008',4)+P('M1018 640H1102L1092 700Q1060 716 1028 700Z','#3A3A44',{stroke:'#1A1A22','stroke-width':3});
+  for(let i=0;i<3;i++){const k=(t*.5+i/3)%1;g+=P(`M${1050+i*10} ${630-k*140}q14 -20 0 -40`,'none',{stroke:'#FFF6E0','stroke-width':5,opacity:(.6*(1-k)).toFixed(2)});}
+  g+=R(790,745,140,55,18,'#4A4048',{stroke:'#2A2228','stroke-width':3});
+  const o=carpO(860,800,1.1,{sit:1,seat:748,look:{x:1060,y:700},expr:'joy',lean:8});
+  const r0=PPL.rig(o),bowl=[r0.head[0]+52,r0.head[1]+118],mouth=[r0.head[0]+40,r0.head[1]+28],sp=Math.abs(Math.sin(E.held(t,10)*2.2));
+  o.near={x:bowl[0],y:bowl[1]};o.far={x:lerp(bowl[0]-6,mouth[0],sp),y:lerp(bowl[1]-6,mouth[1],sp)};
+  g+=withProp(o,r=>{const h=r.hand('near');return Ell(h[0]+6,h[1]-8,38,16,'#8A5A32',{stroke:'#4A2E18','stroke-width':3})+Ell(h[0]+6,h[1]-14,30,7,'#E8B070');});
+  return g;
+}
+// The back wall, bench and window of the carpenter's workshop.
+function workshop(t,o={}){
+  let g=workshopWall(t,o.dark||0);
+  g+=R(260,-140,300,280,10,mix('#FFE8B0','#2A3A5A',o.night||0),{stroke:'#3A2414','stroke-width':12})+L(410,-140,410,140,'#3A2414',10)+L(260,0,560,0,'#3A2414',10);
+  if(!o.night)g+=P('M260 140L560 140L1000 790L520 790Z','#FFF2C8',{opacity:.12});
+  g+=P('M700 280L700 340L860 340L860 320Z','#9AA6B0')+R(680,280,40,70,8,'#6A4422')+R(1500,260,14,90,3,'#6A4422')+R(1470,330,74,46,8,'#7A5230')+R(1700,280,12,70,3,'#6A4422');
+  g+=gnd(41,770,'#8A5A34','#6A4426');
+  for(let i=0;i<20;i++){const x=200+hash(i,2)*1500,y=800+hash(i,3)*80;g+=P(`M${x} ${y}q14 -18 26 0q-10 10 -22 2`,'none',{stroke:'#E8C08A','stroke-width':5,opacity:.8});}
+  return g;
+}
+// A3. The other half he carves into a statue.
+function carving(t){
   let g=workshop(t);
-  g+=R(640,1050,280,26,4,'#7A4E2C',{stroke:'#4A2E18','stroke-width':3})+R(656,1076,18,108,3,'#5A3820')+R(886,1076,18,108,3,'#5A3820');
+  const morph=ease.inOut(prog(t,AT.carves,AT.statue+.7)),bx=1100;
+  if(morph<1)g+=G('',R(bx-60,560,120,232,14,'#9A6A3C',{stroke:'#5A3A1C','stroke-width':3})+Ell(bx,562,60,14,'#D9A86A',{stroke:'#8A5A32','stroke-width':3}),(1-morph).toFixed(2));
+  if(morph>0)g+=G('',idol(t,bx,792,240),morph.toFixed(2));
+  const working=t<AT.kneels-.4,hit=working?Math.abs(Math.sin(E.held(t,12)*7)):0;
+  const ty=lerp(700,600,(Math.sin(t*1.3)+1)/2),tip={x:bx-54,y:ty},hp={x:bx-118,y:ty+14};
+  const o=carpO(910,795,1.1,{near:hp,far:{x:hp.x-18-30*(1-hit),y:hp.y-40-50*(1-hit)},look:{x:bx-40,y:ty},expr:'calm',lean:10});
+  g+=withProp(o,r=>{const f=r.hand('far');return chisel(hp.x,hp.y,tip.x,tip.y)+mallet(f[0],f[1],-1.9+hit*.7);});
+  if(working)for(let i=0;i<6;i++){const k=((t-AT.otherHalf)*1.6+i/6)%1;g+=P(`M${bx-60+k*140} ${ty-Math.sin(k*3.14)*120+i*6}q6 -8 12 0`,'none',{stroke:'#E8C08A','stroke-width':5,opacity:(1-k).toFixed(2)});}
+  return g;
+}
+// A4. He sets it up and kneels down in front of it.
+function shrine(t,o={}){
+  let g='';for(let i=0;i<16;i++)g+=R(-60+i*130,-700,124,1480,4,i%2?'#2E1E40':'#34224A');
+  g+=P('M1000 790V300Q1000 120 1180 120Q1360 120 1360 300V790Z','#1E1430');
+  g+=glow(1180,440,420,'#FFB870',.35)+gnd(51,770,'#3A2A3A','#2A1E2A');
+  g+=R(1110,640,140,150,6,'#5A4A5A',{stroke:'#2A1E2A','stroke-width':4})+R(1096,626,168,22,4,'#7A6A7A');
+  g+=idol(t,1180,630,220)+candle(t,1060,790,1)+candle(t,1300,790,2);
+  return g;
+}
+function kneeling(t){
+  let g=shrine(t);
+  const k=ease.inOut(prog(t,AT.kneels,AT.kneels+.6));
+  g+=carp(lerp(900,920,k),795,1.1,{kneel:k,near:'chest',far:'chest',lean:k*12,look:{x:1180,y:440},expr:['calm','awe',k],walk:k<.05&&t<AT.kneels?t*7:0});
+  return g;
+}
+// A5. "Deliver me, for you are my god!": close on the man pleading; the idol does nothing.
+function pleading(t){
+  let g='';for(let i=0;i<16;i++)g+=R(-60+i*130,-700,124,1480,4,i%2?'#3A1E32':'#42243A');
+  g+=glow(760,460,520,'#FFB870',.35)+gnd(53,770,'#3A2430','#2A1A24');
+  g+=R(690,640,140,150,6,'#5A4A5A',{stroke:'#2A1E2A','stroke-width':4})+R(676,626,168,22,4,'#7A6A7A')+idol(t,760,630,220)+candle(t,640,790,1)+candle(t,880,790,3);
+  const up=ease.inOut(prog(t,AT.deliver-.2,AT.deliver+.5)),jit=(hash(Math.floor(t*14),3)-.5)*6*up;
+  g+=carp(1080+jit,795,1.15,{face:-1,kneel:1,near:up>.5?'up':'chest',far:up>.5?'up':'chest',lean:lerp(14,-6,up),look:{x:760,y:430},expr:['calm','fear',up]});
+  return g;
+}
+// A6. Same tree, same afternoon: the stump, the fire and the idol; he looks from one to the other.
+function sameTree(t){
+  let g=glow(560,-200,800,'#FFF2C0',.5)+C(560,-180,90,'#FFF6D8',{opacity:.9});
+  for(let i=0;i<16;i++){const x=-80+i*134,h=440+hash(i,5)*360;g+=pine(x+70,760,h,['#2E5A2A','#3A6A30','#265022'][i%3]);}
+  g+=gnd(61,760,'#7AAA3A','#6A9A30');
+  g+=Ell(620,780,70,14,'#3A2A1A')+FX.flames(t,[[590,780],[620,768],[650,780]],{H:80,sp:9,seed:6})+glow(620,740,110,'#FFB04C',.5);
+  for(let i=0;i<3;i++){const k=(t*.4+i/3)%1;g+=Ell(620+Math.sin(k*5+i)*20,700-k*300,30+k*40,20+k*20,'#8A8A90',{opacity:(.35*(1-k)).toFixed(2)});}
+  g+=idol(t,1320,790,200);
+  const p=ease.inOut(prog(t,AT.sameTree,AT.sameTree+.9));
+  g+=mark('M940 700Q790 560 650 700',p,'#FFF1B0',7,{'stroke-dasharray':'18 12'})+mark('M1000 700Q1160 520 1290 560',p,'#FFF1B0',7,{'stroke-dasharray':'18 12'});
+  const lk=t<AT.sameAft?{x:620,y:720}:{x:1320,y:640};
+  g+=carp(970,770,1.0,{look:lk,expr:'surprised',near:'open',far:'open'});
+  g+=R(890,690,160,100,8,'#7A4E2C',{stroke:'#4A2E18','stroke-width':4})+Ell(970,690,80,16,'#C89458',{stroke:'#7A4E2C','stroke-width':3})+axe(925,690,-1.3,40);
+  return g;
+}
+// A7. One half is firewood, the other half is his god: the hearth, then the niche (one slow pan).
+function hearthIdol(t){
+  let g='';for(let i=0;i<16;i++)g+=R(-60+i*130,-700,124,1480,4,i%2?'#5A3A28':'#62402C');
+  g+=R(-60,180,2040,14,3,'#3A2414');
+  g+=P('M420 790V520Q420 400 560 400Q700 400 700 520V790Z','#7A6A5A',{stroke:'#4A3A2A','stroke-width':6})+P('M460 790V540Q460 450 560 450Q660 450 660 540V790Z','#1A0E08');
+  g+=glow(560,720,240,'#FF8A3C',.6)+G('rotate(-6 560 770)',logPiece(560,770,120,44,'#3A2414'))+FX.flames(t,[[510,778],[560,762],[610,778]],{H:110,sp:10,seed:7});
+  g+=P('M1290 640V470Q1290 400 1360 400Q1430 400 1430 470V640Z','#2A1A12')+R(1276,640,168,18,4,'#7A5A3A')+glow(1360,540,180,'#FFC870',.4)+idol(t,1360,640,170)+candle(t,1300,640,1)+candle(t,1420,640,2);
+  g+=gnd(71,770,'#6A4A34','#5A3E2A');
+  const turned=t>AT.otherHalf2-.15,k=ease.inOut(prog(t,AT.otherHalf2,AT.hisGod+.2));
+  g+=turned?carp(960,795,1.1,{face:1,kneel:.8*k,near:'chest',far:'chest',lean:14*k,look:{x:1360,y:500},expr:'calm'})
+    :carp(960,795,1.1,{face:-1,near:{x:880,y:690},far:{x:900,y:700},look:{x:560,y:700},expr:'joy',lean:8});
+  return g;
+}
+// A8. The prophet Isaiah tells it as a joke: the crowd laughs.
+function isaiah(t){
+  let g=glow(1300,-300,700,'#FFFBEA',.5);
+  for(let i=0;i<11;i++){const x=-60+i*190,h=260+hash(i,11)*200;g+=R(x,640-h,170,h+140,4,['#E0C898','#D4B888','#E8D0A0'][i%3])+R(x+50,640-h+60,40,50,6,'#6A5A48');}
+  g+=gnd(81,760,'#C8A878','#B09060')+R(560,742,260,40,6,'#B8A080',{stroke:'#8A7458','stroke-width':3});
+  const laugh=i=>Math.abs(Math.sin(E.held(t,10)*6+i))*12*prog(t,AT.joke-.6,AT.joke);
+  const talk=Math.sin(E.held(t,8)*3);
+  g+=withProp(elderOpts(700,745,1.08,{tunic:'#E8E4F0',tunic2:'#4A6AB0',near:{x:790,y:lerp(560,600,talk)},far:{x:650,y:630},look:{x:1100,y:560},expr:'joy'}),r=>{const f=r.hand('far');return R(f[0]-14,f[1]-46,28,92,10,'#F2E6C8',{stroke:'#8A7458','stroke-width':3})+Ell(f[0],f[1]-46,16,7,'#C8A060')+Ell(f[0],f[1]+46,16,7,'#C8A060');});
+  g+=folk(3,970,800,1.0,{face:-1,f:true,near:'chest',look:{x:720,y:520},expr:'joy',jump:laugh(1)});
+  g+=folk(4,1100,800,1.05,{face:-1,near:'chest',far:'chest',lean:-8,look:{x:720,y:520},expr:'joy',jump:laugh(2)});
+  g+=PPL.carry(person(1,1260,800,1.0,{face:-1,f:true,look:{x:720,y:520},expr:'joy',jump:laugh(3)}),person(2,0,0,.6,{expr:'joy',look:{x:720,y:520}})).svg;
+  return g;
+}
+// A9. But behind it is a real question: her laugh fades; she looks back at the statue on the hill.
+function question(t){
+  let g=glow(1420,100,500,'#FFD86B',.45);
+  g+=P('M1180 520L1300 300L1560 300L1700 520Z','#B89A70')+R(1340,180,180,120,4,'#C8AA80')+G('',idol(t,1430,300,160,{gold:true}));
+  for(let i=0;i<6;i++){const x=-60+i*190,h=200+hash(i,11)*160;g+=R(x,640-h,170,h+140,4,['#E0C898','#D4B888','#E8D0A0'][i%3]);}
+  g+=gnd(83,760,'#C8A878','#B09060');
+  const q=prog(t,AT.question-.3,AT.question+.6),fade=prog(t,AT.butBehind,AT.butBehind+.8);
+  g+=folk(4,850,800,1.05,{face:-1,near:'chest',far:'chest',lean:-8,look:{x:400,y:560},expr:'joy',jump:Math.abs(Math.sin(E.held(t,10)*6))*10*(1-fade)});
+  g+=folk(3,1010,800,1.1,{face:-1,f:true,near:'chest',look:q>.3?{x:1430,y:220}:{x:400,y:560},expr:q>.3?['calm','surprised',q]:['joy','calm',fade]});
+  return g;
+}
+// A10. "What's actually wrong with a statue of God?": a child points up at a huge gold statue.
+function bigStatue(t){
+  let g=stars(t,.6,200)+glow(1240,300,600,'#FFB04C',.35);
+  for(let i=0;i<5;i++){const x=420+i*300;g+=R(x-36,60,72,720,6,'#3A2A44')+R(x-50,40,100,30,4,'#4A3A54');}
+  g+=gnd(91,770,'#3A2A3A','#2A1E2A');
+  [[540,700],[1500,700]].forEach(([x,y],k)=>g+=R(x-20,y,40,90,4,'#5A4A3A')+FX.flames(t,[[x-26,y],[x,y-10],[x+26,y]],{H:70,sp:9,seed:20+k})+glow(x,y-30,90,'#FFB04C',.5));
+  g+=R(1120,640,240,150,6,'#5A4A5A',{stroke:'#2A1E2A','stroke-width':4})+idol(t,1240,642,520,{gold:true});
+  const hh=PPL.holdHands(person(0,760,800,1.1,{look:{x:1240,y:250},expr:'calm'}),person(3,880,800,.64,{look:{x:1240,y:250},expr:'surprised',near:{x:930,y:640}}));
+  g+=hh.svg;
+  return g;
+}
+
+// ---------- ACT 1: the second word ----------
+const STORM=FX.peak(15,960,120,{halfW:900,rough:14});
+function storm(t,litK,o={}){
+  let g=glow(960,-300,1100,o.col||'#FF5A2A',.45);
+  for(let i=0;i<9;i++)g+=Ell(140+i*210+Math.sin(t*.3+i)*30,-520+(i%3)*90,260,100,['#5A2418','#4A1C14','#6A2C1A'][i%3],{opacity:.9});
+  g+=FX.summitFire(t,STORM,.8,0,{fill:'#2A1612',H:150,cap:100,rows:2,smokeH:700,smoke:.8,light:600,seed:15,embers:30});
+  g+=bolt(t,(o.b||0)+.2,1380,-640,-60)+bolt(t,(o.b||0)+1.1,560,-640,-80);
+  g+=tablets(960,440,o.s||1.05,litK)+gnd(93,800,'#2A1612','#1E100C');
+  return g;
+}
+// B1. Right after "no other gods": the tablets on the burning summit, line I aglow.
+const noOther=t=>storm(t,k=>k===0?1+.2*Math.sin(t*4):.12,{b:AT.rightAfter});
+// B2. ...comes the second commandment: close on the stone, line II burns in.
+function secondLine(t){
+  const rr=rng(77);let g='';
+  for(let i=0;i<90;i++){const x=-40+rr()*2000,y=-680+rr()*2460,a=rr()*3;g+=L(x,y,x+Math.cos(a)*40,y+Math.sin(a)*40,i%2?'#6A665E':'#A8A498',4,{opacity:.6});}
+  const on=ease.out(prog(t,AT.comes2,AT.comes2+.6));
+  g+=glow(1050,560,900,'#FFB04C',.2+.3*on);
+  g+=T(560,410,'I',{size:150,font:'Georgia',weight:700,anchor:'middle',fill:'#C8B488'});
+  let q='M700 360';for(let x=700;x<1500;x+=30)q+=`L${x+15} ${360+(hash(x,5)-.5)*18}L${x+30} 360`;g+=P(q,'none',{stroke:'#8A7A58','stroke-width':10})+P(q,'none',{stroke:'#FFE9A8','stroke-width':4,opacity:.5});
+  g+=T(560,700,'II',{size:240,font:'Georgia',weight:700,anchor:'middle',fill:mix('#3A3732','#FFF4C8',on)});
+  let d='M740 610';for(let x=740;x<1560;x+=30)d+=`L${x+15} ${610+(hash(x,3)-.5)*22}L${x+30} 610`;
+  const p=ease.inOut(prog(t,AT.comes2,AT.comes2+1.4));
+  g+=P(d,'none',{stroke:'#3A3732','stroke-width':16})+mark(d,p,'#FFE9A8',9)+(p>0?glow(lerp(740,1560,p),610,160,'#FFB04C',.6):'');
+  if(p>0&&p<1)g+=FX.flames(t,[[lerp(740,1560,p)-30,616],[lerp(740,1560,p),600],[lerp(740,1560,p)+30,616]],{H:90,sp:9,seed:4});
+  g+=T(560,1000,'III',{size:150,font:'Georgia',weight:700,anchor:'middle',fill:'#4A4740'});
+  let e='M700 940';for(let x=700;x<1500;x+=30)e+=`L${x+15} ${940+(hash(x,7)-.5)*18}L${x+30} 940`;g+=P(e,'none',{stroke:'#4A4740','stroke-width':10});
+  return g+fireflies(t,500,-200,1100,900,'#FFB04C',16,.6*on);
+}
+// B3. "a carved image": a stone carver in a quarry yard brings a statue out of the block.
+function carverYard(t){
+  let g=glow(1300,-300,700,'#FFFBEA',.45);
+  for(let i=0;i<8;i++){const x=-60+i*270;g+=R(x,200-(i%3)*80,250,600,6,['#D8CCB0','#C8BC9E','#E0D4B8'][i%3],{stroke:'#A8987A','stroke-width':3});}
+  g+=gnd(101,770,'#D8C8A0','#C8B890');
+  const done=ease.inOut(prog(t,AT.v204,AT.carved[1]+.6));
+  g+=G('',R(1010,400,160,392,10,'#C8C2B4',{stroke:'#8A867A','stroke-width':3}),(1-done).toFixed(2))+G('',idol(t,1090,792,420,{stone:true}),done.toFixed(2));
+  const hit=Math.abs(Math.sin(E.held(t,12)*7)),ty=600+Math.sin(t*1.1)*60,hp={x:960,y:ty+14};
+  const o=pplOpts(4,850,795,1.1,{near:hp,far:{x:hp.x-18-30*(1-hit),y:hp.y-40-50*(1-hit)},look:{x:1040,y:ty},expr:'calm',lean:10,tunic:'#A8B0B8',tunic2:'#5A6470'});
+  g+=withProp(o,r=>{const f=r.hand('far');return chisel(hp.x,hp.y,1022,ty)+mallet(f[0],f[1],-1.9+hit*.7);});
+  for(let i=0;i<5;i++){const k=(t*1.2+i/5)%1;g+=C(1020+k*120,ty-k*80+i*10,10+k*30,'#E8E0D0',{opacity:(.5*(1-k)).toFixed(2)});}
+  return g;
+}
+// B4. "or any likeness": a goldsmith pours gold into a mould in the forge.
+function forge(t){
+  let g='';for(let r=0;r<34;r++)for(let c=0;c<14;c++){const x=-60+c*150+(r%2)*75,y=-700+r*44;g+=R(x,y,146,40,3,r%3?'#3A1A14':'#42201A',{stroke:'#200C08','stroke-width':3});}
+  g+=P('M300 790V480Q300 360 460 360Q620 360 620 480V790Z','#1A0A06')+glow(460,640,300,'#FF7A2A',.8)+FX.flames(t,[[360,790],[420,760],[460,750],[500,760],[560,790]],{H:180,sp:12,seed:8});
+  g+=gnd(103,780,'#2A1410','#1E0E0A');
+  g+=R(1030,750,170,36,6,'#5A4A44',{stroke:'#2A2220','stroke-width':3});
+  const fill=prog(t,AT.likeness-.2,AT.heaven-.4);
+  g+=P('M1070 762q20 -24 40 -6q22 -18 44 2l-42 18z','#2A1A12')+G('',P('M1070 762q20 -24 40 -6q22 -18 44 2l-42 18z',GOLD)+glow(1112,760,90,'#FFD86B',.8),fill.toFixed(2));
+  const tilt=ease.inOut(prog(t,AT.likeness-.6,AT.likeness))*(1-ease.inOut(prog(t,AT.heaven-.8,AT.heaven-.3)));
+  const cx=1030,cy=650,o=pplOpts(1,870,800,1.1,{f:false,near:{x:cx-60,y:cy+12},far:{x:cx-70,y:cy+4},look:{x:1100,y:740},expr:'calm',lean:14,tunic:'#8A6A5A',tunic2:'#4A3028'});
+  g+=withProp(o,()=>L(cx-70,cy+8,cx-14,cy,'#3A3A40',6)+G(`rotate(${(tilt*55).toFixed(1)} ${cx} ${cy})`,P(`M${cx-20} ${cy-30}L${cx+44} ${cy-30}L${cx+36} ${cy+26}Q${cx+12} ${cy+38} ${cx-12} ${cy+26}Z`,'#5A5A60',{stroke:'#2A2A30','stroke-width':3})+Ell(cx+12,cy-30,32,8,'#FFD86B')));
+  if(tilt>.6)g+=P(`M${cx+52} ${cy-8}Q${cx+80} ${cy+40} ${cx+82} 760`,'none',{stroke:'#FFD86B','stroke-width':10})+glow(cx+80,700,80,'#FFB04C',.7);
+  return g;
+}
+// B5. "in heaven above": people on a roof bow toward a moon idol on a pole.
+function heavenIdol(t){
+  let g=stars(t,1,700)+glow(1180,260,300,'#DDE6FF',.35);
+  g+=R(1172,280,16,500,4,'#3A3A50')+G('',P('M1130 230A64 64 0 1 0 1236 280A50 50 0 1 1 1130 230Z','#FFE9A8',{stroke:'#C8A040','stroke-width':4}))+P('M1180 150l10 22l24 2l-18 16l6 24l-22 -12l-22 12l6 -24l-18 -16l24 -2z',GOLD);
+  for(let i=0;i<8;i++){const x=-60+i*270;g+=R(x,560+(i%2)*60,250,400,4,'#1E2240')+R(x+30,620+(i%2)*60,40,40,4,'#FFC870',{opacity:.5});}
+  g+=R(-60,770,2040,40,0,'#2A2E50')+gnd(105,790,'#22264A','#1A1E3A');
+  const b=Math.abs(Math.sin(E.held(t,8)*1.6));
+  g+=folk(2,880,795,1.0,{kneel:1,near:'up',far:'up',lean:-6+b*6,look:{x:1180,y:260},expr:'awe'})+folk(3,1010,795,.95,{kneel:1,near:'up',far:'up',lean:-4+b*8,look:{x:1180,y:260},expr:'awe',f:true});
+  return g;
+}
+// B6. "in the earth beneath": a farmer lays a sheaf before a bull statue.
+function bullIdol(t){
+  let g=glow(1300,-200,800,'#FFE9A0',.6);
+  for(let r=0;r<5;r++)for(let c=0;c<24;c++){const x=-40+c*84+(r%2)*42,y=470+r*60,sw=Math.sin(t*2+c*.5)*6;g+=L(x,y+50,x+sw,y,'#C8A030',6)+Ell(x+sw,y-8,8,20,'#E8C048');}
+  g+=gnd(107,770,'#8A9A30','#6A7A20');
+  g+=R(1060,630,220,160,6,'#8A847A',{stroke:'#5A564E','stroke-width':4})+calf(t,1170,540,1.25);
+  const d=ease.inOut(prog(t,AT.earthB-.2,AT.earthB+.6));
+  const o=pplOpts(0,880,795,1.05,{kneel:1,lean:lerp(10,24,d),near:{x:lerp(960,1000,d),y:lerp(690,760,d)},far:{x:lerp(950,990,d),y:lerp(700,768,d)},look:{x:1160,y:520},expr:'calm',tunic:'#7AA040',tunic2:'#4A6A20'});
+  g+=withProp(o,r=>{const h=r.hand('near');return [-2,-1,0,1,2].map(i=>L(h[0],h[1]+30,h[0]+i*14+40,h[1]-50,'#B8862C',6)+Ell(h[0]+i*15+40,h[1]-58,8,18,'#E8B53A')).join('');});
+  return g;
+}
+// B7. "in the water under the earth": a fisherman bows to a fish idol on the rocks.
+function fishIdol(t){
+  let g=glow(1100,-100,700,'#BFF0FF',.4)+R(-60,300,2040,420,0,'#1E7AA8');
+  for(let i=0;i<14;i++)g+=P(`M${-40+i*150} ${360+(i%4)*80}q35 -14 70 0t70 0`,'none',{stroke:'#BFE8FF','stroke-width':5,opacity:(.5+.3*Math.sin(t*2+i)).toFixed(2)});
+  g+=P('M1040 790L1080 640L1200 610L1320 650L1360 790Z','#5A6A70')+gnd(109,770,'#D8C090','#C0A878');
+  const [F2,def]=foil(t);g+=def+G('translate(1200 470) rotate(-90)',Ell(0,0,150,62,F2,{stroke:'#8A5A12','stroke-width':4})+P('M140 0l70 -56v112z',F2,{stroke:'#8A5A12','stroke-width':4})+C(-92,-18,12,'#3A2A10')+P('M-40 -40q20 40 0 80M0 -50q20 50 0 100','none',{stroke:'#8A5A12','stroke-width':4}));
+  const b=Math.abs(Math.sin(E.held(t,8)*1.8));
+  g+=Ell(780,760,90,24,'#8A7A5A',{opacity:.7})+P('M720 760q60 -40 120 0','none',{stroke:'#6A5A3A','stroke-width':4});
+  g+=folk(4,900,795,1.05,{kneel:1,lean:24+b*12,near:{x:980,y:788},far:{x:960,y:790},look:'down',expr:'calm'});
+  return g;
+}
+// B8. "You shall not bow down to them": a father starts to kneel; his little girl pulls him back up.
+function bowDown(t){
+  let g=glow(1260,300,600,'#FFD8A0',.35);
+  for(let i=0;i<5;i++){const x=300+i*340;g+=R(x-40,20,80,760,6,'#8A7A6A')+R(x-56,0,112,30,4,'#9A8A7A');}
+  g+=gnd(111,770,'#A08870','#887058');
+  g+=R(1130,630,240,160,6,'#7A7068',{stroke:'#4A4440','stroke-width':4})+idol(t,1250,632,470,{stone:true});
+  const k=.85*ease.inOut(prog(t,AT.bowDown[0]-.5,AT.bowDown[0]+.3))*(1-ease.inOut(prog(t,AT.serve,AT.serve+.8))),pull=prog(t,AT.bowDown[0],AT.bowDown[0]+.4);
+  const dad=person(0,930,800,1.12,{kneel:k,lean:k*22,look:pull>.5&&k<.6?{x:780,y:640}:{x:1250,y:250},expr:pull>.5?['calm','surprised',pull]:'calm'});
+  const kid=person(3,790,800,.64,{lean:-12*pull,look:{x:930,y:600},expr:pull>.3?'fear':'calm'});
+  g+=PPL.holdHands(dad,kid).svg;
+  return g;
+}
+// B9. "It's not mainly about other religions' idols": a traveller walks past shrines on a dusk ridge.
+function shrines(t){
+  let g=glow(960,420,700,'#FFB070',.5)+C(960,470,110,'#FFD9A0',{opacity:.8});
+  g+=`<path d="${ridge(21,620,12,260)}" fill="#3A2A48"/>`;
+  const S1='#1E1A36';
+  g+=R(340,480,160,140,4,S1)+P('M340 482A80 80 0 0 1 500 482Z',S1)+R(414,360,12,50,2,S1);
+  g+=R(640,520,220,100,2,S1)+R(680,440,140,82,2,S1)+R(715,370,70,72,2,S1);
+  g+=P('M925 620L935 270L955 236L975 270L985 620Z',S1);
+  g+=P('M1110 450L1230 380L1350 450Z',S1)+R(1110,450,240,20,2,S1)+[0,1,2,3,4].map(i=>R(1122+i*50,470,22,150,2,S1)).join('');
+  g+=[0,1,2].map(i=>P(`M${1460+i*22} ${600-i*90}h${180-i*44}l40 -26h${-(260-i*44)}z`,S1)+R(1490+i*22,540-i*90,120-i*44,60,2,S1)).join('');
+  [[420,560],[750,560],[955,520],[1230,520],[1550,560]].forEach(([x,y],k)=>g+=glow(x,y,30,'#FFD27A',.5+.3*Math.sin(t*2+k)));
+  g+=gnd(113,770,'#2A2040','#221A36');
+  const p=prog(t,AT.notMainly-.1,AT.thatWas),x=lerp(560,1360,p),o=pplOpts(2,x,800,1.05,{walk:t*7,near:{x:x+58,y:700},look:{x:x+300,y:520},expr:'calm'});
+  g+=withProp(o,()=>L(x+60,640,x+66,800,'#4A2E16',12)+L(x+60,640,x+66,800,'#7A5432',7));
+  return g;
+}
+// B10. "That was the first commandment's job": line I glows; the other gods fall off the ledge.
+function firstJob(t){
+  const rr=rng(78);let g='';
+  for(let i=0;i<80;i++){const x=-40+rr()*2000,y=-680+rr()*2460,a=rr()*3;g+=L(x,y,x+Math.cos(a)*40,y+Math.sin(a)*40,i%2?'#6A665E':'#A8A498',4,{opacity:.6});}
+  g+=glow(1000,330,700,'#FFB04C',.45)+T(560,400,'I',{size:220,font:'Georgia',weight:700,anchor:'middle',fill:'#FFF4C8'});
+  let d='M700 330';for(let x=700;x<1520;x+=30)d+=`L${x+15} ${330+(hash(x,3)-.5)*22}L${x+30} 330`;g+=P(d,'none',{stroke:'#FFE9A8','stroke-width':10})+glow(1100,330,300,'#FFD86B',.4);
+  g+=R(420,760,1080,40,6,'#5A564E');
   const [F2,def]=foil(t);g+=def;
-  const mk=ease.inOut(prog(t,AT.stillCarve,AT.agrees)),sh=lerp(1,.45,ease.inOut(prog(t,AT.tooSmall-.2,AT.tooSmall+.7)));
-  // a block of wood that becomes a gold mask with the carpenter's own face
-  g+=G('',R(690,790,190,240,10,'#9A6A3C',{stroke:'#5A3A1C','stroke-width':3}),(1-mk).toFixed(2));
-  if(mk>0)g+=G('',G(`translate(785 1050) scale(${sh.toFixed(3)}) translate(-785 -1050)`,mask(t,785,910,1,F2)),mk.toFixed(2));
-  // chips fly while he carves
-  if(t>AT.stillCarve&&t<AT.agrees+1)for(let i=0;i<6;i++){const k=((t-AT.stillCarve)*1.4+i/6)%1;g+=P(`M${700-k*120+i*8} ${960-Math.sin(k*3.14)*120+i*6}q6 -8 12 0`,'none',{stroke:'#E8C08A','stroke-width':5,opacity:(1-k).toFixed(2)});}
-  const chis=t>AT.stillCarve&&t<AT.agrees+1?.55+.25*Math.abs(Math.sin(t*6)):.2;
-  g+=carpenter(470,1190,1.35,{flip:1,reach:chis,lean:6});
-  g+=fade(t,AT.agrees-.2,tag(t,AT.mayNever,540,330,'NO STATUE?',44,1)+tag(t,AT.stillCarve,540,430,'WE STILL CARVE',48,2,{bg:CORAL,rot:-2}));
-  g+=tag(t,AT.agrees,540,1430,'A GOD WHO AGREES WITH ME',38,3,{bg:CORAL})+tag(t,AT.neverSays,540,1520,'AND NEVER SAYS NO',40,4);
-  g+=tag(t,AT.easy,540,330,'EASY TO LIVE WITH',42,5)+tag(t,AT.tooSmall,540,430,'MUCH TOO SMALL',50,6,{bg:CORAL,rot:2});
-  return F(g);
+  const gods=[k=>C(0,-60,40,F2)+[...Array(10)].map((_,i)=>{const a=i/10*6.283;return L(Math.cos(a)*48,-60+Math.sin(a)*48,Math.cos(a)*64,-60+Math.sin(a)*64,GOLD,6);}).join(''),
+    k=>P('M-30 -110A50 50 0 1 0 40 -20A40 40 0 1 1 -30 -110Z',F2),k=>G('scale(.6) translate(-20 -60)',calf(t,0,0,1)),k=>G('rotate(-90) translate(60 0)',Ell(0,0,60,26,F2)+P('M56 0l34 -26v52z',F2))];
+  gods.forEach((fn,i)=>{const x=560+i*270,f=prog(t,AT.jobW-.3+i*.18,AT.jobW+.3+i*.18),dy=f*f*700,rot=f*(i%2?80:-80);
+    g+=G(`translate(${x+(i%2?1:-1)*f*80} ${760+dy}) rotate(${rot.toFixed(0)})`,R(-40,-6,80,12,3,'#3A3630')+fn(i));});
+  return g;
+}
+// B11. "The first is about which God you worship": a crossroads; a father and daughter take the road to Sinai.
+const XR_PEAK=FX.peak(23,1450,240,{halfW:420,rough:10,bottom:800});
+function crossroads(t){
+  let g=glow(1450,200,500,'#FF8A3C',.4)+FX.summitFire(t,XR_PEAK,.8,0,{fill:'#4A2E3A',H:90,cap:60,rows:2,smokeH:500,light:360,seed:23,embers:14,rocks:false});
+  [[300,560],[420,520],[540,570]].forEach(([x,y],k)=>g+=P(`M${x-60} ${y}L${x} ${y-120}L${x+60} ${y}Z`,'#4A3050')+R(x-50,y,100,40,2,'#4A3050'));
+  g+=gnd(115,640,'#C8885A','#B0784A');
+  g+=P('M860 1780L940 640L980 640L1100 1780Z','#E8B88A',{opacity:.8})+P('M940 640Q700 560 420 590L430 600Q700 580 960 660Z','#E8B88A',{opacity:.7})+P('M980 640Q1200 560 1420 600L1410 612Q1200 590 990 660Z','#E8B88A',{opacity:.7});
+  g+=R(1100,560,14,240,3,'#5A3A22')+P('M1114 580h120l24 20l-24 20h-120z','#C89458',{stroke:'#5A3A22','stroke-width':3})+P('M1100 640h-120l-24 20l24 20h120z','#A87A48',{stroke:'#5A3A22','stroke-width':3});
+  const p=ease.inOut(prog(t,AT.first,AT.second2)),x=lerp(760,960,p),y=lerp(820,780,p);
+  const dad=person(0,x,y,1.0,{walk:p<1?t*7:0,look:{x:1450,y:260},expr:'calm'}),kid=person(3,x+110,y+4,.62,{walk:p<1?t*7+1.6:0,look:{x:x,y:y-190},expr:'calm'});
+  g+=PPL.holdHands(dad,kid).svg;
+  return g;
+}
+// B12. "The second is about how": at the mountain's foot he turns a carved block over, puzzled; she looks up.
+const HOW_PEAK=FX.peak(25,1000,40,{halfW:820,rough:12});
+function how(t){
+  let g=glow(1000,40,700,'#FF8A3C',.35)+FX.summitFire(t,HOW_PEAK,.85,0,{fill:'#3A2A3A',H:150,cap:100,rows:2,smokeH:700,smoke:.8,light:600,seed:25,embers:24,rocks:false});
+  g+=gnd(117,770,'#5A4436','#4A382C');
+  const turn=Math.sin(t*1.6)*12;
+  const dad=person(0,920,800,1.12,{near:{x:1000,y:640},far:{x:990,y:650},look:t<AT.how?{x:1000,y:610}:{x:1000,y:120},expr:'surprised'});
+  const mom=person(1,1110,800,1.04,{face:-1,f:true,look:{x:1000,y:100},expr:'awe'});mom.near=PPL.handOn(mom,dad,'arm');
+  const M=PPL.rig(mom);
+  g+=M.draw('back')+M.draw('body')+M.draw('head')+withProp(dad,()=>G(`rotate(${turn.toFixed(1)} 1012 620)`,R(970,570,84,100,8,'#9A6A3C',{stroke:'#5A3A1C','stroke-width':3})+L(984,590,1040,600,'#6A4422',3)+L(988,630,1030,640,'#6A4422',3)))+M.draw('front');
+  return g;
+}
+// B13. "Even the right God can be worshipped the wrong way": he bows to a carved flame, his back to the real fire.
+const WW_PEAK=FX.peak(27,640,60,{halfW:640,rough:12,bottom:900});
+function wrongWay(t){
+  let g=glow(640,60,600,'#FF8A3C',.45)+FX.summitFire(t,WW_PEAK,1,0,{fill:'#2A1E2E',H:180,cap:110,rows:3,smokeH:900,smoke:.9,light:700,seed:27,embers:30,rocks:false});
+  g+=gnd(119,770,'#3A2A26','#2A1E1A');
+  const [F2,def]=foil(t);
+  g+=def+[0,1,2,3,4].map(i=>Ell(1180+(i-2)*40,770-(i%2)*20,40,24,'#6A6460',{stroke:'#3A3632','stroke-width':3})).join('')+R(1110,690,140,40,6,'#7A746E');
+  g+=P('M1180 690C1120 640 1150 560 1180 520C1190 570 1220 580 1210 520C1250 570 1250 650 1180 690Z',F2,{stroke:'#8A5A12','stroke-width':4});
+  const b=Math.abs(Math.sin(E.held(t,8)*1.8));
+  g+=folk(2,990,795,1.05,{kneel:1,lean:26+b*14,near:{x:1070,y:788},far:{x:1050,y:790},look:'down',expr:'calm'});
+  return g;
 }
 
-// ---------- 7. Four against thousands, then the end card ----------
-function mercy(t){
-  let g=groundF(91,1230,'#1E1A34')+groundF(92,1420,'#2A2448',16)+groundF(93,1680,'#342E58',18)+fireflies(t,0,1300,1080,600,'#FFE9A8',10,.4);
-  const out=ease.inOut(prog(t,AT.knife-.3,AT.knife+.4));
-  // the balance: warning (third and fourth) against mercy (thousands)
-  const tilt=-7*ease.inOut(prog(t,AT.third,AT.third+.6))+(-3*ease.inOut(prog(t,AT.heavy,AT.heavy+.5)))+24*ease.back(prog(t,AT.heavier,AT.heavier+.9));
-  const bx=540,by=780,hl=270,a=tilt*Math.PI/180;
+// ---------- ACT 2: notice the list ----------
+// C1-C3. sky, land, sea: one quick setting each.
+function skyShot(t){
+  let g=glow(1300,0,500,'#FFF6C8',.7)+C(1300,0,90,'#FFE9A0');
+  for(let i=0;i<4;i++)g+=Ell(400+i*400,-200+(i%2)*120,170,50,'#FFFFFF',{opacity:.8});
+  for(let i=0;i<7;i++)g+=bird(t,(500+i*130+t*120)%1900,150+(i%3)*80+Math.sin(t+i)*20,1,i);
+  g+=gnd(121,780,'#5AB04A','#4A9A3A');
+  const kid=person(3,900,800,.66,{near:'up',look:{x:1100,y:150},expr:'joy'}),mom=person(1,1010,800,1.0,{face:-1,f:true,look:{x:1100,y:150},expr:'joy'});
+  mom.near=PPL.handOn(mom,kid,'shoulder');const M=PPL.rig(mom);
+  return g+M.draw('back')+M.draw('body')+M.draw('head')+PPL.fig(kid)+M.draw('front');
+}
+const ox=(x,y,s,c='#8A5A3A')=>G(`translate(${x} ${y}) scale(${s})`,Ell(0,-90,110,58,c)+C(110,-120,40,c)+P('M96 -150q-14 -30 -36 -26M126 -152q14 -30 36 -26','none',{stroke:'#F2E6C8','stroke-width':7})+C(122,-122,5,'#1A1A1A')+[-70,-30,30,70].map(dx=>R(dx-9,-50,18,50,5,mix(c,'#000',.25))).join('')+P('M-110 -100q-26 10 -22 50','none',{stroke:c,'stroke-width':8}));
+const sheep=(x,y,s)=>G(`translate(${x} ${y}) scale(${s})`,[-40,-14,14,40].map(dx=>R(dx-6,-40,12,40,4,'#3A3A3A')).join('')+[[-40,-60],[-10,-74],[24,-66],[-26,-48],[10,-50],[40,-52]].map(([a,b])=>C(a,b,26,'#F4F0E6')).join('')+Ell(66,-70,20,16,'#3A3A3A'));
+function landShot(t){
+  let g=glow(960,-200,800,'#FFF2C0',.5)+P('M-60 600Q500 360 1000 520Q1500 360 1980 560V800H-60Z','#6ABF4A');
+  for(let i=0;i<6;i++)g+=C(200+i*320,480-(i%2)*60,70,'#3A8A3A')+R(192+i*320,480-(i%2)*60,16,90,3,'#5A3A22');
+  g+=gnd(123,780,'#5AA040','#4A8A30')+ox(1120,800,1.1)+sheep(700,780,1)+sheep(860,800,.9);
+  return g+withProp(pplOpts(4,1420,800,1.0,{face:-1,near:{x:1360,y:690},look:{x:1120,y:700},expr:'joy'}),()=>L(1356,610,1350,800,'#4A2E16',12)+P('M1356 610q-6 -40 -40 -36','none',{stroke:'#4A2E16','stroke-width':12}));
+}
+function seaShot(t){
+  let g=glow(960,-200,800,'#D8F4FF',.5)+R(-60,300,2040,1500,0,'#1E7AB8');
+  for(let i=0;i<16;i++)g+=P(`M${-40+i*130} ${360+(i%5)*110}q30 -14 60 0t60 0`,'none',{stroke:'#BFE8FF','stroke-width':5,opacity:.6});
+  const fish=(x,y,c,d,j)=>G(`translate(${x} ${y-Math.abs(Math.sin(t*3+j))*90}) rotate(${(Math.cos(t*3+j)*30*d).toFixed(0)})`,Ell(0,0,46,22,c)+P(`M${-42*d} 0l${-30*d} -20v40z`,c)+C(24*d,-6,5,'#102030'));
+  g+=fish(700,700,'#FFB04C',1,0)+fish(1250,760,'#FF8FB1',-1,1.5)+fish(980,880,'#7CFFE6',1,3);
+  g+=P('M820 560L1140 560L1100 620L860 620Z','#8A5A3A',{stroke:'#4A2E16','stroke-width':4})+L(980,560,980,360,'#4A2E16',8)+P('M986 370L1110 540H986Z','#F2E6C8');
+  return g+folk(1,900,566,.7,{near:{x:940,y:500},expr:'joy',look:{x:1250,y:650},f:false});
+}
+// C4. "That's the whole creation": a paper world with sky, land and sea, seen whole (a slow pull back).
+function creation(t){
+  let g=stars(t,1,1800)+glow(960,560,800,'#9AD8FF',.25);
+  const id='world';g+=`<clipPath id="${id}"><circle cx="960" cy="560" r="560"/></clipPath>`;
+  let w=R(380,0,1160,1120,0,'#2A7AD0')+R(380,0,1160,380,0,'#8AD0FF')+glow(1260,160,160,'#FFE9A0',.8)+C(1260,160,60,'#FFE07A');
+  for(let i=0;i<5;i++)w+=bird(t,560+i*110,180+(i%2)*40,.9,i);
+  w+=P('M380 420Q700 330 960 400Q1240 330 1540 420V640H380Z','#6ABF4A')+ox(960,600,.7)+sheep(700,600,.7)+sheep(1250,610,.6);
+  for(let i=0;i<4;i++)w+=C(560+i*270,410,44,'#3A8A3A');
+  for(let i=0;i<8;i++)w+=P(`M${420+i*140} ${700+(i%3)*80}q30 -12 60 0t60 0`,'none',{stroke:'#BFE8FF','stroke-width':5});
+  w+=G('translate(760 860)',Ell(0,0,40,18,'#FFB04C')+P('M-36 0l-26 -16v32z','#FFB04C'))+G('translate(1200 960)',Ell(0,0,40,18,'#FF8FB1')+P('M36 0l26 -16v32z','#FF8FB1'));
+  g+=`<g clip-path="url(#${id})">${w}</g>`+C(960,560,560,'none',{stroke:'#FFF6DA','stroke-width':10})+glow(960,560,700,'#FFFFFF',.1);
+  return g;
+}
+// C5. "Nothing God made can stand in for the God who made it": the made things on pedestals are crossed out; light from above.
+function standIn(t){
+  const lite=ease.out(prog(t,AT.whoMade-.2,AT.whoMade+.8));
+  let g=glow(960,-300,900,'#FFF2C8',.15+.5*lite)+rays(t,960,-500,lite);
+  g+=gnd(125,770,'#5A4A6A','#4A3A5A');
+  const [F2,def]=foil(t);g+=def;
+  const art=[x=>C(x,560,56,F2)+[...Array(12)].map((_,i)=>{const a=i/12*6.283;return L(x+Math.cos(a)*64,560+Math.sin(a)*64,x+Math.cos(a)*86,560+Math.sin(a)*86,GOLD,7);}).join(''),
+    x=>G(`translate(${x-50} 620) scale(.75)`,calf(t,0,0,1)),x=>G(`translate(${x} 560) rotate(-20)`,Ell(0,0,80,36,F2,{stroke:'#8A5A12','stroke-width':4})+P('M74 0l50 -36v72z',F2))];
+  [740,960,1180].forEach((x,i)=>{g+=R(x-80,660,160,130,6,'#7A6A8A',{stroke:'#3A2E4A','stroke-width':4})+R(x-94,646,188,22,4,'#9A8AAA')+art[i](x);
+    g+=xMark(x,560,90,ease.inOut(prog(t,AT.standIn+i*.3,AT.standIn+.4+i*.3)));});
+  const up={x:960,y:-100},ex=lite>.3?['calm','awe',lite]:'calm';
+  g+=folk(3,520,800,1.0,{f:true,look:lite>.3?up:{x:740,y:560},expr:ex,near:lite>.5?'open':null});
+  g+=folk(0,1400,800,1.05,{face:-1,look:lite>.3?up:{x:1180,y:560},expr:ex,near:lite>.5?'open':null});
+  return g;
+}
+
+// ---------- ACT 3: no form, only a voice ----------
+// D1. "Why be so strict about it?": the carpenter holds his idol and shrugs.
+function whyStrict(t){
+  let g=workshop(t);
+  const sh=Math.max(0,Math.sin((t-AT.why)*3))*.6;
+  const o=carpO(940,795,1.15,{near:'open',far:{x:1020,y:640},look:{x:1200,y:560},expr:'surprised',lean:-4,tilt:8*sh});
+  const r=PPL.rig(o);
+  g+=r.draw('back')+r.draw('body')+idol(t,1040,700,130)+r.draw('head')+r.draw('front');
+  return g;
+}
+// D2. "Go back to the mountain": Sinai burns over the camp at night.
+const SINAI=FX.peak(8,960,180,{halfW:760});
+function sinaiWide(t,o={}){
+  let g=stars(t,.6,300)+glow(960,180,800,'#FF7A3C',.35);
+  g+=FX.summitFire(t,SINAI,o.k??1,0,{fill:'#3A2E42',H:200,cap:130,smokeH:1150,smoke:1,light:820,seed:8,embers:40});
+  g+=`<path d="${ridge(51,860,10,220)}" fill="#3A2A20"/>`;
+  [[480,940],[720,960],[1240,950],[1460,970]].forEach(([x,y],k)=>g+=tent(x,y,['#8A5A3A','#A86A3E','#7A4A2E','#9A6034'][k]));
+  if(o.rings)g+=waves(t,960,200,1300,o.rings,4,.5);
+  return g;
+}
+// D3. "Moses later reminds Israel what they saw there": the old man on a rock, the people sitting round him.
+function mosesTalk(t){
+  let g=glow(1500,100,600,'#FFB870',.55)+C(1500,120,90,'#FFD8A0',{opacity:.9});
+  g+=P('M-60 560L300 420L700 500L1100 380L1500 470L1980 400V800H-60Z','#B87A5A')+P('M-60 640L500 560L1000 620L1500 540L1980 600V800H-60Z','#9A6248');
+  g+=gnd(127,770,'#C8945A','#B0804A')+P('M560 750Q620 700 760 700Q840 700 860 760Z','#8A7A6A');
+  const talk=Math.sin(E.held(t,8)*3);
+  const mo=elderOpts(710,742,1.08,{face:1,near:{x:810,y:lerp(560,610,talk)},far:{x:660,y:650},look:{x:1050,y:620},expr:'tender',tunic:'#D8C8A8',tunic2:'#8A6A48'});
+  g+=withProp(mo,r=>{const f=r.hand('far');return L(f[0],f[1]-110,f[0]-6,742,'#4A2E16',13)+L(f[0],f[1]-110,f[0]-6,742,'#7A5432',8);});
+  [[930,1],[1040,4],[1150,2],[1260,3]].forEach(([x,i],k)=>g+=folk(i,x,800,k===3?.66:.95,{face:-1,kneel:1,near:k===1?'chest':null,look:{x:720,y:520},expr:k===3?'surprised':'calm'}));
+  return g;
+}
+// D4. "Then the LORD spoke to you out of the midst of the fire": fire fills the frame; the voice goes out as rings.
+const VOICE=FX.peak(61,960,780,{halfW:1500,rough:22,crag:.6});
+function outOfFire(t){
+  let g=glow(960,480,900,'#FF6A2A',.5);
+  g+=FX.summitFire(t,VOICE,1.15,0,{fill:'#4A0E06',H:520,cap:230,smokeH:1500,smoke:.9,light:1300,seed:61,embers:80,rows:3,drift:60})+glow(960,560,420,'#FFE36B',.45)+glow(960,600,200,'#FFFBEA',.4);
+  g+=fireflies(t,300,-300,1320,1100,'#FFE36B',24,1)+bolt(t,AT.thenLORD+.1,640,-600,300);
+  g+=rings(t,AT.thenLORD+.1,960,450,1300)+rings(t,AT.youHeard-1.6,960,450,1300);
+  return g;
+}
+// The boundary camp, used by the listening shots: a far fire up on the left, its rings reaching the people.
+const BND=FX.peak(53,420,60,{halfW:420,rough:10,bottom:900});
+function bndBack(t,k=1){
+  let g=glow(420,60,520,'#FF7A3C',.45)+FX.summitFire(t,BND,.9,0,{fill:'#2E2A36',H:130,cap:80,smokeH:700,light:420,seed:53,embers:20,rows:2,rocks:false,drift:60});
+  g+=gnd(129,770,'#5A4430','#4A3826')+waves(t,420,80,1600,k,4,.45);
+  for(let i=0;i<9;i++){const x=640+i*30,y=700+i*12;if(x<900)g+=Ell(x,y,20,10,'#D8D0C0');}
+  return g;
+}
+// D5. "You heard the sound of words": she cups her ear; her daughter holds on to her; he holds his hands to his chest.
+function heardWords(t){
+  let g=bndBack(t);
+  const up={x:420,y:120};
+  const mom=person(1,1000,800,1.05,{face:-1,f:true,look:up,expr:'awe'});mom.near=earPt(mom);
+  const kid=person(3,1110,800,.64,{face:-1,look:up,expr:'surprised'});kid.near=PPL.handOn(kid,mom,'back');
+  const K0=PPL.rig(kid);
+  g+=folk(0,860,800,1.08,{face:-1,look:up,expr:'awe',near:'chest',far:'chest'});
+  g+=K0.draw('back')+K0.draw('body')+K0.draw('head')+PPL.fig(mom)+K0.draw('front');
+  return g;
+}
+// D6. "but saw no form": he shades his eyes and searches the fire; an empty outline flickers and is gone.
+function noForm(t){
+  let g=bndBack(t,.6);
+  const ol=Math.sin(Math.PI*clamp(prog(t,AT.noForm[0]-.2,AT.noForm[1]+.6)));
+  if(ol>0)g+=Ell(420,-10,70,96,'none',{stroke:'#FFFBEA','stroke-width':6,'stroke-dasharray':'14 14',opacity:(ol*.9).toFixed(2)});
+  const o=person(2,980,800,1.12,{face:-1,look:{x:420,y:0},expr:'awe',lean:-6});o.near=browPt(o);o.far='chest';
+  return g+PPL.fig(o);
+}
+// D7. "there was only a voice": the mother kneels with her child; the child cups an ear to the rings.
+function onlyVoice(t){
+  let g=bndBack(t,1.1);
+  const up={x:420,y:120};
+  const kid=person(3,920,800,.68,{face:-1,look:up,expr:'tender'});kid.near=earPt(kid);
+  const mom=person(1,1040,800,1.05,{face:-1,f:true,kneel:1,look:up,expr:'tender'});mom.near=PPL.handOn(mom,kid,'shoulder');
+  const M=PPL.rig(mom);
+  return g+M.draw('back')+M.draw('body')+M.draw('head')+PPL.fig(kid)+M.draw('front');
+}
+// D8. "nobody saw a shape": the whole camp looks up at the burning summit.
+const NOSHAPE=FX.peak(33,960,40,{halfW:900,rough:14});
+function nobodySaw(t){
+  let g=stars(t,.5,200)+glow(960,40,900,'#FF7A3C',.4);
+  g+=FX.summitFire(t,NOSHAPE,1,0,{fill:'#2A1E34',H:240,cap:150,smokeH:1200,smoke:1.1,light:900,seed:33,drift:120});
+  g+=gnd(131,740,'#3A2A30','#2A1E24');
+  const up={x:960,y:40};
+  [[560,770,.72],[700,780,.8],[840,772,.7],[1080,776,.76],[1220,770,.7],[1360,782,.8]].forEach(([x,y,s],i)=>g+=folk(i,x,y,s,{face:x>960?-1:1,look:up,expr:'awe',near:i===2?'cover':i===4?'chest':null}));
+  [[640,800,1.0],[960,808,.66],[1290,804,.98]].forEach(([x,y,s],i)=>g+=folk(i+6,x,y,s,{face:x>960?-1:1,look:up,expr:'awe',near:i===1?'up':null}));
+  return g;
+}
+// D9. "Just fire, and words": strokes of light rise out of the flames like lines of writing.
+function fireWords(t){
+  let g=glow(960,600,900,'#FF6A2A',.45);
+  g+=FX.summitFire(t,VOICE,1.1,0,{fill:'#3A0C06',H:440,cap:200,smokeH:1200,smoke:.6,light:1100,seed:62,embers:60,rows:3,drift:40});
+  const wr=prog(t,AT.wordsW-.3,AT.wordsW+.5);
+  if(wr>0)for(let i=0;i<7;i++){const k=((t-AT.wordsW)*.16+i/7)%1,x=760+(i%3)*160+Math.sin(t*.6+i)*30,y=520-k*700;
+    let d=`M${x-120} ${y}`;for(let xx=x-120;xx<x+100;xx+=24)d+=`q6 -12 12 0t12 0`;
+    g+=G('',P(d,'none',{stroke:'#FFF6DA','stroke-width':7})+glow(x,y,120,'#FFE9A8',.4),(Math.min(1,wr)*Math.sin(k*Math.PI)).toFixed(2));}
+  return g;
+}
+// D10. "God didn't give them something to look at": an empty plinth; the girl looks at it, then up.
+function emptyPlinth(t){
+  let g=bndBack(t,.5);
+  g+=R(1010,600,180,190,6,'#6A6470',{stroke:'#3A3448','stroke-width':4})+R(994,586,212,22,4,'#8A849A');
+  const p=Math.sin(Math.PI*clamp(prog(t,AT.didnt,AT.heGave)));
+  g+=Ell(1100,460,60,110,'none',{stroke:'#FFFBEA','stroke-width':5,'stroke-dasharray':'12 12',opacity:(.7*p).toFixed(2)});
+  const lk=t<AT.didnt+.9?{x:1100,y:520}:{x:420,y:100};
+  return g+folk(3,880,800,.7,{look:lk,expr:t<AT.didnt+.9?'surprised':'awe',near:t<AT.didnt+.9?{x:960,y:690}:null});
+}
+// D11. "He gave them someone to listen to": a family listens together, the child's hand at her ear.
+function listenFam(t){
+  let g=bndBack(t,1.2)+glow(420,80,600,'#FFE9A8',.2);
+  const up={x:420,y:120};
+  const kid=person(3,1000,800,.66,{face:-1,look:up,expr:'joy'});kid.near=earPt(kid);
+  const mom=person(1,1120,800,1.05,{face:-1,f:true,look:up,expr:'tender'});
+  const dad=person(0,870,800,1.1,{face:1,look:{x:1000,y:620},expr:'tender',phase:1.2});dad.near=PPL.handOn(dad,kid,'head');
+  const hh=PPL.holdHands(mom,kid,{order:'ba'}),D=PPL.rig(dad);
+  return g+D.draw('back')+D.draw('body')+D.draw('head')+hh.svg+D.draw('front');
+}
+
+// ---------- ACT 4: smaller and quieter ----------
+// E1. "So here's the problem with a statue": the idol on a shelf in a cold room.
+function problem(t){
+  let g=workshopWall(t,.55)+R(1200,-160,260,300,10,'#2A3A5A',{stroke:'#1A100A','stroke-width':12})+P('M1200 140L1460 140L1260 800L760 800Z','#9AB8E8',{opacity:.1});
+  g+=R(700,600,520,26,4,'#5A3A22',{stroke:'#2A1A10','stroke-width':3})+R(730,626,16,70,3,'#3A2414')+R(1174,626,16,70,3,'#3A2414');
+  g+=idol(t,960,600,230)+gnd(43,790,'#3A2A20','#2A1E16');
+  for(let i=0;i<12;i++){const k=(t*.05+hash(i,2))%1;g+=C(800+hash(i,3)*500,600-k*600,3,'#DDE6FF',{opacity:(.5*Math.sin(k*3.14)).toFixed(2)});}
+  return g;
+}
+// E2. "It makes God smaller": the idol only reaches his waist; he pats its head.
+function smaller(t){
+  let g=workshop(t);
+  g+=idol(t,1050,795,140);
+  const o=carpO(900,795,1.15,{near:{x:1040,y:640+Math.abs(Math.sin(E.held(t,6)*3))*6},look:{x:1050,y:680},expr:'calm',lean:4});
+  return g+PPL.fig(o);
+}
+// E3. "...less than the one who made you": him and his idol, tiny under the sky full of stars.
+function starSky(t){
+  let g=stars(t,1,1000)+P('M-60 -300Q600 -100 1200 -500Q1600 -700 1980 -600V-200Q1500 0 1000 -100Q400 100 -60 0Z','#B9A8FF',{opacity:.15})+glow(1300,-300,500,'#B9A8FF',.25);
+  const rr=rng(5);for(let i=0;i<140;i++){const x=rr()*2000-40,y=-680+rr()*1300;g+=C(x,y,1.5+rr()*2.5,'#FFFFFF',{opacity:(.4+.5*Math.abs(Math.sin(t+i))).toFixed(2)});}
+  g+=P('M-60 800Q500 700 960 690Q1400 700 1980 800V1800H-60Z','#1A1430');
+  g+=idol(t,1010,700,60);
+  return g+carp(940,700,.6,{look:{x:1100,y:-200},expr:'awe',near:'open',far:'open'});
+}
+// E4. "And it makes God quieter": he talks to it; it only says back what he said.
+function quieter(t){
+  let g=workshop(t,{dark:.2});
+  g+=R(1060,640,260,24,4,'#7A4E2C',{stroke:'#4A2E18','stroke-width':3})+R(1080,664,16,126,3,'#5A3820')+R(1284,664,16,126,3,'#5A3820')+idol(t,1190,640,160);
+  g+=R(830,746,120,50,6,'#5A3820');
+  const talk=t>AT.quieter+.3&&t<AT.onlySays?Math.sin(E.held(t,8)*4):0;
+  g+=carp(880,800,1.1,{sit:1,seat:748,near:{x:990,y:lerp(640,610,talk)},look:{x:1190,y:500},expr:t>AT.onlySays+.3?'surprised':'calm',lean:10});
+  g+=bubble(1000,420,240,110,prog(t,AT.quieter+.4,AT.quieter+.8),1)+bubble(1260,380,240,110,prog(t,AT.onlySays,AT.onlySays+.4),-1,'#FFE9C8');
+  return g;
+}
+// E5. "Remember the golden calf?": the calf rises out of the fire; the people lift their hands.
+function goldCalf(t){
+  let g=stars(t,.5,300)+glow(960,560,700,'#FF8A3C',.4)+gnd(133,770,'#3A2014','#2A160E');
+  [[420,760],[1520,770]].forEach(([x,y],k)=>g+=tent(x,y,['#6A4A3A','#5A3A2A'][k]));
+  const rise=ease.back(prog(t,AT.calf,AT.calf+.9));
+  g+=Ell(960,780,170,34,'#1A0A04')+FX.flames(t,[[840,782],[900,776],[960,774],[1020,776],[1080,782]],{H:lerp(110,50,rise),sp:14,seed:15})+glow(960,740,200,'#FFB04C',.5);
+  if(rise>0)g+=G(`translate(0 ${((1-rise)*140).toFixed(1)})`,R(860,690,200,30,4,'#5A4A3A')+calf(t,960,600,1.5*Math.max(.01,rise)),Math.min(1,rise).toFixed(2));
+  [[700,800,1.0],[1220,800,1.0],[600,790,.64]].forEach(([x,y,s],i)=>g+=folk(i+1,x,y,s,{face:x>960?-1:1,reach:lerp(.3,1,rise),look:{x:960,y:520},expr:['calm','awe',rise]}));
+  return g;
+}
+// A line of dancers holding hands (from episode 1).
+function chain(ps,up){
+  const m=[];
+  for(let k=0;k+1<ps.length;k++){const a=ps[k],b=ps[k+1],aa=PPL.armToward(a,b.x),ab=PPL.armToward(b,a.x),ra=PPL.rig(Object.assign({},a,{near:null,far:null})),rb=PPL.rig(Object.assign({},b,{near:null,far:null}));
+    const sa=ra.shoulder(aa),sb=rb.shoulder(ab),p={x:(sa[0]+sb[0])/2,y:up?Math.min(sa[1],sb[1])-60*a.s:Math.max(sa[1],sb[1])+40*a.s};a[aa]=p;b[ab]=p;m.push([p.x,p.y,a.skin,b.skin,a.s]);}
+  return ps.map(o=>PPL.fig(o)).join('')+m.map(q=>PPL.clasp([q[0],q[1]],q[4],q[2],q[3])).join('');
+}
+// E6. "They called it a feast to the LORD": Aaron lifts his arms at the altar; the dancers join hands.
+function feast(t){
+  let g=glow(1000,200,700,'#FFE9A8',.3);
+  for(let i=0;i<12;i++)g+=P(`M${300+i*120} ${-80+(i%2)*20}l55 70l55 -70z`,['#FF5A48','#FFD45E','#7CFFE6'][i%3]);
+  g+=P('M300 -80Q1000 0 1700 -100','none',{stroke:'#3A1A1A','stroke-width':4})+gnd(135,770,'#B0603E','#8A4A30');
+  g+=R(1000,640,280,150,6,'#7A5A4A',{stroke:'#4A3022','stroke-width':4})+calf(t,1140,560,1.05);
+  const call=prog(t,AT.called-.2,AT.called+.6);
+  g+=elder(820,800,1.1,{tunic:'#E8E0F8',tunic2:'#6A4CD8',hair:'#8A8A8A',near:call>.3?'up':'chest',far:call>.3?'up':'chest',look:{x:1140,y:420},expr:'joy'});
+  const beat=Math.sin((t-AT.called)*5.2),up=beat>.2;
+  g+=chain([0,1,2].map(i=>person(i+2,1340+i*110,800+(i%2)*6,.8,{face:i<1?1:-1,jump:Math.max(0,beat)*14*(i%2?1:.6),expr:'joy',look:{x:1140,y:480}})),up);
+  return g;
+}
+// E7. "They weren't replacing God": a man points from the calf to the burning mountain; his wife looks with him.
+const NR_PEAK=FX.peak(35,520,120,{halfW:480,rough:10,bottom:900});
+function notReplacing(t){
+  let g=glow(520,120,500,'#FF8A3C',.4)+FX.summitFire(t,NR_PEAK,.85,0,{fill:'#4A3040',H:120,cap:80,smokeH:700,light:420,seed:35,embers:18,rows:2,rocks:false});
+  g+=gnd(137,770,'#8A5A3A','#7A4A2E');
+  g+=R(1200,680,220,110,6,'#7A5A4A',{stroke:'#4A3022','stroke-width':4})+calf(t,1310,600,.95);
+  const pt=ease.out(prog(t,AT.weren,AT.weren+.5));
+  const man=person(2,1020,800,1.1,{face:-1,look:{x:520,y:140},expr:'calm',near:{x:lerp(980,930,pt),y:lerp(700,560,pt)}});
+  const wife=person(1,1130,800,1.0,{face:-1,f:true,look:{x:520,y:140},expr:'awe'});wife.near=PPL.handOn(wife,man,'shoulder');
+  const Wf=PPL.rig(wife);
+  return g+Wf.draw('back')+Wf.draw('body')+Wf.draw('head')+PPL.fig(man)+Wf.draw('front');
+}
+// E8. "They were trying to hold him": hands on the gold.
+function holdIt(t){
+  let g=glow(960,520,700,'#E8B53A',.25)+gnd(139,790,'#2A2010','#1A1408');
+  g+=R(720,690,480,110,8,'#4A3A2A')+calf(t,960,560,2.2);
+  const tch=ease.out(prog(t,AT.trying-.2,AT.holdHim)),strk=Math.sin(E.held(t,8)*3)*.06;
+  g+=folk(1,640,800,1.15,{near:{x:lerp(700,778,tch),y:lerp(640,520,tch)+strk*200},far:{x:lerp(690,770,tch),y:lerp(660,570,tch)},lean:8+tch*10,look:{x:860,y:500},expr:['calm','tender',tch]})+
+    folk(3,1350,800,1.1,{flip:-1,near:{x:lerp(1330,1290,tch),y:lerp(660,520,tch)},lean:6,look:{x:1250,y:480},expr:['calm','awe',tch]});
+  return g;
+}
+// E9. "A god you can hold is a god you can control": he puts the small calf in a chest and shuts the lid.
+function control(t){
+  let g='';for(let i=0;i<16;i++)g+=R(-60+i*130,-700,124,1480,0,i%2?'#8A5A3A':'#7A4E32');
+  g+=P('M-60 -700L960 -300L1980 -700Z','#5A3A24')+gnd(141,780,'#6A4A30','#5A3E28');
+  const put=ease.inOut(prog(t,AT.godHold+.3,AT.control-.5)),lid=ease.inOut(prog(t,AT.control-.3,AT.control+.3));
+  const cx=lerp(1010,1150,put),cy=lerp(640,690,put);
+  g+=R(1060,690,190,100,8,'#7A4E2C',{stroke:'#3A2414','stroke-width':4})+R(1060,720,190,12,2,'#C89458');
+  const lidSvg=G(`rotate(${(-100*(1-lid)).toFixed(1)} 1060 690)`,R(1060,672,190,22,6,'#8A5A34',{stroke:'#3A2414','stroke-width':4}));
+  const o=pplOpts(2,900,800,1.12,{near:{x:cx-30,y:cy+16},far:{x:cx+20,y:cy+18},look:{x:cx,y:cy},expr:t>AT.control?'joy':'calm',lean:put*14});
+  const r=PPL.rig(o);
+  g+=r.draw('back')+r.draw('body')+r.draw('head');
+  if(lid<.9)g+=G(`translate(${cx} ${cy})`,calf(t,-10,-10,.42));
+  g+=lidSvg+r.draw('front');
+  return g;
+}
+// E10. "The God of Sinai speaks": the fire, the rings.
+const sinaiSpeaks=t=>sinaiWide(t,{rings:1});
+// E11. "...things you'd rather not hear": he covers his ears; his wife holds his arm; then he lowers his hands and listens.
+function ratherNot(t){
+  let g=bndBack(t,1);
+  const cov=ease.inOut(prog(t,AT.whoSpeaks+.6,AT.whoSpeaks+1.2))*(1-ease.inOut(prog(t,AT.hearEnd,AT.hearEnd+.7)));
+  const man=person(2,1000,800,1.12,{face:-1,look:cov>.5?'down':{x:420,y:100},expr:cov>.5?'fear':['fear','awe',prog(t,AT.hearEnd,AT.hearEnd+1)],lean:cov*10});
+  if(cov>.05){const e=earPt(man);man.near={x:lerp(man.x-60,e.x,cov),y:lerp(man.y-120,e.y,cov)};man.far='cover';}
+  const wife=person(1,1130,800,1.02,{face:-1,f:true,look:{x:1000,y:560},expr:'tender'});wife.near=PPL.handOn(wife,man,'arm');
+  const Wf=PPL.rig(wife);
+  return g+Wf.draw('back')+Wf.draw('body')+Wf.draw('head')+PPL.fig(man)+Wf.draw('front');
+}
+
+// ---------- ACT 5: the image he already made ----------
+const deer=(x,y,s,d=1)=>G(`translate(${x} ${y}) scale(${s*d} ${s})`,Ell(0,-80,70,34,'#C8844A')+[-44,-20,24,48].map(dx=>R(dx-5,-56,10,56,4,'#9A6234')).join('')+P('M50 -100L76 -170L96 -160L74 -100Z','#C8844A')+Ell(92,-170,24,15,'#C8844A')+C(98,-174,4,'#1A1A1A')+P('M84 -186l-6 -30l-10 4M92 -186l8 -30l10 4','none',{stroke:'#6A4426','stroke-width':4}));
+function eden(t,o={}){
+  let g=glow(960,-100,1100,'#FFF2C8',.7)+rays(t,960,-600,o.rays??1,14);
+  g+=P('M-60 420Q400 300 900 400Q1400 300 1980 420V800H-60Z','#7ACB6A')+P('M-60 560Q600 470 1100 540Q1500 480 1980 560V800H-60Z','#5AB85A');
+  g+=P('M-60 640Q500 600 900 660T1980 640','none',{stroke:'#8AD8FF','stroke-width':40,opacity:.8});
+  [[260,560],[560,520],[1420,520],[1700,560]].forEach(([x,y],k)=>g+=R(x-12,y-30,24,130,4,'#6A4A2A')+C(x,y-80,90,['#3A9A4A','#4AAA5A'][k%2])+[0,1,2].map(i=>C(x-40+i*40,y-80+(i%2)*30,10,'#FF6A5A')).join(''));
+  g+=gnd(143,770,'#6ACB5A','#5AB04A');
+  for(let i=0;i<26;i++){const x=hash(i,11)*1900,y=780+hash(i,12)*40;g+=C(x,y,7,['#FF7BD5','#FFD45E','#FFFFFF'][i%3]);}
+  return g;
+}
+// F1. "But here's the surprise": dawn over a garden.
+const surprise=t=>eden(t,{rays:ease.out(prog(t,AT.surprise,AT.surprise+1.5))})+deer(1240,780,.9,-1)+deer(700,770,.7,1);
+// F2. "God already has an image on earth": a man stands in the garden in the morning light.
+function imageOnEarth(t){
+  let g=eden(t)+deer(1300,780,.8,-1);
+  for(let i=0;i<5;i++)g+=bird(t,960+Math.cos(t*.8+i*1.3)*260,380+Math.sin(t*.8+i*1.3)*90,.8,i);
+  return g+folk(0,960,800,1.12,{tunic:'#E8DCC0',tunic2:'#9A7A50',look:{x:1100,y:200},expr:'joy',near:'open',far:'open',aura:'#FFF6DA'});
+}
+// F3. "So God created man in his own image": he rises from the ground and looks at his hands.
+function ownImage(t){
+  let g=eden(t);
+  const up=ease.inOut(prog(t,AT.soGod+.4,AT.soGod+1.8)),look=prog(t,AT.soGod+1.8,AT.soGod+2.3);
+  const o=person(0,960,800,1.15,{tunic:'#E8DCC0',tunic2:'#9A7A50',kneel:1-up,expr:['calm','joy',look]});
+  o.near={x:1040,y:lerp(780,640,up)};o.far={x:1020,y:lerp(780,650,up)};o.look=look>.2?{x:1040,y:640}:{x:1000,y:-200};
+  return g+PPL.fig(o);
+}
+// F4. "male and female he created them": she comes to him; they take hands.
+function maleFemale(t){
+  let g=eden(t);
+  const w=ease.out(prog(t,AT.maleFemale-.3,AT.maleFemale+.6)),ex=x=>x;
+  const A=person(0,900,800,1.12,{tunic:'#E8DCC0',tunic2:'#9A7A50',look:{x:1060,y:600},expr:'joy'}),B=person(3,lerp(1260,1050,w),800,1.06,{face:-1,f:true,walk:w<1?t*7:0,look:{x:900,y:600},expr:'joy'});
+  return g+(w<.9?PPL.fig(A)+PPL.fig(B):PPL.holdHands(A,B).svg);
+}
+// F5. "The image of God isn't gold or wood": the two idols on a table are crossed out.
+function notGoldWood(t){
+  let g=R(-60,-700,2040,1500,0,'#2A2420')+glow(960,500,600,'#FFD86B',.2)+gnd(145,800,'#3A2E26','#2A221C');
+  g+=R(620,690,680,30,6,'#7A4E2C',{stroke:'#3A2414','stroke-width':4})+R(660,720,20,80,3,'#5A3820')+R(1240,720,20,80,3,'#5A3820');
+  g+=idol(t,800,690,220,{gold:true})+idol(t,1120,690,220);
+  g+=xMark(800,580,110,ease.inOut(prog(t,AT.notGold+.3,AT.notGold+.7)))+xMark(1120,580,110,ease.inOut(prog(t,AT.notGold+.8,AT.notGold+1.2)));
+  return g;
+}
+// F6. "it's people": a street full of people, hugging, carrying, holding hands.
+function peopleStreet(t){
+  let g=glow(960,-200,1000,'#FFF2C8',.6);
+  for(let i=0;i<11;i++){const x=-60+i*190,h=260+hash(i,13)*200;g+=R(x,640-h,170,h+140,4,['#F0C8A0','#E8B890','#F8D8B0'][i%3])+R(x+60,640-h+50,40,50,6,'#6A4A38');}
+  g+=gnd(147,770,'#D8B088','#C09870');
+  g+=PPL.hug(elderOpts(560,800,1.0,{f:true,tunic:'#B98CFF',tunic2:'#6A4CD8',expr:'joy'}),person(3,650,800,.62,{face:-1,expr:'joy'}),{k:1}).svg;
+  g+=PPL.carry(person(0,860,800,1.05,{look:{x:900,y:540},expr:'joy'}),person(4,0,0,.6,{expr:'joy'})).svg;
+  const a=person(1,1150,800,1.0,{f:true,expr:'joy',look:{x:1270,y:600}}),b=person(2,1270,800,1.04,{face:-1,expr:'joy',look:{x:1150,y:600}});
+  g+=PPL.holdHands(a,b,{up:Math.sin(t*4)>0}).svg;
+  return g;
+}
+// F7. "you don't carve God's image": the sculptor lays his chisel down and steps back from the stone face.
+function dontCarve(t){
+  let g=workshop(t,{dark:.1});
+  g+=R(1120,600,140,190,6,'#6A6470')+Ell(1190,500,80,100,'#C8C2B4',{stroke:'#8A867A','stroke-width':4})+P('M1110 520Q1150 470 1190 500','none',{stroke:'#8A867A','stroke-width':4})+R(1150,580,80,24,4,'#C8C2B4');
+  g+=R(880,690,200,24,4,'#7A4E2C',{stroke:'#4A2E18','stroke-width':3});
+  const dn=ease.inOut(prog(t,AT.dontCarve-.3,AT.dontCarve+.4)),back=ease.inOut(prog(t,AT.dontCarve+.6,AT.meetIt-.2));
+  const x=lerp(940,860,back),hp={x:lerp(1060,1000,dn),y:lerp(560,680,dn)};
+  g+=dn>=1?chisel(990,682,1060,684):'';
+  const o=pplOpts(4,x,800,1.1,{near:dn<1?hp:'chest',far:'chest',look:back>.3?{x:1300,y:300}:{x:1190,y:500},expr:back>.3?'tender':'calm',tunic:'#A8B0B8',tunic2:'#5A6470'});
+  g+=withProp(o,r=>dn<1?chisel(r.hand('near')[0],r.hand('near')[1],r.hand('near')[0]+70,r.hand('near')[1]+4):'');
+  return g;
+}
+// F8. "You meet it, in the person next to you": at the well a young man lifts an old woman's jar; she smiles at him.
+function meetIt(t){
+  let g=glow(960,-200,900,'#FFF2C8',.55);
+  for(let i=0;i<8;i++){const x=-60+i*270,h=300+hash(i,15)*160;g+=R(x,640-h,240,h+140,4,['#E8C8A0','#D8B890'][i%2]);}
+  g+=gnd(149,770,'#C8A070','#B08858');
+  g+=Ell(1330,700,110,26,'#8A7A6A')+R(1220,700,220,90,8,'#9A8A78',{stroke:'#5A4A3A','stroke-width':4})+L(1240,700,1240,560,'#5A3A22',8)+L(1420,700,1420,560,'#5A3A22',8)+L(1230,560,1430,560,'#5A3A22',8);
+  const lift=ease.inOut(prog(t,AT.meetIt-.2,AT.meetIt+.8)),jx=1020,jy=lerp(760,640,lift);
+  const jar=Ell(jx,jy,40,46,'#C8784A',{stroke:'#6A3A1E','stroke-width':4})+R(jx-18,jy-62,36,22,6,'#B86A3E');
+  const man=person(4,900,800,1.1,{near:{x:jx-34,y:jy+4},far:{x:jx-30,y:jy+10},look:{x:1150,y:560},expr:'joy',lean:lift<1?(1-lift)*20:0});
+  const old=elderOpts(1150,800,1.0,{face:-1,f:true,tunic:'#FF8FB1',tunic2:'#C8487A',look:{x:900,y:560},expr:['calm','joy',lift]});
+  old.near=lift>.6?PPL.handOn(old,man,'shoulder'):{x:jx+34,y:jy+6};
+  const Or=PPL.rig(old),Mr=PPL.rig(man);
+  g+=Or.draw('back')+Or.draw('body')+Or.draw('head')+Mr.draw('back')+Mr.draw('body')+Mr.draw('head')+jar+Mr.draw('front')+Or.draw('front');
+  return g+folk(3,1310,800,.62,{face:-1,look:{x:1020,y:560},expr:'joy'});
+}
+
+// ---------- ACT 6: the ones we still carve ----------
+// G1. "We may never kneel to a statue": a family walks past an old idol in a museum case.
+function museum(t){
+  let g=R(-60,-700,2040,1500,0,'#C8CCD0');for(let i=0;i<5;i++)g+=R(200+i*340,-200,240,300,6,'#A8B0B8',{stroke:'#7A828A','stroke-width':8})+glow(320+i*340,-50,120,'#FFFFFF',.2);
+  g+=R(-60,780,2040,1000,0,'#8A9098')+L(-60,780,1980,780,'#5A6068',4);
+  g+=R(1180,620,200,170,6,'#5A6068')+R(1180,360,200,260,6,'#BFE8FF',{opacity:.28,stroke:'#E8F6FF','stroke-width':5})+idol(t,1280,620,200,{gold:true});
+  const p=prog(t,AT.mayNever-.2,AT.stillCarve),x=lerp(420,760,p);
+  const dad=person(0,x,800,1.05,{walk:t*7,look:{x:x+300,y:560},expr:'calm',tunic:'#4A5A6A',tunic2:'#2A3440'}),kid=person(3,x+112,804,.62,{walk:t*7+1.6,look:{x:1280,y:480},expr:'surprised'});
+  g+=PPL.holdHands(dad,kid).svg;
+  return g;
+}
+// G2. "But we still carve, just not with wood": at his desk at night, a knife of light carves a figure in his thoughts.
+function thoughtCarve(t){
+  let g=R(-60,-700,2040,1500,0,'#1E1E40')+R(260,-200,280,320,8,'#2A3A6A',{stroke:'#141430','stroke-width':12})+C(400,-90,40,'#F2F4FF',{opacity:.8});
+  g+=gnd(151,780,'#141430','#0E0E24');
+  g+=R(780,640,340,24,4,'#5A4A3A')+R(800,664,16,130,3,'#3A2E24')+R(1084,664,16,130,3,'#3A2E24')+R(1040,590,14,50,3,'#8A8A90')+P('M1010 590L1084 590L1070 560L1024 560Z','#FFD86B')+glow(1047,610,160,'#FFD86B',.4);
+  g+=R(640,700,90,20,4,'#5A4A3A')+R(680,720,12,70,3,'#3A2E24');
+  const tk=ease.out(prog(t,AT.stillCarve-.2,AT.stillCarve+.6));
+  g+=folk(4,700,800,1.05,{sit:1,seat:702,near:{x:830,y:640},far:{x:820,y:646},look:{x:1060,y:240},expr:'calm',lean:4});
+  if(tk>0){const cx=1100,cy=230;let c='';[[0,0,150],[-130,40,90],[130,40,100],[-60,-90,90],[80,-90,90]].forEach(([a,b,r])=>c+=C(cx+a,cy+b,r,'#2E2E5A',{stroke:'#B9A8FF','stroke-width':5}));
+    c+=C(870,470,18,'#2E2E5A',{stroke:'#B9A8FF','stroke-width':4})+C(920,400,28,'#2E2E5A',{stroke:'#B9A8FF','stroke-width':4});
+    const sh=prog(t,AT.stillCarve+.4,AT.weCarve);
+    c+=G('',idol(t,cx,cy+110,200).replace(/#9A6A3C/g,'#FFE9A8').replace(/#5A3A1C/g,'#B9A8FF'),(.3+.7*sh).toFixed(2))+glow(cx,cy,200,'#FFE9A8',.3);
+    const kx=cx+70+Math.sin(t*6)*24,ky=cy-30+Math.cos(t*6)*30;c+=L(kx,ky,kx+70,ky-60,'#FFF6DA',10)+P(`M${kx} ${ky}L${kx-46} ${ky+20}L${kx-8} ${ky-14}Z`,'#FFFFFF')+glow(kx,ky,60,'#FFFFFF',.6);
+    g+=G(`translate(${cx} ${cy}) scale(${tk.toFixed(3)}) translate(${-cx} ${-cy})`,c);}
+  return g;
+}
+// G3. "We carve a God who always agrees with us": the gold mask with his own face nods every time he speaks.
+function agrees(t){
+  let g=R(-60,-700,2040,1500,0,'#2A1E4A')+glow(1160,420,600,'#B98CFF',.3);
+  for(let i=0;i<9;i++)g+=Ell(hash(i,3)*1900,-500+hash(i,4)*1100,180,60,'#3A2E62',{opacity:.7});
+  g+=gnd(153,780,'#3A2E5A','#2E2448')+R(1080,600,160,190,6,'#5A4A7A',{stroke:'#2A1E4A','stroke-width':4});
+  const [F2,def]=foil(t),nod=Math.sin(E.held(t,8)*5)*(t>AT.agrees-.4?8:0);
+  g+=def+G(`rotate(${nod.toFixed(1)} 1160 600)`,mask(1160,470,.95,F2));
+  const talk=Math.sin(E.held(t,8)*3);
+  g+=folk(1,880,800,1.1,{f:false,tunic:'#4A5A6A',tunic2:'#2A3440',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',near:{x:980,y:lerp(600,630,talk)},look:{x:1160,y:470},expr:'joy'});
+  return g;
+}
+// G4. "A God who never says what we don't want to hear": the light speaks at the window; he pulls the curtain shut.
+function curtain(t){
+  const shut=ease.inOut(prog(t,AT.dontWant-.4,AT.dontWant+.4));
+  let g=R(-60,-700,2040,1500,0,mix('#2A3050','#141628',shut))+R(1080,-140,380,560,8,'#FFE9A8',{stroke:'#2A1E1A','stroke-width':14});
+  g+=G('',waves(t,1270,140,600,1,4,.5)+glow(1270,140,300,'#FFF6DA',.7),(1-shut).toFixed(2));
+  g+=P('M1080 790L1460 790L1460 420L1080 420Z','#FFF2C8',{opacity:(.12*(1-shut)).toFixed(2)});
+  g+=gnd(155,780,'#2A2A40','#1E1E30');
+  const cw=lerp(40,380,shut);
+  g+=P(`M1460 -150L${1460-cw} -150Q${1450-cw} 140 ${1470-cw} 440L1460 440Z`,'#8A3A4A',{stroke:'#4A1A24','stroke-width':4})+R(1060,-170,420,20,6,'#5A3A22');
+  const hx=1460-cw-10;
+  g+=folk(1,lerp(1060,lerp(1060,1180,shut),1),800,1.1,{f:false,tunic:'#4A5A6A',tunic2:'#2A3440',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',near:{x:hx,y:560},look:shut<.6?{x:1270,y:140}:{x:900,y:560},face:shut>.95?-1:1,expr:shut<.5?'surprised':'calm',lean:4});
+  return g;
+}
+// G5. "Those gods are easy to live with": feet up in a soft chair, the mask smiling on the side table.
+function easyChair(t){
+  let g=R(-60,-700,2040,1500,0,'#3A2A30')+glow(1250,520,500,'#FFC870',.45);
+  g+=gnd(157,790,'#4A3238','#3A262C');
+  g+=R(700,560,320,240,40,'#8A3A4A',{stroke:'#4A1A24','stroke-width':5})+R(680,640,60,160,20,'#7A3040')+R(980,640,60,160,20,'#7A3040')+R(740,700,240,40,12,'#9A4A5A');
+  g+=R(1180,640,140,20,4,'#6A4A34')+R(1240,660,16,130,3,'#4A3424')+R(1230,560,10,80,3,'#8A8A90')+P('M1200 560L1270 560L1256 520L1214 520Z','#FFD86B');
+  const [F2,def]=foil(t);g+=def+mask(1290,592,.35,F2);
+  g+=R(1060,740,110,60,8,'#5A3A2A');
+  g+=folk(1,860,800,1.05,{f:false,tunic:'#4A5A6A',tunic2:'#2A3440',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',sit:1,seat:712,lean:-14,near:'chest',far:'chest',look:{x:1290,y:590},expr:'joy'});
+  return g;
+}
+// G6. "and much too small": the mask shrinks in his palm to a bead.
+function tooSmall(t){
+  let g=R(-60,-700,2040,1500,0,'#2A2A38')+glow(960,560,500,'#FFD86B',.2)+gnd(159,790,'#3A3A48','#2A2A38');
+  const sh=lerp(.42,.06,ease.inOut(prog(t,AT.tooSmall,AT.tooSmall+.9)));
+  const o=pplOpts(1,920,800,1.2,{f:false,tunic:'#4A5A6A',tunic2:'#2A3440',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',near:{x:1030,y:640},look:{x:1040,y:600},expr:['calm','sad',prog(t,AT.tooSmall,AT.tooSmall+1)]});
+  const [F2,def]=foil(t);
+  return g+def+withProp(o,r=>{const h=r.hand('near');return mask(h[0]+8,h[1]-10-118*sh,sh,F2);});
+}
+
+// ---------- ACT 7: four against thousands ----------
+// H1. "The commandment ends with a warning": the storm over the tablets; line II glows.
+const warning=t=>storm(t,k=>k===1?1.1+.25*Math.sin(t*5):k===0?.6:.1,{b:AT.endsWarn,col:'#C8302A'});
+// H2. "Turning away echoes to the third and fourth generation": four generations turn their backs on the light, one after another.
+function generations(t){
+  let g=glow(260,300,700,'#FFE9A8',.5)+C(260,300,80,'#FFF2C8',{opacity:.8})+R(-60,-700,2040,1500,0,'#1A1430',{opacity:.25});
+  g+=gnd(161,770,'#4A3A4A','#3A2E3A');
+  const who=[[640,'elder',1.0],[800,0,1.05],[960,4,1.0],[1100,3,.64]],ts=[AT.turning,AT.echoes,AT.third,AT.third+.5];
+  who.forEach(([x,i,s],k)=>{const tn=t>ts[k];const o=i==='elder'?elderOpts(x,800,s,{face:tn?1:-1,look:tn?'down':{x:260,y:300},expr:tn?'sad':'calm'}):person(i,x,800,s,{face:tn?1:-1,look:tn?'down':{x:260,y:300},expr:tn?'sad':'calm'});
+    g+=PPL.fig(o);
+    const sp=prog(t,ts[k],ts[k]+.8);if(sp>0&&k<3){const nx=who[k+1][0];g+=P(`M${x+30} ${650}Q${(x+nx)/2} ${560-20*Math.sin(t*3)} ${lerp(x+30,nx-20,sp)} 640`,'none',{stroke:'#140E1E','stroke-width':26,opacity:.55,'stroke-linecap':'round'});}});
+  return g;
+}
+// H3. "But then comes a promise": the child turns back toward the dawn.
+function promise(t){
+  const dw=ease.out(prog(t,AT.butThen,AT.butThen+1.6));
+  let g=glow(260,300,600+dw*700,'#FFE9A8',.5+.3*dw)+C(260,300,80+dw*30,'#FFF2C8',{opacity:.9})+rays(t,260,200,dw,10);
+  g+=gnd(161,770,mix('#4A3A4A','#C89A6A',dw),mix('#3A2E3A','#B08458',dw));
+  const tn=t>AT.butThen+.5;
+  g+=folk(4,880,800,1.0,{face:1,look:'down',expr:'sad'});
+  g+=folk(3,1040,800,.66,{face:tn?-1:1,look:tn?{x:260,y:300}:'down',expr:tn?'joy':'sad',near:tn?'open':null});
+  return g;
+}
+// H4. "but showing steadfast love to thousands": a family holds each other in the warm light.
+function steadfast(t){
+  let g=glow(960,-100,1100,'#FFE9A8',.7)+rays(t,960,-500,1,12)+gnd(163,770,'#E8B070','#D89A58');
+  const k=ease.out(prog(t,AT.showing,AT.showing+.8));
+  const mom=person(1,960,800,1.08,{f:true,expr:'tender'}),kid=person(3,1040,804,.64,{face:-1,expr:'joy'});
+  const dad=person(0,830,800,1.12,{expr:'tender',look:{x:1000,y:620}});dad.near=PPL.handOn(dad,mom,'shoulder');
+  const D=PPL.rig(dad);
+  g+=D.draw('back')+D.draw('body')+D.draw('head')+PPL.hug(mom,kid,{k}).svg+D.draw('front');
+  return g+elder(1200,800,1.0,{face:-1,f:true,look:{x:1040,y:640},expr:'joy',near:'chest',far:'chest'});
+}
+// H5. "...of those who love me and keep my commandments": a crowd beyond counting, lights to the horizon (pull back).
+function thousands(t){
+  let g=glow(960,-200,1100,'#FFE9A8',.6)+rays(t,960,-600,.8,12);
+  for(let r=0;r<9;r++){const y=300+r*55,s=.18+r*.05,n=Math.floor(46-r*3);g+=P(`M-60 ${y+10}Q960 ${y-20} 1980 ${y+10}V${y+70}H-60Z`,mix('#C89A6A','#8A5A3A',r/9),{opacity:.9});
+    for(let i=0;i<n;i++){const x=-40+(i+(r%2)*.5)*(2040/n),b=Math.abs(Math.sin(t*2+i+r))*4;const c=TUN[(i+r)%5][0];
+      g+=glow(x,y-30*s*4,22*s*4,'#FFE9A8',.25)+R(x-10*s*4,y-40*s*4-b,20*s*4,30*s*4,8*s*4,c)+C(x,y-50*s*4-b,9*s*4,SKIN[(i+r)%3][0]);}}
+  g+=gnd(165,770,'#B08458','#9A7048');
+  g+=PPL.carry(person(1,820,800,1.0,{f:true,expr:'joy',look:{x:960,y:200}}),person(3,0,0,.6,{expr:'joy',look:{x:960,y:200}}),{out:true}).svg;
+  g+=PPL.holdHands(person(0,1060,800,1.04,{expr:'joy',look:{x:1180,y:600}}),person(4,1180,800,1.0,{face:-1,expr:'joy',look:{x:960,y:200}}),{up:true}).svg;
+  return g;
+}
+// H6-H8. The balance: four generations against thousands; the warning is heavy; the mercy is heavier.
+function balance(t){
+  let g=stars(t,.5,200)+glow(1350,300,600,'#FFE9A8',.35*ease.out(prog(t,AT.steadfast[0],AT.heavier+.6)))+gnd(167,780,'#2A2448','#1E1A34');
+  const tilt=-6-4*ease.inOut(prog(t,AT.heavy+.3,AT.heavy+.9))+30*ease.back(prog(t,AT.heavier+.6,AT.heavier+1.4));
+  const bx=960,by=200,hl=380,a=tilt*Math.PI/180;
   const lx=bx-Math.cos(a)*hl,ly=by-Math.sin(a)*hl,rx=bx+Math.cos(a)*hl,ry=by+Math.sin(a)*hl;
-  let b=R(bx-14,by,28,400,6,'#8A6A3A')+R(bx-110,by+390,220,30,8,'#6A4E2A')+L(lx,ly,rx,ry,'#C8A060',14)+C(bx,by,18,'#E8C080');
-  const pan=(x,y,inner)=>L(x,y,x-80,y+150,'#C8A060',3)+L(x,y,x+80,y+150,'#C8A060',3)+inner+P(`M${x-100} ${y+150}Q${x} ${y+210} ${x+100} ${y+150}Z`,'#B08848',{stroke:'#E8C080','stroke-width':3});
-  const st=ease.back(prog(t,AT.third,AT.third+.5)),mc=ease.out(prog(t,AT.steadfast[0],AT.steadfast[1]+.4));
-  b+=pan(lx,ly,st>0?G(`translate(${lx} ${ly+120}) scale(${st.toFixed(2)})`,P('M-46 30L-38 -18L-6 -34L36 -22L48 30Z','#4A4A54',{stroke:'#2A2A30','stroke-width':3})+T(0,16,'3·4',{size:30,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#E6E6EE'})):'');
-  let heap='';if(mc>0){heap+=glow(rx,ry+110,190*mc,'#FFD86B',.7);for(let i=0;i<22;i++){const k=Math.min(1,mc*1.6-i*.03);if(k<=0)continue;const ang=hash(i,5)*3.14,rr=hash(i,6)*70;heap+=C(rx+Math.cos(ang)*rr,ry+140-Math.sin(ang)*rr*.8-lerp(200,0,k),12,['#FFE9A8','#FFD45E','#FFFFFF'][i%3],{opacity:k.toFixed(2)});}}
-  b+=pan(rx,ry,heap);
-  g+=G('',b,(1-out).toFixed(2));
-  // the final image: the fire's light and the tablets, two lines lit
-  if(out>0){g+=G('',glow(540,820,620,'#FFE9A8',.5)+tablets(540,860,.82,k=>k<2?1.1:.12)+fireflies(t,0,-600,1920,2300,'#FFF6DA',16,.6),out.toFixed(2));}
-  g+=fade(t,AT.knife-.3,tag(t,AT.third,280,1430,'3RD & 4TH',36,1)+tag(t,AT.steadfast[1]-.6,740,1430,'THOUSANDS',52,2,{bg:CORAL,rot:-3})+
-    tag(t,AT.heavy,540,330,'THE WARNING IS HEAVY',40,3)+tag(t,AT.heavier,540,430,'THE MERCY IS HEAVIER',46,4,{bg:CORAL,rot:-2}));
-  g+=fade(t,AT.last+.5,tag(t,AT.knife,540,330,'PUT DOWN THE CARVING KNIFE',38,5));
-  g+=fade(t,AT.last+.5,tag(t,AT.made,540,1430,'NOT WAITING TO BE MADE',40,6)+tag(t,AT.heard,540,1520,'WAITING TO BE HEARD',48,7,{bg:CORAL,rot:-2}));
-  // end card after the last word
-  const ec=prog(t,AT.last+.6,AT.last+1.2);
-  if(ec>0){g+=G('',R(-200,-200,1480,2400,0,'#08060F',{opacity:.86})+
-    T(540,700,'THE TEN COMMANDMENTS · PART 2',{size:40,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
-    T(540,810,'NO CARVED IMAGE',{size:82,font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
-    g+=tag(t,AT.last+1.6,540,960,'NEXT: THE THIRD COMMANDMENT',42,8,{bg:CORAL});
-    if(t>AT.last+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
-      .forEach((ln,i)=>{g+=T(540,1080+i*36,ln,{size:26,font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});}
-  return stars(t,.4,1080)+F(g)+verse(t,AT.showing-.15,300,40,['but showing steadfast love to thousands','of those who love me and keep my commandments.'],'EXODUS 20:6 ESV',{size:48,hl:'steadfast love to thousands',hlAt:AT.steadfast[0],hlDur:AT.steadfast[1]-AT.steadfast[0],seed:30,id:12});
+  g+=R(bx-18,by,36,590,8,'#8A6A3A')+R(bx-140,770,280,30,10,'#6A4E2A')+L(lx,ly,rx,ry,'#C8A060',16)+C(bx,by,22,'#E8C080');
+  const pan=(x,y,inner)=>L(x,y,x-110,y+260,'#C8A060',4)+L(x,y,x+110,y+260,'#C8A060',4)+inner+P(`M${x-140} ${y+260}Q${x} ${y+330} ${x+140} ${y+260}Z`,'#B08848',{stroke:'#E8C080','stroke-width':4});
+  let L1='';[[-80,0],[-26,4],[26,0],[78,6]].forEach(([dx,dy],i)=>L1+=folk(i,lx+dx,ly+262+dy,.3,{look:'down',expr:'sad',aura:'#000',auraOp:0}));
+  const st=ease.back(prog(t,AT.heavy+.1,AT.heavy+.6));
+  if(st>0)L1+=G(`translate(${lx} ${ly+lerp(-400,230,Math.min(1,st))})`,P('M-60 30L-50 -26L-10 -46L46 -30L62 30Z','#4A4A54',{stroke:'#2A2A30','stroke-width':3})+T(0,18,'3·4',{size:36,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#E6E6EE'}));
+  let Rr='';const mc=ease.out(prog(t,AT.heavier-.2,AT.heavier+1));
+  for(let i=0;i<40;i++){const ang=hash(i,5)*3.14,rr=hash(i,6)*100,k=Math.min(1,.55+mc*1.6-i*.02);if(k<=0)continue;Rr+=C(rx+Math.cos(ang)*rr*1.1,ry+250-Math.sin(ang)*rr*.7-lerp(300,0,k),10+hash(i,7)*8,['#FFE9A8','#FFD45E','#FFFFFF'][i%3],{opacity:k.toFixed(2)});}
+  Rr+=glow(rx,ry+220,200+120*mc,'#FFD86B',.5+.3*mc);
+  if(mc>0&&mc<1)for(let i=0;i<10;i++)Rr+=C(rx+(hash(i,8)-.5)*120,ry+220-(1-mc)*600-i*40,9,'#FFF6DA',{opacity:(1-mc).toFixed(2)});
+  g+=pan(lx,ly,L1)+pan(rx,ry,Rr);
+  return g;
+}
+// H9. "So put down the carving knife": he lays it on the bench and looks to the window.
+function knifeDown(t){
+  let g=workshop(t)+glow(410,0,500,'#FFF2C8',.4);
+  g+=R(960,690,320,24,4,'#7A4E2C',{stroke:'#4A2E18','stroke-width':3})+R(980,714,16,80,3,'#5A3820')+R(1244,714,16,80,3,'#5A3820')+R(1150,580,80,110,8,'#9A6A3C',{stroke:'#5A3A1C','stroke-width':3});
+  const dn=ease.inOut(prog(t,AT.putDown+.2,AT.knife+.3)),rel=t>AT.knife+.35;
+  const kn=(x,y,a)=>G(`rotate(${a} ${x} ${y})`,R(x-36,y-7,40,14,5,'#7A5230')+P(`M${x+4} ${y-6}L${x+64} ${y-1}L${x+4} ${y+7}Z`,'#C8D0D8',{stroke:'#6A747E','stroke-width':2}));
+  const hp={x:lerp(1010,1060,dn),y:lerp(600,676,dn)};
+  if(rel)g+=kn(1060,684,0);
+  const o=carpO(900,795,1.12,{near:rel?'chest':hp,look:rel?{x:410,y:0}:{x:1060,y:680},expr:rel?'tender':'calm',lean:dn*10*(rel?0:1)});
+  g+=withProp(o,r=>rel?'':kn(r.hand('near')[0],r.hand('near')[1],lerp(-40,0,dn)));
+  return g;
+}
+// H10. "The real God isn't waiting to be made": the unfinished block stays on the bench; he walks out into the light.
+function outDoor(t){
+  let g=workshop(t,{dark:.15});
+  g+=R(1240,200,240,590,6,'#FFF6DA')+glow(1360,500,400,'#FFF2C8',.8)+P('M1240 790L1480 790L1700 1100L1000 1100Z','#FFF2C8',{opacity:.25})+R(1220,180,280,24,4,'#3A2414');
+  g+=R(520,690,320,24,4,'#7A4E2C',{stroke:'#4A2E18','stroke-width':3})+R(540,714,16,80,3,'#5A3820')+R(804,714,16,80,3,'#5A3820')+R(640,560,90,130,8,'#9A6A3C',{stroke:'#5A3A1C','stroke-width':3})+P('M650 600Q685 570 720 600','none',{stroke:'#5A3A1C','stroke-width':3});
+  const w=prog(t,AT.realGod+.3,AT.heard-.3),x=lerp(980,1360,w);
+  g+=G('',carp(x,795,1.08,{walk:w>0&&w<1?t*7:0,look:{x:1500,y:500},expr:'tender'}),(1-prog(w,.8,1)).toFixed(2));
+  return g;
+}
+// H11. "He's waiting to be heard": on the hill at night he listens; his wife sits beside him, her hand on his shoulder.
+const HEARD_PEAK=FX.peak(37,1420,300,{halfW:380,rough:10,bottom:900});
+function heardHill(t){
+  let g=stars(t,1,500)+glow(1420,300,500,'#FF8A3C',.4)+FX.summitFire(t,HEARD_PEAK,.8,0,{fill:'#2A2440',H:90,cap:60,rows:2,smokeH:500,light:360,seed:37,embers:14,rocks:false});
+  g+=waves(t,1420,320,1500,1,4,.4)+gnd(169,770,'#2A3050','#1E2440');
+  const up={x:1420,y:320};
+  const man=carpO(960,800,1.1,{kneel:1,look:up,expr:'tender'});man.near=earPt(man);
+  const wife=person(1,820,800,1.0,{f:true,kneel:1,look:up,expr:'tender'});wife.near=PPL.handOn(wife,man,'shoulder');
+  const Wf=PPL.rig(wife);
+  return g+Wf.draw('back')+Wf.draw('body')+Wf.draw('head')+PPL.fig(man)+Wf.draw('front');
+}
+// H12. "And next time...": the tablets; line III begins to glow.
+function nextTime(t){
+  let g=glow(960,560,900,'#FFB04C',.3)+gnd(171,880,'#2A1612','#1E100C');
+  const on=ease.out(prog(t,AT.nextTime,AT.nextTime+1.5));
+  return g+tablets(960,520,1.0,k=>k<2?.9:k===2?on*(1+.2*Math.sin(t*4)):.1)+fireflies(t,300,-300,1320,1100,'#FFE9A8',18,.6);
 }
 
-const wide=(a,b)=>[shot(a,b,...WIDE)];
+// ---------- frame-space overlays: verse cards, the one label on screen, the end card ----------
+const VERSES=[
+  [AT.prays-.15,380,40,['He prays to it and says, Deliver me,','for you are my god!'],'ISAIAH 44:17 ESV',{size:50,hl:'for you are my god!',hlAt:AT.myGod[0]-.15,hlDur:AT.myGod[1]-AT.myGod[0]+.15,seed:3,id:9}],
+  [AT.v204-.15,300,40,['You shall not make for yourself a carved image,','or any likeness of anything that is in heaven above,','or that is in the earth beneath,','or that is in the water under the earth.'],'EXODUS 20:4 ESV',{size:42,hl:'a carved image,',hlAt:AT.carved[0],hlDur:AT.carved[1]-AT.carved[0],seed:5,id:10}],
+  [AT.v205-.15,300,400,['You shall not bow down to them or serve them.'],'EXODUS 20:5 ESV',{size:44,hl:'bow down',hlAt:AT.bowDown[0],hlDur:AT.bowDown[1]-AT.bowDown[0],seed:7,id:11}],
+  [AT.thenLORD-.15,300,40,['Then the LORD spoke to you out of the midst of the fire.','You heard the sound of words, but saw no form;','there was only a voice.'],'DEUTERONOMY 4:12 ESV',{size:46,hl:'saw no form;',hlAt:AT.noForm[0],hlDur:AT.noForm[1]-AT.noForm[0],seed:12,id:7}],
+  [AT.soGod-.15,300,40,['So God created man in his own image,','in the image of God he created him;','male and female he created them.'],'GENESIS 1:27 ESV',{size:48,hl:'in his own image,',hlAt:AT.ownImage[0],hlDur:AT.ownImage[1]-AT.ownImage[0],seed:22,id:8,end:AT.notGold}],
+  [AT.showing-.15,300,40,['but showing steadfast love to thousands','of those who love me and keep my commandments.'],'EXODUS 20:6 ESV',{size:48,hl:'steadfast love to thousands',hlAt:AT.steadfast[0],hlDur:AT.steadfast[1]-AT.steadfast[0],seed:30,id:12}],
+];
+// [from, to, text, options]. Vertical: centred at y 1430 (under the captions, clear of the buttons). Never two at once.
+const TAGS=[
+  [AT.sameTree,AT.oneHalf-.45,'SAME TREE',{bg:CORAL,rot:-2,size:hv(46,54)}],
+  [AT.firewood,AT.otherHalf2-.4,'FIREWOOD',{}],
+  [AT.hisGod,AT.isaiah-.45,'HIS GOD',{bg:CORAL,rot:2,size:hv(46,54)}],
+  [AT.isaiah+.4,AT.butBehind-.45,'ISAIAH 44',{}],
+  [AT.whats,AT.rightAfter-.45,"WHAT'S WRONG WITH A STATUE OF GOD?",{size:hv(36,34)}],
+  [AT.comes2,AT.v204-.45,'COMMANDMENT II',{bg:CORAL,size:hv(46,54)}],
+  [AT.notMainly+.4,AT.thatWas-.45,"OTHER RELIGIONS' IDOLS?",{}],
+  [AT.thatWas+.3,AT.first-.45,"THAT'S COMMANDMENT I",{bg:CORAL,rot:-2}],
+  [AT.which,AT.second2-.4,'I · WHICH GOD',{size:hv(46,54)}],
+  [AT.how-.2,AT.even-.45,'II · HOW',{bg:CORAL,rot:-2,size:hv(48,58)}],
+  [AT.wrongWay-.3,AT.notice-.45,'THE RIGHT GOD, THE WRONG WAY',{size:hv(40,40)}],
+  [AT.whole+.2,AT.nothing-.45,'THE WHOLE CREATION',{}],
+  [AT.standIn,AT.why-.45,'NO STAND-INS',{bg:CORAL,rot:-2,size:hv(46,54)}],
+  [AT.why+.3,AT.goBack-.4,'WHY SO STRICT?',{}],
+  [AT.goBack+.3,AT.moses-.35,'MOUNT SINAI',{}],
+  [AT.moses+.3,AT.thenLORD-.45,'MOSES REMEMBERS',{}],
+  [AT.nobody+.3,AT.justFire-.4,'NO SHAPE',{size:hv(46,54)}],
+  [AT.justFire+.2,AT.didnt-.45,'FIRE AND WORDS',{bg:CORAL,rot:-2}],
+  [AT.didnt+.4,AT.heGave-.4,'NOTHING TO LOOK AT',{}],
+  [AT.heGave+.5,AT.problem-.45,'SOMEONE TO LISTEN TO',{bg:CORAL,rot:-2}],
+  [AT.smaller+.4,AT.anything+1.6,'SMALLER',{size:hv(48,58)}],
+  [AT.quieter+.4,AT.calf-.45,'QUIETER',{bg:CORAL,rot:2,size:hv(48,58)}],
+  [AT.feast,AT.weren-.4,'A FEAST TO THE LORD',{}],
+  [AT.weren+.4,AT.trying-.4,'REPLACING GOD?',{}],
+  [AT.trying+.3,AT.godHold-.4,'TRYING TO HOLD HIM',{bg:CORAL,rot:-2}],
+  [AT.control-.4,AT.sinaiSpk-.4,'A GOD YOU CAN CONTROL',{}],
+  [AT.sinaiSpk+.3,AT.whoSpeaks+.6,'THE GOD WHO SPEAKS',{bg:CORAL,rot:-2}],
+  [AT.ratherNot-.5,AT.surprise-.45,"THINGS YOU'D RATHER NOT HEAR",{size:hv(38,38)}],
+  [AT.already+.4,AT.soGod-.4,'HIS IMAGE ON EARTH',{bg:CORAL,rot:-2}],
+  [AT.notGold-.1,AT.people-.3,'NOT GOLD OR WOOD',{}],
+  [AT.people,AT.christians-.3,'PEOPLE',{bg:CORAL,rot:-2,size:hv(50,60)}],
+  [AT.christians+.1,AT.dontCarve-.3,'AS CHRISTIANS HAVE LONG READ IT',{size:hv(34,34)}],
+  [AT.dontCarve,AT.meetIt-.4,"YOU DON'T CARVE IT",{}],
+  [AT.meetIt,AT.mayNever-.45,'YOU MEET IT',{bg:CORAL,rot:-2,size:hv(48,58)}],
+  [AT.stillCarve+.4,AT.weCarve-.4,'WE STILL CARVE',{bg:CORAL,rot:-2}],
+  [AT.agrees,AT.neverSays-.4,'ALWAYS AGREES',{}],
+  [AT.easy,AT.tooSmall-.3,'EASY TO LIVE WITH',{}],
+  [AT.tooSmall,AT.endsWarn-.45,'MUCH TOO SMALL',{bg:CORAL,rot:2}],
+  [AT.endsWarn+.8,AT.turning-.4,'THE WARNING',{}],
+  [AT.third,AT.butThen-.4,'3RD & 4TH GENERATION',{}],
+  [AT.fourGen,AT.heavy-.4,'FOUR vs THOUSANDS',{bg:CORAL,rot:-2}],
+  [AT.heavy+.2,AT.heavier-.35,'THE WARNING IS HEAVY',{}],
+  [AT.heavier+.2,AT.putDown-.4,'THE MERCY IS HEAVIER',{bg:CORAL,rot:-2}],
+  [AT.putDown+.2,AT.realGod-.4,'PUT DOWN THE CARVING KNIFE',{size:hv(38,38)}],
+  [AT.made-.3,AT.heard-.4,'NOT WAITING TO BE MADE',{}],
+  [AT.heard+.3,AT.nextTime-.3,'WAITING TO BE HEARD',{bg:CORAL,rot:-2}],
+];
+const ftag=(t,[a,b,s,o],k)=>{if(t<a||t>b+.4)return '';const txt=typeof s==='function'?s(t):s,size=o.size||hv(40,46),x=hv(960,540),y=o.y||hv(90,1430);
+  return E.fade(t,b,piece(t,a,x,y+size*.8,label(x,y,txt,{size,anchor:'middle',bg:o.bg||'#101014',rot:o.rot||0}),40+k,1.3));};
+function endCard(t){
+  const ec=prog(t,AT.last+.6,AT.last+1.2);if(ec<=0)return '';
+  const W=E.W,H=E.H,x=W/2,fy=f=>hv(f[0],f[1]);
+  let g=G('',R(0,0,W,H,0,'#08060F',{opacity:.86})+
+    T(x,fy([380,700]),'THE TEN COMMANDMENTS · PART 2',{size:40,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
+    T(x,fy([470,810]),'NO CARVED IMAGE',{size:82,font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
+  const ty=fy([620,960]);g+=piece(t,AT.last+1.6,x,ty,label(x,ty-42*.81,'NEXT: THE THIRD COMMANDMENT',{size:42,anchor:'middle',bg:CORAL}),55,1.3);
+  if(t>AT.last+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
+    .forEach((ln,i)=>{g+=T(x,fy([760,1080])+i*hv(34,36),ln,{size:hv(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});
+  return g;
+}
+const hud=t=>{let g='';VERSES.forEach(v=>g+=verse(t,v[0],v[1],v[2],v[3],v[4],v[5]));TAGS.forEach((x,k)=>g+=ftag(t,x,k));return g+endCard(t);};
+
+// ---------- the sheets ----------
+// Camera framing fr(x, z, F, fy): sheet point (x, fy) lands at frame height F (feet line fy 800 lands at F 1170,
+// above the caption band). One frame = a still hold; two = one slow move across the whole shot.
+const fr=(x,z,F=1170,fy=800)=>[x,fy+(1010-F)/z,z];
+const W0=[960,600,.84];
+const SAND=FG('#C9A060','#B08848','#D8B070');
+// [name, at, draw, bg, frames, extra]
+const LIST=[
+  ['the tree falls',0,treeFall,['#FFB04C','#7A3A1E'],[fr(980,.84,1178),fr(1010,.98)],{stars:false,fore:FG('#46561E','#3A4A1A','#5A6A26')}],
+  ['split',AT.splits-.1,splitLog,['#FF8A4C','#5A1E10'],[fr(940,1.12)],{stars:false,vIn:'cut',fore:FG('#5A2A14','#4A2210','#7A3A1E')}],
+  ['dinner',AT.half1-.1,dinner,['#0A1028','#2A1408'],[fr(940,.92,1178),fr(960,1.12)],{fore:FG('#1E1612','#16100C','#2A1E1A')}],
+  ['carving',AT.otherHalf-.1,carving,['#7A4E30','#4A2E1C'],[fr(960,.92,1178),fr(1000,1.15)],{stars:false,vIn:'cut',fore:FG('#6A4426','#5A3A20','#8A5A34')}],
+  ['kneels',AT.kneels-.1,kneeling,['#2A1A3A','#140C1E'],[fr(1040,1.0)],{stars:false,fore:FG('#2A1E2A','#221822','#3A2A3A')}],
+  ['deliver me',AT.prays-.1,pleading,['#3A1E32','#1A0C16'],[fr(930,1.0),fr(950,1.25)],{stars:false,vIn:'cut',fore:FG('#2A1A24','#22141E','#3A2430')}],
+  ['same tree',AT.sameTree-.1,sameTree,['#BFE8FF','#FFF2C0'],[fr(970,.86,1178)],{stars:false,fore:FG('#6A9A30','#5A8A28','#7AAA3A',['#FFD45E'])}],
+  ['firewood, his god',AT.oneHalf-.1,hearthIdol,['#5A3A28','#2A1A10'],[fr(740,1.1),fr(1180,1.1)],{stars:false,vIn:'cut',fore:FG('#5A3E2A','#4A3222','#6A4A34')}],
+  ['isaiah',AT.isaiah-.1,isaiah,['#8AD0E0','#F0E0B0'],[fr(1000,.86,1178)],{stars:false,fore:FG('#B09060','#9A7A50','#C8A878')}],
+  ['a real question',AT.butBehind-.1,question,['#8AD0E0','#F0E0B0'],[fr(1080,1.15),fr(1150,1.3)],{stars:false,vIn:'cut',fore:FG('#B09060','#9A7A50','#C8A878')}],
+  ["what's wrong",AT.whats-.1,bigStatue,['#120C2A','#3A2030'],[fr(980,.88,1178),fr(1020,1.05)],{fore:FG('#2A1E2A','#221822','#3A2A3A')}],
+  // ---- act 1: the second word ----
+  ['no other gods',AT.rightAfter-.1,noOther,['#2A0E08','#0A0404'],[fr(960,.84,1178)],{stars:false}],
+  ['the second',AT.comes2-.1,secondLine,['#8A867C','#4A4740'],[fr(960,.9,1010,600),fr(980,1.08,1010,620)],{stars:false,vIn:'cut'}],
+  ['a carved image',AT.v204-.15,carverYard,['#BFE0F0','#F0E8D0'],[fr(980,.86,1178)],{stars:false,fore:FG('#C8B890','#B8A880','#D8C8A0')}],
+  ['any likeness',AT.likeness-.1,forge,['#2A0E08','#120604'],[fr(900,.95)],{stars:false,vIn:'cut',fore:FG('#1E0E0A','#160A08','#2A1410')}],
+  ['heaven above',AT.heaven-.1,heavenIdol,['#0A1038','#1A2050'],[fr(1020,.9,1178)],{vIn:'cut',fore:FG('#1A1E3A','#141830','#22264A')}],
+  ['earth beneath',AT.earthB-.1,bullIdol,['#FFE9A0','#A8B040'],[fr(1020,.92,1178)],{stars:false,vIn:'cut',fore:FG('#6A7A20','#5A6A18','#8A9A30',['#FFD45E'])}],
+  ['water under',AT.water-.1,fishIdol,['#9ADCF0','#2A8AB8'],[fr(1020,.92,1178)],{stars:false,vIn:'cut',fore:SAND}],
+  ['bow down',AT.v205-.15,bowDown,['#E8C8A0','#8A6A50'],[fr(1000,.88,1178)],{stars:false,fore:FG('#887058','#7A6450','#A08870')}],
+  ['other religions',AT.notMainly-.1,shrines,['#123A52','#E0884A'],[fr(820,1.12),fr(1180,1.12)],{fore:FG('#221A36','#1C1530','#2A2040',['#FFD27A'])}],
+  ['first job',AT.thatWas-.1,firstJob,['#8A867C','#4A4740'],[[960,690,1.0]],{stars:false,vIn:'cut'}],
+  ['which god',AT.first-.1,crossroads,['#3A2A5A','#E08A5A'],[fr(980,.86,1178)],{fore:FG('#B0784A','#9A6A40','#C8885A')}],
+  ['how',AT.second2-.1,how,['#1A1020','#4A2A1A'],[fr(1000,.92,1178),fr(1020,1.12)],{vIn:'cut',fore:FG('#4A382C','#3A2C22','#5A4436')}],
+  ['right god, wrong way',AT.even-.1,wrongWay,['#141020','#3A2418'],[fr(1060,1.12),fr(970,.88,1178)],{vIn:'cut',fore:FG('#2A1E1A','#221814','#3A2A26')}],
+  // ---- act 2: the list ----
+  ['sky',AT.notice-.1,skyShot,['#5AB0F0','#BFE8FF'],[fr(960,1.0)],{stars:false,fore:FG('#4A9A3A','#3A8A30','#5AB04A',['#FFFFFF','#FFD45E'])}],
+  ['land',AT.land-.1,landShot,['#8AD0FF','#DFF4FF'],[fr(1000,.9,1178)],{stars:false,vIn:'cut',fore:FG('#4A8A30','#3A7A28','#5AA040')}],
+  ['sea',AT.sea+.06,seaShot,['#8AD0FF','#1E7AB8'],[fr(980,.95,1010,640)],{stars:false,vIn:'cut'}],
+  ['whole creation',AT.whole-.1,creation,['#0A0C30','#141848'],[fr(960,1.05,1010,560),fr(960,.84,1010,600)],{vIn:'cut'}],
+  ['stand in',AT.nothing-.1,standIn,['#3A2A5A','#7A5A8A'],[fr(960,.86,1178),fr(960,.98)],{fore:FG('#4A3A5A','#3A2E4A','#5A4A6A')}],
+  // ---- act 3: no form, only a voice ----
+  ['why so strict',AT.why-.1,whyStrict,['#7A4E30','#4A2E1C'],[fr(960,1.2)],{stars:false,fore:FG('#6A4426','#5A3A20','#8A5A34')}],
+  ['the mountain',AT.goBack-.1,sinaiWide,['#141020','#3A2418'],[fr(960,.84,1178,860),fr(960,.95,1178,860)],{fore:FG('#3A2A20','#2E2218','#4A3828')}],
+  ['moses remembers',AT.moses-.1,mosesTalk,['#FFB870','#C86A4A'],[fr(820,1.05),fr(1100,1.05)],{stars:false,fore:FG('#B0804A','#9A7040','#C8945A')}],
+  ['out of the fire',AT.thenLORD-.1,outOfFire,['#3A0A04','#120402'],[[960,575,1.3]],{stars:false,vIn:'cut'}],
+  ['heard words',AT.youHeard-.1,heardWords,['#1A1020','#4A2A1A'],[fr(960,1.05)],{vIn:'cut',fore:FG('#4A3826','#3A2C1E','#5A4430')}],
+  ['no form',AT.noForm[0]-.1,noForm,['#1A1020','#4A2A1A'],[fr(800,1.2)],{vIn:'cut',fore:FG('#4A3826','#3A2C1E','#5A4430')}],
+  ['only a voice',AT.onlyVoice-.1,onlyVoice,['#1A1020','#4A2A1A'],[fr(980,1.08),fr(990,1.3)],{vIn:'cut',fore:FG('#4A3826','#3A2C1E','#5A4430')}],
+  ['nobody saw a shape',AT.biggest-.1,nobodySaw,['#120C2A','#3A2030'],[fr(960,.86,1178,790),fr(960,1.0,1170,790)],{fore:FG('#3A2A30','#2A1E24','#4A3438')}],
+  ['fire and words',AT.justFire-.1,fireWords,['#3A0A04','#120402'],[[960,560,1.0],[960,520,1.12]],{stars:false,vIn:'cut'}],
+  ['nothing to look at',AT.didnt-.1,emptyPlinth,['#1A1020','#4A2A1A'],[fr(960,1.05)],{vIn:'cut',fore:FG('#4A3826','#3A2C1E','#5A4430')}],
+  ['someone to listen to',AT.heGave-.1,listenFam,['#1A1020','#5A3A1A'],[fr(990,1.0),fr(1000,1.22)],{vIn:'cut',fore:FG('#4A3826','#3A2C1E','#5A4430')}],
+  // ---- act 4: smaller and quieter ----
+  ['the problem',AT.problem-.1,problem,['#2A2A40','#141420'],[[960,560,.95],[960,520,1.2]],{stars:false,fore:FG('#2A1E16','#22180F','#3A2A20')}],
+  ['smaller',AT.smaller-.1,smaller,['#7A4E30','#4A2E1C'],[fr(960,1.2)],{stars:false,vIn:'cut',fore:FG('#6A4426','#5A3A20','#8A5A34')}],
+  ['the one who made you',AT.anything-.1,starSky,['#0A0820','#1A1438'],[fr(960,1.08,1100,700),fr(960,.84,1178,690)],{fore:FG('#1A1430','#141028','#22183A')}],
+  ['quieter',AT.quieter-.1,quieter,['#6A4430','#3A2418'],[fr(1060,1.1)],{stars:false,vIn:'cut',fore:FG('#6A4426','#5A3A20','#8A5A34')}],
+  ['the golden calf',AT.calf-.1,goldCalf,['#3A1A0A','#120804'],[fr(960,.92,1178)],{fore:FG('#2A160E','#1E100A','#3A2014',['#FFB04C'])}],
+  ['a feast to the lord',AT.called-.1,feast,['#FF8A3C','#6A1A2A'],[fr(1080,.88,1178)],{stars:false,vIn:'cut',fore:FG('#8A4A30','#7A4028','#B0603E',['#FFD45E'])}],
+  ['not replacing',AT.weren-.1,notReplacing,['#3A2A4A','#C86A4A'],[fr(920,.88,1178),fr(960,.98)],{vIn:'cut',fore:FG('#7A4A2E','#6A4026','#8A5A3A')}],
+  ['hold him',AT.trying-.1,holdIt,['#1A1408','#000000'],[fr(980,.96,1178),fr(990,1.1)],{stars:false,vIn:'cut'}],
+  ['control',AT.godHold-.1,control,['#8A5A3A','#4A2E1C'],[fr(1040,1.12)],{stars:false,vIn:'cut',fore:FG('#5A3E28','#4A3220','#6A4A30')}],
+  ['the god who speaks',AT.sinaiSpk-.1,sinaiSpeaks,['#141020','#3A2418'],[fr(960,.86,1178,860)],{vIn:'cut',fore:FG('#3A2A20','#2E2218','#4A3828')}],
+  ['rather not hear',AT.whoSpeaks-.1,ratherNot,['#1A1020','#4A2A1A'],[fr(1040,1.0),fr(1050,1.25)],{vIn:'cut',fore:FG('#4A3826','#3A2C1E','#5A4430')}],
+  // ---- act 5: his image ----
+  ['the surprise',AT.surprise-.1,surprise,['#FFE9C0','#9AD8A0'],[fr(960,.86,1178),fr(960,1.0)],{stars:false,vIn:'cut',fore:FG('#5AB04A','#4A9A3A','#6ACB5A',['#FF7BD5','#FFD45E','#FFFFFF'])}],
+  ['image on earth',AT.already-.1,imageOnEarth,['#FFE9C0','#9AD8A0'],[fr(960,1.1)],{stars:false,vIn:'cut',fore:FG('#5AB04A','#4A9A3A','#6ACB5A',['#FF7BD5','#FFD45E','#FFFFFF'])}],
+  ['in his own image',AT.soGod-.1,ownImage,['#FFE9C0','#9AD8A0'],[fr(990,1.0),fr(990,1.2)],{stars:false,vIn:'cut',fore:FG('#5AB04A','#4A9A3A','#6ACB5A',['#FF7BD5','#FFD45E','#FFFFFF'])}],
+  ['male and female',AT.maleFemale-.1,maleFemale,['#FFE9C0','#9AD8A0'],[fr(1000,1.1)],{stars:false,vIn:'cut',fore:FG('#5AB04A','#4A9A3A','#6ACB5A',['#FF7BD5','#FFD45E','#FFFFFF'])}],
+  ['not gold or wood',AT.imageIsnt-.1,notGoldWood,['#2A2420','#141010'],[fr(960,1.12,1010,600)],{stars:false,vIn:'cut'}],
+  ["it's people",AT.people-.1,peopleStreet,['#FFE2B0','#F0B080'],[fr(920,.86,1178)],{stars:false,vIn:'cut',fore:FG('#C09870','#A88860','#D8B088')}],
+  ["don't carve",AT.christians-.1,dontCarve,['#7A4E30','#4A2E1C'],[fr(1020,1.1)],{stars:false,fore:FG('#6A4426','#5A3A20','#8A5A34')}],
+  ['you meet it',AT.meetIt-.1,meetIt,['#FFE2B0','#E8C090'],[fr(1080,1.0),fr(1060,1.18)],{stars:false,vIn:'cut',fore:FG('#B08858','#9A7848','#C8A070')}],
+  // ---- act 6: we still carve ----
+  ['museum',AT.mayNever-.1,museum,['#C8CCD0','#8A9098'],[fr(900,.9,1178)],{stars:false,fore:FG('#7A8088','#6A7078','#8A9098')}],
+  ['still carve',AT.stillCarve-.1,thoughtCarve,['#1E1E40','#0A0A20'],[fr(960,.92,1178),fr(990,1.08)],{stars:false,vIn:'cut',fore:FG('#0E0E24','#0A0A1A','#141430')}],
+  ['always agrees',AT.weCarve-.1,agrees,['#2A1E4A','#140E28'],[fr(1020,1.08)],{stars:false,vIn:'cut',fore:FG('#2E2448','#241C3A','#3A2E5A')}],
+  ['never says',AT.neverSays-.1,curtain,['#2A3050','#141628'],[fr(1180,1.08)],{stars:false,vIn:'cut',fore:FG('#1E1E30','#161624','#2A2A40')}],
+  ['easy to live with',AT.those-.1,easyChair,['#3A2A30','#1A1014'],[fr(1020,1.05)],{stars:false,vIn:'cut',fore:FG('#3A262C','#2E1E24','#4A3238')}],
+  ['much too small',AT.tooSmall-.1,tooSmall,['#2A2A38','#141420'],[fr(980,1.28)],{stars:false,vIn:'cut',fore:FG('#2A2A38','#20202E','#3A3A48')}],
+  // ---- act 7: four against thousands ----
+  ['the warning',AT.endsWarn-.1,warning,['#2A0808','#0A0204'],[fr(960,.84,1178),fr(960,.98,1178)],{stars:false}],
+  ['generations',AT.turning-.1,generations,['#2A2040','#5A4060'],[fr(840,1.05),fr(900,1.05)],{fore:FG('#3A2E3A','#2E2430','#4A3A4A')}],
+  ['a promise',AT.butThen-.1,promise,['#3A3050','#E8A070'],[fr(960,1.15)],{stars:false,vIn:'cut',fore:FG('#B08458','#9A7048','#C89A6A')}],
+  ['steadfast love',AT.showing-.1,steadfast,['#FFE9B0','#E8A060'],[fr(1000,1.0),fr(1000,1.16)],{stars:false,vIn:'cut',fore:FG('#D89A58','#C88A48','#E8B070',['#FFFFFF','#FFD45E'])}],
+  ['thousands',AT.thousands1-.3,thousands,['#FFE9B0','#E8A060'],[fr(960,1.08),fr(960,.84,1178)],{stars:false,vIn:'cut',fore:FG('#9A7048','#8A6040','#B08458',['#FFE9A8'])}],
+  ['four vs thousands',AT.fourGen-.1,balance,['#141030','#2A2050'],[[960,560,.86]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
+  ['heavy',AT.heavy-.1,balance,['#141030','#2A2050'],[[620,600,1.25]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
+  ['heavier',AT.heavier-.1,balance,['#141030','#2A2050'],[[960,560,.86]],{vIn:'cut',fore:FG('#1E1A34','#16122A','#2A2448')}],
+  ['the carving knife',AT.putDown-.1,knifeDown,['#7A4E30','#4A2E1C'],[fr(1000,1.2)],{stars:false,fore:FG('#6A4426','#5A3A20','#8A5A34')}],
+  ['out the door',AT.realGod-.1,outDoor,['#7A4E30','#4A2E1C'],[fr(1000,.9,1178)],{stars:false,vIn:'cut',fore:FG('#6A4426','#5A3A20','#8A5A34')}],
+  ['waiting to be heard',AT.heard-.1,heardHill,['#0A0C28','#1A1A40'],[fr(1000,1.0),fr(1020,1.2)],{fore:FG('#1E2440','#161C34','#2A3050')}],
+  ['next time',AT.nextTime-.1,nextTime,['#2A0E08','#0A0404'],[[960,560,.9],[960,540,1.05]],{stars:false}],
+];
+const SHEETS=LIST.map(([name,at,draw,bg,frames,extra],i)=>{
+  const nx=i+1<LIST.length?LIST[i+1][1]:AT.last+6;
+  const cam=frames.length===1?[[at,...frames[0]],[nx,...frames[0]]]:[[at,...frames[0]],[nx,...frames[1]]];
+  return Object.assign({name,at,draw,bg,cam},extra||{});
+});
 E.start({
   cast:{},
-  sheets:[
-    {name:'half a log',draw:coldOpen,bg:['#5A3A22','#2A1A10'],stars:false,cam:wide(0,AT.rightAfter-.3)},
-    {name:'the second word',at:AT.rightAfter-.1,draw:secondWord,bg:['#1A1622','#07060C'],cam:wide(AT.rightAfter,AT.notice-.3)},
-    {name:'the list',at:AT.notice-.1,draw:theList,bg:['#2A1C4A','#120C26'],cam:wide(AT.notice,AT.why-.3)},
-    {name:'no form',at:AT.why-.1,draw:noForm,bg:['#141020','#3A2418'],
-      fore:{grass:['#6A5236','#5A4430','#7A6040'],flowers:[]},cam:wide(AT.why,AT.problem-.3)},
-    {name:'smaller and quieter',at:AT.problem-.1,draw:shelf,bg:['#2A1E14','#120C08'],stars:false,cam:wide(AT.problem,AT.surprise-.3)},
-    {name:'his image',at:AT.surprise-.1,draw:imageSheet,bg:['#FFE9C0','#E8B070'],stars:false,vIn:'cut',cam:wide(AT.surprise,AT.mayNever-.3)},
-    {name:'still carving',at:AT.mayNever-.1,draw:stillCarve,bg:['#5A3A22','#2A1A10'],stars:false,cam:wide(AT.mayNever,AT.endsWarning-.3)},
-    {name:'four against thousands',at:AT.endsWarning-.1,draw:mercy,bg:['#1A1440','#0A0820'],cam:wide(AT.endsWarning,AT.last+6)},
-  ],
+  gentleZoom:true,
+  hud,
+  sheets:SHEETS,
   talk:[],
-  focus:[[AT.splits,.8],[AT.sameTree,.7],[AT.second,.8],[AT.noForm[0],1.0],[AT.smaller,.6],[AT.control,.8],[AT.people,.9],[AT.tooSmall,.7],[AT.heavier,1.0],[AT.heard,.8]],
-  flashes:[[AT.thenLORD-.04,.7,'#FFFBEC'],[AT.surprise-.1,.9,'#FFFBEC']],
+  // Three big moments get a punch-in and shake, each while its camera holds still.
+  focus:[[AT.strike,.8],[AT.thenLORD,1.2],[AT.heavier+.7,1.0]],
+  flashes:[[AT.thenLORD-.04,.7,'#FFFBEC'],[AT.surprise-.1,.9,'#FFFBEC'],[AT.rightAfter-.1,.6,'#FFE9C8'],[AT.comes2-.1,.5,'#FFE9C8'],[AT.notice-.1,.6,'#FFFBEC'],[AT.sinaiSpk-.1,.6,'#FFE9C8']],
   tail:7,
   fadeOut:1.2,
 });
