@@ -619,7 +619,7 @@ function doorB(t,lt){
   let g=room(t,1)+door(0);
   const rch=ease.inOut(prog(t,AT.desire,AT.desire+1.4)),hold=ease.inOut(prog(t,AT.rule[0]-.3,AT.rule[0]+.4));
   g+=beast(t,560,FY,1.45,1,{reach:rch});
-  const [ex,ey]=doorEdge(0),cx=ex+lerp(400,210,hold);
+  const [ex,ey]=doorEdge(0),cx=ex+lerp(330,210,hold);
   const o=bro('cain',cx,FY,VS,{face:-1,expr:['fear','calm',hold],look:{x:640,y:FY-120},lean:6*hold,aura:RED,auraOp:.15,walk:hold>0&&hold<1?t*6:0});
   if(hold>.2)o.near={x:ex+10,y:ey};
   g+=PPL.fig(o);
@@ -1476,7 +1476,7 @@ const SH=[
   ['face fell',AT.faceFell-.1,faceFellS,['#4A2E4A','#D88A6A'],H(990,1.04),{stars:false,vIn:'cut'}],
   ['god warns',AT.warned-.1,warnS,['#140E2A','#4A3458'],M(960,1.02,960,1.14),{vIn:'cut'}],
   ['door: crouching',AT.v47-.12,doorA,['#3A2418','#5A3A26'],H(880,.98),{stars:false,vIn:'cut'}],
-  ['door: desire',AT.its-.1,doorB,['#3A2418','#5A3A26'],H(860,1.04),{stars:false,vIn:'cut'}],
+  ['door: desire',AT.its-.1,doorB,['#3A2418','#5A3A26'],H(990,1.0),{stars:false,vIn:'cut'}],
   ['door: animal',AT.anger-.1,doorC,['#3A2418','#5A3A26'],H(620,1.45,1180),{stars:false,vIn:'cut'}],
   ['door: close it',AT.cainCould-.1,doorD,['#3A2418','#5A3A26'],H(940,1.06),{stars:false,vIn:'cut'}],
   // 2. the field

@@ -611,10 +611,10 @@ function storm(t){
   g+=SC.house(1500,960,1.6,{col:'#4A4A5A',roof:'#5A5A6A'})+R(1500+53,960-128,29,26,2,'#FFD27A')+glow(1570,820,90,'#FFD27A',.7);
   g+=SC.tree(t,420,980,1.8,{kind:'round',col:'#1E3A3A',col2:'#2A4A4A',wind:3});
   g+=SC.puddle(t,700,1030,120,{sky:'#2A3A5A',sky2:'#5A6A8A',seed:3})+SC.puddle(t,1300,1040,90,{sky:'#2A3A5A',sky2:'#5A6A8A',seed:4});
-  const man=pp(MAN,790,FY,2.5,{look:{x:1150,y:560},expr:'tender',near:{x:1000,y:FY-610},far:{x:860,y:FY-560}}),wo=pp(WOM,1150,FY,2.3,{face:-1,look:{x:790,y:520},expr:['calm','tender',prog(t,AT.stay,AT.stay+1)],near:'chest'});
+  const man=pp(MAN,790,FY,2.5,{look:{x:1150,y:560},expr:'tender',near:{x:1060,y:FY-660},far:{x:860,y:FY-560}}),wo=pp(WOM,1150,FY,2.3,{face:-1,look:{x:790,y:520},expr:['calm','tender',prog(t,AT.stay,AT.stay+1)],near:'chest'});
   const M=PPL.rig(man),h=M.hand('near'),hd=M.head;
   // the cloak: from behind his shoulders, over his raised arm, falling past her back like a roof
-  const cl=`M${f1(hd[0]-150)} ${f1(hd[1]+60)}Q${f1(hd[0]-60)} ${f1(hd[1]-230)} ${f1(h[0])} ${f1(h[1]-40)}Q${f1(h[0]+200)} ${f1(h[1]-70)} ${f1(h[0]+330)} ${f1(h[1]+260)}L${f1(h[0]+290)} ${f1(h[1]+280)}Q${f1(h[0]+170)} ${f1(h[1]-10)} ${f1(h[0])} ${f1(h[1]+10)}Q${f1(hd[0]-40)} ${f1(hd[1]-160)} ${f1(hd[0]-110)} ${f1(hd[1]+80)}Z`;
+  const cl=`M${f1(hd[0]-150)} ${f1(hd[1]+60)}Q${f1(hd[0]-80)} ${f1(hd[1]-470)} ${f1(h[0])} ${f1(h[1]-40)}Q${f1(h[0]+200)} ${f1(h[1]-70)} ${f1(h[0]+330)} ${f1(h[1]+260)}L${f1(h[0]+290)} ${f1(h[1]+280)}Q${f1(h[0]+170)} ${f1(h[1]-10)} ${f1(h[0])} ${f1(h[1]+10)}Q${f1(hd[0]-60)} ${f1(hd[1]-400)} ${f1(hd[0]-110)} ${f1(hd[1]+80)}Z`;
   g+=M.draw('back')+M.draw('body')+M.draw('head')+PPL.fig(wo)+M.draw('front')+P(cl,'#8A4A2A',{stroke:'#4A2A18','stroke-width':6})+P(`M${f1(h[0]-20)} ${f1(h[1]-30)}Q${f1(h[0]+180)} ${f1(h[1]-56)} ${f1(h[0]+300)} ${f1(h[1]+240)}`,'none',{stroke:'#B07040','stroke-width':8,opacity:.6});
   for(let i=0;i<6;i++){const x=h[0]+60+i*45,y=h[1]+30+i*30+((t*300+i*70)%160);g+=L(x,y,x-4,y+26,'#BFD8FF',4,{opacity:.6});}
   if(t>AT.stay+.3)g+=G('',R(-120,-700,2160,2500,0,'#DDE6FF'),.25*fl);
@@ -675,9 +675,9 @@ function bedroom(t){
   // the door on the right opening, warm light from the next room
   g+=R(1080,300,260,700,8,'#1A1A30')+P(`M1080 300L${1080+230*op} 316L${1080+230*op} 990L1080 1000Z`,'#FFD9A0',{opacity:(.7*op).toFixed(2)})+glow(1250,700,360,'#FFD9A0',.35*op);
   // back bed (smaller) and front bed
-  g+=G('translate(560 1010) scale(1.55) translate(-470 -800)',bed(470,800,'#7A5A44'))+sleeper(640,880,1.35,GIRL,'#D0708A')+sleeper(590,955,1.55,BOY,'#5A8AD0');
-  if(op>.05){const mom=pp(WOM,1140,FY-10,2.1,{face:-1,expr:'tender',look:{x:640,y:880},near:'chest',op:op.toFixed(2)}),dad=pp(MAN,1290,FY-30,2.15,{face:-1,expr:'tender',look:{x:680,y:880},op:op.toFixed(2)});
-    dad.near=PPL.handOn(dad,mom,'shoulder');g+=onto(dad,mom);}
+  g+=G('translate(600 1010) scale(1.55) translate(-470 -800)',bed(470,800,'#7A5A44'))+sleeper(680,880,1.35,GIRL,'#D0708A')+sleeper(630,955,1.55,BOY,'#5A8AD0');
+  if(op>.05){const mom=pp(WOM,1090,FY-10,2.0,{face:-1,expr:'tender',look:{x:640,y:880},near:'chest',op:op.toFixed(2)}),dad=pp(MAN,1310,FY-20,2.0,{face:-1,expr:'tender',look:{x:680,y:880},op:op.toFixed(2)});
+    g+=PPL.fig(dad)+PPL.fig(mom);}
   return g+glints(t,9,10,640,160,260,300,'#FFFFFF',6)+homeFore(t,900,{seed:55,cols:['#141228','#24203E','#3A3458'],rc:'#3A3A7A',rc2:'#8A9AD8'});
 }
 // ---- 4f. When a promise like that breaks: the wall of light cracks, the windows flicker ----
@@ -829,8 +829,8 @@ function pillarCamp(t){
   let g=sinaiBG(t,{seed:71,mood:'night',fire:false,tents:[[220,935,.9,'#6A4A3A'],[460,925,.7,'#7A5A3A'],[1460,925,.75,'#6A3E30'],[1700,935,.95,'#7A4636']],gx:1250,
     extra:pillar(t,960,880,1)+R(860,780,200,110,4,'#E8D8B0',{stroke:'#A88A5A','stroke-width':4})+P('M840 780L960 720L1080 780Z','#C8A878')+R(760,880,400,14,3,'#B89A6A')});
   const up={x:960,y:300},aw=['calm','awe',prog(t,AT.know,AT.know+1.5)];
-  const mom=pp(WOM,1130,FY,2.15,{face:-1,expr:aw,look:up,near:'chest'}),dad=pp(MAN,790,FY,VS,{expr:aw,look:up});dad.near=PPL.handOn(dad,mom,'shoulder');
-  g+=onto(dad,mom)+PPL.fig(pp(GIRL,1300,FY+10,1.3,{face:-1,expr:aw,look:up,near:'chest'}));
+  const mom=pp(WOM,1130,FY,2.15,{face:-1,expr:aw,look:up}),dad=pp(MAN,790,FY,VS,{expr:aw,look:up});
+  g+=PPL.holdHands(dad,mom).svg+PPL.fig(pp(GIRL,1300,FY+10,1.3,{face:-1,expr:aw,look:up,near:'chest'}));
   return g+foreCamp(t,960,1.08,{seed:74});
 }
 // ---- 6b. Keeps covenant and steadfast love: manna in the morning; mum gathers, the girl holds the basket, the boy catches it ----
@@ -1029,7 +1029,7 @@ function listeners(t){
   [[600,840,1.1,2],[740,850,1.15,4],[1400,830,1.1,1],[1540,845,1.2,3]].forEach(([x,y,s,i])=>g+=backView(t,x,y,s,i));
   const L0={x:0,y:0},s=FY-50;
   const dad=pp(MAN,800,FY,2.2,{face:-1,sit:1,seat:s,expr:'calm',look:L0}),son=pp(BOY,660,FY,1.45,{face:-1,sit:1,seat:FY-34,expr:'calm',look:L0});
-  dad.near='chest';
+  dad.near=null;
   g+=PPL.fig(son)+PPL.fig(dad)+PPL.holdHands(pp(WOM,1130,FY,2.1,{face:-1,sit:1,seat:s,expr:'calm',look:L0}),pp(GIRL,1290,FY,1.4,{face:-1,sit:1,seat:FY-34,expr:'calm',look:L0})).svg;
   return g+foreG(t,970,1.06,['#1E4A1C','#3A7A2E','#8AC060'],{flowers:['#FFFFFF','#FFD84A'],seed:99});
 }
@@ -1205,8 +1205,8 @@ function familyHug(t){
   let g=villageH(t,{mood:'golden',hx:960,hs:1.25,lit:.7,seed:61});
   const k=ease.out(prog(t,AT.keepYour-.1,AT.keepYour+.5));
   g+=PPL.fig(pp(BOY,640,FY,1.4,{expr:'joy',look:{x:880,y:560},near:'up',jump:k*Math.abs(Math.sin(E.held(t,10)*6))*16}));
-  const mom=pp(WOM,1120,FY,2.25,{face:-1,expr:'joy',look:{x:810,y:520},near:'open'}),dad=pp(MAN,810,FY,2.4,{expr:'joy',look:{x:1120,y:520}});dad.near=PPL.handOn(dad,mom,'shoulder');
-  g+=onto(dad,mom);
+  const mom=pp(WOM,1120,FY,2.25,{face:-1,expr:'joy',look:{x:810,y:520},near:'open'}),dad=pp(MAN,810,FY,2.4,{expr:'joy',look:{x:1120,y:520}});mom.near=null;
+  g+=PPL.holdHands(dad,mom).svg;
   return g+PPL.fig(pp(GIRL,1290,FY,1.4,{face:-1,expr:'joy',look:{x:1120,y:560},near:'open',far:'open',jump:k*Math.abs(Math.sin(E.held(t,10)*6+1))*16}))+foreYard(t,960,1.08,{seed:51});
 }
 // ---- 11c. Because God keeps his: a rainbow over the valley and the home; the couple looks up ----
@@ -1339,7 +1339,7 @@ const SH=[
   {name:'wall',at:AT.wall-.1,draw:wallBuild,bg:['#3A3A7A','#E89A6A'],stars:false,cam:hold(960,700,.98)},
   {name:'supper',at:AT.family-.1,draw:supper,bg:['#C8945A','#5A3420'],stars:false,vIn:'cut',cam:HF(960,1.08)},
   {name:'at the door',at:AT.momDad-.1,draw:atTheDoor,bg:['#F2A878','#6A4A6A'],stars:false,vIn:'cut',cam:HF(900,1.08)},
-  {name:'bedroom',at:AT.children-.1,draw:bedroom,bg:['#2E3A6A','#1A2040'],stars:false,vIn:'cut',cam:HF(960,1.0,1190,990)},
+  {name:'bedroom',at:AT.children-.1,draw:bedroom,bg:['#2E3A6A','#1A2040'],stars:false,vIn:'cut',cam:HF(1000,1.0,1190,990)},
   {name:'wall cracks',at:AT.breaks-.1,draw:wallCrack,bg:['#1A1A40','#0A0A20'],vIn:'cut',cam:hold(960,700,1.0)},
   {name:'stairs',at:AT.everyone-.1,draw:stairs,bg:['#4A4A6A','#1A1A2A'],stars:false,vIn:'cut',cam:HF(960,1.1)},
   {name:'bigger picture',at:AT.bigger-.1,draw:bigSky,bg:['#0A1030','#1A2A5A'],cam:mv(960,800,1.08,960,560,.86)},
