@@ -687,18 +687,60 @@ function babyS(t,lt){
 }
 // 4b. After the flood: the ark resting high on the mountain, a rainbow; Noah's family walks down with the sheep.
 const ARARAT=FX.peak(25,1380,190,{halfW:520,rough:12,bottom:800,x0:700,x1:2100});
+// Noah's ark (Genesis 6:14-16): a long gopher-wood box hull, three decks, a roof with a window strip under it,
+// a door in the side. Drawn in paper layers: hull planks, dark pitch seams, ribs, curved bow and stern, a ramp.
+// x,y = keel centre on the ground; s = scale (1 = about 640 px long); o.tilt (deg), o.ramp (0..1), o.wet (0..1)
+const ark=(x,y,s,o={})=>{
+  const tilt=o.tilt||0,ramp=o.ramp??1,wet=o.wet??0,W='#8A5630',W2='#6E4224',DK='#3A2210',LT='#B07A48';
+  let g='';
+  g+=Ell(0,6,340,22,'#000',{opacity:.22});
+  // hull: long box with curved bow (right) and stern (left), three plank bands
+  const hull='M-320 -150 L300 -150 Q350 -150 352 -110 L340 -24 Q330 0 296 0 L-290 0 Q-326 0 -334 -26 L-342 -112 Q-344 -150 -320 -150Z';
+  g+=P(hull,W,{stroke:DK,'stroke-width':6});
+  for(let k=1;k<6;k++){const yy=-150+k*25;g+=P(`M-340 ${yy}L348 ${yy}`,'none',{stroke:DK,'stroke-width':2.5,opacity:.55});}
+  for(let k=-5;k<=5;k++)g+=L(k*58,-150,k*58+(k*2),0,W2,5);
+  // deck rails and the three decks shown by two darker bands of small square port windows
+  g+=R(-330,-162,664,14,4,LT,{stroke:DK,'stroke-width':3});
+  // the superstructure: long cabin with a gently pitched roof, a strip of windows under the roof (one cubit)
+  g+=R(-270,-262,540,104,6,W,{stroke:DK,'stroke-width':5});
+  for(let k=1;k<4;k++)g+=L(-270,-262+k*26,270,-262+k*26,DK,2);
+  g+=R(-262,-250,524,20,3,'#2A180C');
+  for(let k=0;k<14;k++)g+=R(-250+k*37,-247,22,14,2,'#E8C27A',{opacity:.5});
+  g+=P('M-300 -258 L0 -312 L300 -258 Z',W2,{stroke:DK,'stroke-width':5})+P('M-300 -258 L300 -258','none',{stroke:LT,'stroke-width':4});
+  for(let k=-4;k<=4;k++)g+=L(k*66,-262-Math.abs(k)*0+(-52+Math.abs(k)*11),k*66,-262,DK,2);
+  // the door in the side of the hull and its ramp down to the ground
+  g+=R(70,-138,78,96,6,'#2A180C',{stroke:DK,'stroke-width':4});
+  if(ramp>0)g+=P(`M70 -42 L148 -42 L${148+150*ramp} ${0} L${70+150*ramp} 0Z`,LT,{stroke:DK,'stroke-width':4})+
+    [1,2,3,4].map(k=>L(70+k*30*ramp,-42+k*8.4,148+k*30*ramp,-42+k*8.4,W2,3)).join('');
+  // wet sheen after the flood, and a little weathering
+  if(wet>0)g+=P('M-330 -60 L340 -60 L336 -24 Q326 0 296 0 L-290 0 Q-326 0 -334 -26Z','#2A4A5A',{opacity:(.25*wet).toFixed(2)});
+  g+=C(-200,-90,10,DK,{opacity:.25})+C(220,-110,7,DK,{opacity:.25});
+  return G(`translate(${x} ${y}) rotate(${tilt}) scale(${s})`,g);};
 function floodS(t,lt){
-  let g=glow(960,-200,1000,'#E8F4FF',.5);
-  [['#FF5A48',0],['#FFB04C',22],['#FFE36B',44],['#5AD890',66],['#4A9AFF',88],['#9A6AFF',110]].forEach(([c,d])=>g+=P(`M-200 ${640}A1200 900 0 0 1 2120 640`,'none',{stroke:c,'stroke-width':22,opacity:.55,transform:`translate(0 ${d})`}));
+  // sun breaking through, rays fanning down, a vivid rainbow whose feet stand on the land
+  let g=glow(1500,-120,900,'#FFF6DA',.6);
+  for(let i=0;i<9;i++){const a=1.1+i*.13;g+=P(`M1500 -120L${1500+Math.cos(a-.03)*2200} ${-120+Math.sin(a-.03)*2200}L${1500+Math.cos(a+.03)*2200} ${-120+Math.sin(a+.03)*2200}Z`,'#FFF6DA',{opacity:.1});}
+  [['#FF5A48',0],['#FFB04C',22],['#FFE36B',44],['#5AD890',66],['#4A9AFF',88],['#9A6AFF',110]].forEach(([c,d])=>g+=P(`M-200 ${700}A1200 900 0 0 1 2120 700`,'none',{stroke:c,'stroke-width':22,opacity:.72,transform:`translate(0 ${d})`}));
+  g+=glow(960,-150,1400,'#FFFFFF',.12);
   g+=skyClouds(t,251,-560,'#F4F4FA','#B8C4D8',.8);
-  g+=P(ARARAT.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1].toFixed(0)).join('')+'L2100 800L700 800Z','#5A6A7A')+hill(252,590,'#6A8A5A');
-  g+=G('translate(1380 170)',P('M-150 0L150 0L120 50L-120 50Z','#7A4A26',{stroke:'#4A2A14','stroke-width':5})+R(-90,-50,180,52,6,'#9A6234',{stroke:'#4A2A14','stroke-width':4})+P('M-100 -50L0 -90L100 -50Z','#6A3E1E'));
+  // Ararat: the ark rests on the slope below the summit, tilted with the rock, its ramp down
+  g+=P(ARARAT.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1].toFixed(0)).join('')+'L2100 800L700 800Z','#5A6A7A')+
+    P(ARARAT.map((p,i)=>(i?'L':'M')+p[0]+' '+(p[1]+18).toFixed(0)).join(''),'none',{stroke:'#8A9AA8','stroke-width':6,opacity:.5});
+  const ax=1250,ay=FX.yAt(ARARAT,ax)+70;
+  g+=ark(ax,ay,.42,{tilt:-9,ramp:1,wet:1});
+  g+=hill(252,590,'#6A8A5A');
   g+=gnd(253,690,'#5E8E4A','#4E7E3E');
+  // puddles from the flood catch the rainbow
+  [[360,742,90],[1500,760,120],[980,790,70]].forEach(([x,y,r],k)=>{g+=Ell(x,y,r,r*.18,'#9CCBE6',{opacity:.8})+Ell(x,y-2,r*.7,r*.08,'#FFE36B',{opacity:.35})+Ell(x+r*.2,y+2,r*.5,r*.06,'#FF8A6A',{opacity:.3});});
+  // a dove returns with an olive leaf
+  const dx=380+((t*90)%1500),dy=260+Math.sin(t*2)*30,fl=Math.sin(t*12)*14;
+  g+=P(`M${dx-34} ${dy+fl}Q${dx-14} ${dy-14} ${dx} ${dy}Q${dx+14} ${dy-14} ${dx+34} ${dy+fl}`,'#FFFFFF',{stroke:'#B8C4D8','stroke-width':3})+Ell(dx+4,dy+4,14,8,'#FFFFFF')+
+    P(`M${dx+16} ${dy+6}l18 4l-6 8z`,'#5AA04A');
   const w=lt*40;
-  g+=sheepFlock(t,[[480+w,790,1],[600+w,812,1]],.85);
-  const pa=person(0,760+w,800,1.05,{walk:t*6,expr:'joy',look:{x:1380,y:200},hair:'#ECE8DE',tunic:'#C8A06A',tunic2:'#7A5430'}),ma=person(1,880+w,800,1,{f:true,walk:t*6+1,expr:'joy',look:{x:760+w,y:620}});
+  g+=sheepFlock(t,[[460+w,790,1],[580+w,812,1]],.9);
+  const pa=person(0,760+w,800,1.15,{walk:t*6,expr:'joy',look:{x:1250,y:300},hair:'#ECE8DE',tunic:'#C8A06A',tunic2:'#7A5430'}),ma=person(1,890+w,800,1.1,{f:true,walk:t*6+1,expr:'joy',look:{x:760+w,y:600}});
   g+=PPL.holdHands(pa,ma).svg;
-  g+=PPL.carry(person(2,1080+w,800,1.05,{walk:t*6+2}),person(3,0,0,.6,{expr:'joy',look:'up'}),{out:true}).svg;
+  g+=PPL.carry(person(2,1110+w,800,1.15,{walk:t*6+2,look:{x:1250,y:300}}),person(3,0,0,.66,{expr:'joy',look:'up'}),{out:true}).svg;
   return g;
 }
 // 4c. "God made man in his own image": light from above on a man and a woman; a gold glint lights in each heart.

@@ -528,11 +528,40 @@ function sinaiLives(t){
   const D=PPL.rig(dad);g+=D.draw('noFront')+fig(mom)+D.draw('front');
   return g+fig(pp(OLDM,1300,800,.9,{face:-1,kneel:1,expr:ex,look:up,near:'chest',far:'chest'}))+fig(pp(BOY,1180,800,.6,{face:-1,expr:ex,look:up,near:'up'}));
 }
+// Noah's ark (Genesis 6:14-16): a long gopher-wood box hull, three decks, a roof with a window strip under it,
+// a door in the side. Drawn in paper layers: hull planks, dark pitch seams, ribs, curved bow and stern, a ramp.
+// x,y = keel centre on the ground; s = scale (1 = about 640 px long); o.tilt (deg), o.ramp (0..1), o.wet (0..1)
+const ark=(x,y,s,o={})=>{
+  const tilt=o.tilt||0,ramp=o.ramp??1,wet=o.wet??0,W='#8A5630',W2='#6E4224',DK='#3A2210',LT='#B07A48';
+  let g='';
+  g+=Ell(0,6,340,22,'#000',{opacity:.22});
+  // hull: long box with curved bow (right) and stern (left), three plank bands
+  const hull='M-320 -150 L300 -150 Q350 -150 352 -110 L340 -24 Q330 0 296 0 L-290 0 Q-326 0 -334 -26 L-342 -112 Q-344 -150 -320 -150Z';
+  g+=P(hull,W,{stroke:DK,'stroke-width':6});
+  for(let k=1;k<6;k++){const yy=-150+k*25;g+=P(`M-340 ${yy}L348 ${yy}`,'none',{stroke:DK,'stroke-width':2.5,opacity:.55});}
+  for(let k=-5;k<=5;k++)g+=L(k*58,-150,k*58+(k*2),0,W2,5);
+  // deck rails and the three decks shown by two darker bands of small square port windows
+  g+=R(-330,-162,664,14,4,LT,{stroke:DK,'stroke-width':3});
+  // the superstructure: long cabin with a gently pitched roof, a strip of windows under the roof (one cubit)
+  g+=R(-270,-262,540,104,6,W,{stroke:DK,'stroke-width':5});
+  for(let k=1;k<4;k++)g+=L(-270,-262+k*26,270,-262+k*26,DK,2);
+  g+=R(-262,-250,524,20,3,'#2A180C');
+  for(let k=0;k<14;k++)g+=R(-250+k*37,-247,22,14,2,'#E8C27A',{opacity:.5});
+  g+=P('M-300 -258 L0 -312 L300 -258 Z',W2,{stroke:DK,'stroke-width':5})+P('M-300 -258 L300 -258','none',{stroke:LT,'stroke-width':4});
+  for(let k=-4;k<=4;k++)g+=L(k*66,-262-Math.abs(k)*0+(-52+Math.abs(k)*11),k*66,-262,DK,2);
+  // the door in the side of the hull and its ramp down to the ground
+  g+=R(70,-138,78,96,6,'#2A180C',{stroke:DK,'stroke-width':4});
+  if(ramp>0)g+=P(`M70 -42 L148 -42 L${148+150*ramp} ${0} L${70+150*ramp} 0Z`,LT,{stroke:DK,'stroke-width':4})+
+    [1,2,3,4].map(k=>L(70+k*30*ramp,-42+k*8.4,148+k*30*ramp,-42+k*8.4,W2,3)).join('');
+  // wet sheen after the flood, and a little weathering
+  if(wet>0)g+=P('M-330 -60 L340 -60 L336 -24 Q326 0 296 0 L-290 0 Q-326 0 -334 -26Z','#2A4A5A',{opacity:(.25*wet).toFixed(2)});
+  g+=C(-200,-90,10,DK,{opacity:.25})+C(220,-110,7,DK,{opacity:.25});
+  return G(`translate(${x} ${y}) rotate(${tilt}) scale(${s})`,g);};
 // ---- 5b. Promises kept: the rainbow over the ark ----
 function rainbowArk(t){
   let g=glow(960,300,800,'#FFF6DA',.5)+clouds(t,-560,4,'#FFFFFF',.6)+rainbow(960,560,640,ease.inOut(prog(t,AT.allThrough-.2,AT.allThrough+1.2)));
   g+=`<path d="${ridge(64,640,24,300)}" fill="#6AA05A"/>`+gnd(65,780,'#5A9A4A','#4A8A3E');
-  g+=G('translate(1300 690)',P('M-240 0L240 0L200 70L-200 70Z','#8A5A3A',{stroke:'#5A3A1A','stroke-width':5})+R(-120,-90,240,90,4,'#A8743E')+P('M-140 -90L0 -150L140 -90Z','#7A4A2A')+R(-20,-60,40,60,3,'#5A3A1A'));
+  g+=ark(1330,760,.62,{tilt:-2,ramp:1,wet:.6});
   const up={x:960,y:200};
   const noah=pp(OLDM,620,800,1.0,{expr:'joy',look:up,near:{x:720,y:520}}),wife=pp(OLDW,500,800,.94,{expr:'joy',look:up});wife.near=PPL.handOn(wife,noah,'arm');
   const W0r=PPL.rig(wife);g+=W0r.draw('noFront')+fig(noah)+W0r.draw('front');
