@@ -170,7 +170,7 @@
   "mix": {
     "voice": {"volume": 1.25},
     "buses": [
-      {"name": "music", "stem": "score.wav", "volume": 0.8,
+      {"name": "music", "stem": "score.wav", "volume": 1.3,
        "duck": {"threshold": 0.02, "ratio": 4, "attack": 30, "release": 500, "makeup": 1},
        "envelope": [
          {"comment": "silence before 'Then the LORD spoke', back after the thunder", "from": {"word": "Then the LORD spoke", "offset": -0.76}, "to": {"word": "Then the LORD spoke", "edge": "end", "offset": 1.1}, "mute": true, "in": 0.6, "out": 1.4},
