@@ -1027,7 +1027,7 @@ function heardHill(t){
   g+=waves(t,1420,320,1500,1,4,.4)+gnd(169,770,'#2A3050','#1E2440');
   const up={x:1420,y:320};
   const man=carpO(960,800,1.1,{kneel:1,look:up,expr:'tender'});man.near=earPt(man);
-  const wife=person(1,820,800,1.0,{f:true,kneel:1,look:up,expr:'tender'});wife.near=PPL.handOn(wife,man,'shoulder');
+  const wife=person(1,800,800,1.0,{f:true,kneel:1,look:up,expr:'tender'});wife.near=PPL.handOn(wife,man,'shoulder');
   const Wf=PPL.rig(wife);
   return g+Wf.draw('back')+Wf.draw('body')+Wf.draw('head')+PPL.fig(man)+Wf.draw('front');
 }
@@ -1132,7 +1132,7 @@ const LIST=[
   ["what's wrong",AT.whats-.1,bigStatue,['#120C2A','#3A2030'],[fr(980,.88,1178),fr(1020,1.05)],{fore:FG('#2A1E2A','#221822','#3A2A3A')}],
   // ---- act 1: the second word ----
   ['no other gods',AT.rightAfter-.1,noOther,['#2A0E08','#0A0404'],[fr(960,.84,1178)],{stars:false}],
-  ['the second',AT.comes2-.1,secondLine,['#8A867C','#4A4740'],[fr(960,.9,1010,600),fr(980,1.08,1010,620)],{stars:false,vIn:'cut'}],
+  ['the second',AT.comes2-.1,secondLine,['#8A867C','#4A4740'],[fr(920,.9,1010,600),fr(930,1.08,1010,620)],{stars:false,vIn:'cut'}],
   ['a carved image',AT.v204-.15,carverYard,['#BFE0F0','#F0E8D0'],[fr(980,.86,1178)],{stars:false,fore:FG('#C8B890','#B8A880','#D8C8A0')}],
   ['any likeness',AT.likeness-.1,forge,['#2A0E08','#120604'],[fr(900,.95)],{stars:false,vIn:'cut',fore:FG('#1E0E0A','#160A08','#2A1410')}],
   ['heaven above',AT.heaven-.1,heavenIdol,['#0A1038','#1A2050'],[fr(1020,.9,1178)],{vIn:'cut',fore:FG('#1A1E3A','#141830','#22264A')}],
