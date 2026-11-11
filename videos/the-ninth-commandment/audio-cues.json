@@ -183,7 +183,7 @@
          {"comment": "end card: let the closing chord be heard", "from": {"mark": "lastWord", "offset": 0.4}, "to": {"mark": "lastWord", "offset": 7}, "db": 6, "in": 1.2, "out": 0.5}
        ]},
       {"name": "sfx", "stem": "sfx.wav", "volume": 0.2},
-      {"name": "ambience", "stem": "ambience.wav",
+      {"name": "ambience", "stem": "ambience.wav", "volume": 0.724,
        "compressor": {"threshold": 0.05, "ratio": 3.5, "attack": 10, "release": 300, "makeup": 2.8},
        "duck": {"threshold": 0.02, "ratio": 6, "attack": 20, "release": 600, "makeup": 1.5}}
     ],
