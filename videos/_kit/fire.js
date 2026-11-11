@@ -101,7 +101,7 @@
       T.forEach(q => {
         if (L === 4 && q.w < .62) return;
         const jk = L ? (.72 + .5 * vn(t * 5 + q.i * .7 + L * 3, seed + L)) : 1, hh = q.h * hk * jk;
-        if (hh > 3) d += tongue(q.x, q.y, q.bw * wk, hh, q.sway * hk * jk, q.wig * wk);
+        if (hh > Math.max(3, H * k * .14 * hk)) d += tongue(q.x, q.y, q.bw * wk, hh, q.sway * hk * jk, q.wig * wk);
       });
       if (d) g += P(d, c, { opacity: op });
     });
@@ -162,7 +162,7 @@
 
   // ---------- summit fire ----------
   function summitFire(t, pts, intensity = 1, quake = 0, o = {}) {
-    const { fill = null, H = 210, cap = 150, light = 760, embers = 46, seed = 3, bottom = 1800, sky = 1, rocks = true, spacing = 13 } = o;
+    const { fill = null, H = 210, cap = 150, light = 760, embers = 46, seed = 3, bottom = 1800, sky = 1, rocks = true, spacing = Math.max(13, (o.H || 210) * .065) } = o;
     const I = clamp(intensity, 0, 1.6);
     let top = 1e9, sx = 0; pts.forEach(p => { if (p[1] < top) { top = p[1]; sx = p[0]; } });
     const qa = quakeAmp(t, quake), sh = shake(t, qa, seed);

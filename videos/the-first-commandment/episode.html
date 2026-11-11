@@ -902,7 +902,7 @@ function waiting(t,lt){
   g+=PPL.fig(momO)+PPL.fig(kidO);
   const ph=Math.sin((t-AT.camp)*1.7),px=1170+ph*80,dir=Math.cos((t-AT.camp)*1.7)>0?1:-1;
   g+=folk(2,px,800,1.05,{walk:t*8,flip:dir,lean:6,look:{x:1460,y:60},expr:'sad',near:'chest',far:'chest'});
-  g+=elder(1360,800,1,{flip:-1,lean:-18,look:{x:1460,y:40},expr:'sad',near:{x:1270,y:820}});
+  g+=elder(1360,800,1,{flip:-1,lean:-18,look:{x:1460,y:40},expr:'sad',near:'chest',far:'chest'});
   return g;
 }
 // ---- C4. Earrings into the fire, the gold calf rises, "These are your gods" ----
