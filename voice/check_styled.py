@@ -50,7 +50,7 @@ def main() -> int:
     parser.add_argument("wav", type=Path)
     parser.add_argument("--script", type=Path, default=render_styled.SCRIPT)
     parser.add_argument("--sections", "--scenes", type=int, nargs="*", default=[])
-    parser.add_argument("--ref-dir", type=Path, default=Path(__file__).resolve().parent / "reference" / "own-voice")
+    parser.add_argument("--ref-dir", type=Path, default=Path(__file__).resolve().parent / "reference" / "capcut-vo")
     parser.add_argument("--name", help="Render folder under full/ (default: the script's file name).")
     parser.add_argument("--device", type=int, default=-1, help="-1 for CPU, 0 for the first GPU.")
     args = parser.parse_args()

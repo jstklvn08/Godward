@@ -11,8 +11,11 @@ The fetched text is cached in full/<name>/scripture.esv.json, which git ignores.
 Without a key or cache, scripture lines are skipped and the output is marked DRAFT.
 
 The voice is Chatterbox with one reference clip per delivery mode, cut from the
-narrator's own voice demo (reference/own-voice, made by make_own_refs.py on the
-voice/own-voice-render branch):
+narrator's own CapCut voice-over (reference/capcut-vo, made by make_vo_refs.py). Every mode
+uses the settings the narrator approved in the render_vo_sample.py tests (exaggeration 0.5,
+cfg 0.3, temperature 0.8, best of three takes). Chatterbox lands about 2.5 semitones above
+the narrator with a narrower range, so the mix is moved to the narrator's median pitch with
+Praat PSOLA (formants kept) before mastering. Never time-stretch: it made the clone robotic.
   grave  scripture, and the heaviest lines
   talk   commentary
   story  telling the story (the default)
@@ -37,9 +40,11 @@ from math import gcd
 from pathlib import Path
 
 import numpy as np
+import parselmouth
 import soundfile as sf
 import pyloudnorm
 import torch
+from parselmouth.praat import call
 from scipy.ndimage import maximum_filter1d, minimum_filter1d, uniform_filter1d
 from scipy.signal import lfilter, resample_poly
 
@@ -51,14 +56,10 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import fill_esv  # noqa: E402
 
 SCRIPT = ROOT / "scripts" / "01-creation-and-the-fall.md"
-REF_DIR = VOICE_DIR / "reference" / "own-voice"
+REF_DIR = VOICE_DIR / "reference" / "capcut-vo"
 
-MODES = {
-    "grave": VoiceSetting(0.40, 0.40, 0.7),
-    "talk": VoiceSetting(0.50, 0.50, 0.8),
-    "story": VoiceSetting(0.50, 0.50, 0.8),
-    "pivot": VoiceSetting(0.60, 0.50, 0.8),
-}
+# The approved "natural" setting for every mode; the reference clip carries the delivery.
+MODES = {mode: VoiceSetting(0.50, 0.30, 0.8) for mode in ("grave", "talk", "story", "pivot")}
 MODE_REF = {"grave": "grave.wav", "talk": "talk.wav", "story": "story.wav", "pivot": "story.wav"}
 # Words per second accepted for each mode, measured after trimming the ends.
 PACE = {"grave": (1.9, 2.9), "talk": (2.7, 3.9), "story": (2.4, 3.6), "pivot": (2.0, 4.2)}
@@ -164,6 +165,12 @@ OUT_SR = 44100  # the demo's delivery rate; Chatterbox makes 24 kHz
 # extra step: tighten() already cuts them out of the pauses inside a passage.)
 GATE_BELOW = 42.0  # dB under the speech level: silence below this
 GATE_RANGE = 8.0  # dB over which the gate fades in above that
+# Measured on VO .MP3: median 107 Hz, 14.2 semitone range (10th-90th percentile).
+PITCH_MEDIAN = 107.0
+PITCH_RANGE_FACTOR = 1.25
+# No tone shaping: the clone is already a little darker than the narrator, and the approved
+# test had none. (The old own-voice mix cut 4 kHz by 4 dB and lifted 150 Hz by 2 dB.)
+EQ: tuple[tuple[float, float, bool], ...] = ()
 
 PLACEHOLDER = re.compile(r"^\{\{ESV ([^}]+)\}\}\s*(?:\((.+)\))?\s*$")
 
@@ -393,13 +400,21 @@ def shelf(sr: int, freq: float, gain_db: float, high: bool):
     return np.array(b) / d[0], np.array(d) / d[0]
 
 
+def match_pitch(audio: np.ndarray, sr: int) -> np.ndarray:
+    """Move the median pitch to the narrator's and widen the range, keeping formants (PSOLA)."""
+    sound = parselmouth.Sound(audio.astype(np.float64), sr)
+    moved = call(sound, "Change gender", 60, 400, 1.0, PITCH_MEDIAN, PITCH_RANGE_FACTOR, 1.0)
+    return moved.values[0][: len(audio)].astype(np.float32)
+
+
 def master(audio: np.ndarray, sr: int) -> np.ndarray:
     """Returns the finished mix at OUT_SR."""
+    audio = match_pitch(audio, sr)
     if sr != OUT_SR:
         g = gcd(sr, OUT_SR)
         audio = resample_poly(audio, OUT_SR // g, sr // g).astype(np.float32)
         sr = OUT_SR
-    for freq, gain, high in ((4000, -4.0, True), (150, 2.0, False)):
+    for freq, gain, high in EQ:
         b, a = shelf(sr, freq, gain, high)
         audio = lfilter(b, a, audio).astype(np.float32)
     audio = gate(audio, sr)

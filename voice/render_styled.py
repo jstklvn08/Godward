@@ -1,6 +1,6 @@
 """Render an episode script's narration in the narrator's own voice, sentence by sentence.
 
-    .venv\\Scripts\\python.exe render_styled.py --script ..\\scripts\\my-episode.md --ref-dir reference\\own-voice --natural
+    .venv\\Scripts\\python.exe render_styled.py --script ..\\scripts\\my-episode.md --natural
     .venv\\Scripts\\python.exe render_styled.py --script ... --ref-dir ... --sections 3 4    # test a few sections
     .venv\\Scripts\\python.exe render_styled.py --script ... --plan                         # show modes and pauses only
 
@@ -24,6 +24,12 @@ Finished passages are cached by content in full/<name>/chunks, so reruns only re
 the edit is tight like the voice demo. Outputs: full/<name>/<name>[-natural].wav, a timings
 JSON (section starts and ends), scenes[-natural]/section-NN.wav and passages.json.
 Then run align_words.py on the WAV to get word timings for the video.
+
+Voice: reference/capcut-vo (cut from the narrator's own CapCut voice-over by make_vo_refs.py),
+with the settings the narrator approved in the render_vo_sample.py tests. Chatterbox lands about
+2.5 semitones above the narrator with a narrower range, so the joined narration is moved to the
+narrator's median pitch with Praat PSOLA (formants kept) before mastering. No time-stretching
+and no EQ: the stretched test sounded robotic, and the approved test had neither.
 """
 
 from __future__ import annotations
@@ -52,15 +58,9 @@ OUT = VOICE_DIR / "full" / "genesis-1-3-own-voice"
 MODE_REF: dict[str, Path] = {}
 DEFAULT_REF = Path()
 
-# Settings for the narrator's own clips (own-voice references carry a natural pace and the
-# right delivery per mode). Tested on Creation: grave 0.40/0.40 gave 3.2-3.8 words/s and talk
-# 0.50/0.50 gave 4.4-5.1 words/s (its clip is the demo's quickest line), so both are lower.
-MODES = {
-    "grave": VoiceSetting(0.35, 0.30, 0.7),
-    "talk": VoiceSetting(0.40, 0.30, 0.8),
-    "story": VoiceSetting(0.50, 0.50, 0.8),
-    "pivot": VoiceSetting(0.60, 0.50, 0.8),
-}
+# The narrator's approved setting for the capcut-vo clips (2026-11-11), the same in every mode:
+# the reference clip carries the delivery. A <script>.voice.json "modes" entry can still override.
+MODES = {mode: VoiceSetting(0.50, 0.30, 0.8) for mode in ("grave", "talk", "story", "pivot")}
 # Words per second accepted for each mode, measured after trimming the ends.
 PACE = {"grave": (1.9, 2.9), "talk": (2.7, 3.9), "story": (2.4, 3.6), "pivot": (2.0, 4.2)}
 SEEDS = (1, 2, 3)
@@ -82,13 +82,23 @@ PEAK = 10 ** (-1.0 / 20)
 # voice kept), commas keep a real breath, gaps depend on the line before and vary slightly,
 # sections get a full pause, and silence is filled with a faint room tone instead of zero.
 NATURAL = False
-STRETCH = {"grave": 1.15, "talk": 1.06, "story": 1.06, "pivot": 1.0}
+STRETCH = {"grave": 1.0, "talk": 1.0, "story": 1.0, "pivot": 1.0}  # never stretch: it sounds robotic
 GAP_AFTER = {"grave": 0.65, "talk": 0.42, "story": 0.45, "pivot": 0.5}
 PIVOT_BEAT = 0.15
 GAP_JITTER = 0.08
 NATURAL_SECTION_GAP = 1.1
 NATURAL_PAUSE_MAX, NATURAL_PAUSE_KEEP = 0.45, 0.35
 ROOM_TONE_DB = -50
+# --lively: talk/story sentences merged into passages of up to LIVELY_MERGE_CHARS, LIVELY_SEEDS
+# takes per passage with the liveliest in-range take kept (widest pitch movement), and the
+# model's own breaths and phrasing pauses kept inside a passage (up to 0.35 s).
+LIVELY = False
+LIVELY_MERGE_CHARS = 160
+LIVELY_SEEDS = (1, 2, 3, 4, 5)
+LIVELY_PAUSE_MAX, LIVELY_PAUSE_KEEP = 0.45, 0.35
+# Measured on the narrator's VO .MP3: median 107 Hz, 14.2 semitone range (10th-90th percentile).
+PITCH_MEDIAN = 107.0
+PITCH_RANGE_FACTOR = 1.25
 
 
 def use_ref_dir(ref_dir: Path, name: str) -> None:
@@ -167,7 +177,15 @@ def passages_with_pauses(section: int, text: str) -> list[tuple[str, str, float]
             continue
         mode, sentence = mode_of(section, sentence)
         for piece in render_full.split_long(sentence):
-            if out and out[-1][0] == mode and out[-1][2] == 0 and len(out[-1][1]) + len(piece) + 1 <= MERGE_CHARS:
+            if LIVELY:
+                # Talk and story sentences run on into one passage so the model carries momentum
+                # across a thought; grave and pivot lines keep their own delivery.
+                joinable = out and out[-1][2] == 0 and {out[-1][0], mode} <= {"talk", "story"}
+                limit = LIVELY_MERGE_CHARS
+            else:
+                joinable = out and out[-1][0] == mode and out[-1][2] == 0
+                limit = MERGE_CHARS
+            if joinable and len(out[-1][1]) + len(piece) + 1 <= limit:
                 out[-1][1] = f"{out[-1][1]} {piece}"
             else:
                 out.append([mode, piece, 0.0])
@@ -222,21 +240,34 @@ def render_passage(narrator: Narrator, mode: str, text: str, path: Path) -> dict
     words = len(text.split())
     low, high = PACE[mode]
     target = (low + high) / 2
-    best = None
-    for seed in SEEDS:
+    best, takes = None, []
+    for seed in (LIVELY_SEEDS if LIVELY else SEEDS):
         attempt = path.with_suffix(f".seed{seed}.wav")
         stats = narrator.synthesize(text, MODES[mode], attempt, seed=seed, voice_ref=MODE_REF.get(mode, DEFAULT_REF))
         audio, sr = sf.read(str(attempt), dtype="float32")
         wps = words / (len(render_full.trim(audio, sr)) / sr)
-        print(f"  {mode} seed {seed}: {wps:.2f} words/s, {stats['generation_seconds']}s on {stats['device']}", flush=True)
+        life = liveliness(audio, sr) if LIVELY else 0.0
+        print(f"  {mode} seed {seed}: {wps:.2f} words/s, pitch movement {life:.2f} st, {stats['generation_seconds']}s on {stats['device']}", flush=True)
+        takes.append((attempt, wps, seed, life))
         if best is None or abs(wps - target) < abs(best[1] - target):
-            best = (attempt, wps, seed)
-        if low <= wps <= high:
+            best = (attempt, wps, seed, life)
+        if not LIVELY and low <= wps <= high:
             break
+    in_range = [t for t in takes if low <= t[1] <= high]
+    if LIVELY and in_range:
+        best = max(in_range, key=lambda t: t[3])
     best[0].replace(path)
     for leftover in path.parent.glob(f"{path.stem}.seed*.wav"):
         leftover.unlink()
-    return {"seed": best[2], "words_per_second": round(best[1], 2), "in_range": bool(low <= best[1] <= high)}
+    return {"seed": best[2], "words_per_second": round(best[1], 2), "in_range": bool(low <= best[1] <= high),
+            "pitch_movement_st": round(best[3], 2)}
+
+
+def liveliness(audio: np.ndarray, sr: int) -> float:
+    """How much the pitch moves: standard deviation of voiced pitch, in semitones."""
+    f0 = parselmouth.Sound(audio.astype(np.float64), sampling_frequency=sr).to_pitch(0.01, 60, 400).selected_array["frequency"]
+    f0 = f0[f0 > 0]
+    return float(np.std(12 * np.log2(f0 / np.median(f0)))) if len(f0) > 10 else 0.0
 
 
 def biquad_shelf(sr: int, freq: float, gain_db: float, high: bool):
@@ -254,9 +285,17 @@ def biquad_shelf(sr: int, freq: float, gain_db: float, high: bool):
     return np.array(b) / d[0], np.array(d) / d[0]
 
 
+def match_pitch(audio: np.ndarray, sr: int) -> np.ndarray:
+    """Move the median pitch to the narrator's and widen the range, keeping formants (PSOLA)."""
+    sound = parselmouth.Sound(audio.astype(np.float64), sampling_frequency=sr)
+    moved = call(sound, "Change gender", 60, 400, 1.0, PITCH_MEDIAN, PITCH_RANGE_FACTOR, 1.0)
+    return moved.values[0][: len(audio)].astype(np.float32)
+
+
 def master(audio: np.ndarray, sr: int) -> np.ndarray:
-    # Darker and closer, like the voice demo: less top end, a little more low end.
-    for freq, gain, high in ((4000, -4.0, True), (150, 2.0, False)):
+    # No tone shaping for capcut-vo: the clone is already a little darker than the narrator.
+    # (The own-voice mix used a 4 kHz -4 dB and a 150 Hz +2 dB shelf.)
+    for freq, gain, high in ():
         b, a = biquad_shelf(sr, freq, gain, high)
         audio = lfilter(b, a, audio).astype(np.float32)
     loudness = pyloudnorm.Meter(sr).integrated_loudness(audio)
@@ -269,16 +308,19 @@ def master(audio: np.ndarray, sr: int) -> np.ndarray:
 
 
 def main() -> int:
-    global NATURAL
+    global NATURAL, LIVELY
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--script", type=Path, default=SCRIPT)
-    parser.add_argument("--ref-dir", type=Path, default=VOICE_DIR / "reference" / "own-voice")
+    parser.add_argument("--ref-dir", type=Path, default=VOICE_DIR / "reference" / "capcut-vo")
     parser.add_argument("--name", help="Output folder under full/ (default: the script's file name).")
     parser.add_argument("--sections", "--scenes", type=int, nargs="*", default=[])
     parser.add_argument("--natural", action="store_true", help="Slower, human edit (recommended).")
+    parser.add_argument("--lively", action="store_true",
+                        help="Longer talk/story passages, liveliest of 5 takes, keep the model's breaths.")
     parser.add_argument("--plan", action="store_true", help="Print each passage's mode and pause, render nothing.")
     args = parser.parse_args()
     NATURAL = args.natural
+    LIVELY = args.lively
 
     use_script(args.script.resolve())
     name = args.name or ("genesis-1-3-own-voice" if args.script.name == "creation-and-the-fall-genesis-1-3-script.md" else args.script.stem)
@@ -301,7 +343,7 @@ def main() -> int:
     for number, title, parts in plan:
         pieces = []
         for index, (mode, text, _) in enumerate(parts, 1):
-            digest = hashlib.md5(f"{mode}|{MODES[mode]}|{ref_tag(MODE_REF.get(mode, DEFAULT_REF))}|{text}".encode()).hexdigest()[:6]
+            digest = hashlib.md5(f"{mode}|{MODES[mode]}|{ref_tag(MODE_REF.get(mode, DEFAULT_REF))}|{text}{'|lively' if LIVELY else ''}".encode()).hexdigest()[:6]
             path = chunks_dir / f"s{number:02d}-{index:02d}-{mode}-{digest}.wav"
             done += 1
             used.add(path.name)
@@ -314,7 +356,7 @@ def main() -> int:
             if NATURAL:
                 piece = lengthen(tighten(render_full.trim(audio, sr), sr, NATURAL_PAUSE_MAX, NATURAL_PAUSE_KEEP), sr, STRETCH[mode])
             else:
-                piece = tighten(render_full.trim(audio, sr), sr)
+                piece = tighten(render_full.trim(audio, sr), sr, *((LIVELY_PAUSE_MAX, LIVELY_PAUSE_KEEP) if LIVELY else (None, None)))
             pieces.append(piece)
         rng = np.random.default_rng(number)
         joined = pieces[0]
@@ -336,7 +378,7 @@ def main() -> int:
         if i < len(built) - 1:
             full.append(section_gap)
             cursor += len(section_gap)
-    joined_all = np.concatenate(full)
+    joined_all = match_pitch(np.concatenate(full), sr)
     if NATURAL:
         speech_rms = float(np.sqrt(np.mean(joined_all[np.abs(joined_all) > 1e-4] ** 2)))
         joined_all = joined_all + room_tone(len(joined_all), speech_rms * 10 ** (ROOM_TONE_DB / 20))
@@ -345,6 +387,8 @@ def main() -> int:
     out_name = OUT.name if not args.sections else "test-sections-" + "-".join(str(s) for s in args.sections)
     if NATURAL:
         out_name += "-natural"
+    if LIVELY:
+        out_name += "-lively"
     scenes_dir = OUT / ("scenes-natural" if NATURAL else "scenes")
     scenes_dir.mkdir(exist_ok=True)
     for t in timings:

@@ -1,6 +1,6 @@
 """Re-render single passages that came out with wrong words, checking each new take by ear-proxy.
 
-    python fix_lines.py --ref-dir reference/own-voice 8.2 9.2
+    python fix_lines.py 8.2 9.2
 
 For each section.index given, tries seeds 4-9 with the same mode setting and reference,
 transcribes each take with whisper, and keeps the first take whose words match the script
@@ -40,7 +40,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("targets", nargs="+", help="section.index, e.g. 8.2")
     parser.add_argument("--script", type=Path, default=r.SCRIPT)
-    parser.add_argument("--ref-dir", type=Path, default=VOICE_DIR / "reference" / "own-voice")
+    parser.add_argument("--ref-dir", type=Path, default=VOICE_DIR / "reference" / "capcut-vo")
     parser.add_argument("--name", help="Render folder under full/ (default: the script's file name).")
     parser.add_argument("--seeds", default="4-9", help="Seed range to try, e.g. 10-29.")
     args = parser.parse_args()
