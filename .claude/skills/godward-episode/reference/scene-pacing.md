@@ -224,3 +224,36 @@ Rules that came out of the stills:
 - Fire on mountains: FX.summitFire — the whole summit burns, kiln smoke from the fire, firelight on the slopes,
   mountain stays a clear silhouette.
 - One label at a time; verse cards and labels in frame space (hud); end card in hud; then tools/append-outro.sh.
+
+## Scenery kit: `_kit/scenery.js` (SC) — rich settings and big animals
+User feedback (Nov 2026): "why does every video look so boring with small animals and background, make it more
+interesting". Causes: people ~20% of the frame on a thin ground line mid-frame; flat gradient sky + one or two smooth
+ridges; the same glowing-flower grass (`fore`) below the captions in every scene; animals as small white stickers.
+Load after the engine (opt-in, nothing else changes): `<script src="../_kit/scenery.js"></script>`. Prototypes:
+ep. 6 `floodS`, ep. 7 `rainbowArk`; full API in the file header.
+- Sky and light: `SC.sky(t,{mood:'dawn|day|golden|dusk|night|clearing',hz})`, `SC.sun`, `SC.godRays`, `SC.clouds`
+  (layered, lit from the sun, `storm` remnants), `SC.birds`, `SC.rainbow` (7 bands, glow, faint second bow, draw-on `p`),
+  `SC.light` (warm rim glow behind subjects), `SC.haze`, `SC.vig`.
+- Terrain far -> near: `SC.range` (peaks, lit faces, snow, haze), `SC.hills` (terraces, fields, trees), `SC.ground`
+  (blades, stones, tufts, flowers, wet glints), `SC.profile/yAt/fill` for a named ridge or ledge, `SC.rock`, `SC.puddle`
+  (sky + upside-down rainbow reflection, ripples), `SC.tree` (round/olive/cypress/palm/acacia), `SC.tuft`, `SC.flower`,
+  `SC.reeds`, `SC.house`. Whole backgrounds: `SC.env(t,'meadow'|'river'|'desert'|'village',{mood,gy})`.
+- Foreground framing: `SC.fore(t,{y,edges:[xl,xr],cols,flowers,rockAt,wet,reeds,under,over})` — big blades and tall
+  clumps at the frame edges (set `edges` to the visible sheet x at the shot's zoom), rocks, flowers, dew. Use it
+  INSTEAD of the sheet's `fore:` grass (drop `fore` from the sheet). `under` = puddles, `over` = lambs/birds in the grass.
+- Animals: `SC.animal(t,kind,x,y,s,o)` / `SC.pair(...)` (male + female behind), kinds sheep goat ox cow donkey camel lion
+  deer dove bird; feet at x,y, s=1 matches a PPL person at s=1. `walk:t*5`, `graze:'auto'`, `look`, `fly`, `leaf`
+  (dove with olive leaf), `flat` for tiny far ones. They breathe, blink, flick tails, twitch ears, bob while grazing.
+Rules:
+- Subjects big: the main characters 35-45% of the frame height in the held framing (PPL s ~2.4-2.9 at zoom 1.1-1.2,
+  feet at frame ~1190). Two big adults need ~375 sheet px between centres (heads are ~325 wide at s 2.9) and their
+  faces must not touch: put the woman (back hair) on the side away from the man's face, or a little behind and smaller.
+- Gestures with big figures: reach forward at shoulder height (an up-pointing near arm crosses the face).
+- Layered depth in every scene: sky -> sun/rays/clouds -> hazy range -> textured hills -> near ground -> subjects ->
+  foreground framing -> light. Things farther away are higher and smaller (perspective scale by ground y).
+- The lower frame (below the captions) is a place, not filler: puddles, a rock with birds, a grazing pair, flowers,
+  each scene different. Keep faces out of 1220-1340 and the label line 1430.
+- Recognisable animals, big enough to read, in pairs; a procession on a path whose scale grows toward the camera.
+- Objects rest on things: the ark's keel sits on a ledge (`SC.profile` with a flat tilted segment, tilt from the two
+  ends, rocks/tufts over the keel line, ramp foot on the ground). Never floating.
+- Cost: every animal/person carries a halftone filter; ~15 animals + 8 people per sheet rendered fine.

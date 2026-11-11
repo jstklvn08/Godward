@@ -9,6 +9,7 @@
 <script src="../_kit/episode-engine.js"></script>
 <script src="../_kit/people.js"></script>
 <script src="../_kit/fire.js"></script>
+<script src="../_kit/scenery.js"></script>
 <script>
 // The Ten Commandments, part 6: the sixth commandment. Script: scripts/07-the-sixth-commandment.md (ESV fill).
 // Remade in episode 1's style (videos/the-first-commandment): a new setting every few seconds, one slow camera move
@@ -685,8 +686,8 @@ function babyS(t,lt){
   g+=D.draw('back')+D.draw('body')+D.draw('head')+withProp(mom,babe)+D.draw('front');
   return g;
 }
-// 4b. After the flood: the ark resting high on the mountain, a rainbow; Noah's family walks down with the sheep.
-const ARARAT=FX.peak(25,1380,190,{halfW:520,rough:12,bottom:800,x0:700,x1:2100});
+// 4b. After the flood: the ark resting on the mountain's ledge under a rainbow; the animals come down two by two;
+//     Noah and his wife, large in the foreground, walk out hand in hand and reach for the returning dove.
 // Noah's ark (Genesis 6:14-16): a long gopher-wood box hull, three decks, a roof with a window strip under it,
 // a door in the side. Drawn in paper layers: hull planks, dark pitch seams, ribs, curved bow and stern, a ramp.
 // x,y = keel centre on the ground; s = scale (1 = about 640 px long); o.tilt (deg), o.ramp (0..1), o.wet (0..1)
@@ -716,31 +717,84 @@ const ark=(x,y,s,o={})=>{
   if(wet>0)g+=P('M-330 -60 L340 -60 L336 -24 Q326 0 296 0 L-290 0 Q-326 0 -334 -26Z','#2A4A5A',{opacity:(.25*wet).toFixed(2)});
   g+=C(-200,-90,10,DK,{opacity:.25})+C(220,-110,7,DK,{opacity:.25});
   return G(`translate(${x} ${y}) rotate(${tilt}) scale(${s})`,g);};
+// The mountain the ark rests on (Genesis 8:4): summit upper left, a rock ledge (x 880-1340) tilted ~12 degrees on its
+// right flank where the keel lies, then the flank runs down to the valley. Built with the scenery kit (_kit/scenery.js).
+const FL_M=SC.profile([[-160,700],[140,440],[380,240],[470,164,10],[530,140,8],[610,190],[700,300,6],[766,356,3],[1226,452,3],[1360,534],[1560,630],[1800,700],[2100,760]],{seed:25,rough:14});
+// The ark on the ledge: keel centre on the rock, tilted with it (never floating). Returns placement and ramp points.
+const FL_ARK=(()=>{const s=.7,ax=996,y0=SC.yAt(FL_M,ax-226),y1=SC.yAt(FL_M,ax+226),th=Math.atan2(y1-y0,452),ay=(y0+y1)/2+5;
+  const W=([lx,ly])=>[ax+(lx*Math.cos(th)-ly*Math.sin(th))*s,ay+(lx*Math.sin(th)+ly*Math.cos(th))*s];
+  return {s,ax,ay,th,deg:th*180/Math.PI,W,foot:W([298,0]),rampMid:W([214,-24]),door:W([109,-90])};})();
+// The path the animals take down from the ramp: [x, y, scale] (scale grows as it comes toward the camera).
+const FL_PATH=[[1212,452,.34],[1290,500,.4],[1322,570,.5],[1272,650,.62],[1254,730,.8],[1300,810,1.05]];
+const flAt=u=>{const n=FL_PATH.length-1,k=Math.min(n-1,Math.floor(clamp(u)*n)),f=clamp(u)*n-k,a=FL_PATH[k],b=FL_PATH[k+1];
+  return {x:lerp(a[0],b[0],f),y:lerp(a[1],b[1],f),s:lerp(a[2],b[2],f),face:b[0]<a[0]?-1:1};};
+function floodMountain(t){
+  const pts=FL_M,id='flMc';
+  const [u,d]=SC.lin([[0,'#A4A8B8'],[.18,'#767C92'],[.6,'#5A6078'],[1,'#454A5E']],0,130,0,910);
+  let g=d+P(SC.fill(pts,1800),u)+`<clipPath id="${id}"><path d="${SC.fill(pts,1800)}"/></clipPath><g clip-path="url(#${id})">`;
+  // sunlit faces on the slopes that face the sun (upper right), rock strata, grass and wet streaks
+  let lit='';for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i];if(b[1]>a[1]+1)lit+=`M${a[0]} ${a[1].toFixed(0)}L${b[0]} ${b[1].toFixed(0)}L${b[0]-30} ${(b[1]+70).toFixed(0)}L${a[0]-30} ${(a[1]+70).toFixed(0)}Z`;}
+  g+=P(lit,'#C8C4C8',{opacity:.45});
+  for(let k=1;k<7;k++)g+=P(SC.poly(pts.map(([x,y])=>[x-k*6,y+k*58+Math.sin(x/90+k)*10]),false),'none',{stroke:'#30344A','stroke-width':4,opacity:.22})+
+    P(SC.poly(pts.map(([x,y])=>[x-k*6,y+k*58-5+Math.sin(x/90+k)*10]),false),'none',{stroke:'#C8CCD8','stroke-width':2.5,opacity:.22});
+  // the lower flanks are green again after the waters went down: meadow skirt, shrubs and young olive trees
+  const [gu,gd]=SC.lin([[0,'#6A8E52',0],[.35,'#6A8E52',.85],[1,'#4E7A3E',1]],0,400,0,710);g+=gd+`<rect x="-200" y="400" width="2400" height="1600" fill="${gu}"/>`;
+  for(let k=0;k<22;k++){const x=40+hash(k,45)*1900,y0=SC.yAt(pts,x),y=Math.max(y0+20,450+hash(k,46)*260);if(y>y0+10)g+=k%3?Ell(x,y,22+hash(k,47)*30,10+hash(k,48)*8,'#4A7A3A',{opacity:.9})+Ell(x-6,y-5,14,5,'#8AB866',{opacity:.6}):SC.tree(t,x,y+6,.24+.12*hash(k,49),{kind:'olive',flat:true});}
+  for(let k=0;k<14;k++){const x=300+hash(k,41)*1400,y=SC.yAt(pts,x)+30+hash(k,42)*200;g+=L(x,y,x-6,y+60+hash(k,43)*90,'#FFFFFF',2.5,{opacity:.28});}
+  // snow on the summit
+  g+=P(`M420 ${SC.yAt(pts,420)}`+[...Array(12)].map((_,j)=>{const x=420+j*20;return `L${x} ${(Math.min(SC.yAt(pts,x)+40+hash(j,44)*36,SC.yAt(pts,x)+80)).toFixed(0)}`;}).join('')+`L660 ${SC.yAt(pts,660).toFixed(0)}`+[...Array(12)].map((_,j)=>{const x=660-j*20;return `L${x} ${(SC.yAt(pts,x)-2).toFixed(0)}`;}).join('')+'Z','#F2F4FA',{opacity:.9});
+  return g+'</g>';
+}
 function floodS(t,lt){
-  // sun breaking through, rays fanning down, a vivid rainbow whose feet stand on the land
-  let g=glow(1500,-120,900,'#FFF6DA',.6);
-  for(let i=0;i<9;i++){const a=1.1+i*.13;g+=P(`M1500 -120L${1500+Math.cos(a-.03)*2200} ${-120+Math.sin(a-.03)*2200}L${1500+Math.cos(a+.03)*2200} ${-120+Math.sin(a+.03)*2200}Z`,'#FFF6DA',{opacity:.1});}
-  [['#FF5A48',0],['#FFB04C',22],['#FFE36B',44],['#5AD890',66],['#4A9AFF',88],['#9A6AFF',110]].forEach(([c,d])=>g+=P(`M-200 ${700}A1200 900 0 0 1 2120 700`,'none',{stroke:c,'stroke-width':22,opacity:.72,transform:`translate(0 ${d})`}));
-  g+=glow(960,-150,1400,'#FFFFFF',.12);
-  g+=skyClouds(t,251,-560,'#F4F4FA','#B8C4D8',.8);
-  // Ararat: the ark rests on the slope below the summit, tilted with the rock, its ramp down
-  g+=P(ARARAT.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1].toFixed(0)).join('')+'L2100 800L700 800Z','#5A6A7A')+
-    P(ARARAT.map((p,i)=>(i?'L':'M')+p[0]+' '+(p[1]+18).toFixed(0)).join(''),'none',{stroke:'#8A9AA8','stroke-width':6,opacity:.5});
-  const ax=1250,ay=FX.yAt(ARARAT,ax)+70;
-  g+=ark(ax,ay,.42,{tilt:-9,ramp:1,wet:1});
-  g+=hill(252,590,'#6A8A5A');
-  g+=gnd(253,690,'#5E8E4A','#4E7E3E');
-  // puddles from the flood catch the rainbow
-  [[360,742,90],[1500,760,120],[980,790,70]].forEach(([x,y,r],k)=>{g+=Ell(x,y,r,r*.18,'#9CCBE6',{opacity:.8})+Ell(x,y-2,r*.7,r*.08,'#FFE36B',{opacity:.35})+Ell(x+r*.2,y+2,r*.5,r*.06,'#FF8A6A',{opacity:.3});});
-  // a dove returns with an olive leaf
-  const dx=380+((t*90)%1500),dy=260+Math.sin(t*2)*30,fl=Math.sin(t*12)*14;
-  g+=P(`M${dx-34} ${dy+fl}Q${dx-14} ${dy-14} ${dx} ${dy}Q${dx+14} ${dy-14} ${dx+34} ${dy+fl}`,'#FFFFFF',{stroke:'#B8C4D8','stroke-width':3})+Ell(dx+4,dy+4,14,8,'#FFFFFF')+
-    P(`M${dx+16} ${dy+6}l18 4l-6 8z`,'#5AA04A');
-  const w=lt*40;
-  g+=sheepFlock(t,[[460+w,790,1],[580+w,812,1]],.9);
-  const pa=person(0,760+w,800,1.15,{walk:t*6,expr:'joy',look:{x:1250,y:300},hair:'#ECE8DE',tunic:'#C8A06A',tunic2:'#7A5430'}),ma=person(1,890+w,800,1.1,{f:true,walk:t*6+1,expr:'joy',look:{x:760+w,y:600}});
-  g+=PPL.holdHands(pa,ma).svg;
-  g+=PPL.carry(person(2,1110+w,800,1.15,{walk:t*6+2,look:{x:1250,y:300}}),person(3,0,0,.66,{expr:'joy',look:'up'}),{out:true}).svg;
+  const SUN={x:1560,y:60};
+  // after the storm: the sun breaks through, rays fan down, storm clouds drift off, a vivid rainbow behind the ark
+  let g=SC.sky(t,{mood:'clearing',hz:770});
+  g+=SC.godRays(t,SUN.x,SUN.y,{n:11,a0:1.7,a1:2.85,op:.22,len:2700,col:'#FFF2CC'});
+  g+=SC.sun(t,SUN.x,SUN.y,64,{col:'#FFF4D0',rays:1});
+  g+=SC.rainbow(t,900,900,830,{w:21,op:.92,p:ease.out(prog(t,AT.flood-.3,AT.flood+1))});
+  g+=SC.clouds(t,{seed:251,n:7,y:-600,h:520,mood:'clearing',sun:SUN,storm:'#3A425C',drift:9,s:1.1});
+  g+=SC.birds(t,{x:380,y:60,n:7,s:1.1,dx:30,col:'#2A2E44'});
+  g+=SC.range(31,{y:750,h:380,peaks:6,mood:'clearing',snow:true,hazeOp:.55,sunX:SUN.x});
+  // the mountain, and the ark resting on its ledge: keel on the rock, tilted with it, ramp down onto the slope
+  g+=floodMountain(t);
+  const A=FL_ARK;
+  g+=Ell(A.ax+10,A.ay+6,250,22,'#1A1C28',{opacity:.45});
+  g+=ark(A.ax,A.ay,A.s,{tilt:A.deg,ramp:1,wet:1});
+  [[-250,26,.7],[-150,30,1],[-40,22,.8],[60,30,1.1],[150,26,.8],[250,18,.7]].forEach(([lx,w,k],j)=>{const [x,y]=A.W([lx,4]);g+=SC.rock(x,y+10,w*k*1.4,w*k*.8,{col:'#5E6274',seed:60+j,wet:1});});
+  // two doves back on the roof
+  const [rx,ry]=A.W([-120,-280]);g+=SC.animal(t,'dove',rx,ry,.7,{face:-1,phase:1})+SC.animal(t,'dove',rx+40,ry+8,.66,{phase:2.4,graze:'auto'});
+  // valley: hills with olive trees, then the wet near ground
+  g+=SC.hills(253,{y:790,amp:26,wave:320,col:'#5E8E4A',trees:7,treeKind:'olive',treeS:.36,hazeOp:.35,haze:'#E6EAE0',x1:1000});
+  g+=SC.ground(t,254,{y:880,col:'#5C8E46',col2:'#3E6A30',wet:1,stones:16,tufts:26,flowers:['#FFFFFF','#FFE36B'],amp:8});
+  // the path down from the ramp, wet earth widening toward us
+  for(let i=1;i<FL_PATH.length-1;i++){const a=FL_PATH[i-1],b=FL_PATH[i];g+=L(a[0],a[1],b[0],b[1],'#8A7458',(a[2]+b[2])*26,{opacity:.4})+L(a[0],a[1]+3,b[0],b[1]+3,'#C0AA88',(a[2]+b[2])*9,{opacity:.35});}
+  g+=SC.puddle(t,300,930,110,{rainbow:.7,seed:3,flat:.26})+SC.puddle(t,1560,920,130,{rainbow:.8,seed:5,flat:.26});
+  // the animals two by two down the path, and Noah's sons and their wives with them (far = small)
+  const W=lt*.01,items=[];
+  [['camel',.0,{}],['donkey',.18,{}],['goat',.36,{}],['ox',.6,{}],['sheep',.84,{}]].forEach(([k,u,o],j)=>{
+    const p=flAt(u+W),face=p.face;items.push([p.y,()=>SC.pair(t,k,p.x,p.y,p.s*(k==='camel'?.95:k==='ox'?.9:1),Object.assign({face,walk:t*5+j,gap:k==='camel'?110:80,phase:j},o))]);});
+  // the second pair of camels still on the ramp, a son leading them
+  const [cx,cy]=A.rampMid;items.push([cy,()=>SC.animal(t,'camel',cx,cy+4,.3,{walk:t*4,phase:3})]);
+  // Shem, Ham and Japheth and their wives walk down among the animals (small: far away)
+  [[.075,0],[.45,1],[.7,2]].forEach(([u,i])=>{const p=flAt(u+W),dx=-p.face*70*p.s;items.push([p.y+3,()=>folk(i+5,p.x+dx,p.y+3,p.s*1.05,{f:i===1,face:p.face,walk:t*5+i,expr:'joy',look:i===1?{x:900,y:200}:'up',near:i===1?'up':null})]);});
+  items.sort((a,b)=>a[0]-b[0]).forEach(([,f])=>g+=f());
+  // a second soft pass of sun shafts through the wet air, and warm light round the family
+  g+=SC.godRays(t,SUN.x,SUN.y,{n:6,a0:1.95,a1:2.6,op:.08,len:2600,seed:9});
+  g+=SC.light(800,700,560,'#FFE9B0',.3);
+  // a dove returns with an olive leaf and comes to Noah's raised hand (Genesis 8:11)
+  const k=prog(t,AT.flood+.3,AT.flood+1.5),wk=lt*12,nx=881+wk,wx=nx-375;
+  // the dove flies in from the sun side and comes to Noah's outstretched hand (Genesis 8:9-11)
+  const dp=ease.out(prog(lt,0,2.8)),dx=lerp(1560,nx+330,dp),dy=lerp(40,650,dp)+Math.sin(t*2.4)*10*(1-dp*.6);
+  // Noah and his wife, large in the foreground, walking out hand in hand, both watching the dove
+  const pa=person(0,nx,1000,2.9,{walk:t*4,face:1,expr:['awe','joy',k],look:{x:dx,y:dy},hair:'#ECE8DE',tunic:'#C8A06A',tunic2:'#7A5430',near:{x:dx-40,y:dy+50}});
+  const ma=person(1,wx,968,2.38,{f:true,walk:t*4+1.3,face:1,expr:['surprised','joy',k],look:{x:dx,y:dy},tunic:'#9AC8B0',tunic2:'#4A7A6A',hair:'#5A3A2A',far:'chest'});
+  g+=PPL.holdHands(ma,pa,{armB:'far'}).svg;
+  g+=SC.animal(t,'dove',dx,dy,2.0,{fly:true,leaf:true,face:-1});
+  // foreground framing: wet grass, a big rock with two little birds, flowers, puddles catching the rainbow, two lambs
+  const lambs=SC.pair(t,'sheep',1250,1590,2.3,{face:-1,graze:'auto',gap:90,dy:-30,phase:2})+SC.tuft(t,1180,1600,2.6,{cols:['#16301A','#2C5A28','#6EA84C'],n:7})+SC.tuft(t,1330,1610,2.4,{cols:['#16301A','#2C5A28','#6EA84C'],n:6});
+  const pud=SC.puddle(t,760,1112,250,{rainbow:.7,seed:11,flat:.3,sky:'#7EB8DE',sky2:'#D4EAF4'})+SC.puddle(t,1280,1210,150,{rainbow:.8,seed:13,flat:.3});
+  const birdsOn=SC.animal(t,'bird',470,1388,2.4,{phase:1,graze:'auto',hop:1})+SC.animal(t,'bird',560,1378,2.2,{face:-1,col:'#F0C040',col2:'#7A6A40',phase:2.5});
+  g+=SC.fore(t,{y:1046,bottom:1780,edges:[420,1390],cols:['#16301A','#2C5A28','#6EA84C'],flowers:['#FFFFFF','#FFE36B','#FF8AA8'],rocks:0,rockAt:[[520,1480,180]],wet:1,reeds:1,seed:17,under:pud,over:birdsOn+lambs});
   return g;
 }
 // 4c. "God made man in his own image": light from above on a man and a woman; a gold glint lights in each heart.
@@ -1297,7 +1351,7 @@ const SH=[
   ['his life mattered',AT.mattered-.1,matteredS,['#2A3A6A','#8A9AC8'],MOVE(990,fy(1.05),1.05,980,fy(1.34),1.34),{fore:FG('#3A5A2E','#2E4A26','#4A6A3A',['#FFF6DA'])}],
   // 4. the image of God
   ['a newborn',AT.why-.1,babyS,['#5A3A6A','#FFB890'],HOLDF(960,1.2),{stars:false,fore:FG('#76763E','#666A36','#8A8A4A'),vIn:'cut'}],
-  ['after the flood',AT.flood-.1,floodS,['#A8C8E8','#E8F0F0'],MOVE(900,600,.84,1000,620,.94),{stars:false,fore:FG('#4E7E3E','#447036','#5E8E4A',['#FFFFFF'])}],
+  ['after the flood',AT.flood-.1,floodS,['#A8C8E8','#E8F0F0'],MOVE(920,810,1.0,890,845,1.16),{stars:false}],
   ['his own image',AT.v96-.12,imageS,['#FFE8B0','#E8A060'],HOLDF(960,1.0),{stars:false,fore:GOLDF,vIn:'cut'}],
   ['every person',AT.every1-.1,everyS,['#F8D8B0','#D8885A'],HOLD(960,fy(.88),.88),{stars:false,fore:FG('#A06A3A','#8A5A30','#B87A48')}],
   ['a reflection',AT.like-.1,poolS,['#A8D8F0','#E8F0D0'],HOLD(960,fy(1.2,1180,990),1.2),{stars:false,fore:DAY,vIn:'cut'}],
