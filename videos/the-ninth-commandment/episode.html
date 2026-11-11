@@ -474,7 +474,7 @@ function neighbours(t,lt){
   const a=Math.sin(t*10)*24;
   g+=folk(0,740,FY,HS,{look:{x:1200,y:500},expr:'joy',far:{x:760+a,y:FY-480},phase:.3});
   g+=wallRow(900,1060,FY+10,'#C8B898','#8A7A5A');
-  const dad=person(4,1220,FY,HS,{face:-1,look:{x:740,y:500},expr:'joy',near:{x:1060,y:FY-280}});
+  const dad=person(4,1220,FY,HS,{face:-1,look:{x:740,y:500},expr:'joy',near:{x:1010,y:FY-220}});
   const kid=person(1,1370,FY+6,1.45,{face:-1,look:{x:740,y:560},expr:'joy'});
   g+=PPL.holdHands(dad,kid,{armA:'far'}).svg;
   return g+foreStreet(t,1000,1.08,{pets:SC.pair(t,'sheep',1320,1620,1.9,{face:-1,graze:'auto',gap:90,dy:-30})});
@@ -484,7 +484,7 @@ function wordsDo(t,lt){
   let g=street(t,{houses:[[420,.95],[1620,.95]],treeX:1100});
   const a0=AT.wordsDo-.3;
   g+=folk(2,520,FY,HS,{lean:14,look:{x:840,y:460},near:{x:720,y:FY-290},expr:'joy'});
-  g+=folk(3,860,FY,2.5,{face:-1,look:{x:1450,y:500},expr:['calm','joy',prog(t,a0,a0+1)],near:{x:960,y:FY-300},phase:2});
+  g+=folk(3,860,FY,2.5,{face:-1,look:{x:1450,y:500},expr:['calm','joy',prog(t,a0,a0+1)],near:{x:1020,y:FY-210},phase:2});
   const hit=ease.inOut(prog(t,AT.someone-.4,AT.someone+.6));
   for(let k=0;k<4;k++){const s0=a0+k*.45;if(t<s0)continue;const u=ease.inOut(prog(t,s0,s0+1.6)),x=lerp(820,1400+k*30,u),y=lerp(FY-620,FY-680+k*40,u)-Math.sin(u*Math.PI)*260;
     g+=wordStrip(x,y,200,60+k,lerp(-10,k%2?20:-15,u),{op:1-.4*prog(u,.9,1),h:52});}
@@ -565,9 +565,8 @@ function oneVoice(t,lt){
 function partner(t,lt){
   let g=alley(t,{litDoor:1});
   const lean=ease.inOut(prog(t,AT.aLie-.2,AT.aLie+.6));
-  const b=greyO(1,1200,FY,HS,{face:-1,lean:3*lean,look:{x:730,y:520},expr:'calm'});
-  const a=greyO(0,730,FY,HS,{lean:4*lean,look:{x:1170,y:520},near:{x:930,y:FY-270},expr:'joy'});
-  b.near=PPL.handOn(b,a,'shoulder');
+  const b=greyO(1,1240,FY,HS,{face:-1,lean:3*lean,look:{x:700,y:520},expr:'calm',near:{x:1060,y:FY-200}});
+  const a=greyO(0,700,FY,HS,{lean:4*lean,look:{x:1240,y:520},near:{x:900,y:FY-210},expr:'joy'});
   const Br=PPL.rig(b);g+=Br.draw('back')+Br.draw('body')+Br.draw('head')+PPL.fig(a)+Br.draw('front');
   const k=ease.inOut(prog(t,AT.partner1,AT.partner1+1));
   if(k>0)g+=mark(`M900 470C960 380 1020 540 1060 450C1100 360 880 340 850 430`,k,'#8A8A9A',9,{opacity:.9});
@@ -652,7 +651,7 @@ function jezebel(t,lt){
 function messenger(t,lt){
   let g=alley(t,{litDoor:0});
   const give=ease.inOut(prog(t,AT.arranged-.1,AT.arranged+.7)),read=ease.inOut(prog(t,AT.worthless+.4,AT.accuse)),go=ease.inOut(prog(t,AT.accuse,AT.accuse+1.2));
-  const hand={x:lerp(780,880,give),y:FY-300};
+  const hand={x:lerp(800,900,give),y:FY-230};
   const mx=lerp(660,420,go),ms=person(4,mx,FY,2.4,{look:{x:1000,y:500},expr:'calm',near:read<.05?hand:null,walk:go>0&&go<1?t*7:0,face:go>0?-1:1,tunic:'#C8A060',tunic2:'#7A5A30'});
   g+=G('',PPL.fig(ms),(1-prog(go,.5,.9)).toFixed(2));
   const L0={x:lerp(hand.x,920,read),y:lerp(hand.y,FY-250,read)};
@@ -673,8 +672,8 @@ function nabothTrial(t,lt){
   const n=nab(1000,FY,VS,{face:1,look:{x:1380,y:520},near:'chest',tilt:no,expr:['calm',lie>0?'sad':'fear',Math.max(gasp,pt)]});
   w.near=PPL.handOn(w,n,'back');
   const Wr=PPL.rig(w);g+=Wr.draw('back')+Wr.draw('body')+Wr.draw('head')+Wr.draw('front')+PPL.fig(n);
-  g+=grey(1,1540,FY-24,2.0,{face:-1,look:{x:1000,y:500},near:pt>0?{x:lerp(1480,1360,pt),y:lerp(FY-200,FY-280,pt)}:null,expr:'calm'});
-  g+=grey(0,1360,FY,VS,{face:-1,look:{x:1000,y:500},near:pt>0?{x:lerp(1300,1170,pt),y:lerp(FY-200,FY-260,pt)}:null,expr:'calm'});
+  g+=grey(1,1540,FY-24,2.0,{face:-1,look:{x:1000,y:500},near:pt>0?{x:lerp(1480,1360,pt),y:lerp(FY-180,FY-220,pt)}:null,expr:'calm'});
+  g+=grey(0,1360,FY,VS,{face:-1,look:{x:1000,y:500},near:pt>0?{x:lerp(1300,1170,pt),y:lerp(FY-180,FY-220,pt)}:null,expr:'calm'});
   for(let k=0;k<4;k++){const a0=AT.saying+k*.7;if(t<a0)continue;const u=ease.out(prog(t,a0,a0+1.1)),fall=sq(prog(t,AT.itWasALie+.3+k*.08,AT.itWasALie+1.4));
     g+=wordStrip(lerp(1300,1160+k*40,u),lerp(FY-470,FY-760+k*70,u)+fall*700,lerp(70,210,u),70+k,lerp(0,k%2?-9:8,u)+fall*60*(k%2?-1:1),{crack:lie,op:1-prog(fall,.6,1),h:52});}
   return g+foreGate(t,1180,1.06,{dx:-60});
@@ -813,7 +812,7 @@ function guard(t,lt){
   const st=ease.inOut(prog(t,AT.christians-.2,AT.christians+.8)),ring=ease.out(prog(t,AT.guarding-.3,AT.guarding+.6)),cx=1040;
   if(ring>0)g+=Ell(cx,FY-300,360*ring,380*ring,'none',{stroke:'#FFE36B','stroke-width':12,opacity:.9})+glow(cx,FY-300,420*ring,'#FFE9A8',.25);
   g+=PPL.fig(person(0,1360,FY,2.4,{face:-1,look:{x:1000,y:500},expr:['sad','tender',ring],near:{x:1250,y:FY-230}}))+nameScroll(1250,FY-230,1.6,1);
-  g+=folk(1,lerp(1360,940,st),FY,HS,{face:-1,walk:st>0&&st<1?t*7:0,near:st>.8?{x:780,y:FY-280}:null,far:st>.8?{x:1080,y:FY-280}:null,look:{x:500,y:520},expr:'calm'});
+  g+=folk(1,lerp(1360,940,st),FY,HS,{face:-1,walk:st>0&&st<1?t*7:0,near:st>.8?{x:760,y:FY-220}:null,far:st>.8?{x:1100,y:FY-230}:null,look:{x:500,y:520},expr:'calm'});
   for(let k=0;k<5;k++){const a0=AT.christians+.4+k*.55;if(t<a0)continue;const u=prog(t,a0,a0+1),hitX=cx-360*Math.max(ring,.6)-20,x=u<.6?lerp(400,hitX,u/.6):lerp(hitX,hitX-240,(u-.6)/.4),y=FY-520+k*70+(u<.6?0:-(u-.6)*500);
     g+=wordStrip(x,y,180,90+k,u<.6?0:-30*(u-.6)*5,{op:1-prog(u,.7,1),h:50});}
   return g+foreStreet(t,1060,1.08,{d:1,seed:87});
@@ -863,7 +862,7 @@ function knocking(t,lt){
   g+=glow(dx,FY-200,360,'#FFD27A',.55*op);
   if(op>0)g+=G('',folk(2,dx+20,FY,2.2,{face:-1,look:{x:1100,y:500},expr:'surprised',near:{x:dx-70,y:FY-260}}),op.toFixed(2));
   const kn=t<AT.looking+.3?Math.abs(Math.sin(t*14))*30:0;
-  g+=capped(person(0,1100,FY,HS,{look:{x:dx,y:FY-300},expr:'calm',near:{x:1290+kn,y:FY-280},tunic:'#3A2A6A',tunic2:'#1E1440',lean:6}),'#2A1E50');
+  g+=capped(person(0,1100,FY,HS,{look:{x:dx,y:FY-300},expr:'calm',near:{x:1290+kn,y:FY-230},tunic:'#3A2A6A',tunic2:'#1E1440',lean:6}),'#2A1E50');
   g+=capped(person(1,820,FY-20,2.2,{look:{x:dx,y:FY-300},expr:'calm',near:{x:910,y:FY-200},tunic:'#6A2A3A',tunic2:'#3A1420'}),'#4A1424',h=>lamp(t,h[0]-40,h[1]+30,1.4,1));
   return g+foreStreet(t,1020,1.06,{d:1,seed:89});
 }
@@ -1011,7 +1010,7 @@ function square(t,lt){
   g+=folk(2,1240,950,1.2,{look:{x:1360,y:800},expr:'joy',near:{x:1300,y:880}})+folk(0,1440,950,1.2,{face:-1,look:{x:1240,y:800},expr:'joy',near:'open'});
   const k=ease.inOut(prog(t,AT.speakTruth[0]-.3,AT.speakTruth[1]+.3));
   const A=person(1,760,FY,VS,{look:{x:1170,y:520},expr:'joy'}),B=person(4,1170,FY,VS,{face:-1,look:{x:780,y:520},expr:['calm','joy',k]});
-  B.near={x:1010,y:FY-260};A.near={x:900,y:FY-270+Math.sin(t*6)*12};
+  B.near={x:980,y:FY-210};A.near={x:950,y:FY-220+Math.sin(t*6)*12};
   const Br=PPL.rig(B);g+=Br.draw('back')+Br.draw('body')+Br.draw('head')+PPL.fig(A)+Br.draw('front');
   if(k>0)g+=truthStrip(955,FY-560-k*30,lerp(60,240,k),140,-4,{h:54});
   return g+foreStreet(t,960,1.06,{seed:95,flowers:['#FFD84A','#FFFFFF','#FF8AB0'],pets:SC.pair(t,'goat',1200,1640,2.0,{face:-1,graze:'auto',gap:80,dy:-30})});
@@ -1079,7 +1078,7 @@ function speakUp(t,lt){
   const up=ease.inOut(prog(t,AT.speakingUp-.3,AT.speakingUp+.5)),turn=prog(t,AT.speakingUp,AT.speakingUp+.5);
   [[0,690],[3,920]].forEach(([i,x],k)=>g+=folk(i,x,FY,2.25,{sit:1,seat:FY-120,face:1,look:turn>.3?{x:1250,y:400}:{x:1000,y:FY-200},expr:turn>.3?'surprised':'joy',near:k===0&&turn<.3?{x:960,y:FY-200}:null}));
   g+=lowTable(1000,640,190,'#8A6A4A')+phoneP([1000,FY-200],1.6,1)+Ell(860,FY-196,40,12,'#F0E8D8')+R(1120,FY-240,40,50,6,'#E8E0D0');
-  g+=folk(2,1260,FY,HS,{face:-1,sit:1-up,seat:FY-120,look:turn>.3?{x:800,y:500}:{x:1000,y:FY-200},near:up>.5?{x:1080,y:FY-290}:null,expr:up>.5?'calm':'sad'});
+  g+=folk(2,1260,FY,HS,{face:-1,sit:1-up,seat:FY-120,look:turn>.3?{x:800,y:500}:{x:1000,y:FY-200},near:up>.5?{x:1060,y:FY-220}:null,expr:up>.5?'calm':'sad'});
   return g+foreModern(t,980,1.06,{floor:'#3A2E2E',rug:'#8A4A3A'});
 }
 
@@ -1112,7 +1111,7 @@ function isFair(t,lt){
   const sw=Math.sin(t*4)*12*(1-prog(t,AT.isFair,AT.isFair+.8)),cx=1120,cy=FY-440;
   g+=L(cx,FY-220,cx,cy,'#E8B53A',10)+G(`rotate(${sw.toFixed(1)} ${cx} ${cy})`,L(cx-220,cy,cx+220,cy,'#E8B53A',12)+
     L(cx-220,cy,cx-260,cy+170,'#C8952A',3)+L(cx-220,cy,cx-180,cy+170,'#C8952A',3)+P(`M${cx-290} ${cy+170}Q${cx-220} ${cy+230} ${cx-150} ${cy+170}Z`,'#E8B53A')+L(cx+220,cy,cx+180,cy+170,'#C8952A',3)+L(cx+220,cy,cx+260,cy+170,'#C8952A',3)+P(`M${cx+150} ${cy+170}Q${cx+220} ${cy+230} ${cx+290} ${cy+170}Z`,'#E8B53A'))+C(cx,cy-4,18,'#FFF1B0');
-  g+=elder(700,FY,HS,{look:{x:cx,y:cy},expr:['calm','joy',prog(t,AT.isFair,AT.isFair+.8)],near:{x:880,y:FY-250},tunic:'#3A8ABF',tunic2:'#1E4A7A'});
+  g+=elder(700,FY,HS,{look:{x:cx,y:cy},expr:['calm','joy',prog(t,AT.isFair,AT.isFair+.8)],near:{x:960,y:FY-200},tunic:'#3A8ABF',tunic2:'#1E4A7A'});
   return g+check(1360,200,ease.inOut(prog(t,AT.isFair+.2,AT.isFair+.6)))+foreStreet(t,960,1.1,{seed:97,goats:false});
 }
 // Would I say it to their face: two friends face to face in a courtyard.
@@ -1127,14 +1126,14 @@ function witnessToday(t,lt){
   let g=gateSet(t,{mood:'golden',vines:true});
   const k=ease.out(prog(t,AT.yourWords,AT.aWitness+.6));
   for(let j=0;j<4;j++){const a0=AT.yourWords+.3+j*.5;if(t<a0)continue;const u=ease.out(prog(t,a0,a0+1.2));g+=truthStrip(lerp(1040,1040+(j%2?1:-1)*(240+j*60),u),lerp(FY-460,FY-640-j*60,u),lerp(40,220,u),170+j,lerp(0,(j%2?1:-1)*10,u),{op:1-prog(u,.8,1)*.4,h:50});}
-  return g+folk(1,960,FY,HS,{look:{x:1240,y:300},expr:['calm','joy',k],near:{x:1120,y:FY-280+Math.sin(t*5)*12}})+foreGate(t,960,1.08,{dx:-300});
+  return g+folk(1,960,FY,HS,{look:{x:1240,y:300},expr:['calm','joy',k],near:{x:1190,y:FY-220+Math.sin(t*5)*12}})+foreGate(t,960,1.08,{dx:-300});
 }
 // ---- Make sure they tell the truth about your neighbor: a kind word, then a hug ----
 function kindWord(t,lt){
   let g=street(t,{mood:'day',houses:[[440,.95],[1560,.95]],treeX:1200,seed:51});
   const k=ease.inOut(prog(t,AT.truthAbout,AT.truthAbout+.8)),hugK=ease.out(prog(t,AT.truthAbout+1.4,AT.truthAbout+2.4));
   g+=folk(3,1400,FY-30,2.0,{face:-1,look:{x:1040,y:500},expr:'joy',near:'chest'});
-  const A=person(1,lerp(780,880,hugK),FY,HS,{look:{x:1160,y:500},expr:'joy',near:hugK>0?null:{x:960,y:FY-270+Math.sin(t*6)*12}}),B=person(4,lerp(1160,1030,hugK),FY,2.5,{face:-1,look:{x:780,y:500},expr:['sad','joy',k]});
+  const A=person(1,lerp(780,880,hugK),FY,HS,{look:{x:1160,y:500},expr:'joy',near:hugK>0?null:{x:1010,y:FY-220+Math.sin(t*6)*12}}),B=person(4,lerp(1160,1030,hugK),FY,2.5,{face:-1,look:{x:780,y:500},expr:['sad','joy',k]});
   for(let j=0;j<3;j++){const a0=AT.makeSure+.3+j*.5;if(t<a0||hugK>.2)continue;const u=ease.out(prog(t,a0,a0+1));g+=truthStrip(lerp(900,1100,u),lerp(FY-360,FY-560-j*50,u),lerp(40,190,u),180+j,-5+j*5,{h:50});}
   g+=hugK>0?PPL.hug(A,B,{k:hugK}).svg:PPL.fig(A)+PPL.fig(B);
   return g+foreStreet(t,1000,1.06,{seed:101,flowers:['#FFFFFF','#FF8AB0']});
