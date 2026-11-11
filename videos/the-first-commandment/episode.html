@@ -570,10 +570,10 @@ function visions(t,lt){
   // fire on the mountain, then up at each vision as it appears, and turn to each other as the rescue is remembered
   const vis=[[560,-210],[960,-260],[1360,-200]],vk=[0,1,2].reduce((a,k)=>vp(k)>.3?k:a,-1);
   const up=vk<0?{x:1350,y:96}:{x:vis[vk][0],y:vis[vk][1]},joy=prog(t,AT.already,AT.already+1.2),ex=['awe','joy',joy];
-  const kid=person(3,790,805,.62,{kid:true,look:up,expr:['surprised','joy',joy],near:vk>=0?{x:up.x,y:up.y+500}:null,aura:'#9AD8FF',auraOp:.3});
-  const mom=person(2,925,800,1,{f:true,face:-1,look:joy>.6?{x:800,y:690}:up,expr:ex,hairStyle:'veil',aura:'#9AD8FF',auraOp:.25});
-  const dad=person(1,650,800,1.05,{look:up,expr:ex,phase:1.2,beard:true,f:false,hairStyle:'short',aura:'#9AD8FF',auraOp:.25});
-  {const p=PPL.handOn(dad,kid,'shoulder');dad.near={x:p.x-6,y:p.y+12};}
+  const kid=person(3,805,805,.7,{kid:true,look:up,expr:['surprised','joy',joy],near:vk>=0?{x:up.x,y:up.y+500}:null,aura:'#9AD8FF',auraOp:.3});
+  const mom=person(2,935,800,1.12,{f:true,face:-1,look:joy>.6?{x:800,y:690}:up,expr:ex,hairStyle:'veil',aura:'#9AD8FF',auraOp:.25});
+  const dad=person(1,705,800,1.15,{look:up,expr:ex,phase:1.2,beard:true,f:false,hairStyle:'short',aura:'#9AD8FF',auraOp:.25});
+  dad.near=PPL.handOn(dad,kid,'head');
   const hh=PPL.holdHands(mom,kid,{order:'ba'}),D=PPL.rig(dad);
   g+=D.draw('back')+D.draw('body')+D.draw('head')+hh.svg+D.draw('front');
   return g;
@@ -624,14 +624,17 @@ function earnLoved(t,lt){
   const kx=lerp(1010,1266,run),kidO=person(3,kx,792,.62,{kid:true,walk:run<1?t*11:null,expr:'joy',lean:run<1?10:0,near:hugK>0?null:'open',far:hugK>0?null:'open',aura:'#FFE9A8',auraOp:.4*hugK});
   if(run<1)kidO.jump=Math.abs(Math.sin(t*11))*6;
   const dadO=person(0,1330,792,1.1,{face:-1,kneel:kn,expr:'joy',look:{x:kx+10,y:700},near:'open',far:'open',lean:6*kn,aura:'#FFE9A8',auraOp:.2+.3*hugK});
-  const momO=person(1,1465,792,1.05,{face:-1,lean:14*hugK,expr:['calm','tender',hugK],look:{x:kx,y:700},hairStyle:'veil',aura:'#FFE9A8',auraOp:.3*hugK});
+  const momO=person(1,1478,792,.95,{face:-1,lean:2*hugK,expr:['calm','tender',hugK],look:{x:kx,y:700},hairStyle:'veil',aura:'#FFE9A8',auraOp:.3*hugK});
   const M=PPL.rig(Object.assign({},momO,{near:PPL.handOn(momO,dadO,'shoulder')}));
   g+=M.draw('back')+M.draw('body')+M.draw('head');
-  if(hugK>0){const D0=PPL.rig(Object.assign({},dadO,{near:null,far:null})),nk=D0.neck,sh=D0.shoulder('far');
-    kidO.near={x:lerp(kx+60,nk[0],hugK),y:lerp(700,nk[1]+6,hugK)};kidO.far={x:lerp(kx+40,sh[0],hugK),y:lerp(690,sh[1],hugK)};
-    const KR=PPL.rig(Object.assign({},kidO,{near:null,far:null})),kb=KR.W([-22,-72]),kb2=KR.W([-10,-50]);
-    dadO.near={x:lerp(kx+70,kb[0],hugK),y:lerp(680,kb[1],hugK)};dadO.far={x:lerp(kx+90,kb2[0],hugK),y:lerp(690,kb2[1],hugK)};
-    g+=PPL.hug(dadO,kidO,{k:hugK}).svg;}
+  // catch and lift: he lifts her up to his chest, her face above his shoulder, her arms round his neck
+  if(hugK>0){const D0=PPL.rig(Object.assign({},dadO,{near:null,far:null})),lift=D0.W([70,-122]);
+    const hip0=[kx,792-30*.62],hp={x:lerp(hip0[0],lift[0],hugK),y:lerp(hip0[1],lift[1],hugK)};
+    const nk=D0.W([-14,-214]),kidR0=PPL.rig(Object.assign({},kidO,{hipAt:hp,walk:null,jump:0,near:null,far:null}));
+    const kidR=PPL.rig(Object.assign({},kidO,{hipAt:hp,walk:null,jump:0,lean:-6,look:{x:D0.head[0],y:D0.head[1]},near:{x:nk[0],y:nk[1]},far:{x:nk[0]-10,y:nk[1]-4}}));
+    const a=kidR0.chest(.25),b=kidR0.back(.25);
+    const DR=PPL.rig(Object.assign({},dadO,{lean:-8*hugK,look:{x:kidR.head[0],y:kidR.head[1]},near:{x:b[0],y:b[1]},far:{x:a[0],y:a[1]}}));
+    g+=DR.draw('back')+DR.draw('body')+DR.draw('head')+kidR.draw('back')+kidR.draw('body')+kidR.draw('head')+kidR.draw('front')+DR.draw('front');}
   else g+=PPL.fig(dadO)+PPL.fig(kidO);
   g+=M.draw('front');
   return g;
@@ -1196,7 +1199,7 @@ E.start({
     {name:'house of slavery',at:AT.broughtOut[0]-.15,draw:slaveHouse,bg:['#6A1A0E','#2A0806'],stars:false,fore:FG('#9A5A2E','#7A4422','#AA6A3A'),
       cam:[[AT.broughtOut[0],900,600,.95],[AT.tells-.2,1040,659,1.22]]},
     {name:'who he is',at:AT.tells-.1,draw:visions,bg:['#0A1838','#1A0E28'],vIn:'cut',fore:FG('#2A2440','#1E1A32','#3A3456',['#9AD8FF']),
-      cam:[[AT.tells,760,650,1.1],[AT.already-.2,940,580,.85]]},
+      cam:[[AT.tells,810,640,1.15],[AT.already-.2,900,560,.9]]},
     {name:'rescue, then rules',at:AT.rescueFirst-.1,draw:rescueRules,bg:['#FFD08A','#4A8AC8'],stars:false,vIn:'cut',fore:SAND,
       cam:[[AT.rulesSecond-1.8,700,677,1.3],[AT.these2-.2,1330,662,1.3]]},
     {name:'earning, loved',at:AT.these2-.1,draw:earnLoved,bg:['#4A4A5A','#C07040'],fore:FG('#4A3A4A','#3A2A3A','#5A4A5A',['#FFB04C']),
