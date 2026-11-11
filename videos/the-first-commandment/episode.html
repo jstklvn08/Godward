@@ -903,7 +903,9 @@ function waiting(t,lt){
   const ph=Math.sin((t-AT.camp)*1.7),px=1170+ph*80,dir=Math.cos((t-AT.camp)*1.7)>0?1:-1;
   g+=folk(2,px,800,1.05,{walk:t*8,flip:dir,lean:6,look:{x:1460,y:60},expr:'sad',near:'chest',far:'chest'});
   // the old man leans on his walking stick
-  g+=L(1296,712,1284,800,'#6A4A2A',8)+elder(1360,800,1,{flip:-1,lean:-14,look:{x:1460,y:40},expr:'sad',near:{x:1296,y:712},far:'chest'});
+  // stick planted ahead of his front foot, drawn in front of his body and under his gripping hand
+  const eR=PPL.rig(elderOpts(1540,800,1,{flip:-1,lean:10,look:{x:1460,y:40},expr:'sad',near:{x:1466,y:738},far:'chest'}));
+  g+=eR.draw('back')+eR.draw('body')+eR.draw('head')+L(1468,734,1452,802,'#4A2E16',13)+L(1468,734,1452,802,'#7A5432',8)+eR.draw('front');
   return g;
 }
 // ---- C4. Earrings into the fire, the gold calf rises, "These are your gods" ----
