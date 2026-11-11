@@ -7,6 +7,8 @@
 <script src="../_kit/style-kit.js"></script>
 <script src="words.js"></script>
 <script src="../_kit/episode-engine.js"></script>
+<script src="../_kit/people.js"></script>
+<script src="../_kit/fire.js"></script>
 <script>
 // The Ten Commandments, part 1: the first commandment. Script: scripts/02-the-first-commandment.md (ESV fill).
 // Every time below comes from the spoken words (words.js), so a new narration re-times the episode.
@@ -107,9 +109,9 @@ const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#
 function crowd(t,x0,y,n,gap,s,o={}){
   let g='';
   for(let i=0;i<n;i++){
-    const tr=o.tremble?(hash(Math.floor(t*12),i)-.5)*o.tremble:0,[a,b]=TUN[i%5];
-    g+=E.chubby(x0+i*gap+tr+(i%2)*10,y+(i%3)*14,s*(.92+.16*hash(i,4)),{f:i%2===1,flip:o.flip||1,tunic:a,tunic2:b,aura:o.aura||'#7CFFE6',auraOp:o.auraOp??.35,
-      walk:o.walk?t*7+i:0,lean:o.lean||0,reach:o.reach||0,phase:i*.7,hair:['#2E1C52','#4A2A16','#1A1A2A'][i%3],skin:['#F5BE8E','#D9965E','#B87444'][i%3],shade:['#C4835E','#A86A3E','#8A5230'][i%3]});
+    const tr=o.tremble?(hash(Math.floor(t*12),i)-.5)*o.tremble:0;
+    g+=folk(i,x0+i*gap+tr+(i%2)*10,y+(i%3)*14,s*(.92+.16*hash(i,4)),{flip:o.flip||1,aura:o.aura||'#7CFFE6',auraOp:o.auraOp??.35,
+      walk:o.walk?t*7+i:0,lean:o.lean||0,reach:o.reach||0});
   }
   return g;
 }
@@ -136,9 +138,21 @@ const floor=(t,seed,a,b,glint)=>E.VERT?`<path d="${ridge(seed,vy(1590),18,240)}"
 // Vertical camera reminder: cam point (x, y) lands at frame (540, 1010). Wide = zoom .84 (sees x 317-1603, y -642-1643).
 // To put a subject at frame y F with zoom z: cam y = subjectY + (1010 - F) / z.
 const SKIN=[['#F5BE8E','#C4835E'],['#D9965E','#A86A3E'],['#B87444','#8A5230']], HAIR=['#2E1C52','#4A2A16','#1A1A2A'];
-// One of the people, palette picked by index. o: chubby options (walk, reach, lean, flip, aura...).
-const folk=(i,x,y,s,o={})=>{const [a,b]=TUN[i%5],[sk,sh]=SKIN[i%3];
-  return E.chubby(x,y,s,Object.assign({f:i%2===1,tunic:a,tunic2:b,skin:sk,shade:sh,hair:HAIR[i%3],phase:i*.7,filter:'htSoft'},o));};
+// One of the people, palette picked by index. Drawn with the people rig (videos/_kit/people.js): the same round
+// figures as before, but their arms bend and reach (hands meet hands, shoulders, children), their eyes look at a
+// target, faces change expression, and feet stand on the ground with a soft contact shadow.
+// o takes the old chubby options (walk, reach, lean, flip, aura, auraOp, tunic...) plus any PPL option
+// (expr, look, near, far, kneel, sit, ...). reach r puts the hand where the old figure's hand was:
+// (x + lerp(52,116,r)*s*flip, y - lerp(54,172,r)*s), so props drawn at that point stay in the hand.
+const pplOpts=(i,x,y,s,o={})=>{const [a,b]=TUN[i%5],[sk,sh]=SKIN[i%3],face=o.flip||o.face||1,f=o.f??(i%2===1);
+  const q=Object.assign({x,y,s,face,f,tunic:a,tunic2:b,skin:sk,shade:sh,hair:HAIR[i%3],phase:i*.7},o);
+  q.face=face;delete q.flip;delete q.filter;delete q.reach;
+  if(!o.walk)delete q.walk;
+  if(o.reach!=null&&!o.near){const r=o.reach;q.near={x:x+lerp(52,116,r)*s*face,y:y-lerp(54,172,r)*s};
+    if(r>.75&&!o.far)q.far={x:x+lerp(10,70,r)*s*face,y:y-lerp(60,178,r)*s};}
+  return q;};
+const folk=(i,x,y,s,o={})=>PPL.fig(pplOpts(i,x,y,s,o));
+const person=pplOpts;
 const shake=(t,a,d,amp)=>{const p=prog(t,a,a+d);return p>0&&p<1?(hash(Math.floor(t*24),a)-.5)*2*amp*(1-p):0;};
 // A lightning bolt that flashes for 0.4 s from time a.
 const bolt=(t,a,x,y0,y1)=>{const p=prog(t,a,a+.4);if(p<=0||p>=1)return '';const m=(y0+y1)/2;
@@ -374,35 +388,47 @@ function desert(t,lt){
 }
 
 // ---- A12. Sinai wrapped in smoke; fire comes down on it ----
+// Sinai's fire (FX.summitFire, videos/_kit/fire.js): flames cling to the ridge, kiln smoke billows up out of them,
+// the slopes take the firelight, embers rise; QUAKE windows shake the mountain and roll rocks down.
+const QUAKE=()=>[[AT.trembled-.05,AT.peopleStand+.3]];
+const SINAI=FX.peak(8,960,380,{halfW:760});
 function smokeFire(t,lt){
   const wrap=ease.out(prog(t,AT.wrapped,AT.wrapped+2)),fd=ease.inOut(prog(t,AT.descended-.3,AT.fire1));
-  let g=glow(960,380,700,'#FF7A3C',.15+.45*fd);
-  g+=mountain(8,1500,560,'#2E2838',.8)+mountain(9,420,600,'#322A3A',.8)+mountain(7,960,380,'#4A3E52',1)+P('M960 380L1060 520L1010 700Z','#3A3044',{opacity:.7});
-  for(let i=0;i<14;i++){const k=(t*.08+i/14)%1,side=i%2?1:-1,x=960+side*(140+k*420)+Math.sin(i+t*.3)*30,y=520+i%4*60-k*200;
-    g+=Ell(x,y,140+k*120,46+k*30,'#6A6270',{opacity:(.6*wrap*(1-k*.6)).toFixed(2)});}
-  if(fd>0){const by=lerp(-700,380,fd);g+=glow(960,by,260,'#FFB04C',.9)+P(`M900 -700L1020 -700L${980+Math.sin(t*9)*10} ${by}L${940+Math.sin(t*7)*10} ${by}Z`,'#FFB04C',{opacity:.85})+
-    P(`M935 -700L985 -700L${966} ${by}L${954} ${by}Z`,'#FFF2C8',{opacity:.9});}
-  if(fd>=1)g+=flames(t,960,390,200,180,1,9)+glow(960,330,300,'#FFE9A8',.6);
+  let g=glow(960,380,700,'#FF7A3C',.1+.3*fd);
+  g+=mountain(9,420,620,'#322A3A',.8)+mountain(10,1520,600,'#2E2838',.8);
+  // the LORD descends in fire: a fall of flame from the cloud onto the summit
+  if(fd>0&&fd<1){const by=lerp(-700,380,fd);g+=glow(960,by,300,'#FFB04C',.9)+FX.flames(t,[[930,by],[960,by-30],[990,by]],{H:340,sp:10,seed:21})+
+    P(`M920 -700L1000 -700L${975} ${by}L${945} ${by}Z`,'#FFB04C',{opacity:(.5*(1-fd)).toFixed(2)});}
+  g+=FX.summitFire(t,SINAI,fd,0,{fill:'#4A3E52',H:190,cap:130,smoke:Math.max(wrap*.55,fd),smokeH:1150,light:820,seed:8,wrap:wrap});
   g+=bolt(t,AT.fire1+.3,760,-500,180)+bolt(t,AT.wrapped+.6,1240,-600,260);
   g+=`<path d="${ridge(51,900,10,220)}" fill="#3A2A20"/>`;
-  // the camp at the foot of the mountain: tents, fires, people looking up
+  // the camp at the foot of the mountain: tents, a cook fire, families looking up
   [[520,980],[760,1010],[1220,990],[1440,1020]].forEach(([x,y],k)=>g+=P(`M${x-80} ${y}L${x} ${y-110}L${x+80} ${y}Z`,['#8A5A3A','#A86A3E','#7A4A2E','#9A6034'][k])+P(`M${x} ${y-110}L${x-12} ${y}L${x+12} ${y}Z`,'#3A2418'));
-  g+=glow(980,1060,120,'#FF9A3C',.6)+flames(t,980,1060,60,60,1,4);
-  [[640,1120],[880,1140],[1100,1130],[1320,1150]].forEach(([x,y],i)=>g+=folk(i,x,y,.7,{flip:x>960?-1:1,reach:.2+.3*fd,lean:-8}));
+  g+=glow(980,1060,120,'#FF9A3C',.6)+FX.flames(t,[[950,1062],[980,1056],[1010,1062]],{H:60,sp:9,seed:5});
+  g+=campWatch(t,fd);
+  return g;
+}
+
+// The camp at Sinai's foot looks up: a mother holds her child on her hip (both looking at the fire), the father's hand
+// on her shoulder; a man kneels; an old woman holds her hands at her chest. Awe grows as the fire comes down.
+function campWatch(t,fd){
+  const up={x:960,y:300},ex=['calm','awe',fd];
+  const mom=person(1,880,1140,.78,{face:-1,look:up,expr:ex});
+  const dad=person(0,760,1150,.82,{look:up,expr:ex,phase:1.1});
+  dad.near=PPL.handOn(dad,mom,'shoulder');
+  const c=PPL.carry(mom,person(3,0,0,.62,{kid:true,look:up,expr:['calm','awe',fd]}),{out:true});
+  let g=PPL.fig(dad).replace('','')+c.svg;
+  g+=folk(2,1110,1130,.74,{kneel:.9*fd,look:up,expr:ex,face:-1,near:'chest',far:'chest',lean:-6});
+  g+=folk(5,1290,1150,.76,{face:-1,look:up,expr:ex,near:'cover',far:'chest',f:true,hairStyle:'veil'});
+  g+=folk(4,600,1150,.7,{kid:true,look:up,expr:ex,near:'up'});
   return g;
 }
 
 // ---- A13. Smoke like a kiln; the whole mountain shakes ----
+const KILN=FX.peak(13,1000,330,{halfW:820,rough:12});
 function kiln(t,lt){
-  const q=prog(t,AT.wholeMtn,AT.wholeMtn+2.4),qx=q>0&&q<1?Math.sin(t*70)*12*(1-q):0;
-  let g=glow(1000,500,800,'#FF6A2A',.35);
-  for(let i=0;i<26;i++){const k=(t*.13+i/26)%1,x=1000+Math.sin(i*2.3+t*.5)*(40+k*320),y=480-k*1250,r=70+k*230;
-    g+=C(x,y,r,i%2?'#3E3238':'#4E4048',{opacity:(.9*(1-k*.7)).toFixed(2)})+C(x-r*.2,y+r*.3,r*.6,'#FF7A3C',{opacity:(.18*(1-k)).toFixed(2)});}
-  let m=P('M80 1800L620 700L860 560L1000 500L1140 560L1380 700L1900 1800Z','#2E2228')+flames(t,1000,520,260,160,1,10)+glow(1000,500,240,'#FFE36B',.6);
-  const cr=prog(t,AT.trembled,AT.trembled+.8);
-  if(cr>0)m+=mark('M1000 540L960 640L1020 760L940 900L990 1060',cr,'#FF7A3C',8)+mark('M860 600L800 720L840 860',cr,'#FF7A3C',6)+mark('M1150 620L1220 760L1180 900',cr,'#FF7A3C',6);
-  for(let i=0;i<7;i++){const p=prog(t,AT.wholeMtn+.2+i*.15,AT.wholeMtn+1.6+i*.15);if(p>0&&p<1){const side=i%2?1:-1;m+=P('M-22 0L0 -20L24 -6L18 18L-12 20Z','#4A3A3A',{transform:`translate(${1000+side*(60+p*520)} ${520+p*p*700}) rotate(${p*400})`});}}
-  g+=G(`translate(${qx.toFixed(1)} 0)`,m);
+  let g=glow(1000,500,800,'#FF6A2A',.25);
+  g+=FX.summitFire(t,KILN,1.1,QUAKE(),{fill:'#1C1418',H:230,cap:150,smoke:1.25,smokeH:1500,drift:120,light:900,seed:13,embers:60});
   return g+`<path d="${ridge(52,940,8,200)}" fill="#1E1418"/>`;
 }
 
@@ -470,25 +496,34 @@ const heart=(x,y,r,k=1)=>glow(x,y,r*2.2,'#FF7A6A',.5*k)+P(heartP(x,y,r),'#FF4A5C
 const rings=(t,a,x,y,R0=1300,n=4)=>{const sp=prog(t,a,a+2.2);if(sp<=0||sp>=1)return '';let g=glow(x,y,200+sp*700,'#FFFBEA',.6*(1-sp));
   for(let k=0;k<n;k++){const p=clamp(sp*1.6-k*.18);if(p>0&&p<1)g+=C(x,y,60+p*R0,'none',{stroke:'#FFF6DA','stroke-width':12*(1-p)+2,opacity:(1-p).toFixed(2)});}return g;};
 const gnd=(s,y,c1,c2)=>`<path d="${ridge(s,y,10,230)}" fill="${c1}"/><path d="${ridge(s+1,y+120,8,200)}" fill="${c2}"/>`;
-const elder=(x,y,s,o={})=>E.chubby(x,y,s,Object.assign({tunic:'#C8A06A',tunic2:'#7A5430',skin:'#D9965E',shade:'#A86A3E',hair:'#ECE8DE',filter:'htSoft',phase:.4},o));
+const elderOpts=(x,y,s,o={})=>{const q=pplOpts(0,x,y,s,Object.assign({tunic:'#C8A06A',tunic2:'#7A5430',skin:'#D9965E',shade:'#A86A3E',f:false,phase:.4},o));q.hair=o.hair||'#ECE8DE';return q;};
+const elder=(x,y,s,o={})=>PPL.fig(elderOpts(x,y,s,o));
 const pedestal=(x,y,w=150,h=150)=>R(x-w/2,y,w,h,6,'#6A6478',{stroke:'#3A3448','stroke-width':4})+R(x-w/2-14,y-14,w+28,22,4,'#8A849A');
 const tent=(x,y,c,k=1)=>P(`M${x-90*k} ${y}L${x} ${y-120*k}L${x+90*k} ${y}Z`,c)+P(`M${x} ${y-120*k}L${x-13*k} ${y}L${x+13*k} ${y}Z`,'#2A1A10');
 const earring=(x,y,r=10)=>C(x,y,r,'none',{stroke:GOLD,'stroke-width':5})+C(x,y+r,3,'#FFF1B0');
 
 // ---- B1. Here's the strange thing: the camp listens; the voice comes down from the fire ----
+const LISTEN=FX.peak(31,960,30,{halfW:950,rough:14});
 function listening(t,lt){
-  let g=stars(t,.6,400)+glow(960,0,900,'#FF8A3C',.4)+glow(960,-20,380,'#FFE9A8',.6);
-  g+=P('M-60 760L380 520L700 260L860 120L960 30L1060 120L1220 260L1540 520L1980 760L1980 1800L-60 1800Z','#2A1E34');
-  g+=P('M960 30L1060 120L1000 360L930 200Z','#3A2C46',{opacity:.7});
-  for(let i=0;i<8;i++){const k=(t*.06+i/8)%1;g+=Ell(960+(i%2?1:-1)*(160+k*260),60+i%3*40-k*90,150+k*80,40,'#6A5A70',{opacity:(.5*(1-k)).toFixed(2)});}
-  g+=flames(t,960,40,240,200,1,9)+glow(960,10,200,'#FFF6DA',.7);
+  let g=stars(t,.6,400)+glow(960,0,900,'#FF8A3C',.3);
+  g+=FX.summitFire(t,LISTEN,1,0,{fill:'#2A1E34',H:240,cap:150,smokeH:1200,smoke:1.1,light:900,seed:31,drift:140});
   g+=rings(t,AT.strange-.2,960,0,1500)+rings(t,AT.firstWords-.1,960,0,1500)+rings(t,AT.iam,960,0,1500)+rings(t,AT.broughtOut[0]-.6,960,0,1500);
   g+=gnd(61,740,'#3A2A30','#2A1E24');
   [[420,780],[1500,780]].forEach(([x,y],k)=>g+=tent(x,y-10,['#8A5A3A','#7A4A2E'][k]));
-  // the people face the mountain, heads up; auras pulse as each ring passes
-  const near=Math.max(0,Math.sin((t-AT.strange)*2.6));
-  [[620,800,1],[700,790,.62],[840,790,1.05],[1130,790,1],[1230,800,1.05],[1310,790,.9]].forEach(([x,y,s],i)=>
-    g+=folk(i,x,y,s,{flip:x>960?-1:1,lean:-14,reach:i===1?.9:.25,aura:'#FFE9A8',auraOp:.25+.3*near}));
+  // the people face the fire: awe, then (on "brought you out") the faces soften into the joy of the rescued
+  const near=Math.max(0,Math.sin((t-AT.strange)*2.6)),up={x:960,y:40},soft=prog(t,AT.broughtOut[0],AT.broughtOut[0]+1.2);
+  const ex=['awe','tender',soft],au=.22+.25*near;
+  // a family: the father's hand on the mother's shoulder; she holds the child's hand; the child points at the fire
+  const mom=person(1,712,795,1,{look:up,expr:ex,aura:'#FFE9A8',auraOp:au,hairStyle:'veil'});
+  const kid=person(3,815,800,.62,{kid:true,look:up,expr:['surprised','joy',soft],near:{x:900,y:560},aura:'#FFE9A8',auraOp:au});
+  const dad=person(0,600,800,1.0,{look:up,expr:ex,phase:1.3,aura:'#FFE9A8',auraOp:au});
+  dad.near=PPL.handOn(dad,mom,'shoulder');
+  const hh=PPL.holdHands(mom,kid);
+  g+=PPL.rig(dad).draw('back')+PPL.rig(dad).draw('body')+PPL.rig(dad).draw('head')+hh.svg+PPL.rig(dad).draw('front');
+  // an old man kneels with open hands; a woman holds her hands to her chest; a young man shades his eyes
+  g+=PPL.fig(elderOpts(1100,795,1.0,{face:-1,kneel:1,look:up,expr:ex,tunic:'#E8DCC0',tunic2:'#9A7A50',near:{x:1040,y:600},far:{x:1070,y:590},aura:'#FFE9A8',auraOp:au}));
+  g+=folk(5,1210,800,.92,{face:-1,look:up,expr:ex,near:'chest',far:'chest',f:true,aura:'#FFE9A8',auraOp:au});
+  g+=folk(2,1318,790,.9,{face:-1,look:up,expr:ex,near:'cover',aura:'#FFE9A8',auraOp:au});
   return g;
 }
 // ---- B2. Out of the house of slavery: people step out of a dark brick doorway into light; a chain snaps ----
@@ -514,9 +549,10 @@ function slaveHouse(t,lt){
   return g;
 }
 // ---- B3. Who he is, what he has done: blank tablets wait; the fire burns; the rescue shines in the sky ----
+const VIS_PEAK=FX.peak(41,1350,90,{halfW:700,rough:12});
 function visions(t,lt){
   let g=stars(t,.9,300)+glow(1350,80,500,'#FF8A3C',.4);
-  g+=P('M820 760L1150 300L1300 120L1350 90L1400 120L1600 340L1980 700L1980 1800L820 1800Z','#241A34')+flames(t,1350,96,150,130,1,7)+glow(1350,80,160,'#FFE9A8',.6*(.7+.3*Math.sin(t*3)));
+  g+=FX.summitFire(t,VIS_PEAK,.9,0,{fill:'#241A34',H:150,cap:100,rows:2,smokeH:700,smoke:.9,light:600,seed:41,embers:30});
   if(t>AT.whoHe-.4)g+=glow(1350,80,500*ease.out(prog(t,AT.whoHe-.4,AT.whoHe+.6)),'#FFF6DA',.5);
   const vp=k=>ease.out(prog(t,AT.already-.6+k*.45,AT.already+.3+k*.45));
   // the parted sea
@@ -530,7 +566,16 @@ function visions(t,lt){
   g+=glow(550,470,280,'#9AB0FF',.18)+tb(460)+tb(640);
   g+=gnd(65,760,'#2A2440','#1E1A32');
   [[300,790],[1500,780]].forEach(([x,y],k)=>g+=tent(x,y,['#5A4060','#4A3452'][k]));
-  [[720,800,1],[800,790,.62],[880,800,1]].forEach(([x,y,s],i)=>g+=folk(i+1,x,y,s,{flip:i===2?-1:1,lean:-16,reach:.2,aura:'#9AD8FF',auraOp:.25}));
+  // the family: the mother holds the child's hand, the father's hand rests on the child's shoulder; they look at the
+  // fire on the mountain, then up at each vision as it appears, and turn to each other as the rescue is remembered
+  const vis=[[560,-210],[960,-260],[1360,-200]],vk=[0,1,2].reduce((a,k)=>vp(k)>.3?k:a,-1);
+  const up=vk<0?{x:1350,y:96}:{x:vis[vk][0],y:vis[vk][1]},joy=prog(t,AT.already,AT.already+1.2),ex=['awe','joy',joy];
+  const kid=person(3,790,805,.62,{kid:true,look:up,expr:['surprised','joy',joy],near:vk>=0?{x:up.x,y:up.y+500}:null,aura:'#9AD8FF',auraOp:.3});
+  const mom=person(2,925,800,1,{f:true,face:-1,look:joy>.6?{x:800,y:690}:up,expr:ex,hairStyle:'veil',aura:'#9AD8FF',auraOp:.25});
+  const dad=person(1,650,800,1.05,{look:up,expr:ex,phase:1.2,beard:true,f:false,hairStyle:'short',aura:'#9AD8FF',auraOp:.25});
+  {const p=PPL.handOn(dad,kid,'shoulder');dad.near={x:p.x-6,y:p.y+12};}
+  const hh=PPL.holdHands(mom,kid,{order:'ba'}),D=PPL.rig(dad);
+  g+=D.draw('back')+D.draw('body')+D.draw('head')+hh.svg+D.draw('front');
   return g;
 }
 // ---- B4. The rescue comes first, the rules second: a child lifted out of the water; then the tablets set down ----
@@ -539,9 +584,19 @@ function rescueRules(t,lt){
   g+=R(-60,300,1100,1500,0,'#3A7AB8')+P('M1040 300Q1000 560 1100 760L1980 760L1980 300Z','#E8C890');
   for(let i=0;i<10;i++)g+=P(`M${-40+i*110} ${380+(i%3)*90}q30 -16 60 0t60 0`,'none',{stroke:'#BFE8FF','stroke-width':5,opacity:(.4+.3*Math.sin(t*2+i)).toFixed(2)});
   // rescue: the child comes up out of the water into the parent's arms
-  const up=ease.out(prog(t,AT.rescueFirst-.3,AT.rescueFirst+.9));
-  g+=folk(1,640,800,1.15,{reach:lerp(.2,.85,up),lean:lerp(20,-4,up),aura:'#FFE9A8',auraOp:.2+.3*up});
-  g+=folk(3,lerp(770,700,up),lerp(900,650,up),.62,{flip:-1,reach:lerp(1,.6,up),aura:'#FFE9A8',auraOp:.4*up});
+  // the mother wades in, bends, takes the child under the arms and lifts her up onto her hip; the child's arm goes
+  // round her neck and both faces turn from fear to joy
+  const up=ease.inOut(prog(t,AT.rescueFirst-.5,AT.rescueFirst+1.1));
+  const momO=person(1,640,822,1.15,{lean:lerp(20,-2,ease.out(prog(up,.35,1))),expr:['fear','tender',prog(up,.3,.9)],aura:'#FFE9A8',auraOp:.2+.3*up,shadow:false});
+  const kidO=person(3,0,0,.62,{kid:true,expr:['fear','joy',prog(up,.4,1)],aura:'#FFE9A8',auraOp:.4*up});
+  if(up<.72){
+    const M0=PPL.rig(Object.assign({},momO,{near:null,far:null})),seat=[M0.hip[0]+30*M0.s,M0.hip[1]-14*M0.s];
+    const e=ease.inOut(prog(up,0,.72)),hx=lerp(800,seat[0],e),hy=lerp(842,seat[1],e)+Math.sin(t*5)*3*(1-e);
+    const K0=PPL.rig(Object.assign({},kidO,{face:-1,hipAt:{x:hx,y:hy},sit:prog(e,.5,1),near:'up',far:'up',look:{x:M0.head[0],y:M0.head[1]}}));
+    const a=K0.chest(.35),b=K0.back(.35);
+    const M=PPL.rig(Object.assign({},momO,{near:{x:b[0],y:b[1]},far:{x:a[0],y:a[1]},look:'down'}));
+    g+=M.draw('back')+M.draw('body')+M.draw('head')+K0.draw('all')+M.draw('front');
+  }else g+=PPL.carry(momO,kidO).svg;
   g+=R(-60,800,1120,1000,0,'#2E6AA8',{opacity:.92})+P(`M-60 800${[...Array(12)].map((_,i)=>`q45 ${Math.sin(t*3+i)*10} 90 0`).join('')}`,'none',{stroke:'#BFE8FF','stroke-width':6});
   if(up>0&&up<1)for(let k=0;k<10;k++)g+=C(720+Math.cos(k)*90*up,800-up*90*Math.abs(Math.sin(k*1.3)),8,'#EAF8FF',{opacity:(1-up).toFixed(2)});
   // rules: the tablets come down onto the rock after
@@ -563,11 +618,22 @@ function earnLoved(t,lt){
       :folk(2,lerp(520,700,fall),lerp(top,780,fall),.95,{lean:lerp(-6,-40,fall),reach:.3});
   // the family by the fire, in the warm part of the camp
   g+=tent(1650,770,'#A86A3E',1.2)+tent(1150,760,'#8A5A3A')+glow(1480,760,140,'#FF9A3C',.6)+flames(t,1480,770,70,70,1,5);
-  const run=ease.inOut(prog(t,AT.theyre-.2,AT.theyre+.9)),hug=prog(t,AT.theyre+.9,AT.theyre+1.2);
-  const kx=lerp(1020,1240,run),bob=hug>0?0:Math.abs(Math.sin(t*12))*8;
-  g+=folk(0,1330,790,1.1,{flip:-1,reach:lerp(.3,.9,run),lean:lerp(0,10,hug),aura:'#FFE9A8',auraOp:.2+.3*hug});
-  g+=folk(1,1440,790,1.05,{flip:-1,reach:.5,aura:'#FFE9A8',auraOp:.3*hug});
-  g+=folk(3,kx,790-bob-hug*80,.62,{walk:run<1?t*10:0,reach:hug>0?1:.3,aura:'#FFE9A8',auraOp:.4*hug});
+  // the child runs to her father; he drops to one knee with open arms, catches her and holds her; the mother bends in,
+  // her hand on his shoulder, smiling at the child
+  const run=ease.inOut(prog(t,AT.theyre-.2,AT.theyre+.9)),hugK=ease.out(prog(t,AT.theyre+.75,AT.theyre+1.15)),kn=ease.inOut(prog(t,AT.theyre-.4,AT.theyre+.6));
+  const kx=lerp(1010,1266,run),kidO=person(3,kx,792,.62,{kid:true,walk:run<1?t*11:null,expr:'joy',lean:run<1?10:0,near:hugK>0?null:'open',far:hugK>0?null:'open',aura:'#FFE9A8',auraOp:.4*hugK});
+  if(run<1)kidO.jump=Math.abs(Math.sin(t*11))*6;
+  const dadO=person(0,1330,792,1.1,{face:-1,kneel:kn,expr:'joy',look:{x:kx+10,y:700},near:'open',far:'open',lean:6*kn,aura:'#FFE9A8',auraOp:.2+.3*hugK});
+  const momO=person(1,1465,792,1.05,{face:-1,lean:14*hugK,expr:['calm','tender',hugK],look:{x:kx,y:700},hairStyle:'veil',aura:'#FFE9A8',auraOp:.3*hugK});
+  const M=PPL.rig(Object.assign({},momO,{near:PPL.handOn(momO,dadO,'shoulder')}));
+  g+=M.draw('back')+M.draw('body')+M.draw('head');
+  if(hugK>0){const D0=PPL.rig(Object.assign({},dadO,{near:null,far:null})),nk=D0.neck,sh=D0.shoulder('far');
+    kidO.near={x:lerp(kx+60,nk[0],hugK),y:lerp(700,nk[1]+6,hugK)};kidO.far={x:lerp(kx+40,sh[0],hugK),y:lerp(690,sh[1],hugK)};
+    const KR=PPL.rig(Object.assign({},kidO,{near:null,far:null})),kb=KR.W([-22,-72]),kb2=KR.W([-10,-50]);
+    dadO.near={x:lerp(kx+70,kb[0],hugK),y:lerp(680,kb[1],hugK)};dadO.far={x:lerp(kx+90,kb2[0],hugK),y:lerp(690,kb2[1],hugK)};
+    g+=PPL.hug(dadO,kidO,{k:hugK}).svg;}
+  else g+=PPL.fig(dadO)+PPL.fig(kidO);
+  g+=M.draw('front');
   return g;
 }
 // ---- B6. And then comes the first command: the tablets in the fire, the first line burns in ----
@@ -1119,7 +1185,7 @@ E.start({
     {name:'smoke and fire',at:AT.mount-.1,draw:smokeFire,bg:['#141020','#3A2418'],fore:{grass:['#3A2A20','#2E2218','#4A3828'],flowers:[]},
       cam:[[AT.mount,960,600,.9],[AT.smokeOf-.2,960,530,1.15]]},
     {name:'kiln',at:AT.smokeOf-.1,draw:kiln,bg:['#2A0E08','#0A0404'],stars:false,vIn:'cut',
-      cam:[[AT.smokeOf+.2,1000,700,1.2],[AT.wholeMtn,1000,300,1.15]]},
+      cam:[[AT.smokeOf+.2,1000,520,1.0],[AT.peopleStand-.2,1000,420,1.12]]},
     {name:'the line',at:AT.peopleStand-.1,draw:boundary,bg:['#1A1020','#4A2A1A'],fore:{grass:['#4A3826','#3A2C1E','#5A4430'],flowers:[]},
       cam:[[AT.peopleStand,900,620,.95],[AT.andThen-.2,800,650,1.22]]},
     {name:'out of the fire',at:AT.andThen-.1,draw:voice,bg:['#3A0A04','#120402'],stars:false,vIn:'cut',
@@ -1130,7 +1196,7 @@ E.start({
     {name:'house of slavery',at:AT.broughtOut[0]-.15,draw:slaveHouse,bg:['#6A1A0E','#2A0806'],stars:false,fore:FG('#9A5A2E','#7A4422','#AA6A3A'),
       cam:[[AT.broughtOut[0],900,600,.95],[AT.tells-.2,1040,659,1.22]]},
     {name:'who he is',at:AT.tells-.1,draw:visions,bg:['#0A1838','#1A0E28'],vIn:'cut',fore:FG('#2A2440','#1E1A32','#3A3456',['#9AD8FF']),
-      cam:[[AT.tells,700,560,1.1],[AT.already-.2,940,580,.85]]},
+      cam:[[AT.tells,760,650,1.1],[AT.already-.2,940,580,.85]]},
     {name:'rescue, then rules',at:AT.rescueFirst-.1,draw:rescueRules,bg:['#FFD08A','#4A8AC8'],stars:false,vIn:'cut',fore:SAND,
       cam:[[AT.rulesSecond-1.8,700,677,1.3],[AT.these2-.2,1330,662,1.3]]},
     {name:'earning, loved',at:AT.these2-.1,draw:earnLoved,bg:['#4A4A5A','#C07040'],fore:FG('#4A3A4A','#3A2A3A','#5A4A5A',['#FFB04C']),
