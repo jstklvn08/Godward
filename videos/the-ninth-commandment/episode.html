@@ -258,7 +258,8 @@ function gateSet(t,o={}){
   return g+(o.dim?R(-120,-760,2160,2600,0,'#0A0612',{opacity:o.dim}):'');}
 const foreGate=(t,cx,z,o={})=>{const [xl,xr]=EDG(cx,z),night=!!o.night,pc=night?'#2E2838':'#B0906A',pd=mix(pc,'#000000',.25);let g=R(-120,1060,2160,740,0,pc);
   for(let r=0;r<8;r++){const y=1090+r*r*9+r*40,k=1.3+r*.4;for(let x=-120+(r%2)*40*k;x<2040;x+=96*k)g+=Ell(x,y,42*k,13*k,hash(r*70+x|0,4)>.5?mix(pc,'#FFFFFF',.06):pd,{stroke:mix(pc,'#000000',.45),'stroke-width':3});}
-  g+=R(xl+30,1430,150,180,12,night?'#4A4256':'#9A8A70',{stroke:'#2A2632','stroke-width':6})+R(xl+38,1434,134,30,8,night?'#2A3A5A':'#5A8AB0');
+  // grain sacks leaning together by the wall of the plaza
+  [[xl+60,1640,1.1,-8],[xl+190,1660,1,6]].forEach(([x,y,k,r])=>g+=G(`rotate(${r} ${x} ${y})`,P(`M${x-70*k} ${y}Q${x-90*k} ${y-120*k} ${x-40*k} ${y-170*k}L${x+40*k} ${y-170*k}Q${x+90*k} ${y-120*k} ${x+70*k} ${y}Z`,night?'#5A5060':'#C8B08A',{stroke:night?'#2A2632':'#7A6448','stroke-width':6})+L(x-40*k,y-150*k,x+40*k,y-150*k,night?'#2A2632':'#7A6448',6)+Ell(x,y-178*k,34*k,14*k,night?'#8A7A50':'#E8C860')));
   for(let i=0;i<12;i++){const x=xr-220+hash(i,8)*200,y=1580+hash(i,9)*160;g+=L(x,y,x+40*(hash(i,10)-.5),y-30-20*hash(i,11),'#C8A060',5);}
   if(night)g+=torch(t,xr-60,1330,2,5);
   else g+=jar(xr-80,1620,2.6)+SC.animal(t,'dove',cx+(o.dx??120),1500,2.2,{graze:'auto'})+SC.animal(t,'dove',cx+(o.dx??120)+130,1540,2.0,{graze:'auto',face:-1,phase:1.3});
@@ -745,8 +746,8 @@ function bendTruth(t,lt){
 const nameScroll=(x,y,s=1,k=1)=>glow(x,y,90*s,'#FFE9A8',.5*k)+G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${s})`,R(-46,-26,92,52,6,'#FFF6DA',{stroke:'#C8A060','stroke-width':3})+C(-46,0,10,'#C8A070')+C(46,0,10,'#C8A070')+L(-30,-6,30,-8,'#B8862C',4)+L(-26,8,20,8,'#B8862C',4));
 function takes(t,lt){
   let g=street(t,{mood:'dusk',houses:[[460,.95],[1520,.95]],lit:1,treeX:1000,seed:31});
-  const k=ease.inOut(prog(t,AT.takes-.1,AT.takes+.4)),p={x:lerp(1080,880,k),y:lerp(FY-300,FY-290,k)};
-  g+=PPL.fig(person(0,1220,FY,HS,{face:-1,look:p,near:k>.3?{x:lerp(1100,980,k),y:FY-380}:{x:1080,y:FY-300},expr:['calm','surprised',k]}));
+  const k=ease.inOut(prog(t,AT.takes-.1,AT.takes+.4)),p={x:lerp(1060,900,k),y:lerp(FY-220,FY-230,k)};
+  g+=PPL.fig(person(0,1220,FY,HS,{face:-1,look:p,near:k>.3?{x:lerp(1060,960,k),y:FY-240}:{x:1080,y:FY-220},expr:['calm','surprised',k]}));
   g+=grey(0,740,FY,HS,{look:p,near:{x:p.x+(k>0?0:-30),y:p.y},lean:10*k,expr:['calm','joy',k]})+nameScroll(p.x,p.y,2.1,1-.5*k);
   return g+foreStreet(t,980,1.08,{d:.5,seed:81});
 }
@@ -873,7 +874,7 @@ function nightHall(t,lt){
   const tells=[AT.many,AT.many+1,AT.but2,AT.notAgree];
   [[0,1500,940,1.4],[1,1660,950,1.4]].forEach(([k,x,y,s])=>g+=grey(k,x,y,s,{face:-1,look:{x:1340,y:500},expr:'calm'}));
   [[0,700],[1,1020]].forEach(([k,x],j)=>{const u=ease.out(prog(t,tells[j*2],tells[j*2]+.9)),u2=ease.out(prog(t,tells[j*2+1],tells[j*2+1]+.9));
-    g+=grey(k,x,FY,VS,{look:{x:1340,y:500},expr:'calm',near:(u>0&&u<1)||(u2>0&&u2<1)?{x:x+190,y:FY-400}:null});
+    g+=grey(k,x,FY,VS,{look:{x:1340,y:500},expr:'calm',near:(u>0&&u<1)||(u2>0&&u2<1)?{x:x+220,y:FY-280}:null});
     [[tells[j*2],u],[tells[j*2+1],u2]].forEach(([a,v],q)=>{if(t>a){const rot=[-14,10,-4,18][j*2+q],yy=lerp(FY-420,FY-620-q*90,v);g+=wordStrip(x+lerp(80,170,v),yy,lerp(60,220,v),110+j*2+q,rot*v,{h:50,fill:['#9C98A8','#A89C8C','#8C9CA8','#A88C9C'][j*2+q]});}});});
   return g+foreHall(t,1000,1.08);
 }
@@ -894,7 +895,7 @@ function silentTruth(t,lt){
   g+=bigCol(t,960,FY,1.15);
   for(let k=0;k<8;k++){const a=k/8*6.283+t*.6,r=lerp(560,200,prog(t,AT.whileLies-.6+k*.12,AT.whileLies+1.6+k*.1)),x=960+Math.cos(a)*r,y=FY-380+Math.sin(a)*r*.6;
     g+=wordStrip(x,y,170,130+k,Math.cos(a)*20,{op:clamp(r/320-.4),h:46});}
-  [[640,0],[1280,1]].forEach(([x,k])=>g+=G('',grey(k,x,FY,2.05,{face:x>960?-1:1,look:{x:960,y:500},near:{x:x+(x>960?-160:160),y:FY-360},expr:'calm'}),'.75'));
+  [[640,0],[1280,1]].forEach(([x,k])=>g+=G('',grey(k,x,FY,2.05,{face:x>960?-1:1,look:{x:960,y:500},near:{x:x+(x>960?-200:200),y:FY-260},expr:'calm'}),'.75'));
   return g+foreHall(t,960,1.06);
 }
 
