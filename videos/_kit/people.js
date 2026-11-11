@@ -201,7 +201,7 @@
         g += `<line x1="${x - 7}" y1="${f2(by + (inner < 0 ? -lift : 0))}" x2="${x + 7}" y2="${f2(by + (inner > 0 ? -lift : 0))}" stroke="${e}" stroke-width="3" stroke-linecap="round" opacity=".85"/>`;
       });
       // cheeks and mouth
-      g += `<ellipse cx="46" cy="-147" rx="8" ry="5" fill="#FF7A6A" opacity=".3"/>`;
+      if (o.blush !== false) g += `<ellipse cx="46" cy="-147" rx="8" ry="5" fill="#FF7A6A" opacity=".3"/>`;   // o.blush:false hides the cheek
       const mx = 30, my = -141, cv = fc.smile * 6;
       if (fc.open > .2) {
         const w = 6 + 3 * fc.open, d = 5 + 9 * fc.open;
