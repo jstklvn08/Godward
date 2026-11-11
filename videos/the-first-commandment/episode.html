@@ -662,7 +662,7 @@ function earnLoved(t,lt){
   const kx=lerp(1010,1266,run),kidO=person(3,kx,792,.62,{kid:true,walk:run<1?t*11:null,expr:'joy',lean:run<1?10:0,near:hugK>0?null:'open',far:hugK>0?null:'open',aura:'#FFE9A8',auraOp:.4*hugK});
   if(run<1)kidO.jump=Math.abs(Math.sin(t*11))*6;
   const dadO=person(0,1330,792,1.1,{face:-1,kneel:kn,expr:'joy',look:{x:kx+10,y:700},near:'open',far:'open',lean:6*kn,aura:'#FFE9A8',auraOp:.2+.3*hugK});
-  const momO=person(1,1478,792,.95,{face:-1,lean:2*hugK,expr:['calm','tender',hugK],look:{x:kx,y:700},hairStyle:'veil',aura:'#FFE9A8',auraOp:.3*hugK});
+  const momO=person(1,1468,792,.95,{face:-1,lean:2*hugK,expr:['calm','tender',hugK],look:{x:kx,y:700},hairStyle:'veil',aura:'#FFE9A8',auraOp:.3*hugK});
   const M=PPL.rig(Object.assign({},momO,{near:PPL.handOn(momO,dadO,'shoulder')}));
   g+=M.draw('back')+M.draw('body')+M.draw('head');
   // catch and lift: he lifts her up to his chest, her face above his shoulder, her arms round his neck
@@ -902,7 +902,8 @@ function waiting(t,lt){
   g+=PPL.fig(momO)+PPL.fig(kidO);
   const ph=Math.sin((t-AT.camp)*1.7),px=1170+ph*80,dir=Math.cos((t-AT.camp)*1.7)>0?1:-1;
   g+=folk(2,px,800,1.05,{walk:t*8,flip:dir,lean:6,look:{x:1460,y:60},expr:'sad',near:'chest',far:'chest'});
-  g+=elder(1360,800,1,{flip:-1,lean:-18,look:{x:1460,y:40},expr:'sad',near:'chest',far:'chest'});
+  // the old man leans on his walking stick
+  g+=L(1296,712,1284,800,'#6A4A2A',8)+elder(1360,800,1,{flip:-1,lean:-14,look:{x:1460,y:40},expr:'sad',near:{x:1296,y:712},far:'chest'});
   return g;
 }
 // ---- C4. Earrings into the fire, the gold calf rises, "These are your gods" ----

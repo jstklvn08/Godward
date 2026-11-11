@@ -1,6 +1,6 @@
 // Godward people rig (window.PPL): the house's round "chubby" figures (same proportions, colours, faces and halftone
 // paper look as style-kit's chubby / E.chubby), rebuilt as a rig so they can act together: arms that bend and reach
-// (two-bone IK) with hands that meet hands, shoulders and children; eyes that look at a target; simple expressions;
+// (two-bone IK, never longer than the natural arm) with hands that meet hands, shoulders and children; eyes that look at a target; simple expressions;
 // kneeling, sitting and carrying; feet planted with a soft contact shadow; a thinner sticker edge.
 // Load after episode-engine.js. Nothing here changes existing pages; a page opts in by calling PPL.
 //
@@ -16,7 +16,7 @@
 // Options (o): x, y, s, face (or flip), f (woman: long hair and flower), t (default E.t), phase
 //   pose:  lean (deg, + forward), kneel 0..1, sit 0..1 (with seat: world y of the seat), hipAt {x,y} (held, no ground),
 //          walk (phase in radians; omit/0 when standing), jump (px), tilt (head, deg)
-//   arms:  near / far = {x,y} world target for the hand | 'up' | 'open' | 'chest' | 'cover' | null (rest at the side)
+//   arms:  near / far = {x,y} world target for the hand (out of reach: the straight arm points at it) | 'up' | 'open' | 'chest' | 'cover' | null (rest at the side)
 //   face:  look = {x,y} world | 'up' | 'down' | null;  expr = 'calm' | 'joy' | 'fear' | 'awe' | 'sad' | 'surprised' |
 //          'tender', or [a, b, k] to blend; blinks by itself. A look target behind turns the head round.
 //   look:  tunic, tunic2, skin, shade, hair, eye, aura, auraOp, shadow (default on when standing), filter ('pplHt' paper
@@ -67,9 +67,11 @@
     return Object.assign({}, EXPR.calm, e);
   };
 
+  // Upper arm and forearm length (the arm's natural reach is 2*ARM = 92, about the old figure's longest gesture).
+  const ARM = 46;
   const rot = (p, c, deg) => { const a = deg * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a), dx = p[0] - c[0], dy = p[1] - c[1]; return [c[0] + dx * cs - dy * sn, c[1] + dx * sn + dy * cs]; };
-  // Two-bone IK with cartoon stretch: bones grow up to `stretch` times when the target is further than the arm.
-  function ik(S0, T, a, b, bend, stretch = 1.9) {
+  // Two-bone IK. Limbs never grow: a target out of reach gets a straight limb pointing at it at full length.
+  function ik(S0, T, a, b, bend, stretch = 1) {
     const dx = T[0] - S0[0], dy = T[1] - S0[1], d0 = Math.hypot(dx, dy) || .001;
     const k = clamp(d0 / (a + b - .6), 1, stretch); a *= k; b *= k;
     const d = clamp(d0, Math.abs(a - b) + 1, a + b - .6), ang = Math.atan2(dy, dx);
@@ -136,13 +138,13 @@
       const S0 = SH[side], v = o[side], idle = Math.sin(ht * .8 + ph + (side === 'near' ? 0 : 1.3)) * 3;
       let T, bend = 'down';
       if (v && typeof v === 'object') { T = Lc(v); bend = o[side + 'Bend'] || 'down'; }
-      else if (v === 'up') { T = [S0[0] + 30 + idle, S0[1] - 104]; bend = 'out'; }
+      else if (v === 'up') { T = [S0[0] + 26 + idle, S0[1] - 2 * ARM]; bend = 'out'; }
       else if (v === 'open') { T = [S0[0] + (side === 'near' ? 74 : 44), S0[1] - 14 + idle]; }
       else if (v === 'chest') { T = U([side === 'near' ? 30 : 20, -86]); bend = 'fwd'; }
       else if (v === 'cover') { T = [HC[0] + 40, HC[1] + 6]; }
-      else if (side === 'near') { T = [52 + sw * .5 + idle, -52 + drop]; bend = 'fwd'; }
-      else { T = [-46 - sw * .5 - idle, -50 + drop]; bend = 'out'; }
-      const [e, h] = ik(S0, T, 30, 30, bend);
+      else if (side === 'near') { T = [50 + sw * .5 + idle, -30 + drop]; bend = 'fwd'; }
+      else { T = [-42 - sw * .5 - idle, -32 + drop]; bend = 'out'; }
+      const [e, h] = ik(S0, T, ARM, ARM, bend);
       arms[side] = { S: S0, E: e, H: h };
     });
 
