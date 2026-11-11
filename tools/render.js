@@ -12,6 +12,7 @@
 //   node tools/render.js stills <page.html> <outdir> <t1,t2,...> [--vertical]
 //   node tools/render.js sheet  <out.jpg> <cols> <img1> <img2> ...
 //   node tools/render.js shot   <page.html> <out.png> <width> <height>     (waits for window.ready)
+//   node tools/render.js join   <out.mp4> <a.mp4> <b.mp4> ...              (e.g. episode + videos/_kit/outro/godward-outro-9x16.mp4)
 //
 // Video options
 //   --vertical          1080x1920 with ?v=1 (default 1920x1080)
@@ -122,7 +123,8 @@ async function video(html, out, opt) {
   if (!(dur > 0)) throw new Error('window.DUR is missing; see the page contract.');
   const start = +(opt.start || 0), end = Math.min(+(opt.end || dur), dur);
   const F0 = Math.round(start * fps), F1 = Math.round(end * fps);
-  const tmp = out + '.parts';
+  out = path.resolve(out);
+  const tmp = out + '.parts';   // absolute: ffmpeg resolves concat-list entries relative to the list file
   fs.mkdirSync(tmp, { recursive: true });
   const per = Math.ceil((F1 - F0) / workers), parts = [];
   for (let k = 0; k < workers; k++) {
@@ -187,6 +189,21 @@ async function shot(html, out, w, h) {
   console.log(out);
 }
 
+function join(out, inputs, opt) {
+  // Re-encodes once so clips with different encoder settings join cleanly (video and audio).
+  const quality = QUALITY[opt.quality || 'web'];
+  const args = ['-y'];
+  inputs.forEach(f => args.push('-i', f));
+  const streams = inputs.map((_, i) => `[${i}:v]fps=30,format=yuv420p,setsar=1[v${i}];[${i}:a]aresample=48000,aformat=channel_layouts=stereo[a${i}]`).join(';');
+  const order = inputs.map((_, i) => `[v${i}][a${i}]`).join('');
+  args.push('-filter_complex', `${streams};${order}concat=n=${inputs.length}:v=1:a=1[v][a]`,
+    '-map', '[v]', '-map', '[a]', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', ...quality,
+    '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', out);
+  const r = spawnSync(ffmpeg, args, { encoding: 'utf8' });
+  if (r.status) throw new Error('ffmpeg join failed: ' + r.stderr.slice(-2000));
+  console.log(`done ${out} ${(fs.statSync(out).size / 1e6).toFixed(1)} MB`);
+}
+
 (async () => {
   const [cmd, ...rest] = process.argv.slice(2);
   const { pos, opt } = parse(rest);
@@ -194,6 +211,7 @@ async function shot(html, out, w, h) {
   if (cmd === 'stills') return stills(pos[0], pos[1], pos[2], opt);
   if (cmd === 'sheet') return sheet(pos[0], pos[1], pos.slice(2));
   if (cmd === 'shot') return shot(pos[0], pos[1], pos[2], pos[3]);
+  if (cmd === 'join') return join(pos[0], pos.slice(1), opt);
   console.log(fs.readFileSync(__filename, 'utf8').split('\n').filter(l => l.startsWith('//')).map(l => l.slice(3)).join('\n'));
   process.exitCode = cmd ? 1 : 0;
 })().catch(e => { console.error(e.message || e); process.exit(1); });

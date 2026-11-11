@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Godward outro</title>
+<!--
+  Godward outro, vertical 9:16 (1080x1920), 6.5 s, with a 1.3 s fade up from black. Appended to the end of every episode.
+  Brand: "Oxblood Ridge" (dusk sky, gold horizon, layered ridges) from the Godward Brand Kit.
+  The lockup and tagline are the real brand artwork (cut from the kit's YouTube banner), never
+  retyped, recoloured, stretched, rotated, outlined or glowed. Platform icons: Simple Icons (CC0).
+  Give-only rule: no handles, URLs or spoken asks on screen; only the display name, which is the
+  same on every platform. Page contract: window.DUR, window.seek(t), ?render=1 (see engine.md).
+  Render: node tools/render.js video videos/_kit/outro/outro.html <out.mp4> --vertical --audio <outro.wav>
+-->
+<style>
+  html,body{margin:0;background:#2A0E0F;overflow:hidden}
+  svg{display:block;width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<svg id="o" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4A1416"/>
+      <stop offset=".45" stop-color="#6A1F22"/>
+      <stop offset=".72" stop-color="#7E2629"/>
+      <stop offset="1" stop-color="#5A1A1C"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="540" cy="1470" r="620" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E4A06A" stop-opacity=".85"/>
+      <stop offset=".35" stop-color="#B55B45" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#7E2629" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="disc" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#3A1012" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#3A1012" stop-opacity=".25"/>
+    </radialGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 .5"/></feComponentTransfer>
+    </filter>
+    <radialGradient id="vig" cx=".5" cy=".46" r=".75">
+      <stop offset=".6" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".45"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#sky)"/>
+  <rect id="sunGlow" width="1080" height="1920" fill="url(#sun)"/>
+  <g id="motes"></g>
+  <g id="ridges"></g>
+
+  <!-- Brand artwork: transforms and opacity only. -->
+  <g id="lockupG" opacity="0">
+    <image id="lockup" href="../brand/godward-lockup-cream.png" x="0" y="0" width="651" height="191"/>
+  </g>
+  <g id="taglineG" opacity="0">
+    <image href="../brand/godward-tagline-gold.png" x="0" y="0" width="710" height="77"/>
+  </g>
+
+  <g id="icons"></g>
+  <text id="name" x="540" y="1418" text-anchor="middle" fill="#FEF5EB" opacity="0"
+        font-family="Inter, 'Segoe UI', Arial, sans-serif" font-weight="800" font-size="30" letter-spacing="6">GODWARD · DAILY BIBLE</text>
+
+  <rect width="1080" height="1920" filter="url(#grain)" opacity=".16" style="mix-blend-mode:overlay"/>
+  <rect width="1080" height="1920" fill="url(#vig)"/>
+  <rect id="black" width="1080" height="1920" fill="#000" opacity="1"/>
+</svg>
+<script src="../brand/platform-icons.js"></script>
+<script>
+(() => {
+  const DUR = 6.5;
+  const FADE_IN = 1.3;   // slow fade up from black, so the episode settles before the brand appears
+  const D = 0.55;        // everything after the fade starts this much later than the first version
+  const $ = id => document.getElementById(id);
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const prog = (t, a, b) => clamp((t - a) / (b - a));
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const easeInOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const back = x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  // Layered ridges (back to front), echoing the banner's "Oxblood Ridge".
+  const RIDGES = [
+    { y: 1480, amp: 26, f: 1.3, ph: .4, fill: '#6E1F22' },
+    { y: 1560, amp: 34, f: 1.0, ph: 2.1, fill: '#5E1B1E' },
+    { y: 1660, amp: 30, f: 1.6, ph: 4.0, fill: '#4F1719' },
+    { y: 1780, amp: 24, f: 1.2, ph: 1.0, fill: '#401214' },
+  ];
+  const ridgeEls = RIDGES.map(r => el('path', { fill: r.fill }, $('ridges')));
+  const ridgePath = (r, lift) => {
+    let d = `M0 1920 L0 ${r.y + lift}`;
+    for (let x = 0; x <= 1080; x += 30) {
+      const y = r.y + lift + Math.sin(x / 1080 * Math.PI * 2 * r.f + r.ph) * r.amp + Math.sin(x / 1080 * Math.PI * 5.3 * r.f + r.ph * 2) * r.amp * .3;
+      d += ` L${x} ${y.toFixed(1)}`;
+    }
+    return d + ' L1080 1920 Z';
+  };
+
+  // Gold motes drifting up from the horizon.
+  const MOTES = Array.from({ length: 34 }, () => ({ x: rnd() * 1080, y: 900 + rnd() * 700, r: 1.5 + rnd() * 3, s: 18 + rnd() * 40, ph: rnd() * 6.28, a: .25 + rnd() * .5 }));
+  const moteEls = MOTES.map(() => el('circle', { fill: '#FFD58A' }, $('motes')));
+
+  // Platform row: 4 on top, 3 below, inside the safe area (clear of the right-hand button column).
+  const ORDER = ['TikTok', 'Instagram', 'YouTube', 'Facebook', 'WhatsApp', 'Pinterest', 'Threads'];
+  const SIZE = 120, GAP = 44;
+  const rows = [ORDER.slice(0, 4), ORDER.slice(4)];
+  const icons = [];
+  rows.forEach((row, ri) => {
+    const w = row.length * SIZE + (row.length - 1) * GAP;
+    row.forEach((name, i) => {
+      const cx = 540 - w / 2 + SIZE / 2 + i * (SIZE + GAP), cy = 1120 + ri * (SIZE + 34);
+      const g = el('g', { opacity: 0 }, $('icons'));
+      el('circle', { cx: 0, cy: 0, r: SIZE / 2, fill: 'url(#disc)', stroke: '#FFD58A', 'stroke-opacity': '.55', 'stroke-width': 2.5 }, g);
+      const ic = window.PLATFORM_ICONS[name];
+      el('path', { d: ic.path, fill: '#FEF5EB', transform: `translate(${-SIZE * .26} ${-SIZE * .26}) scale(${SIZE * .52 / 24})` }, g);
+      icons.push({ g, cx, cy, at: 2.05 + D + icons.length * 0.12 });
+    });
+  });
+
+  const LOCK = { w: 760, h: 760 * 191 / 651 };      // lockup shown 760 px wide, centred
+  const TAG = { w: 640, h: 640 * 77 / 710 };
+
+  function seek(t) {
+    // Sky: horizon glow rises and breathes; ridges settle up into place.
+    const rise = easeOut(prog(t, 0, 1.6 + D));
+    $('sunGlow').setAttribute('opacity', (.55 + .45 * rise + .06 * Math.sin(t * 1.4)).toFixed(3));
+    RIDGES.forEach((r, i) => ridgeEls[i].setAttribute('d', ridgePath(r, (1 - rise) * (60 + i * 30))));
+    MOTES.forEach((m, i) => {
+      const y = m.y - ((t * m.s) % 900);
+      moteEls[i].setAttribute('cx', (m.x + Math.sin(t * .8 + m.ph) * 14).toFixed(1));
+      moteEls[i].setAttribute('cy', (y < 300 ? y + 900 : y).toFixed(1));
+      moteEls[i].setAttribute('r', m.r);
+      moteEls[i].setAttribute('opacity', (m.a * prog(t, .2, 1.2) * (.6 + .4 * Math.sin(t * 2 + m.ph))).toFixed(3));
+    });
+
+    // Lockup: fades in and rises 28 px. No glow, no outline (brand rules).
+    const lp = easeOut(prog(t, .35 + D, 1.45 + D));
+    const ly = 640 + (1 - lp) * 28, ls = .965 + .035 * lp;
+    $('lockupG').setAttribute('opacity', lp.toFixed(3));
+    $('lockupG').setAttribute('transform', `translate(${540 - LOCK.w * ls / 2} ${ly}) scale(${(LOCK.w * ls / 651).toFixed(4)})`);
+
+    const tp = easeOut(prog(t, 1.25 + D, 2.0 + D));
+    $('taglineG').setAttribute('opacity', tp.toFixed(3));
+    $('taglineG').setAttribute('transform', `translate(${540 - TAG.w / 2} ${905 + (1 - tp) * 16}) scale(${(TAG.w / 710).toFixed(4)})`);
+
+    for (const ic of icons) {
+      const p = prog(t, ic.at, ic.at + .45);
+      const s = p <= 0 ? .6 : .6 + .4 * back(p);
+      ic.g.setAttribute('opacity', clamp(p * 2.5).toFixed(3));
+      ic.g.setAttribute('transform', `translate(${ic.cx} ${ic.cy + (1 - easeOut(p)) * 24}) scale(${s.toFixed(4)})`);
+    }
+    $('name').setAttribute('opacity', (.85 * easeOut(prog(t, 3.0 + D, 3.6 + D))).toFixed(3));
+
+    $('turb').setAttribute('seed', Math.floor(t * 12) % 97 + 1);
+    // Fade up from black at the start and out to black at the very end.
+    $('black').setAttribute('opacity', Math.max(1 - easeInOut(prog(t, 0, FADE_IN)), easeInOut(prog(t, DUR - .5, DUR))).toFixed(3));
+  }
+
+  window.DUR = DUR;
+  window.seek = seek;
+  seek(4);
+  window.ready = true;
+  if (!/render/.test(location.search)) {
+    const t0 = performance.now();
+    const loop = () => { seek(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  }
+})();
+</script>
+</body>
+</html>

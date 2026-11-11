@@ -1,6 +1,6 @@
 ---
 name: godward-episode
-description: Make a Godward Bible-story episode end to end, the way "Creation and the Fall" was made - script with exact ESV scripture, narration in the narrator's own voice, word-timed glowing-collage animation in vertical 9:16 (1080x1920, the user writes it "9:6") for Shorts/Reels/TikTok, a scene-matched soundtrack and mix, thumbnails, and renders. Use whenever the user wants a new episode or video for the Godward channel, wants to continue or remake one (e.g. "do the next episode", "make the Ten Commandments video", "animate this script", "turn this into a short"), or wants to change one stage of an existing episode (re-voice, re-time, new soundtrack, re-render, thumbnail).
+description: Make a Godward Bible-story episode end to end, the way "Creation and the Fall" was made - script with exact ESV scripture, narration in the narrator's own voice, word-timed glowing-collage animation in vertical 9:16 (1080x1920, the user writes it "9:6") for Shorts/Reels/TikTok, a scene-matched soundtrack and mix, the Godward brand outro joined onto every finished video, thumbnails, and renders. Use whenever the user wants a new episode or video for the Godward channel, wants to continue or remake one (e.g. "do the next episode", "make the Ten Commandments video", "animate this script", "turn this into a short"), or wants to change one stage of an existing episode (re-voice, re-time, new soundtrack, re-render, thumbnail).
 ---
 
 # Godward episode
@@ -100,6 +100,20 @@ of 1.3 GB for 4:20) and is what the platforms re-encode to anyway; use `--qualit
 an archive copy. Late fixes: re-render the whole film (6 minutes) rather than splicing segments,
 which re-encodes and loses quality. Spot-check a few frames of the result before sending it.
 
+Every episode ends with the brand outro (6 s, 9:16: Godward lockup, tagline, TikTok / Instagram /
+YouTube / Facebook / WhatsApp / Pinterest / Threads icons, "GODWARD · DAILY BIBLE", warm sting).
+Join it on as the last step, then deliver the joined file:
+```
+node tools/render.js join videos/<slug>/<slug>-final.mp4 videos/<slug>/<slug>-vertical.mp4 videos/_kit/outro/godward-outro-9x16.mp4
+```
+The outro lives in `videos/_kit/outro/` (`outro.html`, sound plan `outro-audio.json`, `outro.wav`). If
+`godward-outro-9x16.mp4` is missing (MP4s are git-ignored), re-render it:
+`node tools/render.js video videos/_kit/outro/outro.html videos/_kit/outro/godward-outro-9x16.mp4 --vertical --audio videos/_kit/outro/outro.wav`.
+Its logo and tagline are the real brand artwork in `videos/_kit/brand/` (cut from the Godward Brand
+Kit artifact); never retype, recolour, stretch, rotate, outline or glow them. Platform icons come from
+Simple Icons (`videos/_kit/brand/platform-icons.js`). Keep it give-only: no handles, URLs or "follow
+us" text on screen; asks belong in the caption.
+
 **7. Thumbnail and delivery.** Build `thumbnail-ig-4x5.html` (1080×1350, key content in the centre
 1012 px) like `videos/creation-and-the-fall/thumbnail-ig-4x5.html` (a 1280×720 YouTube one only if a
 landscape cut was asked for);
@@ -109,6 +123,12 @@ credits: ESV notice, and that the narration is AI-generated from their own voice
 synthetic-content disclosure). Offer to commit the sources (not the MP4s or stems).
 
 ## Working rules
+
+- **Every video ends with the Godward outro.** This covers full episodes, Shorts cut from them,
+  samples sent for a final yes, and any other finished video for the channel. Join
+  `videos/_kit/outro/godward-outro-9x16.mp4` (6.5 s, 1.3 s fade-in) with `tools/render.js join` as
+  the last step, and deliver only the joined file (user, Nov 2026: "add the outro to every video
+  that is made"). Work-in-progress previews of a single scene don't need it.
 
 - Long jobs (voice render, full video render) run in the background; report progress at
   milestones, not every line. The 4 GB GPU runs one model at a time.
