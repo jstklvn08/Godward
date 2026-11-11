@@ -7,115 +7,101 @@
 <script src="../_kit/style-kit.js"></script>
 <script src="words.js"></script>
 <script src="../_kit/episode-engine.js"></script>
+<script src="../_kit/people.js"></script>
+<script src="../_kit/fire.js"></script>
 <script>
 // The Ten Commandments, part 6: the sixth commandment. Script: scripts/07-the-sixth-commandment.md (ESV fill).
-// Every time below comes from the spoken words (words.js), so a new narration re-times the episode.
-// Family-friendly: no weapon, no blood. Abel's death is a paper figure that tears and a glow that dims, seen from far away.
-// Guide: .claude/skills/godward-episode/reference/engine.md. K.E is the ellipse helper (Ell), window.E the engine.
+// Remade in episode 1's style (videos/the-first-commandment): a new setting every few seconds, one slow camera move
+// or a still hold per shot, the story acted by the round PPL figures, one label at a time, verse cards in the hud.
+// Family-friendly: no weapon, no blood. Abel's death is seen from far away: his paper figure tears and his glow sinks
+// into the ground. God is only light; Jesus is never a figure (light and words).
+// Every time below comes from the spoken words (words.js). Guide: .claude/skills/godward-episode/reference/.
 const {G,R,C,L,P,T,prog,ease,lerp,mix,clamp,rng}=K, Ell=K.E;
 const {hash,piece,glow,label,mark,scribble,arrow,strip,tape,torn}=S;
 const {cue,end,span,shot,ridge,verse,fade,hv,stars,fireflies,INK,YEL,CORAL}=E;
 const GOLD='#E8B53A', RED='#FF3A2A';
 
 const AT={
-  two:cue('Two brothers walk'), onlyOne:cue('Only one of them'), walksBack:cue('walks back'),
-  firstDeath:cue('the first death'), weapon:cue('a weapon'), feeling:cue('started with a feeling'),
-  v1:cue('You shall not murder',1), easy:cue('easy commandment'), never:cue('never hurt'), further:cue('much further'),
-  brothers:cue('Cain and Abel'), ground:cue('worked the ground'), sheep:cue('kept the sheep'),
-  both:cue('Both brought'), accepted:cue('God accepted'), angerBurn:cue('burned with anger'), faceFell:cue('face fell'),
-  warned:cue('So God warned'), v47:cue('And if you do not'), crouching:cue('sin is crouching'), rule:span('you must rule over it'),
-  animal:cue('like an animal'), closeDoor:cue('close that door'),
-  didnt:cue("But Cain didn't"), field:cue('out to the field'), roseUp:cue('rose up against'), tookLife:cue('took his life'),
-  oneShort:cue('one short sentence'), noDetails:cue('no details'), lifeGone:cue('Just a life'),
-  came:cue('Then God came'), didntKnow:cue("he didn't know"), lookAfter:cue('look after his brother'),
-  v410:cue('The voice of your'), crying:span('crying to me'), fromGround:end('from the ground'),
-  nobody:cue('Nobody else saw'), godDid:cue('But God did'), mattered:cue("Abel's life mattered"),
+  only:cue('Only one of them'), death:cue('death'), firstDeath:cue('the first death'), weapon:cue('a weapon'), feeling:cue('started with a feeling'),
+  v1:cue('You shall not murder',1), notMurder1:span('not murder',1), easy:cue('easy commandment'), most:cue('Most of us'), never:cue('never hurt'),
+  but1:cue('But Jesus said'), further:cue('much further'), hands1:cue('our hands',1),
+  brothers:cue('Cain and Abel'), ground:cue('worked the ground'), andAbel:cue('and Abel kept'), sheep:cue('kept the sheep'),
+  both:cue('Both brought'), accepted:cue('God accepted'), notCains:cue("but not Cain's"), and1:cue('And Cain burned'), burned:cue('burned with anger'),
+  faceFell:cue('His face fell'), warned:cue('So God warned'), warnW:cue('warn a friend'),
+  v47:cue('And if you do not'), crouching:cue('crouching',1), its:cue('Its desire'), desire:cue('desire'), rule:span('you must rule over it'),
+  anger:cue('Anger was crouching'), animal:cue('like an animal'), cainCould:cue('Cain could still'), closeDoor:cue('close that door'), doorEnd:end('close that door'),
+  didnt:cue("But Cain didn't"), asked:cue('He asked his brother'), field:cue('out to the field'), andThere:cue('And there'), roseUp:cue('rose up against'), tookLife:cue('took his life'),
+  oneShort:cue('The Bible tells'), shortW:cue('one short sentence'), noDetails:cue('There are no details'), lifeGone:cue('Just a life'),
+  came:cue('Then God came'), askedW:cue('and asked where'), didntKnow:cue('Cain said he'), lookAfter:cue('Was he supposed'),
+  v410:cue('The voice of your'), crying:span('crying to me'),
+  nobody:cue('Nobody else saw'), godDid:cue('But God did'), mattered:cue("Abel's life mattered"), noOne:cue('no one was left'),
   why:cue('Why does one life'), flood:cue('After the flood'), v96:cue('God made man'), image:span('his own image'),
-  mirror:cue('reflection in a mirror'), strike:cue('strike at the one'),
-  spoke:cue('So when God spoke'), sixth:cue('sixth word'), v2:cue('You shall not murder',2), notMurder2:span('not murder',2),
-  older:cue('Older Bibles'), hebrew:cue('the Hebrew word'), innocent:cue('innocent life'), modern:cue('most modern Bibles'),
-  without:cue('without trying'),
-  jesus:cue('Then Jesus opened'), hillside:cue('On a hillside'), quoted:cue('quoted the old command'), under:cue('went underneath'),
-  v522:cue('But I say to you'), angry:span('who is angry'),
-  whereCain:cue('where Cain started'), notField:cue('Not the field'), theFeeling:cue('The feeling'),
-  angryWord:cue('The angry word'), cruelName:cue('the cruel name'), coldSilence:cue('the cold silence'), root:cue('same root'),
-  hands:cue('only about our hands'), hearts:cue('about our hearts'),
-  flip:cue('flip side'), protect:cue('protect life'), makePeace:cue('make peace with'),
-  v311:cue('For this is the message'), loveOne:span('love one another'),
-  nextVerse:cue('very next verse'), keeper:cue("brother's keeper"), yes:cue('was yes'),
-  guard:cue('guard your anger'), kindly:cue('Speak kindly'), weak:cue('Help the weak'), peaceQ:cue('Make peace quickly'),
-  everyPerson:cue('Every person you meet'), next:cue('Next time'),
+  every1:cue('Every person carries'), like:cue('like a reflection'), toTake:cue("To take a person's"), strike:cue('strike'),
+  spokeS:cue('So when God spoke'), spoke:cue('spoke',1), sixth:cue('the sixth word'), v2:cue('You shall not murder',2), notMurder2:span('not murder',2),
+  older:cue('Older Bibles'), kill:cue('kill'), butHeb:cue('But the Hebrew'), innocent:cue('innocent life'), thats:cue("That's why most"), modern:cue('most modern Bibles'),
+  sounds2:cue('It sounds like a rule'), without:cue('without trying'),
+  jesus:cue('Then Jesus opened'), hillside:cue('On a hillside'), quoted:cue('quoted the old command'), thenHe:cue('Then he went'), under:cue('underneath'),
+  v522:cue('But I say to you'), angry:span('who is angry'), will:cue('will be liable'), judgment:cue('judgment'),
+  goesBack:cue('Jesus goes back'), notField:cue('Not the field'), theFeeling:cue('The feeling'),
+  angryWord:cue('The angry word'), cruelName:cue('the cruel name'), coldSilence:cue('the cold silence'), they:cue('They all grow'), root:cue('same root'),
+  thisCmd:cue("This commandment isn't"), hands:cue('only about our hands'), itsAbout:cue("It's about our hearts"), hearts:cue('hearts'),
+  flipW:cue('But there\'s a flip'), flip:cue('flip side'), christians:cue('Christians have long'), protect:cue('protect life'), notJust:cue('not just to avoid'),
+  jesusSaid:cue('Jesus said that'), against:cue('something against you'), go:cue('go and make'), makePeace:cue('make peace with'), first:cue('with him first'), itIs:cue('It is the first'), andIt:cue("And it didn't"), itSounds:cue('It sounds like the easy'),
+  v311:cue('For this is the message'), thatWe:cue('that we should'), loveOne:span('love one another'),
+  andThe:cue('And the very next'), nextVerse:cue('very next verse'), names:cue('names Cain'), cainAsked:cue('Cain asked if'), keeper:cue("brother's keeper"),
+  answer:cue('The answer, all along'), yes:cue('was yes'),
+  so:cue('So guard'), guard:cue('guard your anger'), grows:cue('grows'), kindly:cue('Speak kindly'), weak:cue('Help the weak'), peaceQ:cue('Make peace quickly'),
+  everyPerson:cue('Every person you meet'), imageL:cue('image of God'), next:cue('Next time'),
 };
 AT.last=WORDS[WORDS.length-1][2];
 
-// ---------- shared pieces (from part 1) ----------
-const slab=(w,h)=>`M${-w/2} ${h/2}V${-h/2+w*.32}Q${-w/2} ${-h/2} 0 ${-h/2}Q${w/2} ${-h/2} ${w/2} ${-h/2+w*.32}V${h/2}Z`;
-const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
-// One tablet with five carved lines (numerals + illegible carving, never a quotation). lit(i) 0..1 per line.
-function tablet(x,y,w,h,first,lit,seed){
-  const r=rng(seed);let g=G(`translate(${x} ${y})`,P(slab(w,h),'#7E7A70')+P(slab(w-24,h-24),'#9C988C')+
-    P(slab(w-24,h-24),'none',{stroke:'#5E5A52','stroke-width':3,opacity:.5}));
-  for(let i=0;i<5;i++){
-    const k=first+i,ly=y-h/2+w*.46+i*(h-w*.5)/5.2,x0=x-w/2+92,x1=x+w/2-34-r()*40,on=lit(k);
-    let d=`M${x0} ${ly}`;for(let xx=x0;xx<x1;xx+=18)d+=`L${xx+9} ${ly+(r()-.5)*6}L${xx+18} ${ly}`;
-    g+=glow((x0+x1)/2,ly,(x1-x0)*.6,'#FFD86B',.35*on);
-    g+=T(x-w/2+60,ly+12,NUM[k],{size:34,font:'Georgia',weight:700,anchor:'middle',fill:mix('#4A4740','#FFF4C8',on)});
-    g+=P(d,'none',{stroke:'#4A4740','stroke-width':5,opacity:.8})+P(d,'none',{stroke:'#FFE9A8','stroke-width':3,opacity:(.12+.88*on).toFixed(3)});
-  }
-  return g;
-}
-const tablets=(cx,cy,s,lit)=>G(`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`,
-  glow(cx,cy,560,'#FFD86B',.12)+tablet(cx-205,cy,380,560,0,lit,21)+tablet(cx+205,cy,380,560,5,lit,33));
-const SIXTH=(on,rest=.15)=>k=>k===5?on:rest;   // line VI is the sixth commandment
-const strike=(x0,y,x1,p)=>mark(`M${x0} ${y+6}L${x1} ${y-6}`,p,CORAL,9);
-function mountain(seed,px,py,fill,steep){
-  const r=rng(seed*91+7),pts=[];
-  for(let x=-140;x<=2060;x+=22){const d=Math.abs(x-px)/(900*steep);pts.push([x,py+Math.pow(d,1.25)*560+(r()-.5)*16]);}
-  return P('M'+pts.map(p=>p[0].toFixed(0)+' '+Math.min(p[1],1800).toFixed(0)).join('L')+'L2060 1800L-140 1800Z',fill);
-}
+// ---------- people (videos/_kit/people.js): the same round figures as episode 1, acting together ----------
 const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
-function crowd(t,x0,y,n,gap,s,o={}){
-  let g='';
-  for(let i=0;i<n;i++){
-    const [a,b]=TUN[(i+(o.k||0))%5];
-    g+=E.chubby(x0+i*gap+(i%2)*10,y+(i%3)*14,s*(.92+.16*hash(i,4)),{f:i%2===1,flip:o.flip||1,tunic:a,tunic2:b,aura:o.aura||'#7CFFE6',auraOp:o.auraOp??.35,
-      walk:0,lean:0,reach:o.reach||0,phase:i*.7,hair:['#2E1C52','#4A2A16','#1A1A2A'][i%3],skin:['#F5BE8E','#D9965E','#B87444'][i%3],shade:['#C4835E','#A86A3E','#8A5230'][i%3]});
-  }
-  return g;
-}
-function cutout(t,at,cx,cy,inner,name,id,o={}){
-  const w=o.w||250,h=o.h||250;
-  return piece(t,at,cx,cy,strip(cx-w/2,cy-h/2,w,h,id*7,o.paper||'#F6EFDC')+tape(cx,cy-h/2+4,90,-4)+inner+
-    label(cx,cy+h/2+14,name,{size:hv(26,34),anchor:'middle'}),id,1.4);
-}
+const SKIN=[['#F5BE8E','#C4835E'],['#D9965E','#A86A3E'],['#B87444','#8A5230']], HAIR=['#2E1C52','#4A2A16','#1A1A2A'];
+const pplOpts=(i,x,y,s,o={})=>{const [a,b]=TUN[i%5],[sk,sh]=SKIN[i%3],face=o.flip||o.face||1,f=o.f??(i%2===1);
+  const q=Object.assign({x,y,s,face,f,tunic:a,tunic2:b,skin:sk,shade:sh,hair:HAIR[i%3],phase:i*.7},o);
+  q.face=face;delete q.flip;delete q.filter;delete q.reach;
+  if(!o.walk)delete q.walk;
+  return q;};
+const folk=(i,x,y,s,o={})=>PPL.fig(pplOpts(i,x,y,s,o));
+const person=pplOpts;
+const elderOpts=(x,y,s,o={})=>{const q=pplOpts(0,x,y,s,Object.assign({tunic:'#C8A06A',tunic2:'#7A5430',skin:'#D9965E',shade:'#A86A3E',f:false,phase:.4},o));q.hair=o.hair||'#ECE8DE';return q;};
+const elder=(x,y,s,o={})=>PPL.fig(elderOpts(x,y,s,o));
+// The two brothers: Cain in earth orange (he works the ground), Abel in sky blue (he keeps the sheep).
+const CAINP={tunic:'#E07A34',tunic2:'#8A3A18',skin:'#D9965E',shade:'#A86A3E',hair:'#2A1A10',f:false,phase:.2};
+const ABELP={tunic:'#7CD4FF',tunic2:'#2F6FD0',skin:'#F5BE8E',shade:'#C4835E',hair:'#5A3418',f:false,phase:1.3};
+const bro=(who,x,y,s,o={})=>{const q=Object.assign({x,y,s,face:1},who==='cain'?CAINP:ABELP,o);q.face=o.flip||o.face||1;delete q.flip;return q;};
+const B=(who,x,y,s,o={})=>PPL.fig(bro(who,x,y,s,o));
+// A rig drawn with a prop between the body and the near (front) arm, so the hand closes over the prop.
+const withProp=(o,prop)=>{const r=PPL.rig(o);return r.draw('back')+r.draw('body')+r.draw('head')+prop+r.draw('front');};
+// The middle of a figure's chest (for the ember of anger and the glint of God's image).
+const chestOf=o=>{const r=PPL.rig(o),c=r.chest(.45),b=r.back(.45);return [(c[0]*.62+b[0]*.38),(c[1]+b[1])/2];};
 
-// ---------- vertical layout ----------
-// Every vertical sheet is filmed wide (zoom .84 on 960,560), so frame position (fx, fy) maps to fixed sheet coordinates.
-// Vertical frame zones: verse cards 170-~520, art 560-1180, captions 1220-1340, lower labels 1380-1560.
-const vx=f=>960+(f-540)/.84, vy=f=>560+(f-1010)/.84;
-const X=(l,f)=>hv(l,vx(f)), Y=(l,f)=>hv(l,vy(f)), SZ=(l,f)=>hv(l,f/.84);
-const tag=(t,at,x,y,s,size,id,o={})=>piece(t,at,x,y,label(x,y-size*.81,s,Object.assign({size,anchor:'middle'},o)),id,1.3);
-const WIDE=[960,560,.84];
+// ---------- symbols ----------
+// Anger as an ember in the chest: red and flickering, cooling to gold with `cool`.
+const ember=(t,x,y,r,cool=0,k=1)=>{if(k<=0)return '';const fl=.78+.22*Math.sin(t*7)+.08*Math.sin(t*13),hot=mix(RED,'#FFD86B',cool);
+  return glow(x,y,r*3.4,hot,.6*fl*k)+Ell(x,y,r,r*.7,mix('#8A1A10','#B8862C',cool),{opacity:k.toFixed(2)})+
+    Ell(x-r*.14,y-r*.1,r*.66,r*.42,mix('#FF5A2C','#FFE07A',cool),{opacity:(k*fl).toFixed(2)})+Ell(x-r*.22,y-r*.17,r*.3,r*.16,'#FFF1C0',{opacity:(k*fl).toFixed(2)});};
+// God is never a figure: his presence is a soft oval of light; his voice goes out as rings.
+const presence=(t,x,y,r,k=1)=>k<=0?'':glow(x,y,r*2.6,'#FFF6DA',.5*k)+glow(x,y,r*1.2,'#FFFFFF',.65*k)+
+  Ell(x,y,r*.74,r,'none',{stroke:'#FFFBEA','stroke-width':8,opacity:(.75*k).toFixed(2)})+Ell(x,y,r*.6,r*.82,'#FFFBEA',{opacity:(.22*k*(1+.25*Math.sin(t*2))).toFixed(2)});
+const rings=(t,a,x,y,R0=1300,n=4)=>{const sp=prog(t,a,a+2.2);if(sp<=0||sp>=1)return '';let g=glow(x,y,200+sp*700,'#FFFBEA',.6*(1-sp));
+  for(let k=0;k<n;k++){const p=clamp(sp*1.6-k*.18);if(p>0&&p<1)g+=C(x,y,60+p*R0,'none',{stroke:'#FFF6DA','stroke-width':12*(1-p)+2,opacity:(1-p).toFixed(2)});}return g;};
+// A shaft of light from above (God's presence), k 0..1.
+const shaft=(t,x,top,bot,w0,w1,k)=>k<=0?'':P(`M${x-w0*1.8} ${top}L${x+w0*1.8} ${top}L${x+w1*1.7} ${bot}L${x-w1*1.7} ${bot}Z`,'#FFF6DA',{opacity:(.1*k).toFixed(3)})+
+  P(`M${x-w0} ${top}L${x+w0} ${top}L${x+w1} ${bot}L${x-w1} ${bot}Z`,'#FFF6DA',{opacity:(.24*k).toFixed(3)})+
+  P(`M${x-w0*.35} ${top}L${x+w0*.35} ${top}L${x+w1*.35} ${bot}L${x-w1*.35} ${bot}Z`,'#FFFBEC',{opacity:(.2*k).toFixed(3)})+glow(x,bot,w1*3,'#FFF6DA',.45*k);
+const heartP=(x,y,r)=>`M${x} ${y+r*.9}C${x-r*1.7} ${y-r*.1} ${x-r*.95} ${y-r*1.35} ${x} ${y-r*.42}C${x+r*.95} ${y-r*1.35} ${x+r*1.7} ${y-r*.1} ${x} ${y+r*.9}Z`;
+const heart=(x,y,r,k=1)=>k<=0?'':G('',glow(x,y,r*2.2,'#FF7A6A',.5)+P(heartP(x,y,r),'#FF4A5C',{stroke:'#FFD0C8','stroke-width':Math.max(2,r*.08)})+P(heartP(x-r*.2,y-r*.15,r*.45),'#FF8A96',{opacity:.6}),k);
+// The gold glint of God's image at a person's heart.
+const glint=(x,y,s,on)=>on<=0?'':glow(x,y,70*s,'#FFE9A8',.9*on)+P(`M${x} ${y-15*s}L${x+10*s} ${y}L${x} ${y+15*s}L${x-10*s} ${y}Z`,GOLD,{stroke:'#FFF6D0','stroke-width':3,opacity:on.toFixed(2)});
+const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,12)+mark(`M${cx+r} ${cy-r}L${cx-r} ${cy+r}`,p*2-1,CORAL,12);
 
-// Vertical foreground drawn inside the sheet (a copy of the engine's `fore`), so lower labels sit on top of the grass.
-function meadow(t,i,gc,fc=[]){
-  if(!E.VERT)return '';
-  let g=`<path d="${S.ridge(500+i,1180,22,170,-120,2040,1800)}" fill="${gc[1]}" opacity=".55"/><path d="${S.ridge(510+i,1430,26,140,-120,2040,1800)}" fill="${gc[1]}"/>`;
-  const it=[...Array(170)].map((_,k)=>[k,1000+Math.pow(hash(k,i*13+1),.7)*780]).sort((a,b)=>a[1]-b[1]);
-  it.forEach(([k,y])=>{
-    const x=hash(k,i*13+2)*2060-60,d=(y-1010)/760,sz=lerp(1.1,3.6,d),sw=Math.sin(t*1.5+k)*4*sz,c=gc[k%3];
-    if(k%9===0){g+=Ell(x,y,26*sz,12*sz,gc[1])+Ell(x-6*sz,y-4*sz,14*sz,6*sz,gc[2],{opacity:.6});return;}
-    for(let j=-1;j<=1;j++)g+=L(x+j*5*sz,y,x+j*9*sz+sw,y-(16+hash(k,j+5)*20)*sz,c,3.2*sz);
-    if(fc.length&&k%5===0){const fy=y-(30+hash(k,9)*16)*sz,col=fc[k%fc.length];g+=L(x,y,x+sw,fy,'#0A2A3E',2.5*sz)+glow(x+sw,fy,18*sz,col,.7)+C(x+sw,fy,5*sz,col);}
-  });
-  return g;
-}
-
-// ---------- scenery: clouds, birds, a lone tree, wind-bent grass ----------
+// ---------- scenery ----------
 function cloud(x,y,w,body,rim,op,seed){
   const r=rng(seed),bl=[];
-  for(let i=0;i<6;i++){const u=i/5,rx=w*(.11+r()*.06);bl.push([x+(u-.5)*w*.84,y,rx,rx*.5]);}     // flat base
-  for(let i=0;i<4;i++){const u=(i+.5)/4,rr=w*(.09+r()*.07)*(1-Math.abs(u-.5)*.9);bl.push([x+(u-.5)*w*.66+(r()-.5)*w*.06,y-rr*.55,rr,rr*.85]);} // puffs on top
+  for(let i=0;i<6;i++){const u=i/5,rx=w*(.11+r()*.06);bl.push([x+(u-.5)*w*.84,y,rx,rx*.5]);}
+  for(let i=0;i<4;i++){const u=(i+.5)/4,rr=w*(.09+r()*.07)*(1-Math.abs(u-.5)*.9);bl.push([x+(u-.5)*w*.66+(r()-.5)*w*.06,y-rr*.55,rr,rr*.85]);}
   let g='';
   bl.forEach(([cx,cy,rx,ry])=>g+=Ell(cx.toFixed(0),(cy+ry*.22).toFixed(0),rx.toFixed(0),ry.toFixed(0),rim));
   bl.forEach(([cx,cy,rx,ry])=>g+=Ell(cx.toFixed(0),(cy-ry*.05).toFixed(0),(rx*.97).toFixed(0),(ry*.93).toFixed(0),body));
@@ -132,41 +118,28 @@ function tree(x,y,s,col,t=0,wind=0){
   [[0,-200,88],[-66,-168,58],[66,-172,62],[-34,-240,60],[36,-246,56],[0,-150,50]].forEach(([dx,dy,r])=>g+=C((x+dx*s+sw*(-dy/250)).toFixed(0),(y+dy*s).toFixed(0),(r*s).toFixed(0),col));
   return g;
 }
-// Grass tufts between sheet y0 and y1, larger nearer the viewer, bent by the wind (lean + gust).
-function tufts(t,seed,y0,y1,n,gc,o={}){
-  const {lean=0,gust=0,tip=null,fc=[],x0=-60,x1=1980,s0=.7,s1=2.2}=o;let g='';
-  const it=[...Array(n)].map((_,k)=>[k,y0+hash(k,seed)*(y1-y0)]).sort((a,b)=>a[1]-b[1]);
-  it.forEach(([k,y])=>{
-    const x=x0+hash(k,seed+1)*(x1-x0),sz=lerp(s0,s1,(y-y0)/(y1-y0)),c=gc[k%gc.length];
-    const w=(lean+gust*(.65+.35*Math.sin(t*2.4+x*.004)))*sz,sw=Math.sin(t*1.5+k)*3*sz+w;
-    for(let j=-1;j<=1;j++){const h=(16+hash(k,j+5)*20)*sz,ex=x+j*9*sz+sw,ey=y-h;
-      g+=P(`M${(x+j*5*sz).toFixed(0)} ${y.toFixed(0)}Q${(x+j*7*sz+sw*.25).toFixed(0)} ${(y-h*.6).toFixed(0)} ${ex.toFixed(0)} ${ey.toFixed(0)}`,'none',{stroke:c,'stroke-width':(3*sz).toFixed(1)});
-      if(tip)g+=C(ex.toFixed(0),ey.toFixed(0),(1.7*sz).toFixed(1),tip,{opacity:.75});}
-    if(fc.length&&k%7===0){const col=fc[k%fc.length],fy=y-(26+hash(k,9)*14)*sz,fx=x+sw*.8;g+=glow(fx,fy,14*sz,col,.6)+C(fx.toFixed(0),fy.toFixed(0),(4*sz).toFixed(1),col);}
-  });
-  return g;
-}
-// A path of worn earth from the viewer to a point on the horizon.
-const track=(hx,hy,bx0,bx1,by,col,op)=>P(`M${hx-10} ${hy}L${hx+10} ${hy}L${bx1} ${by}L${bx0} ${by}Z`,col,{opacity:op});
+const gnd=(s,y,c1,c2)=>`<path d="${ridge(s,y,10,230,-120,2040,1800)}" fill="${c1}"/><path d="${ridge(s+1,y+120,8,200,-120,2040,1800)}" fill="${c2}"/>`;
+const hill=(s,y,c,amp=14,wave=260)=>`<path d="${ridge(s,y,amp,wave,-120,2040,1800)}" fill="${c}"/>`;
+const sunDisc=(x,y,r,c1,c2,k=1)=>glow(x,y,r*4,c1,.5*k)+glow(x,y,r*1.8,c2,.75*k)+C(x,y,r,c2,{opacity:(.95*k).toFixed(2)});
+const rays=(t,x,y,n,col,op,a0=-3.0,a1=-.14)=>{let g='';for(let i=0;i<n;i++){const a=lerp(a0,a1,i/(n-1))+Math.sin(t*.15+i)*.02,da=.028+.012*(i%3),Lr=2600;
+  g+=P(`M${x} ${y}L${(x+Math.cos(a-da)*Lr).toFixed(0)} ${(y+Math.sin(a-da)*Lr).toFixed(0)}L${(x+Math.cos(a+da)*Lr).toFixed(0)} ${(y+Math.sin(a+da)*Lr).toFixed(0)}Z`,col,{opacity:(op*(.7+.3*Math.sin(t*.7+i*1.7))).toFixed(3)});}return g;};
+const tent=(x,y,c,k=1)=>P(`M${x-90*k} ${y}L${x} ${y-120*k}L${x+90*k} ${y}Z`,c)+P(`M${x} ${y-120*k}L${x-13*k} ${y}L${x+13*k} ${y}Z`,'#2A1A10');
+// A night or dusk sky band of drifting clouds.
+const skyClouds=(t,seed,y,body,rim,op=.9,spread=1)=>{const dr=t*6;let g='';for(let i=0;i<4;i++){const x=[300,1500,820,1700][i]+(i%2?-dr*.6:dr)*spread,yy=y+[0,90,220,330][i];
+  g+=cloud(x,yy,[620,560,760,420][i],body,rim,op,seed+i*2);}return g;};
 
-// ---------- the two brothers ----------
-const CAIN={tunic:'#C8743A',tunic2:'#8A3E1C',hair:'#2A1A10',skin:'#D9965E',shade:'#A86A3E'};
-const ABEL={tunic:'#7CD4FF',tunic2:'#2F6FD0',hair:'#4A2A16',skin:'#F5BE8E',shade:'#C4835E',phase:1.3};
-const bro=(who,x,y,s,o={})=>E.chubby(x,y,s,Object.assign({},who==='cain'?CAIN:ABEL,{aura:who==='cain'?'#FFB04C':'#FFE9A8',auraOp:.4},o));
-// Abel as a paper cut-out that tears in two (p 0..1) and loses its glow. A symbol, not an injury.
-let tearN=0;
-function tornFigure(t,x,y,s,p,o={}){
-  const id='tear'+(tearN++),cut=`M${x-200} ${y-500}L${x+6} ${y-500}L${x-14} ${y-330}L${x+18} ${y-210}L${x-10} ${y-110}L${x+14} ${y+40}L${x-200} ${y+40}Z`;
-  const cut2=`M${x+200} ${y-500}L${x+6} ${y-500}L${x-14} ${y-330}L${x+18} ${y-210}L${x-10} ${y-110}L${x+14} ${y+40}L${x+200} ${y+40}Z`;
-  const d=ease.out(p),fig=bro('abel',x,y,s,Object.assign({auraOp:.4*(1-d)},o)),grey=1-.75*d;
-  return `<clipPath id="${id}a"><path d="${cut}"/></clipPath><clipPath id="${id}b"><path d="${cut2}"/></clipPath>`+
-    G(`translate(${(-10*d).toFixed(1)} ${(4*d).toFixed(1)}) rotate(${(-5*d).toFixed(2)} ${x} ${y})`,`<g clip-path="url(#${id}a)">${fig}</g>`,grey)+
-    G(`translate(${(10*d).toFixed(1)} ${(4*d).toFixed(1)}) rotate(${(5*d).toFixed(2)} ${x} ${y})`,`<g clip-path="url(#${id}b)">${fig}</g>`,grey);
+// ---------- props ----------
+function lamb(x,y,s,face=1,o={}){
+  const lie=o.lie||0,hy=lerp(0,14,lie);
+  let g='';if(lie<.9)g+=R(-24,-8+hy,8,22-hy,3,'#3A3030')+R(14,-8+hy,8,22-hy,3,'#3A3030');
+  [[-26,-30],[0,-38],[26,-30],[-14,-14],[14,-14],[0,-24]].forEach(([dx,dy])=>g+=C(dx,dy+hy,20,'#FBF7EC',{stroke:'#D8CFB8','stroke-width':2}));
+  const hdy=(o.look||0)*14;
+  g+=Ell(44,-38+hy+hdy,16,13,'#3A3030')+Ell(34,-48+hy+hdy,7,4,'#3A3030')+C(50,-41+hy+hdy,2.5,'#fff');
+  return G(`translate(${x} ${y}) scale(${s*face} ${s})`,g);
 }
-function lamb(x,y,s){
-  let g='';[[-26,-30],[0,-38],[26,-30],[-14,-14],[14,-14],[0,-24]].forEach(([dx,dy])=>g+=C(dx,dy,20,'#FBF7EC',{stroke:'#D8CFB8','stroke-width':2}));
-  return G(`translate(${x} ${y}) scale(${s})`,R(-24,-8,8,22,3,'#3A3030')+R(14,-8,8,22,3,'#3A3030')+g+Ell(44,-38,16,13,'#3A3030')+C(50,-41,2.5,'#fff'));
-}
+function sheepFlock(t,pts,s){let g='';pts.forEach(([x,y,f],i)=>g+=lamb(x,y+Math.abs(Math.sin(t*1.3+i))*-2,s*(.9+.2*hash(i,3)),f,{look:Math.sin(t*.7+i)>.6?1:0}));return g;}
+// A shepherd's staff (a crook), standing from (x, y0) up to y1, hook to the side `dir`.
+const staffP=(x,y0,y1,dir=1,w=9)=>P(`M${x} ${y0}L${x+4} ${y1+40}Q${x+6} ${y1} ${x+6+30*dir} ${y1+4}Q${x+6+56*dir} ${y1+14} ${x+44*dir} ${y1+44}`,'none',{stroke:'#7A5230','stroke-width':w,'stroke-linecap':'round'});
 function basket(x,y,s){
   return G(`translate(${x} ${y}) scale(${s})`,C(-22,-40,14,'#E0623C')+C(4,-46,14,'#FFC24C')+C(26,-38,13,'#8BCB4A')+
     [-2,-1,0,1,2].map(i=>Ell(i*14,-60-Math.abs(i)*4,6,16,'#E8B53A')).join('')+
@@ -176,346 +149,1170 @@ function altar(x,y,s){
   let g='';[[-50,-28,100],[-42,-56,84],[-34,-82,68]].forEach(([dx,dy,w],i)=>g+=R(dx,dy,w,28,6,['#8A8278','#9C9488','#7E766C'][i],{stroke:'#4A4440','stroke-width':3}));
   return G(`translate(${x} ${y}) scale(${s})`,g);
 }
-// Smoke from an altar: straight up into the light (straight=1) or flat and grey (straight=0).
+const altarFire=(t,x,y,s,k)=>k<=0?'':glow(x,y-100*s,90*s,'#FFB04C',.6*k)+FX.flames(t,[[x-30*s,y-82*s],[x,y-90*s],[x+30*s,y-82*s]],{H:70*s*k,sp:8,seed:Math.round(x)});
 function smoke(t,x,y,s,straight,k){
   let g='';
-  for(let i=0;i<7;i++){const q=(t*.35+i/7)%1,sx=x+(1-straight)*q*220*s+Math.sin(t*1.3+i)*14*s,sy=y-q*lerp(140,420,straight)*s;
-    g+=Ell(sx,sy,(26+q*50)*s,(18+q*26)*s,straight>.5?'#FFF6DA':'#7A7470',{opacity:(k*.5*(1-q)).toFixed(3)});}
+  for(let i=0;i<8;i++){const q=(t*.35+i/8)%1,sx=x+(1-straight)*q*240*s+Math.sin(t*1.3+i)*14*s,sy=y-q*lerp(150,560,straight)*s;
+    g+=Ell(sx,sy,(26+q*50)*s,(18+q*26)*s,straight>.5?'#FFF6DA':'#6E6864',{opacity:(k*.5*(1-q)).toFixed(3)});}
   return g;
 }
-
-// ---------- 0. Cold open: two brothers walk out ----------
-function coldOpen(t){
-  let g=stars(t,.5,300)+glow(960,Y(700,980),1000,'#FF9A4C',.5);
-  // A low sun with slow rays fanning up through the clouds.
-  const sx=X(1300,700),sy=Y(760,935);
-  for(let i=0;i<11;i++){const a=-Math.PI*(.08+i*.084)+Math.sin(t*.15+i)*.02,da=.028+.012*(i%3),Lr=2200;
-    g+=P(`M${sx} ${sy}L${(sx+Math.cos(a-da)*Lr).toFixed(0)} ${(sy+Math.sin(a-da)*Lr).toFixed(0)}L${(sx+Math.cos(a+da)*Lr).toFixed(0)} ${(sy+Math.sin(a+da)*Lr).toFixed(0)}Z`,'#FFD8A0',{opacity:(.05+.03*Math.sin(t*.7+i*1.7)).toFixed(3)});}
-  g+=glow(sx,sy,hv(300,380),'#FFC870',.85)+C(sx,sy,hv(70,105),'#FFD9A0',{opacity:.92});
-  // Clouds lit from below by the setting sun, drifting slowly.
-  const dr=t*hv(5,7);
-  g+=cloud(X(500,250)+dr,Y(160,250),hv(520,620),'#4A2E52','#D9785A',.9,3)+cloud(X(1500,880)-dr*.6,Y(240,360),hv(480,560),'#56324E','#E8885A',.9,5)+
-    cloud(X(900,430)+dr*.8,Y(380,560),hv(640,760),'#6E3A4A','#FF9E64',.92,7)+cloud(X(1650,1000)-dr*.4,Y(470,700),hv(380,440),'#7E4450','#FFB070',.85,9);
-  g+=Ell(X(700,300),Y(560,800),hv(420,480),12,'#FFB070',{opacity:.35})+Ell(X(1400,820),Y(600,855),hv(360,420),9,'#FFC88A',{opacity:.3});
-  // A flock crossing the sky, right to left.
-  for(let i=0;i<7;i++){const bx=X(1800,1250)-(t*hv(34,40))-i*hv(60,70)+(i%2)*hv(30,40),by=Y(260,390)+Math.abs(i-3)*hv(18,24)+Math.sin(t*1.3+i)*6;g+=bird(bx,by,hv(1,1.25),t,i*1.7,'#2A1A2E');}
-  // Far hills with a few trees, then the field and a worn path toward the sun.
-  g+=`<path d="${ridge(5,Y(770,915),10,260)}" fill="#5A3A52"/>`;
-  [[X(260,130),.75],[X(380,215),.55],[X(1660,930),.9],[X(1760,1010),.6]].forEach(([x,s])=>g+=tree(x,Y(780,925),s*hv(.8,1),'#3A2640',t,.4));
-  g+=`<path d="${ridge(3,Y(800,950),14,300)}" fill="#3E5030"/><path d="${ridge(4,Y(860,1040),12,200)}" fill="#2E3E24"/>`;
-  g+=track(sx,Y(800,955),X(560,280),X(1500,880),Y(1100,1920),'#4A3E26',.55)+track(sx,Y(800,955),X(720,400),X(1300,760),Y(1100,1920),'#6E5634',.45);
-  for(let i=0;i<9;i++){const u=Math.pow((i+1)/10,1.6),yy=lerp(Y(800,955),Y(1100,1920),u),xx=lerp(sx,X(900,520),u)+(hash(i,77)-.5)*lerp(10,300,u);g+=Ell(xx.toFixed(0),yy.toFixed(0),(lerp(4,26,u)).toFixed(0),(lerp(2,10,u)).toFixed(0),'#8A7454',{opacity:.6});}
-  g+=meadow(t,0,['#2E3E24','#26341E','#3A4E2A'],['#FFD08A']);
-  g+=tufts(t,1,Y(800,950),Y(1000,1880),hv(120,280),['#4A6034','#3A4E2A','#56703C'],{tip:'#FFB070',lean:3,fc:['#FFD08A','#FFF4DA'],s0:.6,s1:3});
-  g+=fireflies(t,0,Y(820,1000),1920,hv(300,500),'#FFD08A',10,.55);
-  // The sixth line of the tablets, faint in the sky.
-  const tb=ease.out(prog(t,AT.v1-.6,AT.v1+.6));
-  if(tb>0){const ty=Y(330,700),ss=hv(.5,.58);g+=G('',G(`translate(960 ${ty}) scale(${ss}) translate(-960 -560)`,tablets(960,560,1,SIXTH(1.1,.12))),.85*tb);}
-  // Walking out together; Abel's glow goes out; Cain walks back alone.
-  const out=ease.inOut(prog(t,.3,AT.onlyOne)),back=ease.inOut(prog(t,AT.walksBack,AT.walksBack+2.6));
-  const fy=Y(900,1195),s=hv(.8,1.85),cx=lerp(X(300,90),X(820,300),out)-lerp(0,X(820,300)-X(300,150),back);
-  const walking=(t<AT.onlyOne)||(t>AT.walksBack&&t<AT.walksBack+2.6);
-  const ax=lerp(X(450,320),X(1000,530),out),gone=ease.inOut(prog(t,AT.onlyOne+.4,AT.onlyOne+1.8));
-  if(gone<1)g+=G('',bro('abel',ax,fy,s,{walk:t<AT.onlyOne?t*7:0,auraOp:.5}),1-gone);
-  if(gone>0&&gone<1)g+=glow(ax,fy-110*s,220*hv(1,1.5),'#FFE9A8',.5*(1-gone));
-  if(gone>0)g+=glow(ax,fy-10,hv(90,130),'#FFE9A8',gone*(.22+.08*Math.sin(t*3)));  // a faint warmth left in the grass
-  g+=bro('cain',cx,fy,s,{flip:back>0?-1:1,walk:walking?t*7+1:0});
-  g+=fade(t,AT.v1-.2,tag(t,AT.firstDeath,960,Y(150,560),'THE FIRST DEATH IN THE BIBLE',SZ(34,40),1)+
-    tag(t,AT.feeling,960,Y(240,660),'IT STARTED WITH A FEELING',SZ(36,44),2,{bg:CORAL,rot:-2}));
-  g+=verse(t,AT.v1-.15,560,40,['You shall not murder.'],'EXODUS 20:13 ESV',{size:56,hl:'not murder.',hlAt:AT.v1+.4,hlDur:.8,seed:5,id:4});
-  g+=tag(t,AT.easy,960,Y(980,1420),'THE "EASY" ONE?',SZ(40,46),3);
-  g+=tag(t,AT.further,960,Y(1050,1520),'FURTHER THAN OUR HANDS',SZ(38,44),4,{bg:CORAL});
-  return g;
-}
-
-// ---------- 1. Two offerings ----------
-function offerings(t,lt){
-  let g=glow(960,Y(120,300),900,'#FFF2C8',.35);
-  // Day sky: drifting clouds, a few birds, far hills with trees.
-  const dr=lt*hv(5,7);
-  g+=cloud(X(420,200)+dr,Y(120,180),hv(460,520),'#FFFFFF','#C8D4E4',.85,23)+cloud(X(1500,900)-dr*.6,Y(200,330),hv(420,480),'#FFFDF6','#D8D0C8',.8,25)+
-    cloud(X(700,330)+dr*.7,Y(330,520),hv(520,600),'#FFF8EC','#E8D0B0',.75,27)+cloud(X(1650,960)-dr*.4,Y(420,680),hv(320,380),'#FFF6E4','#E8C8A0',.7,29);
-  for(let i=0;i<5;i++){const bx=X(300,-60)+((lt*hv(30,36)+i*hv(70,80))%hv(1900,1500)),by=Y(240,400)+Math.abs(i-2)*20+Math.sin(t*1.2+i)*6;g+=bird(bx,by,hv(.9,1.1),t,i*1.3,'#4A5868');}
-  g+=`<path d="${ridge(20,Y(800,950),10,280)}" fill="#8AAE6A"/>`;
-  [[X(240,90),.8],[X(360,175),.6],[X(1600,880),.85],[X(1720,980),.65]].forEach(([x,s])=>g+=tree(x,Y(810,960),s*hv(.8,1),'#5E8A4A',t,.3));
-  g+=`<path d="${ridge(21,Y(830,990),14,260)}" fill="#7A9A3A"/><path d="${ridge(22,Y(880,1080),8,200)}" fill="#5E7E2E"/>`;
-  g+=meadow(t,1,['#5E7E2E','#4E6E26','#6E8E36'],['#FFD45E','#FFFFFF']);
-  const fy=Y(960,1180),s=hv(.95,1.3);
-  const cxC=X(420,215),cxA=X(1500,820),alC=X(760,405),alA=X(1160,660);
-  // Light falls on Abel's offering when God accepts it.
-  const acc=ease.out(prog(t,AT.accepted,AT.accepted+1.2));
-  if(acc>0)g+=P(`M${alA-60} ${Y(-200,-200)}L${alA+60} ${Y(-200,-200)}L${alA+120} ${fy}L${alA-120} ${fy}Z`,'#FFF6DA',{opacity:(.28*acc).toFixed(2)})+glow(alA,fy-120,300,'#FFF6DA',.5*acc);
-  const lit=prog(t,AT.both,AT.both+1);
-  g+=smoke(t,alC,fy-90,1.2,0,lit)+smoke(t,alA,fy-90,1.2,acc,lit);
-  g+=altar(alC,fy,1.2)+altar(alA,fy,1.2);
-  if(lit>0)[alC,alA].forEach(x=>{for(let i=0;i<4;i++){const f=Math.sin(t*10+i+x);g+=P(`M${x-24+i*16} ${fy-98}Q${x-30+i*16+f*6} ${fy-130} ${x-18+i*16} ${fy-150-lit*10}Q${x-6+i*16} ${fy-128} ${x-10+i*16} ${fy-98}Z`,['#FF5A2C','#FFB04C','#FFE36B'][i%3],{opacity:(.9*lit).toFixed(2)});}});
-  g+=basket(X(600,300),fy,1.15)+lamb(X(1640,535),fy,hv(1,1.1));
-  // Cain's glow turns red with anger.
-  const ang=prog(t,AT.angerBurn,AT.angerBurn+.8),cool=prog(t,AT.closeDoor,AT.closeDoor+1.5)*.0;
-  g+=bro('cain',cxC,fy,s,{aura:ang>0?mix('#FFB04C',RED,ang):'#FFB04C',auraOp:.4+.35*ang*(.8+.2*Math.sin(t*8)),lean:t>AT.faceFell?8:0});
-  g+=bro('abel',cxA,fy,s,{flip:-1,aura:'#FFE9A8',auraOp:.4+.3*acc});
-  {const fp=ease.inOut(prog(t,AT.faceFell,AT.faceFell+.7)),hy=fy-250*s;  // angry storm lines over Cain's head (not a halo)
-    [-1,0,1].forEach((k,i)=>g+=mark(`M${cxC+k*44-10} ${hy-30-Math.abs(k)*-12}l12 18l-12 10l14 20`,fp*1.4-i*.2,CORAL,7));}
-  // Sin crouching at the door: a dark paper shape beside a door frame, small, not scary.
-  const dx=X(180,72),dIn=ease.out(prog(t,AT.crouching-.2,AT.crouching+.6)),shut=ease.inOut(prog(t,AT.closeDoor,AT.closeDoor+.9));
-  if(t>AT.warned-.2){
-    let d=R(dx-70,fy-250,140,250,6,'#5A3A22',{stroke:'#3A2414','stroke-width':6})+R(dx-56,fy-236,112,236,4,'#120C10');
-    if(dIn>0&&shut<1){const br=1+.04*Math.sin(t*3);
-      d+=G(`translate(${dx} ${fy}) scale(${(dIn*br).toFixed(3)} ${dIn.toFixed(3)})`,P('M-50 0Q-56 -60 -20 -76Q10 -96 40 -70Q58 -50 52 0Z','#2A1E2E')+C(14,-58,6,CORAL)+C(32,-58,6,CORAL),1-shut);}
-    d+=R(dx-56,fy-236,112*shut,236,3,'#8A5A32',{stroke:'#5A3A22','stroke-width':4})+(shut>.95?C(dx+38,fy-118,6,GOLD):'');
-    g+=piece(t,AT.warned-.2,dx,fy-125,d,7,1.2);
+const slab=(w,h)=>`M${-w/2} ${h/2}V${-h/2+w*.32}Q${-w/2} ${-h/2} 0 ${-h/2}Q${w/2} ${-h/2} ${w/2} ${-h/2+w*.32}V${h/2}Z`;
+const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+function tablet(x,y,w,h,first,lit,seed){
+  const r=rng(seed);let g=G(`translate(${x} ${y})`,P(slab(w,h),'#7E7A70')+P(slab(w-24,h-24),'#9C988C')+
+    P(slab(w-24,h-24),'none',{stroke:'#5E5A52','stroke-width':3,opacity:.5}));
+  for(let i=0;i<5;i++){
+    const k=first+i,ly=y-h/2+w*.46+i*(h-w*.5)/5.2,x0=x-w/2+92,x1=x+w/2-34-r()*40,on=lit(k);
+    let d=`M${x0} ${ly}`;for(let xx=x0;xx<x1;xx+=18)d+=`L${xx+9} ${ly+(r()-.5)*6}L${xx+18} ${ly}`;
+    g+=glow((x0+x1)/2,ly,(x1-x0)*.6,'#FFD86B',.35*on);
+    g+=T(x-w/2+60,ly+12,NUM[k],{size:34,font:'Georgia',weight:700,anchor:'middle',fill:mix('#4A4740','#FFF4C8',Math.min(1,on))});
+    g+=P(d,'none',{stroke:'#4A4740','stroke-width':5,opacity:.8})+P(d,'none',{stroke:'#FFE9A8','stroke-width':3,opacity:(.12+.88*Math.min(1,on)).toFixed(3)});
   }
-  g+=fade(t,AT.v47-.2,tag(t,AT.brothers+.2,cxC,Y(1010,1400),'CAIN',SZ(36,42),1)+tag(t,AT.brothers+.7,cxA,Y(1010,1400),'ABEL',SZ(36,42),2));
-  g+=fade(t,AT.v47-.2,tag(t,AT.angerBurn,960,Y(150,560),'ANGRY',SZ(44,52),3,{bg:CORAL,rot:-3}));
-  g+=verse(t,AT.v47-.15,300,40,['And if you do not do well, sin is crouching at the door.','Its desire is for you, and you must rule over it.'],'GENESIS 4:7 ESV',{size:44,hl:'you must rule over it.',hlAt:AT.rule[0],hlDur:AT.rule[1]-AT.rule[0],seed:9,id:5});
-  g+=tag(t,AT.animal,960,Y(1010,1430),'SIN AT THE DOOR',SZ(38,44),4);
-  g+=tag(t,AT.closeDoor,960,Y(1060,1520),'HE COULD STILL CLOSE IT',SZ(36,42),6,{bg:CORAL});
+  return g;
+}
+const tablets=(cx,cy,s,lit)=>G(`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`,
+  glow(cx,cy,560,'#FFD86B',.12)+tablet(cx-205,cy,380,560,0,lit,21)+tablet(cx+205,cy,380,560,5,lit,33));
+const SIXTH=(on,rest=.15)=>k=>k===5?on:rest;
+// A carved line of illegible script (never a quotation).
+const scriptLine=(x0,x1,y,seed,col,w=4)=>{let d=`M${x0} ${y}`;for(let x=x0;x<x1;x+=14)d+=`l5 ${((hash(x,seed)-.5)*14).toFixed(0)}l4 ${((hash(x,seed+1)-.5)*10).toFixed(0)}l5 0`;return P(d,'none',{stroke:col,'stroke-width':w,'stroke-linejoin':'round'});};
+function openBook(x,y,w,h,seed,lit=-1,litK=0){
+  let g=P(`M${x-w/2-14} ${y+h/2+16}L${x+w/2+14} ${y+h/2+16}L${x+w/2+14} ${y-h/2+10}L${x-w/2-14} ${y-h/2+10}Z`,'#6A2A1E');
+  g+=P(`M${x} ${y-h/2+14}Q${x-w*.25} ${y-h/2-8} ${x-w/2} ${y-h/2}L${x-w/2} ${y+h/2}Q${x-w*.25} ${y+h/2-12} ${x} ${y+h/2+6}Z`,'#F6EFDC')+
+    P(`M${x} ${y-h/2+14}Q${x+w*.25} ${y-h/2-8} ${x+w/2} ${y-h/2}L${x+w/2} ${y+h/2}Q${x+w*.25} ${y+h/2-12} ${x} ${y+h/2+6}Z`,'#EFE6CE');
+  g+=L(x,y-h/2+14,x,y+h/2+6,'#C8B890',3);
+  const n=Math.floor((h-60)/30);
+  for(let i=0;i<n;i++){const ly=y-h/2+40+i*30;[[x-w/2+30,x-24],[x+24,x+w/2-30]].forEach(([a,b],k)=>{const idx=i+k*n,on=idx===lit?litK:0;
+    if(on>0)g+=glow((a+b)/2,ly,(b-a)*.55,'#FFD86B',.6*on)+R(a-6,ly-12,b-a+12,24,4,YEL,{opacity:(.55*on).toFixed(2)});
+    g+=scriptLine(a,b-hash(i,k+seed)*60,ly,seed+idx,'#5A4A3A',2.6);});}
+  return g;
+}
+function candle(t,x,y,k=1){
+  let g=R(x-16,y-90,32,90,6,'#F2E6C8',{stroke:'#C8B890','stroke-width':3})+Ell(x,y,40,10,'#8A6A3A');
+  if(k>0){const f=Math.sin(t*11)*3;g+=glow(x,y-120,160,'#FFC870',.6*k)+P(`M${x-10} ${y-96}Q${x-12+f} ${y-122} ${x+f} ${y-96-46*k}Q${x+12} ${y-120} ${x+10} ${y-96}Z`,'#FFD36B',{opacity:k.toFixed(2)})+
+    P(`M${x-4} ${y-98}Q${x-4} ${y-112} ${x+f*.5} ${y-98-22*k}Q${x+5} ${y-112} ${x+4} ${y-98}Z`,'#FFF6DA',{opacity:k.toFixed(2)});}
+  return g;
+}
+const curl=(t,x,y,a)=>{const p=prog(t,a,a+2.4);if(p<=0||p>=1)return '';let d=`M${x} ${y}`;for(let i=1;i<=12;i++){const u=i/12;d+=`L${(x+Math.sin(u*9+t*2)*16*u).toFixed(1)} ${(y-u*200*p).toFixed(1)}`;}
+  return P(d,'none',{stroke:'#C8C0B8','stroke-width':4,opacity:(.7*(1-p)).toFixed(2)});};
+function scroll(x,y,w,h,seed,lit=-1,litK=0){
+  let g=strip(x-w/2,y-h/2,w,h,seed,'#F0E2BE',{ax:4,ay:3});
+  g+=R(x-w/2-22,y-h/2-30,44,h+60,20,'#8A5A30')+R(x+w/2-22,y-h/2-30,44,h+60,20,'#8A5A30');
+  for(let i=0;i<Math.floor((h-60)/34);i++){const ly=y-h/2+46+i*34,on=i===lit?litK:0;
+    if(on>0)g+=glow(x,ly,w*.5,'#FFD86B',.7*on)+R(x-w/2+40,ly-14,w-80,28,4,YEL,{opacity:(.6*on).toFixed(2)});
+    g+=scriptLine(x-w/2+46,x+w/2-46-hash(i,seed)*80,ly,seed+i,on>0?mix('#5A4A3A','#8A3A10',on):'#6A5A44',3);}
+  return g;
+}
+const lamp=(t,x,y,k=1)=>glow(x,y-30,220,'#FFC870',.55*k)+P(`M${x-36} ${y}Q${x} ${y+22} ${x+36} ${y}Q${x+26} ${y-22} ${x} ${y-20}Q${x-26} ${y-22} ${x-36} ${y}Z`,'#B07A3A',{stroke:'#6A4420','stroke-width':3})+
+  P(`M${x+30} ${y-8}Q${x+40+Math.sin(t*10)*3} ${y-36} ${x+38} ${y-48}Q${x+30} ${y-30} ${x+28} ${y-10}Z`,'#FFD36B');
+// Sin crouching at the door, as the Bible pictures it: a dark paper animal shape, small and low, two coral eye-dots.
+// Not a monster: a silhouette that waits. k = opacity, reach 0..1 = a paw stretched forward.
+function beast(t,x,y,s,k,o={}){
+  if(k<=0)return '';const face=o.face||1,reach=o.reach||0,br=1+.03*Math.sin(t*2.6),tail=Math.sin(t*1.8)*12,blink=((t*.4)%1)<.04;
+  let g=Ell(0,-4,110,14,'#000',{opacity:.35});
+  g+=P(`M-90 -10Q-118 ${-60+tail} -150 ${-52+tail*1.4}`,'none',{stroke:'#1A1220','stroke-width':16,'stroke-linecap':'round'});
+  g+=P(`M-100 0Q-104 ${-70*br} -40 ${-78*br}Q20 ${-86*br} 60 ${-60*br}Q86 -40 92 0Z`,'#1A1220');
+  g+=P(`M50 -56Q62 -102 102 -100Q132 -96 134 -66Q136 -38 110 -30Q76 -24 50 -40Z`,'#1A1220')+P('M70 -96L78 -124L94 -100Z','#1A1220')+P('M100 -100L114 -124L120 -96Z','#1A1220');
+  g+=P(`M60 -6L${70+reach*70} ${-4-reach*10}L${86+reach*80} ${-14-reach*6}L${72+reach*60} -18Z`,'#1A1220');
+  if(!blink)g+=C(104,-70,6,CORAL)+C(124,-70,6,CORAL)+glow(114,-70,30,CORAL,.4);
+  return G(`translate(${x} ${y}) scale(${s*face} ${s})`,g,k);
+}
+
+// ---------- camera ----------
+// cam point (x, y) lands at frame (540, 1010). fy(z,F,y): the cam y that puts sheet y at frame height F at zoom z.
+const fy=(z,F=1170,y=800)=>y+(1010-F)/z;
+const HOLD=(x,y,z)=>(a,b)=>[shot(a,b,x,y,z)];
+const HOLDF=(x,z,F=1170,y=800)=>HOLD(x,fy(z,F,y),z);
+const MOVE=(x0,y0,z0,x1,y1,z1)=>(a,b)=>[[a,x0,y0,z0],[b,x1,y1,z1]];
+const W0=HOLD(960,600,.84);
+const FG=(a,b,c,fl=[])=>({grass:[a,b,c],flowers:fl});
+
+// =====================================================================================================
+// 0. COLD OPEN (0 s to "Cain and Abel")
+// =====================================================================================================
+// 0a. Two brothers walk out into a field at sunset: Cain's arm round Abel's shoulder, Abel laughing up at him.
+function walkOut(t,lt){
+  let g=stars(t,.35,-200)+rays(t,1260,330,12,'#FFD8A0',.06)+sunDisc(1260,330,95,'#FF9A4C','#FFE2B0');
+  g+=skyClouds(t,3,-420,'#4A2E52','#D9785A',.92);
+  for(let i=0;i<7;i++){const bx=1700-t*36-i*64+(i%2)*30,by=-90+Math.abs(i-3)*22+Math.sin(t*1.3+i)*6;g+=bird(bx,by,1.2,t,i*1.7,'#2A1A2E');}
+  g+=hill(5,520,'#5A3A52',12)+[[180,.8],[300,.6],[1640,.9],[1760,.65]].map(([x,s])=>tree(x,530,s,'#3A2640',t,.4)).join('');
+  g+=hill(3,600,'#46583A')+P('M1240 600L1280 600L1140 1800L620 1800Z','#6E5634',{opacity:.45});
+  g+=gnd(4,700,'#33442A','#2A3A22');
+  const w=lt*70,cx=560+w,ax=cx+128,s=1.2;
+  const abel=bro('abel',ax,800,s,{walk:t*7+1.6,expr:'joy',look:{x:cx+10,y:800-200*s}});
+  abel.near={x:ax+54*s,y:800-104*s};
+  const cain=bro('cain',cx,800,s,{walk:t*7,expr:'calm',look:{x:1260,y:340}});
+  cain.near=PPL.handOn(cain,abel,'shoulder');
+  const Cr=PPL.rig(cain);
+  g+=Cr.draw('back')+Cr.draw('body')+Cr.draw('head')+withProp(abel,staffP(ax+56*s,800,800-280*s,1))+Cr.draw('front');
+  return g;
+}
+// 0b. Only one of them walks back: the sun is down; Cain comes back alone, head low. Far behind, a faint glow in the
+// grass beside a fallen staff goes out.
+function walksBack(t,lt){
+  let g=stars(t,.8,200)+glow(1300,560,600,'#C8503A',.45)+skyClouds(t,13,-380,'#241A30','#7A3440',.95);
+  g+=hill(15,560,'#3A2236',12)+tree(1660,570,.85,'#1C1424',t,.3);
+  g+=hill(16,620,'#33402A')+gnd(17,700,'#2A3420','#222C1A');
+  const gone=ease.inOut(prog(t,AT.only+.6,AT.only+2.4));
+  g+=glow(1420,700,140,'#FFE9A8',.6*(1-gone)+.08)+C(1420,700,8,'#FFF4C8',{opacity:(1-gone).toFixed(2)});
+  g+=G('',L(1350,712,1490,690,'#5A3A22',8)+P('M1490 690q24 -6 22 -30','none',{stroke:'#5A3A22','stroke-width':8}),.8);
+  const p=ease.inOut(prog(t,AT.only,AT.only+2.7)),x=lerp(1180,900,p),y=lerp(752,800,p),s=lerp(.95,1.18,p);
+  g+=B('cain',x,y,s,{face:-1,walk:p<1?t*6:0,look:'down',expr:'sad',aura:RED,auraOp:.18});
+  return g;
+}
+// 0c. The first death in the Bible: an open book by candlelight; the candle goes out on "death".
+function firstDeath(t,lt){
+  let g=R(-60,-700,2040,1400,0,'#2A1A16');
+  for(let r=0;r<30;r++)for(let c=0;c<14;c++){const x=-60+c*150+(r%2)*75,y=-700+r*48;g+=R(x,y,146,44,3,r%3?'#33201A':'#3A251C',{opacity:.9});}
+  g+=R(380,-380,420,300,10,'#141C3A',{stroke:'#4A3020','stroke-width':16})+C(500,-280,42,'#E8EEFF',{opacity:.85})+glow(500,-280,140,'#C8D4FF',.3);
+  const out=prog(t,AT.death+.1,AT.death+.4);
+  g+=glow(1200,500,600,'#FFB060',.35*(1-out*.7));
+  g+=R(-60,690,2040,1200,0,'#4A2A1A')+R(-60,690,2040,20,0,'#6A3E24');
+  g+=openBook(900,600,700,330,7);
+  g+=candle(t,1340,700,1-out)+curl(t,1340,600,AT.death+.3);
+  return g;
+}
+// 0d. It didn't start with a weapon; it started with a feeling: Cain sits alone at dusk, looks at his empty hands;
+// then an ember lights in his chest and he lays his hand on it.
+function feelingS(t,lt){
+  let g=glow(1300,200,700,'#FF8A4C',.4)+skyClouds(t,21,-460,'#4A2840','#C8603A',.9);
+  g+=hill(22,560,'#5A3442')+gnd(23,690,'#5E4A2A','#4A3A20');
+  for(let i=0;i<6;i++)g+=P(`M${-60} ${760+i*60}Q960 ${720+i*60} 1980 ${770+i*60}`,'none',{stroke:'#3A2A18','stroke-width':10,opacity:.5});
+  g+=Ell(860,790,120,46,'#6A5A4A')+Ell(850,770,104,36,'#8A7A66');
+  const f=ease.out(prog(t,AT.feeling,AT.feeling+.9)),s=1.3;
+  const o=bro('cain',830,800,s,{sit:1,seat:752,lean:14,look:f<.5?{x:930,y:640}:'down',expr:['calm','sad',f],aura:RED,auraOp:.35*f});
+  if(f<.4){o.near={x:910,y:660};o.far={x:890,y:668};}else{o.near='chest';o.far={x:900,y:690};}
+  g+=PPL.fig(o);
+  const [ex,ey]=chestOf(o);g+=ember(t,ex,ey,18*s,0,f);
+  return g;
+}
+// 0e. "You shall not murder": Sinai burns; the tablets stand in front, line VI glowing.
+const SINAI0=FX.peak(8,960,170,{halfW:760});
+function sinai1(t,lt){
+  let g=stars(t,.5,-300)+glow(960,200,800,'#FF7A3C',.35);
+  g+=FX.summitFire(t,SINAI0,1,0,{fill:'#3A3046',H:180,cap:120,smoke:1,smokeH:1000,light:700,seed:8,drift:80});
+  g+=gnd(31,760,'#3A2A20','#2A1E18');
+  const on=ease.out(prog(t,AT.notMurder1[0],AT.notMurder1[1]+.3));
+  g+=tablets(960,640,.5,SIXTH(.25+.9*on,.12))+glow(1047,628,160,'#FFE9A8',.5*on);
+  return g;
+}
+// 0f. "It sounds like the easy commandment": a list of ten on a board; a man ticks line VI with a grin.
+function board(t,x0,y0,tick,o={}){
+  let b=R(x0,y0,540,540,12,'#A8743E',{stroke:'#6A4422','stroke-width':10});
+  const rr=rng(9);for(let i=0;i<50;i++)b+=C(x0+20+rr()*500,y0+20+rr()*500,3,'#8A5A2E');
+  b+=strip(x0+40,y0+40,460,460,41,'#FFFDF2')+C(x0+270,y0+52,12,CORAL);
+  for(let i=0;i<10;i++){const y=y0+92+i*40;b+=R(x0+70,y-16,28,28,4,'none',{stroke:INK,'stroke-width':3})+T(x0+132,y+9,NUM[i],{size:24,font:'Georgia',weight:700,anchor:'middle',fill:'#2A2A40'});
+    b+=scriptLine(x0+170,x0+440-hash(i,4)*80,y,30+i,'#2A2A40',3);
+    if(i===5)b+=mark(`M${x0+70} ${y-2}L${x0+84} ${y+14}L${x0+110} ${y-26}`,tick,CORAL,8);}
+  return b;
+}
+function easyS(t,lt){
+  let g=glow(1000,300,800,'#FFF2C8',.45)+R(-60,-700,2040,1500,0,'#E8C88A',{opacity:.5});
+  for(let i=0;i<9;i++)g+=R(-60+i*240,-700,8,1500,0,'#C8A060',{opacity:.4});
+  g+=R(-60,760,2040,1100,0,'#9A6A3A')+R(-60,760,2040,16,0,'#7A4A24');
+  const tick=ease.inOut(prog(t,AT.easy,AT.easy+.5));
+  g+=board(t,820,230,tick);
+  const reach=ease.inOut(prog(t,AT.easy-.6,AT.easy)),back=prog(t,AT.easy+.6,AT.easy+1.2);
+  const o=person(3,760,800,1.3,{expr:['calm','joy',tick],look:{x:900,y:440}});
+  o.near={x:lerp(800,885,reach)-back*40,y:lerp(700,440,reach)+back*160};
+  g+=PPL.fig(o);
+  return g;
+}
+// 0g. "Most of us will never hurt anyone": a friendly street. Bread passed between neighbours, a father with his child
+// on his hip, an old man waving from his door.
+function house(x,y,w,h,c,c2){return R(x,y-h,w,h,6,c)+R(x-8,y-h-14,w+16,18,4,c2)+R(x+w*.38,y-h*.62,w*.24,h*.62,8,'#3A2418')+R(x+w*.12,y-h*.8,w*.16,w*.14,3,'#FFD27A',{opacity:.6});}
+function street(t,lt){
+  let g=glow(1400,-100,700,'#FFE2A0',.6)+sunDisc(1400,-120,80,'#FFD08A','#FFF1C8');
+  g+=skyClouds(t,41,-500,'#FFFFFF','#F0D8B0',.75);
+  g+=house(80,700,300,320,'#E0B080','#C08A58')+house(420,700,260,260,'#D8A070','#B07A4A')+house(1250,700,280,300,'#E8BC8A','#C8925E')+house(1580,700,320,340,'#D09868','#A87040');
+  g+=gnd(43,700,'#C8A070','#B08A5A');
+  // the old man waves from his door
+  g+=elder(1440,780,1.05,{face:-1,near:'up',expr:'joy',look:{x:1100,y:620}});
+  // bread handed from one neighbour to another
+  const hand=ease.inOut(prog(t,AT.most-.1,AT.never+.2)),bx=lerp(905,955,hand),by=650;
+  const giver=person(1,870,800,1.1,{f:true,expr:'joy',look:{x:1060,y:600},near:{x:bx-14,y:by+8}});
+  const taker=person(4,1080,800,1.1,{face:-1,expr:['calm','joy',hand],look:{x:870,y:600},near:{x:bx+16,y:by+6}});
+  g+=withProp(giver,'')+withProp(taker,Ell(bx,by,44,24,'#C8843A',{stroke:'#8A5420','stroke-width':4})+P(`M${bx-28} ${by-6}q10 -10 20 0M${bx+4} ${by-8}q10 -10 20 0`,'none',{stroke:'#8A5420','stroke-width':4}));
+  // a father carries his child on his hip
+  g+=PPL.carry(person(0,560,800,1.1,{expr:'tender'}),person(3,0,0,.66,{expr:'joy'})).svg;
+  return g;
+}
+// 0h. "But Jesus said it reaches much further than our hands" (Jesus is never shown: a warm light on the hill).
+// A man looks at his open hands; the light reaches past them into his chest.
+function further(t,lt){
+  let g=glow(1220,260,800,'#FFE2A0',.55)+rays(t,1220,260,12,'#FFF6DA',.07,-3.1,.1);
+  g+=skyClouds(t,51,-480,'#FFF2DC','#F0C890',.7);
+  g+=hill(52,560,'#D8A060')+gnd(53,700,'#B08A4A','#9A7838');
+  g+=presence(t,1220,330,90,1);
+  const reach=ease.inOut(prog(t,AT.further,AT.further+.9)),s=1.3;
+  const o=person(2,720,800,s,{expr:['calm','awe',reach],look:reach<.5?{x:800,y:600}:{x:1220,y:330}});
+  const [cx,cy]=chestOf(o);
+  if(reach<.6){o.near={x:810,y:620};o.far={x:790,y:630};}else{o.near='chest';o.far='open';}
+  // the light goes past the hands, in a beam to the heart
+  if(reach>0)g+=P(`M1220 330L${cx} ${cy-14}L${cx} ${cy+14}Z`,'#FFF6DA',{opacity:(.35*reach).toFixed(2)});
+  g+=PPL.fig(o)+heart(cx,cy,16*s*reach,reach);
   return g;
 }
 
-// ---------- 2. The field: far away, a paper tear and a glow that goes out ----------
-function field(t,lt){
-  let g=stars(t,.6,500)+glow(960,Y(760,920),1000,'#FF7A3C',.5)+glow(X(1200,640),Y(780,900),hv(240,320),'#FF9A5C',.55);
-  // Dark clouds edged with the last red light, drifting.
-  const dr=t*hv(4,6);
-  g+=cloud(X(560,260)+dr,Y(150,300),hv(520,640),'#241A30','#7A3440',.95,11)+cloud(X(1460,860)-dr*.7,Y(260,470),hv(500,580),'#2C1E34','#8E3E3E',.95,13)+
-    cloud(X(860,420)+dr*.5,Y(400,690),hv(640,760),'#3A2234','#B0504A',.9,15);
-  g+=Ell(X(800,420),Y(620,820),hv(420,480),10,'#C8604A',{opacity:.35});
-  // Wind picks up when Cain rises against his brother.
-  const gust=ease.inOut(prog(t,AT.roseUp-.4,AT.roseUp+1.2))*(1-.6*ease.inOut(prog(t,AT.lifeGone,AT.lifeGone+2)));
-  // Far hill with a lone tree; birds lift from it and fly off.
-  const tx=X(1560,840),ty=Y(790,890);
-  g+=`<path d="${ridge(33,Y(790,890),12,240)}" fill="#2E2236"/>`+tree(tx,ty,hv(.8,1.05),'#1C1424',t,.3+gust);
-  const fl=ease.inOut(prog(t,AT.roseUp-.2,AT.roseUp+5));
-  for(let i=0;i<6;i++){const q=clamp(fl*1.2-i*.04,0,1),bx=tx+(hash(i,3)-.5)*120-q*hv(900,1100)*(.8+.2*hash(i,4)),by=ty-hv(200,240)+(hash(i,5)-.5)*60-q*hv(500,600)*(.7+.3*hash(i,6));
-    if(q>0&&q<1)g+=G('',bird(bx,by,hv(.9,1.15),t,i*1.9,'#140E1C'),Math.min(1,(1-q)*3));}
-  g+=`<path d="${ridge(31,Y(820,960),10,320)}" fill="#3E4E2A"/>`;
-  // The two altars, now cold, far off to the right.
-  g+=altar(X(1700,860),Y(860,1010),hv(.7,.85))+altar(X(1800,960),Y(860,1015),hv(.7,.85))+smoke(t,X(1700,860),Y(800,940),.6,0,.35);
-  g+=`<path d="${ridge(32,Y(880,1040),8,240)}" fill="#2E3C20"/>`;
-  g+=meadow(t,2,['#2E3C20','#26321A','#384828'],[]);
-  g+=tufts(t,2,Y(820,960),Y(1000,1880),hv(120,300),['#4A5C34','#3A4A28','#56683C'],{tip:'#D0705A',lean:4,gust:hv(10,12)*(.3+gust),s0:.6,s1:3});
-  const walk=ease.inOut(prog(t,AT.field-.4,AT.roseUp)),fy=Y(900,1175),s=hv(.7,1.55);
-  const cx=lerp(X(400,120),X(860,360),walk),ax=cx+hv(200,260);
-  const moving=t>AT.field-.4&&t<AT.roseUp;
-  const tear=prog(t,AT.tookLife,AT.tookLife+1.4);
-  g+=tear>0?tornFigure(t,ax,fy,s,tear,{flip:-1}):bro('abel',ax,fy,s,{walk:moving?t*7:0,auraOp:.45});
-  if(tear>0&&tear<1)g+=glow(ax,fy-90,200,'#FFE9A8',.5*(1-tear));
-  if(tear>0)g+=glow(ax,fy,hv(90,120),'#FFD86B',ease.out(tear)*(.25+.08*Math.sin(t*4)));  // the light sinks into the ground
-  g+=bro('cain',cx,fy,s,{walk:moving?t*7+1:0,aura:RED,auraOp:.45});
-  g+=tag(t,AT.roseUp,960,Y(160,600),'GENESIS 4:8',SZ(36,42),1);
-  g+=tag(t,AT.oneShort,960,Y(1000,1420),'ONE SHORT SENTENCE',SZ(36,42),2);
-  g+=tag(t,AT.lifeGone,960,Y(1070,1520),'A LIFE, GONE',SZ(40,46),3,{bg:CORAL});
+// =====================================================================================================
+// 1. TWO OFFERINGS ("Cain and Abel" to "close that door")
+// =====================================================================================================
+// 1a. The first brothers: outside the family tent, Cain swings his little brother onto his hip; both laugh; their
+// mother watches from the tent.
+function brothersS(t,lt){
+  let g=glow(1500,-100,700,'#FFE2A0',.6)+sunDisc(1500,-140,80,'#FFD08A','#FFF1C8')+skyClouds(t,61,-500,'#FFFFFF','#D8E0F0',.8);
+  g+=hill(62,560,'#8AAE6A')+[[200,.8],[330,.55]].map(([x,s])=>tree(x,570,s,'#5E8A4A',t,.3)).join('');
+  g+=gnd(63,690,'#7A9A3A','#5E7E2E');
+  g+=tent(1330,800,'#C8925E',2.1)+tent(1560,790,'#A8724A',1.4);
+  const sw=Math.sin(t*3)*4;
+  g+=PPL.carry(bro('cain',820,800,1.05,{expr:'joy',lean:-4+sw}),bro('abel',0,0,.62,{expr:'joy',near:'up'})).svg;
+  g+=folk(1,1150,800,1.05,{f:true,face:-1,expr:'tender',look:{x:880,y:600},near:'chest',far:'chest',hair:'#3A2216'});
+  g+=lamb(560,800,1.1,1,{look:Math.sin(t*2)>0?1:0});
+  return g;
+}
+// 1b. Cain worked the ground: kneeling in his furrows, pressing seeds in; shoots come up behind him.
+function ground(t,lt){
+  let g=glow(960,-300,900,'#FFE9A0',.6)+sunDisc(600,-300,70,'#FFE2A0','#FFF6D8')+skyClouds(t,71,-520,'#FFFFFF','#E0D8C8',.7);
+  g+=hill(72,560,'#9AB86A')+gnd(73,680,'#8A5E34','#7A5028');
+  for(let i=0;i<7;i++){const y=730+i*70;g+=P(`M-60 ${y}Q960 ${y-30} 1980 ${y}`,'none',{stroke:'#5A3A1E','stroke-width':12});
+    for(let j=0;j<9;j++){const x=980+j*110+(i%2)*55,gr=clamp((t-AT.ground+.8+j*.08-i*.05)*1.6);if(x>1900||gr<=0)continue;
+      g+=L(x,y,x,y-30*gr,'#5A9A3A',5)+Ell(x-10*gr,y-30*gr,10*gr,5*gr,'#7CC84A')+Ell(x+10*gr,y-34*gr,10*gr,5*gr,'#7CC84A');}}
+  const press=Math.abs(Math.sin(E.held(t,8)*3));
+  g+=R(620,760,90,70,10,'#C8A060',{stroke:'#8A6A3A','stroke-width':4})+Ell(665,762,44,10,'#E8D8A0');
+  g+=B('cain',800,800,1.25,{kneel:1,lean:22+press*8,near:{x:900,y:782+press*8},far:{x:690,y:770},look:{x:900,y:790},expr:'calm'});
+  return g;
+}
+// 1c. And Abel kept the sheep: Abel with his staff among the flock, looking down at a lamb at his feet.
+function sheepS(t,lt){
+  let g=glow(1300,-200,800,'#FFF2C8',.6)+skyClouds(t,81,-520,'#FFFFFF','#C8D4E4',.8);
+  g+=hill(82,540,'#7AAE6A')+[[1620,.9],[1750,.6]].map(([x,s])=>tree(x,550,s,'#4E7E44',t,.3)).join('')+gnd(83,680,'#6E9E4A','#5A8A3A');
+  g+=sheepFlock(t,[[560,760,1],[700,790,-1],[1260,770,1],[1420,800,-1],[1340,840,1]],1.05);
+  const o=bro('abel',960,800,1.3,{expr:'tender',look:{x:1090,y:780},lean:6});
+  o.near={x:960+54*1.3,y:800-110*1.3};
+  g+=withProp(o,staffP(960+58*1.3,800,800-300*1.3,1,11))+lamb(1110,815,.9,-1,{look:1});
+  return g;
+}
+// 1d. Both brought an offering: Cain carries his basket of harvest, Abel a lamb in his arms, toward two altars.
+function bringS(t,lt){
+  let g=glow(1500,-200,800,'#FFE2A0',.55)+skyClouds(t,91,-500,'#FFF8EC','#E8D0B0',.75);
+  g+=hill(92,560,'#8AA05A')+gnd(93,680,'#7A9A3A','#647E30');
+  g+=altar(1150,760,1.1)+altar(1360,760,1.1);
+  const w=lt*55,s=1.1,cx=430+w,ax=cx+190;
+  const cain=bro('cain',cx,800,s,{walk:t*7,expr:'calm',look:{x:1150,y:640}});
+  const bx=cx+62*s,by=800-112*s;cain.near={x:bx+8,y:by-30};cain.far={x:bx-20,y:by-32};
+  g+=withProp(cain,basket(bx,by,.85));
+  const abel=bro('abel',ax,800,s,{walk:t*7+2,expr:'tender',look:{x:ax+60,y:800-118*s}});
+  const lx=ax+58*s,ly=800-100*s;abel.near={x:lx+10,y:ly-26};abel.far={x:lx-18,y:ly-30};
+  g+=withProp(abel,lamb(lx-10,ly+10,.6,1));
+  return g;
+}
+// 1e. God accepted Abel's offering, but not Cain's: light falls on Abel's altar and his smoke rises straight into it;
+// Cain's smoke rolls along the ground. Abel kneels with lifted hands; Cain looks across at the light.
+function acceptS(t,lt){
+  let g=glow(1260,-200,700,'#FFF2C8',.3)+skyClouds(t,101,-480,'#E8E4F0','#C8C0D8',.8);
+  g+=hill(102,560,'#7A8E5A')+gnd(103,690,'#6A8A3A','#567430');
+  const acc=ease.out(prog(t,AT.accepted,AT.accepted+1.2)),no=ease.inOut(prog(t,AT.notCains,AT.notCains+.8));
+  g+=shaft(t,1260,-700,700,60,150,acc);
+  g+=smoke(t,720,690,1.3,0,1)+smoke(t,1260,690,1.3,acc,1);
+  g+=altar(720,780,1.2)+altarFire(t,720,780,1.2,1)+altar(1260,780,1.2)+altarFire(t,1260,780,1.2,1);
+  g+=B('abel',1520,800,1.2,{face:-1,kneel:acc,near:acc>.3?'up':'chest',far:acc>.3?'up':'chest',look:acc>.3?{x:1260,y:200}:{x:1260,y:680},expr:['calm','joy',acc],aura:'#FFE9A8',auraOp:.4*acc});
+  g+=B('cain',470,800,1.2,{look:no>.3?{x:1260,y:600}:{x:720,y:660},expr:['calm','sad',no],near:'chest'});
+  return g;
+}
+// 1f. And Cain burned with anger: close, red aura flaring, the ember blazing, storm marks over his head.
+function burnS(t,lt){
+  let g=glow(960,400,900,'#8A1A10',.5)+skyClouds(t,111,-500,'#3A1420','#C8402A',.9);
+  g+=smoke(t,1400,620,1.6,0,.8)+altar(1400,700,1.3);
+  g+=hill(112,640,'#4A2A20')+gnd(113,720,'#3A2218','#2E1A12');
+  const k=ease.out(prog(t,AT.burned,AT.burned+.5)),s=1.35,fl=.8+.2*Math.sin(t*9);
+  const o=bro('cain',900,800,s,{face:1,expr:['sad','fear',.25],look:{x:1400,y:560},lean:-4,aura:RED,auraOp:(.35+.45*k)*fl,tilt:4});
+  o.near={x:900+70*s,y:800-58*s};o.far={x:900-52*s,y:800-60*s};
+  g+=PPL.fig(o);
+  const [ex,ey]=chestOf(o);g+=ember(t,ex,ey,26*s,0,.4+.6*k);
+  const hy=800-270*s;[-1,0,1].forEach((j,i)=>g+=mark(`M${900+j*54-10} ${hy-30+Math.abs(j)*16}l14 20l-14 12l16 22`,k*1.4-i*.2,CORAL,9));
+  return g;
+}
+// 1g. His face fell: Cain sits on a stone with his head down; Abel stands a little way off, worried, hand half out.
+function faceFellS(t,lt){
+  let g=glow(1300,100,700,'#FF9A6A',.35)+skyClouds(t,121,-500,'#5A3A5A','#E08A6A',.85);
+  g+=hill(122,560,'#6A5A5A')+gnd(123,690,'#5E6A3A','#4A5630');
+  g+=smoke(t,1640,640,1,0,.5)+altar(1640,720,.9);
+  g+=Ell(780,790,110,40,'#6A6458')+Ell(770,770,96,32,'#8A8478');
+  g+=B('cain',760,800,1.25,{sit:1,seat:754,lean:26,look:'down',expr:'sad',near:{x:830,y:700},far:{x:800,y:706},tilt:10,aura:RED,auraOp:.22});
+  const half=ease.inOut(prog(t,AT.faceFell+.4,AT.faceFell+1.2));
+  g+=B('abel',1180,800,1.2,{face:-1,expr:'sad',look:{x:800,y:620},near:{x:lerp(1130,1075,half),y:lerp(720,680,half)},lean:4*half});
+  return g;
+}
+// 1h. So God warned him, like a friend: a soft light comes to sit beside Cain; its voice goes out in rings.
+function warnS(t,lt){
+  let g=stars(t,.6,0)+glow(1200,300,700,'#8A6AA8',.35)+skyClouds(t,131,-520,'#2A2244','#7A5A8A',.9);
+  g+=hill(132,560,'#3A3048')+gnd(133,690,'#3A4430','#2E3826');
+  const k=ease.out(prog(t,AT.warned-.1,AT.warned+.8));
+  g+=Ell(780,790,110,40,'#4A4840')+Ell(770,770,96,32,'#6A665C');
+  g+=presence(t,1150,560,80,k)+rings(t,AT.warned+.3,1150,560,900,3)+rings(t,AT.warnW,1150,560,900,3);
+  const up=ease.inOut(prog(t,AT.warned+.2,AT.warned+1));
+  g+=B('cain',760,800,1.25,{sit:1,seat:754,lean:lerp(26,4,up),look:up>.4?{x:1150,y:560}:'down',expr:['sad','surprised',up*.7],near:{x:830,y:lerp(700,690,up)},far:{x:800,y:706},aura:RED,auraOp:.2});
+  return g;
+}
+// 1i-1l. Sin crouching at the door (Genesis 4:7): inside Cain's house at dusk, the doorway open on the purple field.
+// A dark paper animal crouches on the doorstep. Cain can still close the door on it.
+const DOOR={x0:620,x1:900,top:470,bot:800};
+function room(t,inside){
+  let g=R(-60,-700,2040,1500,0,'#5A3A26');
+  for(let r=0;r<30;r++)for(let c=0;c<14;c++){const x=-60+c*150+(r%2)*75,y=-700+r*50;g+=R(x,y,146,46,4,r%3?'#6A462E':'#74503A',{stroke:'#4A2E1C','stroke-width':3});}
+  // the doorway onto the dusk outside
+  const {x0,x1,top,bot}=DOOR;
+  g+=R(x0,top,x1-x0,bot-top,0,'#2A1E44')+glow((x0+x1)/2,top+120,260,'#C8606A',.5)+P(`M${x0} ${bot-60}Q${(x0+x1)/2} ${bot-90} ${x1} ${bot-50}L${x1} ${bot}L${x0} ${bot}Z`,'#2E3A26');
+  g+=stars(t,.5,top+100);
+  g+=R(x0-30,top-40,x1-x0+60,40,4,'#4A3020')+R(x0-30,top-40,30,bot-top+40,4,'#4A3020')+R(x1,top-40,30,bot-top+40,4,'#4A3020');
+  g+=R(-60,800,2040,1100,0,'#6A4A30')+R(-60,800,2040,14,0,'#4A3020');
+  for(let i=0;i<8;i++)g+=L(-60+i*280,830+i*4,1980,830+i*120,'#5A3E28',4,{opacity:.4});
+  g+=glow(1500,620,500,'#FFC870',.45*inside)+lamp(t,1500,640)+R(1420,646,160,154,6,'#7A5434');
+  return g;
+}
+// The door, hinged at the doorway's right edge: close 0 = swung open against the wall, 1 = shut.
+function door(close){
+  const {x0,x1,top,bot}=DOOR,fx=lerp(x1+170,x0,close),sk=lerp(30,0,close);
+  return P(`M${x1} ${top}L${fx} ${top-sk}L${fx} ${bot+sk*.6}L${x1} ${bot}Z`,'#8A5A32',{stroke:'#5A3A1E','stroke-width':6})+
+    L((x1+fx)/2,top-sk/2+40,(x1+fx)/2,bot+sk*.3-40,'#6A4222',5);
+}
+function doorEdge(close){const {x0,x1,top,bot}=DOOR;return [lerp(x1+170,x0,close),(top+bot)/2+10];}
+// 1i. The verse begins: Cain at home by the lamp; the dark shape creeps onto the doorstep.
+function doorA(t,lt){
+  let g=room(t,1)+door(0);
+  const cr=ease.out(prog(t,AT.crouching-.4,AT.crouching+.8));
+  g+=beast(t,lerp(560,740,cr),800,.85,cr);
+  const look=prog(t,AT.crouching+.5,AT.crouching+1);
+  g+=B('cain',1240,800,1.2,{face:-1,expr:['calm','fear',look*.6],look:look>.5?{x:760,y:740}:{x:1500,y:620},near:look>.5?'chest':null,aura:RED,auraOp:.15});
+  return g;
+}
+// 1j. "Its desire is for you": a paw stretches over the threshold; "you must rule over it": Cain takes hold of the door.
+function doorB(t,lt){
+  let g=room(t,1)+door(0);
+  const rch=ease.inOut(prog(t,AT.desire,AT.desire+1.4)),hold=ease.inOut(prog(t,AT.rule[0]-.3,AT.rule[0]+.4));
+  g+=beast(t,740,800,.85,1,{reach:rch});
+  const [ex,ey]=doorEdge(0),cx=ex+lerp(220,112,hold);
+  const o=bro('cain',cx,800,1.2,{face:-1,expr:['fear','calm',hold],look:{x:780,y:720},lean:6*hold,aura:RED,auraOp:.15,walk:hold>0&&hold<1?t*6:0});
+  if(hold>.2)o.near={x:ex+6,y:ey};
+  g+=PPL.fig(o);
+  return g;
+}
+// 1k. "Like an animal": close on the doorstep, the shape crouched and waiting, tail flicking.
+function doorC(t,lt){
+  let g=room(t,.6)+door(0);
+  g+=beast(t,745,800,1,1,{reach:.15+.1*Math.sin(t*2)});
+  return g;
+}
+// 1l. "Cain could still close that door": he pushes the door; it swings nearly shut on the shape.
+function doorD(t,lt){
+  let g=room(t,1);
+  const cl=ease.inOut(prog(t,AT.cainCould,AT.doorEnd))*.72;
+  g+=beast(t,745,800,.85,1,{reach:0})+door(cl);
+  const [ex,ey]=doorEdge(cl);
+  g+=B('cain',ex+112,800,1.2,{face:-1,expr:'calm',look:{x:ex-40,y:ey},near:{x:ex+6,y:ey},far:{x:ex+12,y:ey+30},lean:12,walk:cl>0&&cl<.72?t*5:0,aura:RED,auraOp:.12});
   return g;
 }
 
-// ---------- 3. Crying from the ground: a light from above, a small glow in the earth ----------
-function cry(t,lt){
-  let g=stars(t,.7,700);
-  const gx=X(860,500),gy=Y(860,1120);
-  // Light from above (God is shown only as light).
-  const lp=ease.out(prog(t,AT.came-.2,AT.came+1.2)),top=Y(-300,-700);
-  // Night clouds part around the light.
-  const pt=ease.inOut(prog(t,AT.came-.2,AT.came+2));
-  g+=cloud(gx-hv(420,330)-pt*hv(80,90),Y(120,250),hv(520,600),'#1A1E3A','#4A5A8A',.95,17)+cloud(gx+hv(440,390)+pt*hv(80,90),Y(200,400),hv(520,600),'#1C2040','#5A6A9A',.95,19)+
-    cloud(gx+hv(500,560)+pt*60,Y(420,700),hv(400,460),'#20243E','#4A5480',.9,21);
-  g+=`<path d="${ridge(43,Y(790,880),12,240)}" fill="#161A30"/>`+tree(X(1600,900),Y(790,885),hv(.8,1.05),'#0C0E1E',t,.6);
-  // Light from above (God is shown only as light): a soft wide shaft, a bright core, dust drifting in it.
-  g+=P(`M${gx-160} ${top}L${gx+160} ${top}L${gx+330} ${gy+20}L${gx-330} ${gy+20}Z`,'#FFF6DA',{opacity:(.1*lp).toFixed(3)})+
-    P(`M${gx-90} ${top}L${gx+90} ${top}L${gx+200} ${gy}L${gx-200} ${gy}Z`,'#FFF6DA',{opacity:(.24*lp).toFixed(3)})+
-    P(`M${gx-30} ${top}L${gx+30} ${top}L${gx+70} ${gy}L${gx-70} ${gy}Z`,'#FFFBEC',{opacity:(.16*lp).toFixed(3)})+glow(gx,Y(-100,0),600,'#FFF6DA',.55*lp);
-  for(let i=0;i<16;i++){const q=(t*.05+hash(i,31))%1,dy=lerp(Y(0,100),gy,q),w=lerp(100,190,(dy-top)/(gy-top));g+=C((gx+(hash(i,32)-.5)*w*1.6+Math.sin(t+i)*10).toFixed(0),dy.toFixed(0),(2+hash(i,33)*3).toFixed(1),'#FFF6DA',{opacity:(lp*.7*Math.sin(q*Math.PI)).toFixed(2)});}
-  g+=`<path d="${ridge(41,Y(850,960),10,260)}" fill="#24301C"/>`;
-  g+=altar(X(380,200),Y(880,1050),hv(.75,.9))+altar(X(250,90),Y(880,1060),hv(.75,.9));
-  g+=Ell(gx,gy+10,hv(260,330),hv(46,56),'#FFF6DA',{opacity:(.16*lp).toFixed(3)});
-  g+=meadow(t,3,['#24301C','#1E2818','#2C3A22'],[]);
-  g+=tufts(t,3,Y(850,960),Y(1000,1880),hv(120,300),['#34462A','#2A3A22','#3E5232'],{tip:'#FFE9A8',lean:hv(7,9),gust:hv(4,5),s0:.6,s1:3});
-  // Abel's glow in the ground, pulsing; during the verse it rises as a column and rings toward the light.
-  const pul=.6+.25*Math.sin(t*4),rp=prog(t,AT.crying[0]-.2,AT.crying[0]+.2)*(1-.5*prog(t,AT.mattered,AT.mattered+2));
-  g+=glow(gx,gy,hv(140,220),'#FFD86B',.75*pul)+C(gx,gy,12,'#FFF4C8',{opacity:pul.toFixed(2)});
-  if(rp>0){g+=P(`M${gx-26} ${gy}Q${gx-60} ${gy-260} ${gx-16} ${gy-hv(560,680)}L${gx+16} ${gy-hv(560,680)}Q${gx+60} ${gy-260} ${gx+26} ${gy}Z`,'#FFE9A8',{opacity:(.22*rp*pul).toFixed(3)});
-    for(let i=0;i<4;i++){const q=(t*.45+i/4)%1,ry=gy-q*hv(600,700);g+=Ell(gx,ry,60+q*160,16+q*30,'none',{stroke:'#FFE9A8','stroke-width':5,opacity:(rp*.7*(1-q)).toFixed(2)});}}
-  // When "Abel's life mattered": a small flower opens where the glow is.
-  const bl=ease.out(prog(t,AT.mattered,AT.mattered+1.2));
-  if(bl>0){const fh=hv(70,90)*bl;g+=L(gx,gy,gx+4,gy-fh,'#5A9A4A',6)+Ell(gx+18,gy-fh*.5,16*bl,7*bl,'#5A9A4A');
-    for(let k=0;k<6;k++){const a=k*Math.PI/3+t*.2;g+=Ell((gx+4+Math.cos(a)*16*bl).toFixed(1),(gy-fh+Math.sin(a)*16*bl).toFixed(1),(14*bl).toFixed(1),(9*bl).toFixed(1),'#FFF6DA',{transform:`rotate(${(a*57.3).toFixed(0)} ${(gx+4+Math.cos(a)*16*bl).toFixed(1)} ${(gy-fh+Math.sin(a)*16*bl).toFixed(1)})`});}
-    g+=C(gx+4,gy-fh,9*bl,GOLD)+glow(gx+4,gy-fh,80*bl,'#FFE9A8',.5);}
-  // Cain turned away, shrugging.
-  const sh=t>AT.didntKnow&&t<AT.v410?.25+.15*Math.sin(t*6):0;
-  g+=bro('cain',X(1500,820),Y(920,1180),hv(.95,1.3),{aura:RED,auraOp:.35,reach:sh});
-  g+=fade(t,AT.v410-.2,tag(t,AT.came+.3,960,Y(150,560),'GOD COMES LOOKING',SZ(36,42),1));
-  g+=verse(t,AT.v410-.15,420,40,["The voice of your brother's blood is crying to me","from the ground."],'GENESIS 4:10 ESV',{size:46,hl:'crying to me',hlAt:AT.crying[0],hlDur:AT.crying[1]-AT.crying[0],seed:11,id:3});
-  const ny=Y(1000,1420);
-  g+=tag(t,AT.nobody,960,ny,'NOBODY SAW',SZ(38,44),2)+strike(960-hv(150,180),ny,960+hv(150,180),ease.inOut(prog(t,AT.godDid-.2,AT.godDid+.3)));
-  g+=tag(t,AT.godDid,960,Y(1070,1520),'GOD SAW',SZ(42,50),3,{bg:CORAL,rot:-2});
-  g+=tag(t,AT.mattered,960,Y(160,600),"ABEL'S LIFE MATTERED",SZ(38,44),4);
+// =====================================================================================================
+// 2. THE FIELD ("But Cain didn't" to "a life that is gone")
+// =====================================================================================================
+// 2a. But Cain didn't rule over it: the door swings back open, the shape slips in and into his shadow; his glow turns
+// red and he turns away from the lamp.
+function doorE(t,lt){
+  let g=room(t,lerp(1,.4,prog(t,AT.didnt,AT.didnt+2)));
+  const op=ease.inOut(prog(t,AT.didnt,AT.didnt+.8)),cl=.72*(1-op);
+  g+=door(cl);
+  const sl=ease.inOut(prog(t,AT.didnt+.6,AT.didnt+2.2));
+  g+=beast(t,lerp(745,1060,sl),800,.85,1-prog(sl,.7,1),{reach:.2});
+  const red=ease.out(prog(t,AT.didnt+1.6,AT.didnt+2.4));
+  g+=B('cain',1200,800,1.2,{face:red>.5?1:-1,expr:['calm','sad',red],look:red>.5?{x:1700,y:700}:{x:900,y:740},near:red>.5?'chest':null,aura:RED,auraOp:.15+.5*red});
+  return g;
+}
+// 2b. He asked his brother to come out to the field: Abel with his flock turns, smiles and follows.
+function askS(t,lt){
+  let g=glow(1500,300,700,'#FFB070',.55)+sunDisc(1500,320,70,'#FF9A4C','#FFE0A8')+skyClouds(t,141,-500,'#6A4A6A','#F0A070',.85);
+  g+=hill(142,560,'#7A7A4A')+gnd(143,690,'#6A7A3A','#56662E');
+  g+=sheepFlock(t,[[1250,770,-1],[1380,790,1],[1180,830,-1]],1);
+  const p=ease.inOut(prog(t,AT.asked-.2,AT.field)),cx=lerp(470,760,p);
+  const cain=bro('cain',cx,800,1.15,{walk:p<1?t*7:0,expr:'calm',look:{x:1040,y:600},aura:RED,auraOp:.25});
+  if(p>.5)cain.near={x:cx+60,y:620+Math.sin(t*6)*10};
+  g+=PPL.fig(cain);
+  const turn=prog(t,AT.asked+.8,AT.asked+1.2),go=ease.inOut(prog(t,AT.field,AT.field+.8));
+  const ax=1040-go*30,ab=bro('abel',ax,800,1.15,{face:turn>.5?-1:1,expr:['calm','joy',turn],look:turn>.5?{x:cx,y:600}:{x:1300,y:740},walk:go>0&&go<1?t*7:0});
+  ab.near={x:ax+54*1.15*ab.face,y:800-110*1.15};
+  g+=withProp(ab,staffP(ax+58*1.15*ab.face,800,800-300*1.15,ab.face,10));
+  return g;
+}
+// 2c. And there Cain rose up against Abel and took his life. Seen only from far away: two small figures in a wide
+// dusk field. Cain's red glow flares; Abel's paper figure tears in two, turns grey and fades, and his light sinks
+// into the ground. Birds lift from the tree. No weapon, no blood.
+let tearN=0;
+function tornFig(o,p){
+  const x=o.x,y=o.y,s=o.s,id='tear'+(tearN++),fig=PPL.fig(o),d=ease.out(p);
+  const zz=[[6,-280],[-14,-210],[18,-140],[-10,-80],[14,30]].map(([dx,dy])=>`L${x+dx*s} ${y+dy*s}`).join('');
+  const A=`M${x-200*s} ${y-280*s}${zz}L${x-200*s} ${y+30*s}Z`,Bp=`M${x+200*s} ${y-280*s}${zz}L${x+200*s} ${y+30*s}Z`;
+  const grey=1-.9*d;
+  return `<clipPath id="${id}a"><path d="${A}"/></clipPath><clipPath id="${id}b"><path d="${Bp}"/></clipPath>`+
+    G(`translate(${(-14*d*s).toFixed(1)} ${(6*d).toFixed(1)}) rotate(${(-7*d).toFixed(2)} ${x} ${y})`,`<g clip-path="url(#${id}a)">${fig}</g>`,grey)+
+    G(`translate(${(14*d*s).toFixed(1)} ${(6*d).toFixed(1)}) rotate(${(7*d).toFixed(2)} ${x} ${y})`,`<g clip-path="url(#${id}b)">${fig}</g>`,grey);
+}
+function farField(t,seed){
+  let g=stars(t,.6,-100)+glow(960,560,1000,'#FF7A3C',.5)+glow(1200,580,300,'#FF9A5C',.6);
+  g+=skyClouds(t,seed,-460,'#241A30','#8E3E3E',.95);
+  g+=Ell(800,420,480,10,'#C8604A',{opacity:.35});
+  g+=hill(151,600,'#2E2236',12)+tree(1560,610,.95,'#1C1424',t,.4);
+  g+=hill(152,650,'#3E4E2A')+gnd(153,740,'#2E3C20','#26321A');
+  return g;
+}
+function tookS(t,lt){
+  let g=farField(t,151);
+  const rose=ease.out(prog(t,AT.roseUp,AT.roseUp+.6)),tear=prog(t,AT.tookLife,AT.tookLife+1.6);
+  const fl=ease.inOut(prog(t,AT.roseUp-.2,AT.roseUp+4));
+  for(let i=0;i<6;i++){const q=clamp(fl*1.2-i*.04),bx=1560+(hash(i,3)-.5)*120-q*900*(.8+.2*hash(i,4)),by=420+(hash(i,5)-.5)*60-q*700*(.7+.3*hash(i,6));
+    if(q>0&&q<1)g+=G('',bird(bx,by,1.1,t,i*1.9,'#140E1C'),Math.min(1,(1-q)*3));}
+  const s=.62,ax=1010,cx=900;
+  g+=B('cain',cx,700,s,{expr:'sad',look:{x:ax,y:600},aura:RED,auraOp:.3+.4*rose});
+  const ab=bro('abel',ax,700,s,{face:-1,expr:'calm',look:{x:cx,y:600},aura:'#FFE9A8',auraOp:.4});
+  g+=tear>0?tornFig(Object.assign(ab,{auraOp:.4*(1-tear)}),tear):PPL.fig(ab);
+  if(tear>0)g+=glow(ax,700,90,'#FFD86B',ease.out(tear)*(.3+.08*Math.sin(t*4)))+glow(ax,640,160,'#FFE9A8',.5*Math.sin(Math.PI*clamp(tear*1.3)));
+  return g;
+}
+// 2d. The Bible tells it in one short sentence: a scroll by lamplight; one line glows.
+function shortS(t,lt){
+  let g=R(-60,-700,2040,1500,0,'#1E1410')+glow(1300,500,700,'#FFB060',.35);
+  g+=R(-60,700,2040,1200,0,'#3A2216')+R(-60,700,2040,18,0,'#5A3A24');
+  const on=ease.out(prog(t,AT.shortW,AT.shortW+.8));
+  g+=scroll(900,560,820,420,5,5,on)+lamp(t,1440,690);
+  return g;
+}
+// 2e. There are no details: the empty field, wind in the grass, the staff lying where it fell, the flock gone quiet.
+function noDetailS(t,lt){
+  let g=farField(t,161);
+  g+=G('',L(840,812,1060,790,'#5A3A22',10)+P('M1060 790q30 -6 28 -36','none',{stroke:'#5A3A22','stroke-width':10}),.9);
+  g+=sheepFlock(t,[[1360,740,-1],[1460,750,-1]],.6);
+  return g;
+}
+// 2f. Just a life that is gone: the lamb stands by the staff and looks down; a small light rises from the grass.
+function goneS(t,lt){
+  let g=farField(t,171);
+  const q=prog(t,AT.lifeGone,AT.lifeGone+2.2);
+  g+=G('',L(780,812,1100,786,'#5A3A22',14)+P('M1100 786q40 -8 38 -50','none',{stroke:'#5A3A22','stroke-width':14}),.9);
+  g+=lamb(1060,800,1.7,-1,{look:1});
+  g+=glow(930,800-q*340,60,'#FFE9A8',.7*(1-q))+C(930,800-q*340,6,'#FFF4C8',{opacity:(1-q).toFixed(2)});
   return g;
 }
 
-// ---------- 4. The image of God: many faces, one light reflected in each ----------
-const PEOPLE=[ // frame x, frame y (feet), scale, look
-  [250,880,.92,{hair:'#E8E4DC',tunic:'#B98CFF',tunic2:'#6A4CD8',skin:'#D9965E',shade:'#A86A3E'}],
-  [540,880,.92,{f:true,tunic:'#FF8FB1',tunic2:'#C8487A',hair:'#1A1A2A',skin:'#B87444',shade:'#8A5230'}],
-  [810,880,.66,{tunic:'#FFC24C',tunic2:'#E0623C',hair:'#4A2A16'}],
-  [200,1180,.66,{f:true,tunic:'#7CD4FF',tunic2:'#2F6FD0',hair:'#2E1C52',skin:'#D9965E',shade:'#A86A3E'}],
-  [470,1180,.98,{tunic:'#3DE0B8',tunic2:'#1787A8',hair:'#1A1A2A',skin:'#8A5A3A',shade:'#6A4228'}],
-  [750,1180,.92,{f:true,tunic:'#FFD45E',tunic2:'#C88A2A',hair:'#D8D4CC',skin:'#F5BE8E',shade:'#C4835E'}],
+// =====================================================================================================
+// 3. CRYING FROM THE GROUND ("Then God came" to "speak for it")
+// =====================================================================================================
+// 3a. Then God came to Cain: night; a column of light comes down in front of him; he stops and shields his eyes.
+function nightField(t,seed,o={}){
+  let g=stars(t,.85,200)+glow(960,400,900,'#3A4A8A',.3)+skyClouds(t,seed,-480,'#1A1E3A','#4A5A8A',.95);
+  g+=hill(seed+1,560,'#161A30')+tree(1700,570,.9,'#0C0E1E',t,.5);
+  g+=hill(seed+2,640,'#24301C')+gnd(seed+3,730,'#1E2818','#18200F');
+  return g;
+}
+function cameS(t,lt){
+  let g=nightField(t,181);
+  const lp=ease.out(prog(t,AT.came,AT.came+1.2));
+  g+=shaft(t,1180,-700,800,50,150,lp)+presence(t,1180,560,70,lp)+rings(t,AT.askedW,1180,560,1100,3);
+  const st=prog(t,AT.came-.1,AT.came+.6),x=lerp(560,700,ease.out(st)),sh=ease.out(prog(t,AT.came+.4,AT.came+1));
+  g+=B('cain',x,800,1.2,{walk:st<1?t*7:0,expr:['calm','fear',sh],look:{x:1180,y:560},lean:-10*sh,near:sh>.4?'cover':null,aura:RED,auraOp:.3});
+  return g;
+}
+// 3b. Cain said he didn't know: he shrugs, palms up, eyes away from the light.
+function shrugS(t,lt){
+  let g=nightField(t,191)+shaft(t,1260,-700,800,50,150,1)+presence(t,1260,540,70,1);
+  const sh=.6+.4*Math.sin(E.held(t,6)*3),s=1.3,x=820;
+  g+=B('cain',x,800,s,{expr:'calm',look:{x:500,y:560},tilt:-6,near:{x:x+64*s,y:800-(120+18*sh)*s},far:{x:x-44*s,y:800-(124+18*sh)*s},aura:RED,auraOp:.3});
+  return g;
+}
+// 3c. Was he supposed to look after his brother? Cain turns his back on the light, arms folded.
+function backS(t,lt){
+  let g=nightField(t,201)+shaft(t,1300,-700,800,50,150,1)+presence(t,1300,540,70,1);
+  g+=B('cain',860,800,1.2,{face:-1,expr:'sad',look:{x:400,y:620},near:'chest',far:'chest',aura:RED,auraOp:.3});
+  return g;
+}
+// 3d. "The voice of your brother's blood is crying to me from the ground": close on the dark ground; a small warm
+// light pulses in it, and rings rise from it up toward the light above.
+function cryS(t,lt){
+  let g=stars(t,.8,100)+glow(960,-300,700,'#FFF6DA',.35);
+  g+=shaft(t,960,-700,690,60,180,.8);
+  g+=hill(211,640,'#1E2A18',8)+gnd(212,700,'#1A2414','#141C10');
+  const pul=.6+.3*Math.sin(t*4),rp=prog(t,AT.crying[0]-.4,AT.crying[0]+.2);
+  g+=glow(960,720,200,'#FFD86B',.75*pul)+C(960,720,12,'#FFF4C8',{opacity:pul.toFixed(2)});
+  for(let i=0;i<5;i++){const q=(t*.4+i/5)%1,ry=720-q*560;g+=Ell(960,ry,60+q*200,16+q*40,'none',{stroke:'#FFE9A8','stroke-width':5,opacity:((.3+.5*rp)*(1-q)).toFixed(2)});}
+  return g;
+}
+// 3e. Nobody else saw it happen. But God did: an empty night with a far dark house; then the light floods the field.
+function sawS(t,lt){
+  let g=nightField(t,221);
+  g+=R(260,640,180,110,6,'#0E1020')+P('M250 642L350 590L450 642Z','#0A0C18')+R(330,680,30,30,3,'#2A2A40');
+  const k=ease.out(prog(t,AT.godDid-.1,AT.godDid+.7));
+  g+=shaft(t,1000,-700,780,120,420,k)+glow(1000,300,900*k,'#FFF6DA',.45*k)+rings(t,AT.godDid,1000,700,1300,4);
+  g+=glow(1000,760,150,'#FFD86B',.4+.5*k);
+  return g;
+}
+// 3f. Abel's life mattered to him: in the light, where the glow was, a flower opens; the lamb lies down beside it.
+function matteredS(t,lt){
+  let g=glow(960,-300,1100,'#FFF6DA',.5)+stars(t,.4,-100);
+  g+=shaft(t,960,-700,800,90,260,.8);
+  g+=hill(231,600,'#3A4A6A')+gnd(232,720,'#4A6A3A','#3A5A2E');
+  const bl=ease.out(prog(t,AT.mattered,AT.mattered+1.4)),gx=930,gy=800;
+  g+=glow(gx,gy,160,'#FFD86B',.55);
+  if(bl>0){const fh=110*bl;g+=L(gx,gy,gx+4,gy-fh,'#5A9A4A',8)+Ell(gx+22,gy-fh*.5,20*bl,9*bl,'#5A9A4A');
+    for(let k=0;k<6;k++){const a=k*Math.PI/3+t*.2,px=gx+4+Math.cos(a)*22*bl,py=gy-fh+Math.sin(a)*22*bl;g+=Ell(px.toFixed(1),py.toFixed(1),(19*bl).toFixed(1),(12*bl).toFixed(1),'#FFF6DA',{transform:`rotate(${(a*57.3).toFixed(0)} ${px.toFixed(1)} ${py.toFixed(1)})`});}
+    g+=C(gx+4,gy-fh,12*bl,GOLD)+glow(gx+4,gy-fh,110*bl,'#FFE9A8',.5);}
+  const ld=ease.inOut(prog(t,AT.noOne-.6,AT.noOne+.8));
+  g+=lamb(lerp(1180,1080,ld),812,1.3,-1,{lie:ld,look:ld>.5?1:0});
+  return g;
+}
+
+// =====================================================================================================
+// 4. THE IMAGE OF GOD ("Why does one life" to "they carry")
+// =====================================================================================================
+// 4a. Why does one life matter that much? A mother holds her newborn; the father kneels beside, hand on her shoulder.
+function babyS(t,lt){
+  let g=glow(1300,200,800,'#FFD8A0',.55)+sunDisc(1340,240,70,'#FFB070','#FFE8B8')+skyClouds(t,241,-500,'#8A5A7A','#FFB890',.8);
+  g+=hill(242,560,'#9A7A6A')+gnd(243,690,'#8A8A4A','#76763E');
+  g+=tent(1500,800,'#C8925E',1.8);
+  g+=Ell(860,790,120,40,'#7A5A3A')+R(760,748,200,44,20,'#8A6A44');
+  const mom=person(1,850,800,1.25,{f:true,sit:1,seat:752,lean:8,expr:'tender',look:{x:950,y:640},hair:'#3A2216'});
+  const bx=850+66*1.25,by=800-108*1.25;mom.near={x:bx+10,y:by+4};mom.far={x:bx-24,y:by+10};
+  const babe=Ell(bx,by,40,26,'#F6EFDC',{stroke:'#D8CFB8','stroke-width':3})+C(bx+26,by-8,17,'#F5BE8E')+C(bx+32,by-10,2.5,'#160F30')+P(`M${bx+28} ${by-1}q4 3 8 0`,'none',{stroke:'#160F30','stroke-width':2});
+  const dad=person(0,1080,800,1.2,{face:-1,kneel:1,expr:'tender',look:{x:bx+20,y:by}});
+  dad.near=PPL.handOn(dad,mom,'shoulder');
+  const D=PPL.rig(dad);
+  g+=D.draw('back')+D.draw('body')+D.draw('head')+withProp(mom,babe)+D.draw('front');
+  return g;
+}
+// 4b. After the flood: the ark resting high on the mountain, a rainbow; Noah's family walks down with the sheep.
+function floodS(t,lt){
+  let g=glow(960,-200,1000,'#E8F4FF',.5);
+  [['#FF5A48',0],['#FFB04C',22],['#FFE36B',44],['#5AD890',66],['#4A9AFF',88],['#9A6AFF',110]].forEach(([c,d])=>g+=P(`M-200 ${640}A1200 900 0 0 1 2120 640`,'none',{stroke:c,'stroke-width':22,opacity:.55,transform:`translate(0 ${d})`}));
+  g+=skyClouds(t,251,-560,'#F4F4FA','#B8C4D8',.8);
+  g+=P('M1000 600L1340 160L1460 200L1700 420L1980 600Z','#5A6A7A')+hill(252,590,'#6A8A5A');
+  g+=G('translate(1380 170)',P('M-150 0L150 0L120 50L-120 50Z','#7A4A26',{stroke:'#4A2A14','stroke-width':5})+R(-90,-50,180,52,6,'#9A6234',{stroke:'#4A2A14','stroke-width':4})+P('M-100 -50L0 -90L100 -50Z','#6A3E1E'));
+  g+=gnd(253,690,'#5E8E4A','#4E7E3E');
+  const w=lt*40;
+  g+=sheepFlock(t,[[480+w,790,1],[600+w,812,1]],.85);
+  const pa=person(0,760+w,800,1.05,{walk:t*6,expr:'joy',look:{x:1380,y:200},hair:'#ECE8DE',tunic:'#C8A06A',tunic2:'#7A5430'}),ma=person(1,880+w,800,1,{f:true,walk:t*6+1,expr:'joy',look:{x:760+w,y:620}});
+  g+=PPL.holdHands(pa,ma).svg;
+  g+=PPL.carry(person(2,1080+w,800,1.05,{walk:t*6+2}),person(3,0,0,.6,{expr:'joy',look:'up'}),{out:true}).svg;
+  return g;
+}
+// 4c. "God made man in his own image": light from above on a man and a woman; a gold glint lights in each heart.
+function imageS(t,lt){
+  let g=glow(960,-400,1200,'#FFF6DA',.6)+rays(t,960,-600,14,'#FFFFFF',.06,.6,2.54);
+  g+=hill(261,560,'#D8A86A')+gnd(262,690,'#C89050','#B07A3A');
+  const on=ease.out(prog(t,AT.image[0],AT.image[0]+.6)),s=1.25;
+  const man=person(0,820,800,s,{expr:['awe','joy',on],look:'up',near:'open'}),wo=person(1,1110,800,s,{face:-1,f:true,expr:['awe','joy',on],look:'up',near:'open',hair:'#3A2216'});
+  g+=PPL.fig(man)+PPL.fig(wo);
+  const [ax,ay]=chestOf(man),[bx,by]=chestOf(wo);g+=glint(ax,ay,s,on)+glint(bx,by,s,on);
+  return g;
+}
+// 4d. Every person carries something of God: a line of very different people, a glint lighting in each in turn.
+const FOLKS=[[470,.95,{elder:1}],[640,.62,{i:3}],[800,1.05,{i:1,f:true}],[970,1.0,{i:2}],[1140,.7,{i:4}],[1300,1.0,{i:0,elderF:1}],[1460,.95,{i:5}]];
+function everyS(t,lt){
+  let g=glow(960,-200,1000,'#FFE8C8',.55)+skyClouds(t,271,-520,'#FFF0DC','#F0B890',.7);
+  g+=hill(272,560,'#C8885A')+gnd(273,690,'#B87A48','#A06A3A');
+  FOLKS.forEach(([x,s,o],k)=>{const on=ease.out(prog(t,AT.every1+.2+k*.22,AT.every1+.6+k*.22)),face=x<960?1:-1,lk={x:960,y:560};
+    const q=o.elder?elderOpts(x,800,s,{face,look:lk,expr:['calm','joy',on]}):o.elderF?elderOpts(x,800,s,{face,f:true,look:lk,expr:['calm','joy',on],tunic:'#B98CFF',tunic2:'#6A4CD8',hair:'#D8D4CC'}):person(o.i,x,800,s,{face,look:lk,expr:['calm','joy',on],f:o.f});
+    g+=PPL.fig(q);const [cx,cy]=chestOf(q);g+=glint(cx,cy,s,on);});
+  return g;
+}
+// 4e. Like a reflection in a mirror: a child kneels at a still pool; the water shows her lit up with gold light.
+function poolS(t,lt){
+  let g=glow(960,-300,1000,'#FFF2C8',.5)+skyClouds(t,281,-560,'#FFFFFF','#E0D0B8',.7);
+  g+=hill(282,560,'#8AB06A')+gnd(283,690,'#7A9A50','#6A8A44');
+  g+=Ell(1000,900,520,120,'#2A6AA8')+Ell(1000,900,500,110,'#4A9AD0');
+  const q=person(3,900,800,.95,{kneel:1,lean:24,look:{x:960,y:930},expr:'tender',near:{x:960,y:812},far:{x:930,y:814}});
+  g+=G('',`<g transform="translate(0 1600) scale(1 -1)">${PPL.fig(Object.assign({},q,{aura:'#FFE9A8',auraOp:.9,filter:''}))}</g>`,.5)+glow(940,960,120,'#FFE9A8',.35);
+  g+=P('M480 900Q1000 1040 1520 900','none',{stroke:'#BFE8FF','stroke-width':4,opacity:(.4+.2*Math.sin(t*2)).toFixed(2)});
+  g+=PPL.fig(q);
+  return g;
+}
+// 4f. To take a person's life is to strike at the one whose image they carry: a bronze mirror holds the light; at
+// "strike" a crack runs across it and the light in it dims. A woman before it lifts her hand to her mouth.
+function mirrorS(t,lt){
+  let g=R(-60,-700,2040,1500,0,'#2A1E30')+glow(960,200,900,'#FFE9A8',.2);
+  for(let i=0;i<8;i++)g+=R(-60+i*260,-700,14,1500,0,'#3A2A40');
+  g+=R(-60,800,2040,1100,0,'#4A3428')+R(-60,800,2040,14,0,'#3A2418');
+  const cr=ease.out(prog(t,AT.strike,AT.strike+.4)),mx=1120,my=480;
+  g+=R(mx-12,my+200,24,320,6,'#6A4A2A')+R(mx-90,790,180,20,6,'#6A4A2A');
+  g+=Ell(mx,my,170,230,'#B8862C',{stroke:'#6A4A1A','stroke-width':10})+Ell(mx,my,148,206,mix('#FFF4D0','#7A6A50',cr*.75));
+  g+=glow(mx,my,260,'#FFF6DA',.6*(1-cr*.7))+presence(t,mx,my,60,1-cr*.75);
+  if(cr>0)g+=mark(`M${mx-10} ${my-206}L${mx+16} ${my-120}L${mx-24} ${my-40}L${mx+20} ${my+40}L${mx-8} ${my+120}L${mx+10} ${my+206}`,cr,'#2A1E14',6)+
+    mark(`M${mx+16} ${my-120}L${mx+90} ${my-150}M${mx-24} ${my-40}L${mx-110} ${my-10}M${mx+20} ${my+40}L${mx+120} ${my+70}`,cr,'#2A1E14',4);
+  g+=folk(1,780,800,1.25,{f:true,expr:['awe','sad',cr],look:{x:mx,y:my},near:cr>.3?'cover':'open',far:'chest',lean:-8*cr,hair:'#3A2216'});
+  return g;
+}
+
+// =====================================================================================================
+// 5. THE SIXTH WORD ("So when God spoke" to "without trying")
+// =====================================================================================================
+// 5a. God speaks from the mountain in fire; the camp at its foot looks up.
+const SINAI=FX.peak(31,960,100,{halfW:900,rough:14});
+function sinai2(t,lt){
+  let g=stars(t,.6,-300)+glow(960,60,900,'#FF8A3C',.35);
+  g+=FX.summitFire(t,SINAI,1.05,0,{fill:'#2A1E34',H:220,cap:140,smokeH:1200,smoke:1.1,light:900,seed:31,drift:120});
+  g+=rings(t,AT.spoke,960,120,1500)+rings(t,AT.sixth-.2,960,120,1500);
+  g+=gnd(291,690,'#3A2A30','#2A1E24');
+  [[360,760,'#8A5A3A'],[1580,760,'#7A4A2E']].forEach(([x,y,c])=>g+=tent(x,y,c,1.1));
+  const up={x:960,y:150},k=prog(t,AT.spoke,AT.spoke+1),ex=['calm','awe',k];
+  const mom=person(1,880,770,.95,{face:-1,look:up,expr:ex,f:true}),dad=person(0,760,775,1,{look:up,expr:ex});
+  dad.near=PPL.handOn(dad,mom,'shoulder');
+  const c=PPL.carry(mom,person(3,0,0,.6,{look:up,expr:ex}),{out:true});
+  g+=PPL.fig(dad)+c.svg;
+  g+=folk(2,1080,770,.95,{face:-1,kneel:k,look:up,expr:ex,near:'chest',far:'chest'})+elder(1230,775,.95,{face:-1,look:up,expr:ex,near:'up'});
+  return g;
+}
+// 5b. "You shall not murder": the tablets in the fire; line VI burns gold.
+function tabletsS(t,lt){
+  let g=glow(960,560,900,'#FF6A2A',.45);
+  g+=FX.flames(t,[[-60,980],[300,940],[700,960],[1100,930],[1500,960],[1980,940]],{H:420,sp:14,seed:41})+glow(960,600,520,'#FFE36B',.3);
+  g+=gnd(301,860,'#3A1A10','#2A120A');
+  const on=ease.out(prog(t,AT.notMurder2[0],AT.notMurder2[1]+.4));
+  g+=tablets(960,560,.82,SIXTH(.2+1*on,.12))+glow(1104,540,260,'#FFE9A8',.6*on);
+  return g;
+}
+// 5c. Older Bibles say "kill": an old man reads a big old book by candlelight, his finger on the line.
+function olderS(t,lt){
+  let g=R(-60,-700,2040,1500,0,'#2E2018')+glow(1300,500,700,'#FFB060',.4);
+  for(let i=0;i<6;i++)g+=R(1380,-200+i*120,500,90,4,'#3E2A1E')+[0,1,2,3,4,5].map(j=>R(1400+j*76,-190+i*120,60,80,3,['#7A2A1E','#2A4A6A','#5A4A2A','#3A5A3A','#6A3A5A','#8A6A3A'][(i+j)%6])).join('');
+  g+=R(-60,800,2040,1100,0,'#4A2E1E')+R(-60,800,2040,14,0,'#3A2216');
+  g+=R(860,620,320,180,6,'#6A4228')+R(840,600,360,30,6,'#7A4E30');
+  const on=ease.out(prog(t,AT.kill,AT.kill+.5));
+  g+=G('translate(1020 560) scale(.52) translate(-900 -600)',openBook(900,600,700,330,11,4,on))+candle(t,1240,600);
+  g+=elder(760,800,1.25,{near:{x:930,y:576},look:{x:950,y:570},expr:'calm',lean:10});
+  return g;
+}
+// 5d. But the Hebrew word points to taking an innocent life: a shepherd girl hugs a lamb in the sun.
+function innocentS(t,lt){
+  let g=glow(1100,-200,900,'#FFF2C8',.6)+sunDisc(1300,-240,80,'#FFE2A0','#FFF8E0')+skyClouds(t,311,-540,'#FFFFFF','#D8E4F0',.75);
+  g+=hill(312,560,'#9AC86A')+gnd(313,690,'#7AB050','#6A9E44');
+  const k=ease.out(prog(t,AT.innocent,AT.innocent+.6));
+  const girl=person(3,880,800,.85,{f:true,kneel:1,expr:'joy',lean:10,look:{x:1000,y:720},aura:'#FFE9A8',auraOp:.3+.4*k,hair:'#4A2A16'});
+  girl.near={x:990,y:720};girl.far={x:960,y:728};
+  g+=lamb(1010,800,1.3,-1,{look:Math.sin(t*2)>.4?1:0})+PPL.fig(girl)+glow(960,700,300,'#FFF6DA',.35*k);
+  return g;
+}
+// 5e. That's why most modern Bibles say "murder": a young woman reads at a table under a lamp at night.
+function modernS(t,lt){
+  let g=R(-60,-700,2040,1500,0,'#1E2238')+R(240,-300,520,560,8,'#0E1428',{stroke:'#3A3A50','stroke-width':14});
+  for(let i=0;i<12;i++)g+=R(270+(i%4)*120,-220+Math.floor(i/4)*150+hash(i,2)*40,70,90+hash(i,3)*40,3,'#FFD27A',{opacity:(.25+.4*hash(i,5)).toFixed(2)});
+  g+=glow(1160,420,500,'#FFD8A0',.45)+P('M1100 300L1220 300L1270 380L1050 380Z','#E8B060')+L(1160,380,1160,600,'#3A3A40',6);
+  g+=R(-60,800,2040,1100,0,'#3A2E3A')+R(-60,800,2040,14,0,'#2A202A');
+  g+=R(760,640,560,24,6,'#8A5A3A')+R(780,664,22,136,4,'#6A4428')+R(1278,664,22,136,4,'#6A4428');
+  const on=ease.out(prog(t,AT.modern+.6,AT.modern+1.2));
+  g+=G('translate(1060 618) scale(.42) translate(-900 -600)',openBook(900,600,700,330,13,4,on));
+  g+=R(570,700,140,22,6,'#5A4A6A')+R(580,722,16,78,3,'#4A3A5A');
+  g+=folk(1,640,800,1.15,{f:true,sit:1,seat:712,lean:14,near:{x:1000,y:610},far:{x:980,y:618},look:{x:1060,y:610},expr:['calm','tender',on],hair:'#2A1A12'});
+  return g;
+}
+// 5f. It sounds like a rule most of us keep without trying: the man from the list leans on it, arms folded, smiling.
+function withoutS(t,lt){
+  let g=glow(1000,300,800,'#FFF2C8',.45)+R(-60,-700,2040,1500,0,'#E8C88A',{opacity:.5});
+  for(let i=0;i<9;i++)g+=R(-60+i*240,-700,8,1500,0,'#C8A060',{opacity:.4});
+  g+=R(-60,760,2040,1100,0,'#9A6A3A')+R(-60,760,2040,16,0,'#7A4A24');
+  g+=board(t,820,230,1);
+  const sh=ease.out(prog(t,AT.without,AT.without+.5));
+  g+=folk(3,720,800,1.3,{lean:-8,expr:'joy',look:{x:300,y:600},near:sh>.5?{x:790,y:610}:'chest',far:sh>.5?{x:640,y:612}:'chest',tilt:-6});
+  return g;
+}
+
+// =====================================================================================================
+// 6. UNDERNEATH IT ("Then Jesus opened it up" to "our hearts")
+// =====================================================================================================
+// 6a. Then Jesus opened it up: a hillside at morning; a column of warm light stands on the top (Jesus is never shown).
+function jesusS(t,lt){
+  let g=glow(1150,200,900,'#FFE9B0',.6)+rays(t,1150,200,14,'#FFFFFF',.07,-3.1,.1)+skyClouds(t,321,-540,'#FFF8EC','#F0C890',.7);
+  g+=P('M-60 760Q600 640 1150 300Q1500 420 1980 560L1980 1800L-60 1800Z','#B8C870')+P('M-60 860Q700 760 1980 700L1980 1800L-60 1800Z','#9AB45A');
+  g+=presence(t,1150,240,80,1)+rings(t,AT.jesus+.3,1150,240,1300);
+  [[420,740,.7],[560,700,.68],[700,660,.66],[830,610,.64]].forEach(([x,y,s],i)=>g+=folk(i,x,y,s,{sit:1,seat:y-12,look:{x:1150,y:240},expr:'calm',face:1}));
+  return g;
+}
+// 6b. On a hillside he quoted the old command: the crowd sits on the slope, listening; the light speaks in rings.
+function hillS(t,lt){
+  let g=glow(1400,-200,900,'#FFE9B0',.6)+skyClouds(t,331,-560,'#FFFFFF','#F0D0A0',.75);
+  g+=P('M-60 640Q900 560 1980 600L1980 1800L-60 1800Z','#A8C068')+gnd(332,720,'#9AB45A','#88A24E');
+  g+=presence(t,1500,-60,60,1)+rings(t,AT.quoted,1500,-60,1100,3);
+  const up={x:1500,y:-60};
+  const seat=(i,x,y,s,o={})=>person(i,x,y,s,Object.assign({sit:1,seat:y-14,look:up,expr:'calm'},o));
+  const m=seat(1,700,800,1,{f:true}),kid=seat(3,830,800,.62,{look:up,expr:'surprised'});
+  m.far=PPL.handOn(m,kid,'shoulder');
+  g+=PPL.fig(seat(0,520,780,.95))+PPL.fig(m)+PPL.fig(kid)+PPL.fig(seat(2,1010,790,1,{lean:10,near:'chest'}))+PPL.fig(elderOpts(1180,800,1,{sit:1,seat:786,look:up,expr:'awe',near:'chest',far:'chest'}))+PPL.fig(seat(4,1350,780,.95,{face:1}));
+  return g;
+}
+// 6c. Then he went underneath it: the stone with line VI lifts off the soil; underneath, a red ember with roots.
+function soil(t,top){let g=R(-60,top,2040,1900-top,0,'#3A2418');const rr=rng(7);for(let i=0;i<70;i++)g+=Ell(-60+rr()*2040,top+30+rr()*1100,6+rr()*14,4+rr()*8,'#4A3020',{opacity:.7});
+  return g+P(`M-60 ${top}Q960 ${top-30} 1980 ${top}L1980 ${top-60}L-60 ${top-60}Z`,'#5A8A3A')+tufts2(t,top-60);}
+const tufts2=(t,y)=>{let g='';for(let i=0;i<40;i++){const x=-60+i*52+hash(i,3)*20,h=20+hash(i,4)*26,sw=Math.sin(t*1.5+i)*4;g+=P(`M${x} ${y+4}Q${x+sw} ${y-h*.6} ${x+sw*2} ${y-h}`,'none',{stroke:'#4A7A2E','stroke-width':5});}return g;};
+function underS(t,lt){
+  let g=glow(960,-300,900,'#FFE9B0',.5)+skyClouds(t,341,-560,'#FFF4E0','#F0C890',.7);
+  g+=soil(t,560);
+  const up=ease.inOut(prog(t,AT.under-.3,AT.under+.9));
+  const rp=ease.inOut(prog(t,AT.under,AT.under+1.6));
+  [-1,-.5,0,.5,1].forEach(k=>g+=mark(`M${960+k*30} ${760}Q${960+k*110} ${860} ${960+k*230} ${980-Math.abs(k)*40}`,rp,'#8A1A10',9));
+  g+=ember(t,960,740,40,0,up);
+  const st=G(`translate(960 520) rotate(${(-28*up).toFixed(1)} -260 60) translate(${(-120*up).toFixed(0)} ${(-260*up).toFixed(0)})`,
+    P('M-300 -60L300 -60L320 60L-320 60Z','#8A867C',{stroke:'#5E5A52','stroke-width':5})+T(-230,18,'VI',{size:56,font:'Georgia',weight:700,anchor:'middle',fill:'#FFF4C8'})+scriptLine(-170,250,4,61,'#4A4740',5));
+  return g+st;
+}
+// 6d. "But I say to you that everyone who is angry with his brother": two brothers today, at a table; one glares
+// with his arms folded, the ember hot in his chest; the other looks away, hurt.
+function tableRoom(t,c1,c2){let g=R(-60,-700,2040,1500,0,c1)+R(-60,800,2040,1100,0,c2)+R(-60,800,2040,14,0,'#000',{opacity:.25});
+  g+=R(260,-260,420,380,8,'#1A2A4A',{stroke:'#4A3A3A','stroke-width':14})+C(380,-150,40,'#E8EEFF',{opacity:.7});return g;}
+function angryS(t,lt){
+  let g=tableRoom(t,'#5A3A3A','#3A2622')+glow(960,300,800,'#FF6A4A',.25);
+  g+=R(680,680,560,24,6,'#8A5A3A')+R(700,704,22,96,4,'#6A4428')+R(1198,704,22,96,4,'#6A4428')+Ell(960,672,60,14,'#E8E0D0');
+  const k=ease.out(prog(t,AT.angry[0],AT.angry[1]+.3)),s=1.2;
+  const a=person(0,640,800,s,{expr:['calm','sad',.4],look:{x:1260,y:600},near:'chest',far:'chest',aura:RED,auraOp:.2+.4*k,tilt:6,tunic:'#E07A34',tunic2:'#8A3A18'});
+  g+=PPL.fig(a);const [ex,ey]=chestOf(a);g+=ember(t,ex,ey,24,0,.3+.7*k);
+  g+=folk(4,1290,800,s,{face:-1,expr:'sad',look:{x:1700,y:700},near:'chest'});
+  return g;
+}
+// 6e. "will be liable to judgment": close on the angry brother; a balance on the wall tips down.
+function judgeS(t,lt){
+  let g=tableRoom(t,'#4A2A2E','#32201E')+glow(880,400,700,'#FF5A3A',.3);
+  const tip=ease.inOut(prog(t,AT.judgment-.4,AT.judgment+.4)),bx=1180,by=360,a=-14*tip;
+  g+=R(bx-6,by,12,220,3,'#B8862C')+R(bx-60,by+214,120,18,4,'#B8862C')+G(`rotate(${a.toFixed(1)} ${bx} ${by})`,L(bx-150,by,bx+150,by,'#B8862C',8)+
+    L(bx-150,by,bx-190,by+90,'#B8862C',3)+L(bx-150,by,bx-110,by+90,'#B8862C',3)+Ell(bx-150,by+92,46,12,'#D8A84A')+
+    L(bx+150,by,bx+110,by+90,'#B8862C',3)+L(bx+150,by,bx+190,by+90,'#B8862C',3)+Ell(bx+150,by+92,46,12,'#D8A84A')+ember(t,bx-150,by+70,18,0,1));
+  const s=1.35,o=person(0,860,800,s,{expr:['sad','fear',.2],look:{x:1400,y:640},near:'chest',far:'chest',aura:RED,auraOp:.5,tilt:6,tunic:'#E07A34',tunic2:'#8A3A18'});
+  g+=PPL.fig(o);const [ex,ey]=chestOf(o);g+=ember(t,ex,ey,28,0,1);
+  return g;
+}
+// 6f. Jesus goes back to where Cain started: the altars again, in faded sepia; Cain red-glowing beside his grey smoke.
+function startedS(t,lt){
+  let g=glow(960,200,900,'#E8B87A',.35)+skyClouds(t,351,-520,'#C8A47A','#E8C89A',.6);
+  g+=hill(352,560,'#A88A5A')+gnd(353,690,'#9A7A4A','#8A6A3E');
+  g+=smoke(t,1260,700,1.2,1,.6)+altar(1260,780,1.15)+smoke(t,720,700,1.2,0,.8)+altar(720,780,1.15);
+  g+=B('cain',520,800,1.2,{expr:'sad',look:{x:1260,y:600},aura:RED,auraOp:.55,near:'chest',tunic:'#C8884A',tunic2:'#8A5A2A'});
+  return g;
+}
+// 6g. Not the field: the dusk field, crossed out.
+function notFieldS(t,lt){
+  return farField(t,361)+xMark(960,620,170,ease.inOut(prog(t,AT.notField+.3,AT.notField+.9)));
+}
+// 6h. The feeling: very close on Cain's chest, the ember glowing.
+function feelS(t,lt){
+  let g=glow(960,600,900,'#8A1A10',.5)+skyClouds(t,371,-560,'#3A1420','#C8402A',.9);
+  g+=gnd(372,980,'#2E1A12','#24140E');
+  const s=2.6,o=bro('cain',960,1180,s,{expr:'sad',look:'down',tilt:8,aura:RED,auraOp:.5});
+  g+=PPL.fig(o);const [ex,ey]=chestOf(o);g+=ember(t,ex,ey,22*s,0,1);
+  return g;
+}
+// 6i-6k. The angry word, the cruel name, the cold silence: three quick scenes.
+function wordS(t,lt){
+  let g=R(-60,-700,2040,1500,0,'#5A2A3A')+glow(960,400,800,'#FF6A4A',.3)+R(-60,800,2040,1100,0,'#3A1E26');
+  const k=ease.out(prog(t,AT.angryWord,AT.angryWord+.3));
+  const a=person(0,700,800,1.25,{expr:'surprised',look:{x:1200,y:560},lean:12,near:{x:860,y:600},aura:RED,auraOp:.4});
+  g+=PPL.fig(a);
+  const bx=930,by=470;
+  g+=piece(t,AT.angryWord,bx,by,P(`M${bx-120} ${by+10}L${bx-80} ${by-70}L${bx-20} ${by-40}L${bx+30} ${by-96}L${bx+70} ${by-40}L${bx+130} ${by-60}L${bx+100} ${by+10}L${bx+150} ${by+60}L${bx+60} ${by+60}L${bx+20} ${by+110}L${bx-20} ${by+60}L${bx-110} ${by+70}Z`,CORAL,{stroke:'#6A1A10','stroke-width':6})+mark(scribble(bx+10,by+10,70,30,3),1,'#3A0A08',6),31,1.4);
+  g+=folk(4,1240,800,1.2,{face:-1,expr:'fear',lean:-14*k,look:{x:900,y:500},near:k>.3?'cover':'chest'});
+  return g;
+}
+function nameS(t,lt){
+  let g=glow(960,-100,900,'#FFE9A0',.5)+R(-60,-700,2040,1300,0,'#8AC0E0',{opacity:.6})+hill(381,560,'#C8B880')+gnd(382,690,'#B8A870','#A89860');
+  const k=ease.out(prog(t,AT.cruelName,AT.cruelName+.3));
+  [[560,0],[720,2],[860,3]].forEach(([x,i],j)=>g+=folk(i,x,800,.7,{expr:'joy',look:{x:1280,y:680},near:{x:x+80,y:lerp(720,650,k)},lean:6}));
+  g+=piece(t,AT.cruelName+.1,1030,520,label(1030,500,'#@!',{size:44,anchor:'middle',bg:CORAL,rot:-6}),32,1.4);
+  g+=folk(4,1300,800,.72,{face:-1,expr:'sad',look:'down',tilt:12,near:'chest',far:'chest'});
+  return g;
+}
+function silenceS(t,lt){
+  let g=stars(t,.7,200)+glow(960,300,800,'#6A8AC8',.3)+R(-60,-700,2040,1300,0,'#1A2440',{opacity:.6});
+  g+=gnd(391,690,'#2A3A5A','#1E2A44')+R(700,720,520,26,6,'#4A5A7A')+R(730,746,20,54,3,'#3A4A6A')+R(1170,746,20,54,3,'#3A4A6A');
+  for(let i=0;i<30;i++){const x=(hash(i,1)*2000+t*20)%2000-40,y=(hash(i,2)*2400+t*60)%2400-600;g+=C(x,y,3+hash(i,3)*3,'#E8F0FF',{opacity:.6});}
+  g+=folk(0,830,800,1.1,{face:-1,sit:1,seat:716,look:{x:400,y:700},expr:'sad',near:'chest',far:'chest',tunic:'#7C9AC8',tunic2:'#3A5A8A'});
+  g+=folk(1,1090,800,1.05,{face:1,f:true,sit:1,seat:716,look:{x:1600,y:700},expr:'sad',near:'chest',far:'chest',tunic:'#9AB4D8',tunic2:'#4A6A9A'});
+  return g;
+}
+// 6l. They all grow from the same root: underground, one ember; three red stems rise to the word, the name, the silence.
+function rootS(t,lt){
+  let g=glow(960,-200,800,'#C8D8F0',.35)+skyClouds(t,401,-560,'#8A7A9A','#C8A0A0',.6)+soil(t,520);
+  g+=ember(t,960,900,42,0,1);
+  const gr=ease.inOut(prog(t,AT.they,AT.root+.6));
+  const tips=[[640,180],[960,110],[1280,180]];
+  tips.forEach(([x,y],i)=>{g+=mark(`M${960+(i-1)*24} 880Q${960+(i-1)*80} 600 ${x} ${y}`,gr,'#C82A1A',12);
+    const on=prog(gr,.85,1);if(on>0){g+=G('',i===0?P(`M${x-46} ${y}L${x-22} ${y-46}L${x+6} ${y-20}L${x+40} ${y-50}L${x+46} ${y+6}L${x+10} ${y+30}Z`,CORAL):
+      i===1?label(x,y-40,'#@!',{size:34,anchor:'middle',bg:CORAL}):P(`M${x} ${y-50}L${x} ${y+50}M${x-44} ${y-25}L${x+44} ${y+25}M${x-44} ${y+25}L${x+44} ${y-25}`,'none',{stroke:'#BFE0FF','stroke-width':10}),on);}});
+  return g;
+}
+// 6m. This commandment isn't only about our hands: a man looks at his own open hands.
+function handsS(t,lt){
+  let g=glow(1100,200,800,'#FFD8A0',.45)+skyClouds(t,411,-520,'#7A5A7A','#F0A880',.8);
+  g+=hill(412,560,'#8A6A5A')+gnd(413,690,'#7A7A4A','#66663E');
+  const s=1.4,x=860;
+  g+=folk(2,x,800,s,{expr:'calm',look:{x:x+90,y:620},near:{x:x+96,y:640},far:{x:x+76,y:648},lean:6});
+  return g;
+}
+// 6n. It's about our hearts: his hands go to his chest; a heart glows there.
+function heartsS(t,lt){
+  let g=glow(1000,300,900,'#FFB8A0',.45)+skyClouds(t,421,-520,'#8A5A7A','#FFB890',.8);
+  g+=hill(422,600,'#9A6A6A')+gnd(423,720,'#8A7A4A','#76663E');
+  const k=ease.out(prog(t,AT.hearts-.2,AT.hearts+.6)),s=1.6,x=900;
+  const o=person(2,x,800,s,{expr:['calm','tender',k],look:'down',near:'chest',far:'chest',tilt:6});
+  g+=PPL.fig(o);const [cx,cy]=chestOf(o);g+=heart(cx+10,cy-6,22*s*(.6+.4*k),.4+.6*k);
+  return g;
+}
+
+// =====================================================================================================
+// 7. MY BROTHER'S KEEPER ("But there's a flip side" to "was yes")
+// =====================================================================================================
+// 7a. The flip side: the stone with line VI turns over; on its back, two hands holding a heart.
+function flipS(t,lt){
+  let g=glow(960,400,900,'#FFE2A0',.55)+skyClouds(t,431,-540,'#FFF0DC','#F0B890',.7)+hill(432,600,'#B8986A')+gnd(433,740,'#A8884A','#94783E');
+  const f=ease.inOut(prog(t,AT.flip-.2,AT.flip+.7)),sx=Math.cos(f*Math.PI),cx=960,cy=430;
+  const front=P('M-300 -150L300 -150L320 150L-320 150Z','#8A867C',{stroke:'#5E5A52','stroke-width':6})+T(-210,22,'VI',{size:70,font:'Georgia',weight:700,anchor:'middle',fill:'#FFF4C8'})+scriptLine(-140,250,6,61,'#4A4740',6);
+  const back=P('M-300 -150L300 -150L320 150L-320 150Z','#E8C870',{stroke:'#8A6A20','stroke-width':6})+heart(0,-10,70)+P('M-160 90Q-80 20 -30 60M160 90Q80 20 30 60','none',{stroke:'#F5BE8E','stroke-width':26,'stroke-linecap':'round'});
+  g+=glow(cx,cy,400,'#FFE9A8',.4*f)+G(`translate(${cx} ${cy}) scale(${Math.abs(sx).toFixed(3)} 1)`,sx>=0?front:back);
+  return g;
+}
+// 7b. A call to protect life: on the road a man kneels and helps a fallen traveller to his feet.
+function protectS(t,lt){
+  let g=glow(1300,-100,800,'#FFE2A0',.55)+skyClouds(t,441,-520,'#FFFFFF','#E8D0B0',.75);
+  g+=hill(442,560,'#B8A070')+gnd(443,690,'#C8A870','#B09460')+P('M-60 760Q960 700 1980 780L1980 860Q960 790 -60 850Z','#D8C090',{opacity:.6});
+  const up=ease.inOut(prog(t,AT.protect-.3,AT.protect+1.2)),s=1.2;
+  const tr=person(4,1040,800,s,{face:-1,sit:1-up,seat:780,lean:lerp(20,4,up),expr:['sad','tender',up],look:{x:840,y:600}});
+  const hlp=person(0,830,800,s,{kneel:1-up*.8,lean:lerp(14,4,up),expr:'tender',look:{x:1020,y:640}});
+  g+=Ell(1210,790,40,30,'#8A6A4A');
+  const hh=PPL.holdHands(hlp,tr,{drop:30});
+  hlp.far=PPL.handOn(hlp,tr,'back');
+  g+=hh.svg;
+  return g;
+}
+// 7c. Not just to avoid taking it: a big brother holds his little sister's hand as she steps across a stream.
+function streamS(t,lt){
+  let g=glow(1200,-100,800,'#FFF2C8',.55)+skyClouds(t,451,-520,'#FFFFFF','#C8D4E4',.75)+hill(452,560,'#7AAE6A')+gnd(453,690,'#6E9E4A','#5A8A3A');
+  g+=P('M-60 800Q960 760 1980 820L1980 980Q960 900 -60 960Z','#3A8AC8')+P('M-60 830Q960 790 1980 850','none',{stroke:'#BFE8FF','stroke-width':5,opacity:.6});
+  [[760,850],[960,840],[1160,856]].forEach(([x,y])=>g+=Ell(x,y,70,22,'#8A8478')+Ell(x,y-6,60,16,'#A8A296'));
+  const p=ease.inOut(prog(t,AT.notJust-.4,AT.notJust+1.2)),kx=lerp(760,960,p),hop=Math.sin(p*Math.PI)*30;
+  const bigB=person(0,1160,836,1.15,{face:-1,expr:'tender',look:{x:kx,y:700}}),sis=person(3,kx,834-hop,.66,{f:true,expr:['surprised','joy',p],look:{x:1160,y:600}});
+  g+=PPL.holdHands(sis,bigB).svg;
+  return g;
+}
+// 7d. If your brother has something against you: a man at an altar with his gift stops; he remembers his brother.
+function giftS(t,lt){
+  let g=glow(1100,100,800,'#FFE2A0',.45)+skyClouds(t,461,-520,'#F8E8D8','#E8B890',.75)+hill(462,560,'#A88A6A')+gnd(463,690,'#988A4A','#847A3E');
+  g+=altar(1200,800,1.25);
+  const th=ease.out(prog(t,AT.against-.4,AT.against+.4)),s=1.2,x=900;
+  const o=person(2,x,800,s,{expr:['calm','sad',th],look:th>.5?{x:700,y:300}:{x:1200,y:680},lean:4});
+  const lx=x+60*s,ly=800-100*s;o.near={x:lx+10,y:ly-26};o.far={x:lx-18,y:ly-30};
+  g+=withProp(o,lamb(lx-10,ly+10,.55,1));
+  if(th>0){const cx=600,cy=300;g+=G('',cloud(cx,cy+60,380,'#FFFDF4','#D8D0C8',1,7)+C(cx+160,cy+180,22,'#FFFDF4')+C(cx+210,cy+240,14,'#FFFDF4')+
+    G(`translate(${cx} ${cy+110}) scale(.5) translate(${-cx} ${-cy-110})`,folk(4,cx,cy+110,1,{face:-1,expr:'sad',near:'chest',far:'chest',look:'down'})),th);}
+  return g;
+}
+// 7e. Go and make peace with him first: he walks to his brother and they hold each other.
+function peaceS(t,lt){
+  let g=glow(1100,100,800,'#FFD8A0',.5)+skyClouds(t,471,-520,'#F8E0D0','#F0A880',.75)+hill(472,560,'#9A8A6A')+gnd(473,690,'#8A8A4A','#76763E');
+  g+=tent(1600,790,'#B07A4A',1.4);
+  const w=ease.inOut(prog(t,AT.go,AT.makePeace+.6)),k=ease.out(prog(t,AT.makePeace+.5,AT.first+.2)),s=1.2;
+  const ax=lerp(560,880,w),b=person(4,1070,800,s,{face:-1,expr:['sad','tender',k],near:k>0?null:'chest',far:k>0?null:'chest',look:{x:ax,y:600}});
+  const a=person(2,ax,800,s,{walk:w>0&&w<1?t*7:0,expr:['calm','tender',k],look:{x:1070,y:600}});
+  g+=k>0?PPL.hug(a,b,{k}).svg:PPL.fig(a)+PPL.fig(b);
+  return g;
+}
+// 7f. "...that we should love one another" (1 John 3:11): bread passed hand to hand along a long table.
+function mealS(t,lt){
+  let g=glow(960,100,900,'#FFD8A0',.55)+skyClouds(t,481,-520,'#F8E8D8','#F0B890',.7)+hill(482,560,'#9AA06A')+gnd(483,690,'#8A9A4A','#76863E');
+  g+=R(380,700,1160,30,8,'#8A5A3A')+R(400,730,24,70,4,'#6A4428')+R(1496,730,24,70,4,'#6A4428');
+  [[520,1],[1120,0],[1360,1]].forEach(([x])=>g+=Ell(x,696,46,12,'#E8E0D0'));
+  const pass=prog(t,AT.v311,AT.thatWe+.2),bx=lerp(640,1260,ease.inOut(pass)),by=650;
+  const xs=[560,760,960,1160,1360];
+  xs.forEach((x,i)=>{const face=i<2?1:i>2?-1:1,near=Math.abs(bx-x)<140?{x:bx+(x<bx?-20:20),y:by+6}:null;
+    g+=folk(i,x,800,1,{face,expr:'joy',look:{x:bx,y:by},near,f:i%2===1});});
+  g+=Ell(bx,by,40,22,'#C8843A',{stroke:'#8A5420','stroke-width':4});
+  return g;
+}
+// 7g. ...love one another: a line of people on a hill at sunset lift their joined hands.
+function chain(ps,up){let g='';const rs=ps.map(o=>Object.assign({},o));
+  for(let i=0;i<rs.length-1;i++){const a=rs[i],b=rs[i+1],ra=PPL.rig(Object.assign({},a,{near:null,far:null})),rb=PPL.rig(Object.assign({},b,{near:null,far:null}));
+    const sa=ra.shoulder(PPL.armToward(a,b.x)),sb=rb.shoulder(PPL.armToward(b,a.x)),m={x:(sa[0]+sb[0])/2,y:up?Math.min(sa[1],sb[1])-60*a.s:Math.max(sa[1],sb[1])+46*a.s};
+    a[PPL.armToward(a,b.x)]=m;b[PPL.armToward(b,a.x)]=m;}
+  rs.forEach(o=>g+=PPL.fig(o));return g;}
+function loveS(t,lt){
+  let g=glow(960,520,900,'#FF9A6A',.55)+sunDisc(960,560,90,'#FF8A4C','#FFD8A0')+skyClouds(t,491,-500,'#6A3A6A','#FF9A70',.85);
+  g+=hill(492,620,'#5A3A4A')+gnd(493,720,'#4A3A3A','#3A2E2E');
+  const up=prog(t,AT.loveOne[0]-.2,AT.loveOne[0]+.4)>.5;
+  const ps=[[440,0,1],[600,3,.7],[740,1,1.05],[900,2,1],[1060,4,.72],[1200,5,1],[1360,0,.98]].map(([x,i,s],k)=>person(i,x,800,s,{face:k<3?1:-1,expr:up?'joy':'tender',look:up?'up':{x:960,y:560}}));
+  g+=chain(ps,up);
+  return g;
+}
+// 7h. And the very next verse names Cain: a scroll unrolls; beside the next line, a small cut-out of Cain slaps on.
+function nextS(t,lt){
+  let g=R(-60,-700,2040,1500,0,'#2A1E16')+glow(960,500,700,'#FFB060',.35)+R(-60,700,2040,1200,0,'#4A2E1C')+R(-60,700,2040,18,0,'#5A3A24');
+  const on=ease.out(prog(t,AT.nextVerse,AT.nextVerse+.6));
+  g+=scroll(880,540,760,440,9,4,on);
+  g+=piece(t,AT.names,1380,470,strip(1290,330,180,250,17,'#F6EFDC')+tape(1380,334,80,-4)+B('cain',1380,560,.8,{expr:'sad',aura:RED,auraOp:.4,face:-1,filter:''}),33,1.4);
+  return g;
+}
+// 7i. Cain asked if he was his brother's keeper: alone in the night field, the light beside him, he shrugs.
+function keeperQS(t,lt){
+  let g=nightField(t,501)+shaft(t,1240,-700,800,40,130,1)+presence(t,1240,560,60,1);
+  const sh=.6+.4*Math.sin(E.held(t,6)*3),s=1.05,x=820;
+  g+=B('cain',x,800,s,{expr:'calm',look:{x:500,y:560},near:{x:x+64*s,y:800-(120+18*sh)*s},far:{x:x-44*s,y:800-(124+18*sh)*s},aura:RED,auraOp:.3});
+  return g;
+}
+// 7j. The answer, all along, was yes: a bright morning; a big brother carries his little brother on his hip, both
+// laughing; their sister holds his hand.
+function yesS(t,lt){
+  let g=glow(960,-200,1100,'#FFF6DA',.7)+sunDisc(1300,-220,90,'#FFE2A0','#FFFBEC')+rays(t,1300,-220,14,'#FFFFFF',.06,-.2,2.9)+skyClouds(t,511,-560,'#FFFFFF','#D8E8F8',.75);
+  g+=hill(512,560,'#8AC86A')+gnd(513,690,'#6EB050','#5AA044');
+  const joy=ease.out(prog(t,AT.yes,AT.yes+.3)),j=joy*Math.abs(Math.sin(E.held(t,10)*6))*16;
+  const big=bro('abel',900,800,1.25,{expr:'joy',jump:j,look:{x:1000,y:520},tunic:'#7CD4FF'});
+  const c=PPL.carry(big,bro('abel',0,0,.62,{expr:'joy',tunic:'#FFC24C',tunic2:'#E0623C',near:'up'}));
+  g+=c.svg;
+  g+=folk(3,640,800,.75,{f:true,expr:'joy',look:{x:900,y:560},near:'up',jump:j*.8});
+  return g;
+}
+
+// =====================================================================================================
+// 8. EVERY FACE ("So guard your anger" to the end)
+// =====================================================================================================
+// 8a. Guard your anger before it grows: cupped hands hold a red ember; it cools to gold.
+function guardS(t,lt){
+  let g=glow(960,300,900,'#FFD8A0',.45)+skyClouds(t,521,-540,'#8A6A8A','#FFC090',.8)+hill(522,580,'#9A7A6A')+gnd(523,700,'#8A8A4A','#76763E');
+  const cool=ease.inOut(prog(t,AT.guard+.3,AT.grows+.6)),s=1.45,x=880;
+  const hx=x+70*s,hy=800-112*s;
+  const o=person(1,x,800,s,{f:true,expr:['sad','tender',cool],look:{x:hx,y:hy},near:{x:hx+10,y:hy+10},far:{x:hx-16,y:hy+14},lean:6,hair:'#3A2216'});
+  g+=withProp(o,ember(t,hx,hy-8,22,cool,1));
+  return g;
+}
+// 8b. Speak kindly: a girl gives a flower to a boy sitting alone; he looks up and smiles.
+function kindS(t,lt){
+  let g=glow(1100,-100,800,'#FFF2C8',.55)+skyClouds(t,531,-540,'#FFFFFF','#D8E4F0',.75)+hill(532,560,'#9AC86A')+gnd(533,690,'#7AB050','#6A9E44');
+  const k=ease.out(prog(t,AT.kindly+.1,AT.kindly+.7)),fx=lerp(900,960,k),fyy=640;
+  g+=folk(4,1080,800,.75,{face:-1,sit:1,seat:786,expr:['sad','joy',k],look:k>.4?{x:860,y:600}:'down',near:{x:fx+30,y:fyy+20}});
+  const girl=person(3,820,800,.78,{f:true,expr:'joy',look:{x:1060,y:640},near:{x:fx-6,y:fyy+16},lean:8});
+  g+=withProp(girl,L(fx,fyy+20,fx+6,fyy-34,'#4A8A3A',4)+[0,1,2,3,4].map(i=>C(fx+6+Math.cos(i*1.26)*12,fyy-40+Math.sin(i*1.26)*12,9,'#FF7BD5')).join('')+C(fx+6,fyy-40,7,'#FFD45E'));
+  return g;
+}
+// 8c. Help the weak: a young man walks an old man along, a hand under his arm; the old man's stick in front of him.
+function weakS(t,lt){
+  let g=glow(1300,-100,800,'#FFE2A0',.55)+skyClouds(t,541,-540,'#FFFFFF','#E8D8C0',.75)+hill(542,560,'#C8A870')+gnd(543,690,'#B8A060','#A89050');
+  const w=lt*30,s=1.15,ex=840+w;
+  const old=elderOpts(ex,800,s,{walk:t*3,lean:14,expr:'tender',look:{x:ex+180,y:600}});
+  old.near={x:ex+50*s,y:800-96*s};
+  const yg=person(2,ex+150,800,s*1.02,{walk:t*3+1.5,face:-1,expr:'tender',look:{x:ex,y:600}});
+  yg.near=PPL.handOn(yg,old,'arm');
+  const Y=PPL.rig(yg);
+  g+=Y.draw('back')+Y.draw('body')+Y.draw('head')+withProp(old,L(ex+52*s,800,ex+48*s,800-100*s,'#7A5230',10))+Y.draw('front');
+  return g;
+}
+// 8d. Make peace quickly: two men who stood apart step in and hold each other.
+function peace2S(t,lt){
+  let g=glow(960,100,900,'#FFD8A0',.5)+skyClouds(t,551,-540,'#F8E0D0','#F0A880',.75)+hill(552,560,'#9AA070')+gnd(553,690,'#8A9A4A','#76863E');
+  const k=ease.out(prog(t,AT.peaceQ+.2,AT.peaceQ+.9)),s=1.3;
+  const a=person(0,lerp(800,880,k),800,s,{expr:['calm','joy',k]}),b=person(2,lerp(1180,1100,k),800,s,{face:-1,expr:['calm','joy',k]});
+  g+=PPL.hug(a,b,{k}).svg;
+  return g;
+}
+// 8e. Every person you meet carries the image of God: a morning field full of families; a gold glint lights in each.
+function facesS(t,lt){
+  let g=glow(960,-300,1100,'#FFF6DA',.65)+rays(t,960,-600,14,'#FFFFFF',.05,.6,2.54)+skyClouds(t,561,-560,'#FFFFFF','#D8E8F8',.7);
+  g+=hill(562,540,'#9AD06A')+gnd(563,660,'#7AB850','#6AA844');
+  const on=k=>ease.out(prog(t,AT.imageL-.4+k*.12,AT.imageL+.1+k*.12));
+  let k=0;const gl=(o)=>{const [cx,cy]=chestOf(o);return glint(cx,cy,o.s,on(k++));};
+  // back row
+  [[420,1,.72],[560,4,.7],[1360,2,.72],[1500,0,.7]].forEach(([x,i,s])=>{const o=person(i,x,700,s,{face:x<960?1:-1,expr:'joy',look:{x:960,y:500}});g+=PPL.fig(o)+gl(o);});
+  // a family: father's hand on the mother's shoulder, she holds the child's hand
+  const dad=person(0,600,800,1,{expr:'joy',look:{x:820,y:600}}),mom=person(1,720,800,.96,{f:true,expr:'tender',look:{x:830,y:680}}),kid=person(3,830,800,.62,{expr:'joy',look:{x:720,y:600}});
+  dad.near=PPL.handOn(dad,mom,'shoulder');const D=PPL.rig(dad),hh=PPL.holdHands(mom,kid);
+  g+=D.draw('back')+D.draw('body')+D.draw('head')+hh.svg+D.draw('front')+gl(dad)+gl(mom)+gl(kid);
+  // an old man and a young woman arm in arm; a father with his child on his hip
+  const old=elderOpts(1100,800,.98,{face:-1,expr:'joy',look:{x:960,y:560}}),yw=person(5,1210,800,.94,{face:-1,f:true,expr:'joy',look:{x:1100,y:600}});
+  yw.near=PPL.handOn(yw,old,'arm');const Yw=PPL.rig(yw);
+  g+=Yw.draw('back')+Yw.draw('body')+Yw.draw('head')+PPL.fig(old)+Yw.draw('front')+gl(old)+gl(yw);
+  const cr=PPL.carry(person(4,1380,800,1,{face:-1,expr:'joy'}),person(2,0,0,.6,{expr:'joy'}));g+=cr.svg+gl(cr.A);
+  return g;
+}
+// 8f. Next time: the tablets on a hill at sunrise, line VI glowing (the end card comes in the hud).
+function nextTimeS(t,lt){
+  let g=glow(960,300,900,'#FFD8A0',.6)+sunDisc(960,420,100,'#FFB070','#FFF0C8')+rays(t,960,420,14,'#FFF6DA',.06)+skyClouds(t,571,-540,'#E8C8D8','#FFC090',.75);
+  g+=hill(572,620,'#8A9A6A')+gnd(573,740,'#7A8A4A','#66763E');
+  g+=tablets(960,560,.55,SIXTH(1.1,.35));
+  return g;
+}
+
+// ---------- frame-space overlays: verse cards, the one label at a time, and the end card ----------
+const VERSES=[
+  [AT.v1-.15,560,40,['You shall not murder.'],'EXODUS 20:13 ESV',{size:56,hl:'not murder.',hlAt:AT.notMurder1[0],hlDur:AT.notMurder1[1]-AT.notMurder1[0],seed:5,id:4}],
+  [AT.v47-.15,300,40,['And if you do not do well, sin is crouching at the door.','Its desire is for you, and you must rule over it.'],'GENESIS 4:7 ESV',{size:44,hl:'you must rule over it.',hlAt:AT.rule[0],hlDur:AT.rule[1]-AT.rule[0],seed:9,id:5}],
+  [AT.v410-.15,420,40,["The voice of your brother's blood is crying to me","from the ground."],'GENESIS 4:10 ESV',{size:46,hl:'crying to me',hlAt:AT.crying[0],hlDur:AT.crying[1]-AT.crying[0],seed:11,id:3}],
+  [AT.v96-.15,560,40,['God made man in his own image.'],'GENESIS 9:6 ESV',{size:56,hl:'in his own image.',hlAt:AT.image[0]-.3,hlDur:.9,seed:13,id:2}],
+  [AT.v2-.15,560,40,['You shall not murder.'],'EXODUS 20:13 ESV',{size:56,hl:'not murder.',hlAt:AT.notMurder2[0],hlDur:AT.notMurder2[1]-AT.notMurder2[0],seed:5,id:4}],
+  [AT.v522-.15,300,40,['But I say to you that everyone who is angry with his brother','will be liable to judgment.'],'MATTHEW 5:22 ESV',{size:46,hl:'who is angry',hlAt:AT.angry[0],hlDur:AT.angry[1]-AT.angry[0],seed:23,id:9}],
+  [AT.v311-.15,300,40,['For this is the message that you have heard from the beginning,','that we should love one another.'],'1 JOHN 3:11 ESV',{size:46,hl:'love one another.',hlAt:AT.loveOne[0],hlDur:AT.loveOne[1]-AT.loveOne[0],seed:29,id:6}],
 ];
-const LPEOPLE=[[360,700],[700,700],[1000,700],[1300,760],[1600,760],[1820,760]];
-function imageSheet(t,lt){
-  let g=glow(960,Y(-100,-200),1200,'#FFF2C8',.55);
-  for(let i=0;i<10;i++){const a=-1.5708+(i-4.5)*.12;g+=P(`M960 ${Y(-200,-300)}L${(960+Math.cos(a-.03)*2600).toFixed(0)} ${(Y(-200,-300)+Math.sin(a-.03)*-2600*-1).toFixed(0)}L${(960+Math.cos(a+.03)*2600).toFixed(0)} ${(Y(-200,-300)+Math.sin(a+.03)*-2600*-1).toFixed(0)}Z`,'#FFF6DA',{opacity:.06});}
-  g+=`<path d="${ridge(51,Y(800,850),10,280)}" fill="#C8884A"/>`;
-  g+=meadow(t,4,['#C8884A','#B07438','#D89A5A'],['#FFE9A8']);
-  g+=fireflies(t,0,-600,1920,2000,'#FFE9A8',16,.6);
-  PEOPLE.forEach(([fx,fy,s,look],i)=>{
-    const [lx,ly]=LPEOPLE[i],x=X(lx,fx),y=Y(ly,fy),sc=s*hv(.9,1.2);
-    const on=ease.out(prog(t,AT.image[0]+i*.15,AT.image[0]+i*.15+.5));
-    g+=E.chubby(x,y,sc,Object.assign({aura:'#FFE9A8',auraOp:.3+.25*on,phase:i*.9,flip:i%2?-1:1},look));
-    if(on>0){const cy=y-80*sc;g+=glow(x,cy,90*sc,'#FFE9A8',.9*on)+P(`M${x} ${cy-16*sc}L${x+11*sc} ${cy}L${x} ${cy+16*sc}L${x-11*sc} ${cy}Z`,GOLD,{stroke:'#FFF6D0','stroke-width':3,opacity:on.toFixed(2)});}
-  });
-  g+=fade(t,AT.v96-.2,tag(t,AT.why,960,Y(160,560),'WHY DOES ONE LIFE MATTER?',SZ(36,42),1));
-  g+=verse(t,AT.v96-.15,560,40,['God made man in his own image.'],'GENESIS 9:6 ESV',{size:56,hl:'in his own image.',hlAt:AT.image[0]-.3,hlDur:.9,seed:13,id:2});
-  g+=tag(t,AT.image[1]+.4,960,Y(240,600),'THE IMAGE OF GOD',SZ(42,48),2,{bg:CORAL,rot:-2});
-  g+=tag(t,AT.mirror,960,Y(1000,1420),'LIKE A MIRROR',SZ(38,44),3);
-  g+=tag(t,AT.strike,960,Y(1070,1520),'EVERY LIFE CARRIES HIS IMAGE',SZ(34,40),4,{bg:CORAL});
+// [from, to, text, options]. Vertical: centred at y 1430 (under the captions, clear of the buttons). Never two at once.
+const TAGS=[
+  [AT.firstDeath+.2,AT.weapon-.6,'THE FIRST DEATH',{}],
+  [AT.feeling+.3,AT.v1-.4,'IT STARTED WITH A FEELING',{bg:CORAL,rot:-2,size:hv(40,40)}],
+  [AT.easy,AT.most-.4,'THE "EASY" ONE?',{}],
+  [AT.further,AT.brothers-.5,'FURTHER THAN OUR HANDS',{bg:CORAL,rot:-2}],
+  [AT.brothers+.3,AT.ground-.45,'THE FIRST BROTHERS',{}],
+  [AT.ground+.1,AT.andAbel-.4,'CAIN',{size:hv(48,56)}],
+  [AT.andAbel+.1,AT.both-.4,'ABEL',{size:hv(48,56),bg:'#2F6FD0'}],
+  [AT.burned,AT.faceFell-.35,'ANGER',{bg:CORAL,rot:-3,size:hv(48,56)}],
+  [AT.animal,AT.cainCould-.4,'SIN AT THE DOOR',{}],
+  [AT.closeDoor,AT.didnt-.45,'HE COULD STILL CLOSE IT',{bg:CORAL,rot:-2}],
+  [AT.roseUp-.4,AT.oneShort-.5,'GENESIS 4:8',{}],
+  [AT.shortW,AT.noDetails-.4,'ONE SHORT SENTENCE',{}],
+  [AT.lifeGone+.3,AT.came-.5,'A LIFE, GONE',{bg:CORAL}],
+  [AT.lookAfter+.3,AT.v410-.45,"HIS BROTHER'S KEEPER?",{}],
+  [AT.nobody+.2,AT.godDid-.35,'NOBODY SAW',{}],
+  [AT.godDid,AT.mattered-.4,'GOD SAW',{bg:CORAL,rot:-2,size:hv(48,56)}],
+  [AT.mattered+.6,AT.why-.5,'HIS LIFE MATTERED',{}],
+  [AT.why+.3,AT.flood-.4,'WHY DOES ONE LIFE MATTER?',{size:hv(40,40)}],
+  [AT.flood+.3,AT.v96-.45,'AFTER THE FLOOD',{}],
+  [AT.every1+.2,AT.toTake-.45,'THE IMAGE OF GOD',{bg:CORAL,rot:-2}],
+  [AT.strike+.3,AT.spokeS-.45,'STRIKING AT HIS IMAGE',{}],
+  [AT.sixth,AT.v2-.4,'THE SIXTH WORD',{}],
+  [AT.older+.2,AT.butHeb-.35,'OLDER BIBLES: "KILL"',{}],
+  [AT.innocent-.2,AT.thats-.4,'AN INNOCENT LIFE',{bg:CORAL,rot:-2}],
+  [AT.modern,AT.sounds2-.4,'MOST NOW: "MURDER"',{}],
+  [AT.without-.6,AT.jesus-.45,'A RULE WE ALL KEEP?',{}],
+  [AT.under,AT.v522-.4,'UNDERNEATH IT',{}],
+  [AT.angry[1]+.2,AT.goesBack-.45,'ANGER',{bg:CORAL,rot:-3,size:hv(48,56)}],
+  [AT.notField+.1,AT.theFeeling-.3,'NOT THE FIELD',{}],
+  [AT.theFeeling,AT.angryWord-.3,'THE FEELING',{bg:CORAL,rot:-2}],
+  [AT.angryWord+.1,AT.cruelName-.3,'THE ANGRY WORD',{}],
+  [AT.cruelName+.1,AT.coldSilence-.3,'THE CRUEL NAME',{}],
+  [AT.coldSilence+.1,AT.they-.35,'THE COLD SILENCE',{}],
+  [AT.root-.4,AT.thisCmd-.4,'ONE ROOT',{bg:CORAL,rot:-2}],
+  [AT.hands-.2,AT.itsAbout-.35,'NOT ONLY OUR HANDS',{}],
+  [AT.hearts,AT.flipW-.4,'OUR HEARTS',{bg:CORAL,rot:-2,size:hv(48,56)}],
+  [AT.flip,AT.christians-.4,'THE FLIP SIDE',{}],
+  [AT.protect,AT.jesusSaid-.4,'PROTECT LIFE',{bg:CORAL,rot:-2}],
+  [AT.makePeace,AT.v311-.4,'MAKE PEACE FIRST',{}],
+  [AT.nextVerse,AT.cainAsked-.4,'THE NEXT VERSE NAMES CAIN',{size:hv(40,40)}],
+  [AT.keeper,AT.answer-.4,"HIS BROTHER'S KEEPER?",{}],
+  [AT.yes,AT.so-.3,'YES.',{bg:CORAL,rot:-3,size:hv(56,68)}],
+  [AT.guard,AT.kindly-.35,'GUARD YOUR ANGER',{bg:CORAL,rot:-2}],
+  [AT.kindly+.05,AT.weak-.3,'SPEAK KINDLY',{}],
+  [AT.weak+.05,AT.peaceQ-.3,'HELP THE WEAK',{}],
+  [AT.peaceQ+.05,AT.everyPerson-.35,'MAKE PEACE QUICKLY',{}],
+  [AT.imageL-.4,AT.next-.4,'EVERY FACE CARRIES HIS IMAGE',{bg:CORAL,size:hv(40,40)}],
+];
+const ftag=(t,[a,b,s,o],k)=>{if(t<a||t>b+.4)return '';const size=o.size||hv(40,46),x=hv(960,540),y=o.y||hv(90,1430);
+  return E.fade(t,b,piece(t,a,x,y+size*.8,label(x,y,s,{size,anchor:'middle',bg:o.bg||'#101014',rot:o.rot||0}),40+k,1.3));};
+function endCard(t){
+  const ec=prog(t,AT.last+.6,AT.last+1.2);if(ec<=0)return '';
+  const W=E.W,H=E.H,x=W/2,fy2=f=>hv(f[0],f[1]);
+  let g=G('',R(0,0,W,H,0,'#08060F',{opacity:.86})+
+    T(x,fy2([380,700]),'THE TEN COMMANDMENTS · PART 6',{size:40,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
+    T(x,fy2([470,810]),'YOU SHALL NOT MURDER',{size:hv(80,66),font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
+  const ty=fy2([620,960]);g+=piece(t,AT.last+1.6,x,ty,label(x,ty-42*.81,'NEXT: THE SEVENTH COMMANDMENT',{size:42,anchor:'middle',bg:CORAL}),55,1.3);
+  if(t>AT.last+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
+    .forEach((ln,i)=>{g+=T(x,fy2([760,1080])+i*hv(34,36),ln,{size:hv(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});
   return g;
 }
+const hud=t=>{let g='';VERSES.forEach(v=>g+=verse(t,v[0],v[1],v[2],v[3],v[4],v[5]));TAGS.forEach((x,k)=>g+=ftag(t,x,k));return g+endCard(t);};
 
-// ---------- 5. The sixth word, from the mountain ----------
-function sixth(t,lt){
-  let g=glow(960,Y(160,420),600,'#FF7A3C',.45)+glow(960,Y(160,420),280,'#FFE9A8',.4);
-  g+=mountain(7,960,Y(160,420),'#2E2A36',1)+mountain(8,1500,Y(360,560),'#221F2A',.8)+mountain(9,420,Y(380,560),'#26222E',.8);
-  for(let i=0;i<6;i++){const k=(t*.12+i/6)%1,x=960+Math.sin(i*2.1+t*.4)*(60+k*220),y=Y(160,420)-k*500;g+=Ell(x,y,80+k*200,40+k*80,'#5A5260',{opacity:(.4*(1-k)).toFixed(3)});}
-  g+=`<path d="${ridge(61,Y(860,1130),10,220)}" fill="#3A2E28"/>`;
-  g+=meadow(t,5,['#3A2E28','#2E2420','#4A3A30'],['#FF9A4C','#FFD08A']);
-  g+=tufts(t,5,Y(860,1000),Y(1000,1880),hv(80,200),['#5A4636','#4A3A2C','#6A5240'],{tip:'#FF9A4C',lean:2,s0:.6,s1:3});
-  const on=ease.out(prog(t,AT.v2-.3,AT.v2+.8)),ty=Y(560,820),s=hv(.62,.68);
-  g+=piece(t,AT.spoke,960,ty,G(`translate(960 ${ty}) scale(${s}) translate(-960 -560)`,tablets(960,560,1,SIXTH(.2+.95*on,.12))),1,1.2);
-  g+=verse(t,AT.v2-.15,560,40,['You shall not murder.'],'EXODUS 20:13 ESV',{size:56,hl:'not murder.',hlAt:AT.notMurder2[0],hlDur:AT.notMurder2[1]-AT.notMurder2[0],seed:5,id:4});
-  g+=fade(t,AT.v2-.2,tag(t,AT.sixth,960,Y(160,560),'THE SIXTH WORD',SZ(40,46),2));
-  const ky=Y(1000,1420);
-  g+=tag(t,AT.older,960,ky,'OLDER BIBLES: "KILL"',SZ(36,42),3)+strike(960-hv(200,250),ky,960+hv(200,250),ease.inOut(prog(t,AT.innocent-.2,AT.innocent+.3)));
-  g+=tag(t,AT.innocent,960,Y(1070,1520),'AN INNOCENT LIFE',SZ(38,44),4,{bg:CORAL});
-  g+=tag(t,AT.modern,960,Y(940,1080),'MOST NOW: "MURDER"',SZ(38,44),5);
-  g+=tag(t,AT.without,960,Y(160,560),'A RULE WE ALL KEEP?',SZ(36,42),6,{rot:-2});
-  return g;
-}
+// ---------- the sheets: [name, at, draw, bg, cam(a,b), extra] ----------
+const DUSK=FG('#2E3E24','#26341E','#3A4E2A',['#FFD08A']), DAY=FG('#5E7E2E','#4E6E26','#6E8E36',['#FFD45E','#FFFFFF']), NIGHT=FG('#1E2818','#18200F','#26321E');
+const SAND=FG('#B8A070','#A89060','#C8B080'), GOLDF=FG('#B07A3A','#9A6A30','#C89050',['#FFE9A8']);
+const SH=[
+  // 0. cold open
+  ['walk out',0,walkOut,['#2A1E4A','#C8603A'],MOVE(960,600,.84,840,fy(1.02),1.02),{fore:DUSK}],
+  ['walks back',AT.only-.1,walksBack,['#120E28','#5A2A3A'],HOLDF(980,1.0),{fore:DUSK,vIn:'cut'}],
+  ['first death',AT.itIs-.1,firstDeath,['#1A100C','#2A1A14'],HOLD(960,640,1.1),{stars:false,vIn:'cut'}],
+  ['a feeling',AT.andIt-.1,feelingS,['#3A1E3A','#B85A3A'],MOVE(880,fy(1.0),1.0,860,fy(1.26),1.26),{fore:FG('#4A3A20','#3A2E18','#5A4A2A')}],
+  ['sinai 1',AT.v1-.12,sinai1,['#1A1028','#3A2018'],HOLD(960,600,.84),{fore:FG('#3A2A20','#2E2218','#4A3828'),vIn:'cut'}],
+  ['easy list',AT.itSounds-.1,easyS,['#F0D8A0','#C08A50'],HOLDF(920,1.12),{stars:false,vIn:'cut'}],
+  ['street',AT.most-.1,street,['#8AC8F0','#FFE0B0'],MOVE(880,600,.86,1000,615,.95),{stars:false,fore:SAND}],
+  ['further',AT.but1-.1,further,['#FFE0A8','#E8A060'],MOVE(940,fy(1.0),1.0,860,fy(1.22),1.22),{stars:false,fore:FG('#9A7838','#8A6A30','#B08A4A',['#FFFFFF'])}],
+  // 1. offerings
+  ['first brothers',AT.brothers-.1,brothersS,['#9AD0F0','#E8F0C8'],HOLDF(980,1.08),{stars:false,fore:DAY,vIn:'cut'}],
+  ['cain works the ground',AT.ground-.1,ground,['#A8D8F8','#F0E0B0'],HOLDF(900,1.2),{stars:false,vIn:'cut',fore:FG('#7A5028','#6A4420','#8A5E34')}],
+  ['abel keeps the sheep',AT.andAbel-.06,sheepS,['#8ACCF0','#E0F0C0'],HOLDF(980,1.12),{stars:false,vIn:'cut',fore:DAY}],
+  ['both brought',AT.both-.1,bringS,['#A8D0F0','#F0E0B8'],MOVE(820,fy(.9),.9,960,fy(1.0),1.0),{stars:false,fore:DAY}],
+  ['accepted',AT.accepted-.1,acceptS,['#8A98C8','#E8D8B8'],MOVE(1180,fy(1.0),1.0,820,fy(1.0),1.0),{stars:false,fore:DAY,vIn:'cut'}],
+  ['burned with anger',AT.and1-.06,burnS,['#3A0E10','#8A2A1A'],HOLDF(900,1.38,1150),{stars:false,vIn:'cut',fore:FG('#2E1A12','#24140E','#3A2218')}],
+  ['face fell',AT.faceFell-.1,faceFellS,['#4A2E4A','#D88A6A'],HOLDF(960,1.1),{stars:false,vIn:'cut',fore:FG('#4A5630','#3E4A28','#5E6A3A')}],
+  ['god warns',AT.warned-.1,warnS,['#140E2A','#4A3458'],MOVE(960,fy(1.0),1.0,960,fy(1.2),1.2),{fore:NIGHT,vIn:'cut'}],
+  ['door: crouching',AT.v47-.12,doorA,['#3A2418','#5A3A26'],HOLD(960,600,.84),{stars:false,vIn:'cut'}],
+  ['door: desire',AT.its-.1,doorB,['#3A2418','#5A3A26'],HOLDF(900,1.15),{stars:false,vIn:'cut'}],
+  ['door: animal',AT.anger-.1,doorC,['#3A2418','#5A3A26'],HOLDF(700,1.45,1180),{stars:false,vIn:'cut'}],
+  ['door: close it',AT.cainCould-.1,doorD,['#3A2418','#5A3A26'],HOLDF(980,1.1),{stars:false,vIn:'cut'}],
+  // 2. the field
+  ['door: did not rule',AT.didnt-.1,doorE,['#2A1810','#4A2E1E'],HOLDF(960,.92),{stars:false,vIn:'cut'}],
+  ['come out to the field',AT.asked-.1,askS,['#3A2A5A','#E89A60'],MOVE(860,fy(.95),.95,940,fy(1.06),1.06),{fore:FG('#56662E','#4A5A28','#6A7A3A')}],
+  ['far field',AT.andThere-.1,tookS,['#1E1830','#8A4A3A'],HOLD(960,600,.84),{fore:DUSK,vIn:'cut'}],
+  ['one short sentence',AT.oneShort-.1,shortS,['#140E0A','#241810'],HOLD(960,620,1.1),{stars:false,vIn:'cut'}],
+  ['no details',AT.noDetails-.1,noDetailS,['#1E1830','#8A4A3A'],HOLD(1000,600,.86),{fore:DUSK,vIn:'cut'}],
+  ['a life gone',AT.lifeGone-.1,goneS,['#1E1830','#8A4A3A'],HOLDF(980,1.4,1160),{fore:DUSK,vIn:'cut'}],
+  // 3. crying from the ground
+  ['god comes',AT.came-.1,cameS,['#0A0E28','#1A1E3A'],MOVE(900,fy(.9),.9,920,fy(1.12),1.12),{fore:NIGHT,vIn:'cut'}],
+  ['shrug',AT.didntKnow-.1,shrugS,['#0A0E28','#1A1E3A'],HOLDF(960,1.35),{fore:NIGHT,vIn:'cut'}],
+  ['back turned',AT.lookAfter-.1,backS,['#0A0E28','#1A1E3A'],HOLDF(1000,1.0),{fore:NIGHT,vIn:'cut'}],
+  ['blood cries',AT.v410-.12,cryS,['#080A20','#141A30'],HOLD(960,fy(1.15,1060,720),1.15),{fore:NIGHT,vIn:'cut'}],
+  ['god saw',AT.nobody-.1,sawS,['#0A0E28','#1A1E3A'],HOLD(960,600,.84),{fore:NIGHT,vIn:'cut'}],
+  ['his life mattered',AT.mattered-.1,matteredS,['#2A3A6A','#8A9AC8'],MOVE(990,fy(1.05),1.05,980,fy(1.34),1.34),{fore:FG('#3A5A2E','#2E4A26','#4A6A3A',['#FFF6DA'])}],
+  // 4. the image of God
+  ['a newborn',AT.why-.1,babyS,['#5A3A6A','#FFB890'],HOLDF(960,1.2),{stars:false,fore:FG('#76763E','#666A36','#8A8A4A'),vIn:'cut'}],
+  ['after the flood',AT.flood-.1,floodS,['#A8C8E8','#E8F0F0'],MOVE(900,600,.84,1000,620,.94),{stars:false,fore:FG('#4E7E3E','#447036','#5E8E4A',['#FFFFFF'])}],
+  ['his own image',AT.v96-.12,imageS,['#FFE8B0','#E8A060'],HOLDF(960,1.0),{stars:false,fore:GOLDF,vIn:'cut'}],
+  ['every person',AT.every1-.1,everyS,['#F8D8B0','#D8885A'],HOLD(960,fy(.88),.88),{stars:false,fore:FG('#A06A3A','#8A5A30','#B87A48')}],
+  ['a reflection',AT.like-.1,poolS,['#A8D8F0','#E8F0D0'],HOLD(960,fy(1.2,1180,990),1.2),{stars:false,fore:DAY,vIn:'cut'}],
+  ['the mirror cracks',AT.toTake-.1,mirrorS,['#1A1220','#2A1E30'],MOVE(940,fy(1.0),1.0,960,fy(1.2),1.2),{stars:false,vIn:'cut'}],
+  // 5. the sixth word
+  ['sinai speaks',AT.spokeS-.1,sinai2,['#120C2A','#3A2030'],MOVE(960,600,.86,960,fy(1.05,1160,775),1.05),{fore:FG('#2A1E24','#22181E','#3A2A30'),vIn:'cut'}],
+  ['the tablets burn',AT.v2-.12,tabletsS,['#3A0A04','#120402'],HOLD(960,600,.84),{stars:false,vIn:'cut'}],
+  ['older bibles',AT.older-.1,olderS,['#1E140E','#2E2018'],HOLDF(920,1.25),{stars:false,vIn:'cut'}],
+  ['an innocent life',AT.butHeb-.1,innocentS,['#A8D8F8','#F0F0C8'],MOVE(960,fy(1.1),1.1,960,fy(1.32),1.32),{stars:false,fore:FG('#6A9E44','#5A8E3A','#7AB050',['#FFFFFF','#FFD45E'])}],
+  ['modern bibles',AT.thats-.1,modernS,['#141830','#1E2238'],HOLDF(940,1.15),{stars:false,vIn:'cut'}],
+  ['without trying',AT.sounds2-.1,withoutS,['#F0D8A0','#C08A50'],MOVE(920,fy(1.06),1.06,880,fy(1.26),1.26),{stars:false,vIn:'cut'}],
+  // 6. underneath it
+  ['jesus opens it up',AT.jesus-.1,jesusS,['#FFE8B8','#E8B070'],HOLD(960,600,.84),{stars:false,vIn:'cut',fore:FG('#88A24E','#789244','#9AB45A',['#FFFFFF','#FFD45E'])}],
+  ['on a hillside',AT.hillside-.1,hillS,['#B8E0F8','#F8E8C0'],MOVE(900,fy(.9),.9,960,fy(1.04),1.04),{stars:false,fore:FG('#88A24E','#789244','#9AB45A',['#FFFFFF','#FFD45E'])}],
+  ['underneath',AT.thenHe-.1,underS,['#F8E0B0','#E8B880'],HOLD(960,640,1.15),{stars:false,vIn:'cut'}],
+  ['angry with his brother',AT.v522-.12,angryS,['#4A2A2E','#2A1A1C'],HOLD(960,600,.84),{stars:false,vIn:'cut'}],
+  ['liable to judgment',AT.will-.1,judgeS,['#3A2024','#24161A'],HOLDF(960,1.3),{stars:false,vIn:'cut'}],
+  ['where cain started',AT.goesBack-.1,startedS,['#C8A070','#8A6040'],HOLDF(860,1.12),{stars:false,vIn:'cut',fore:FG('#8A6A3E','#7A5E36','#9A7A4A')}],
+  ['not the field',AT.notField-.1,notFieldS,['#1E1830','#8A4A3A'],HOLD(960,600,.84),{fore:DUSK,vIn:'cut'}],
+  ['the feeling',AT.theFeeling-.1,feelS,['#3A0E10','#8A2A1A'],HOLD(960,810,1.0),{stars:false,vIn:'cut'}],
+  ['the angry word',AT.angryWord-.1,wordS,['#4A1E2E','#2A1018'],HOLDF(960,1.15),{stars:false,vIn:'cut'}],
+  ['the cruel name',AT.cruelName-.1,nameS,['#8AC0E0','#F0E0B0'],HOLDF(930,1.25),{stars:false,vIn:'cut',fore:SAND}],
+  ['the cold silence',AT.coldSilence-.1,silenceS,['#0E1430','#1A2440'],HOLDF(960,1.2),{vIn:'cut',fore:FG('#1E2A44','#18223A','#2A3A5A')}],
+  ['the same root',AT.they-.1,rootS,['#A8B8D8','#D8B8B0'],MOVE(960,560,1.0,960,420,1.05),{stars:false,vIn:'cut'}],
+  ['our hands',AT.thisCmd-.1,handsS,['#4A3A5A','#F0A880'],HOLDF(960,1.38),{stars:false,vIn:'cut',fore:FG('#66663E','#58582E','#7A7A4A')}],
+  ['our hearts',AT.itsAbout-.1,heartsS,['#5A3A5A','#FFB890'],HOLDF(920,1.55,1190),{stars:false,vIn:'cut',fore:FG('#76663E','#68582E','#8A7A4A')}],
+  // 7. my brother's keeper
+  ['the flip side',AT.flipW-.1,flipS,['#F8D8A8','#E8A870'],HOLD(960,560,1.08),{stars:false,vIn:'cut',fore:FG('#94783E','#846A36','#A8884A',['#FFFFFF'])}],
+  ['protect life',AT.christians-.1,protectS,['#A8D0F0','#F0E0B8'],MOVE(940,fy(1.04),1.04,940,fy(1.22),1.22),{stars:false,fore:SAND,vIn:'cut'}],
+  ['the stream',AT.notJust-.1,streamS,['#9AD0F0','#E0F0C8'],HOLD(960,fy(1.12,1170,850),1.12),{stars:false,fore:DAY,vIn:'cut'}],
+  ['the gift',AT.jesusSaid-.1,giftS,['#E8C8A8','#E8A070'],MOVE(900,fy(1.0),1.0,920,fy(1.16),1.16),{stars:false,fore:FG('#847A3E','#746A36','#988A4A'),vIn:'cut'}],
+  ['make peace',AT.go-.1,peaceS,['#E8B8A0','#E89060'],HOLDF(900,1.12),{stars:false,fore:FG('#76763E','#686A36','#8A8A4A'),vIn:'cut'}],
+  ['shared bread',AT.v311-.12,mealS,['#F0C8A0','#E89A68'],HOLD(960,600,.84),{stars:false,fore:FG('#76863E','#687836','#8A9A4A',['#FFD45E']),vIn:'cut'}],
+  ['love one another',AT.thatWe-.1,loveS,['#4A2A5A','#FF9A6A'],HOLD(900,610,.86),{fore:FG('#3A2E2E','#2E2424','#4A3A3A',['#FFD08A']),vIn:'cut'}],
+  ['the next verse',AT.andThe-.1,nextS,['#1E140E','#2A1E16'],HOLD(1000,620,1.0),{stars:false,vIn:'cut'}],
+  ['keeper?',AT.cainAsked-.1,keeperQS,['#0A0E28','#1A1E3A'],HOLDF(1000,.95),{fore:NIGHT,vIn:'cut'}],
+  ['yes',AT.answer-.1,yesS,['#A8E0FF','#F8F8D8'],HOLDF(900,1.15),{stars:false,fore:FG('#5AA044','#4E9038','#6EB050',['#FFFFFF','#FFD45E','#FF7BD5']),vIn:'cut'}],
+  // 8. every face
+  ['guard your anger',AT.so-.1,guardS,['#5A4A7A','#FFB880'],HOLDF(980,1.4,1180),{stars:false,fore:FG('#76763E','#686A36','#8A8A4A'),vIn:'cut'}],
+  ['speak kindly',AT.kindly-.1,kindS,['#A8D8F8','#F0F0C8'],HOLDF(960,1.4,1180),{stars:false,fore:FG('#6A9E44','#5A8E3A','#7AB050',['#FF7BD5','#FFD45E']),vIn:'cut'}],
+  ['help the weak',AT.weak-.1,weakS,['#B8D8F0','#F0E0B8'],HOLDF(1000,1.18),{stars:false,fore:SAND,vIn:'cut'}],
+  ['make peace quickly',AT.peaceQ-.1,peace2S,['#E8C0A8','#E89868'],HOLDF(960,1.25),{stars:false,fore:FG('#76863E','#687836','#8A9A4A'),vIn:'cut'}],
+  ['every face',AT.everyPerson-.1,facesS,['#A8E0FF','#F8F0D0'],MOVE(960,fy(1.06),1.06,960,610,.86),{stars:false,fore:FG('#6AA844','#5A9838','#7AB850',['#FFFFFF','#FFD45E','#FF7BD5'])}],
+  ['next time',AT.next-.1,nextTimeS,['#6A4A7A','#FFB080'],MOVE(960,600,.86,960,600,.98),{stars:false,fore:FG('#66763E','#586836','#7A8A4A',['#FFD45E']),vIn:'cut'}],
+];
+const sheets=SH.map(([name,at,draw,bg,cam,extra],i)=>{const a=at+.1,b=(i+1<SH.length?SH[i+1][1]:AT.last+7)-.15;
+  return Object.assign({name,at,draw,bg,cam:cam(a,b)},extra||{});});
+delete sheets[0].vIn;
 
-// ---------- 6. Underneath it: the ember of anger ----------
-function under(t,lt){
-  let g=glow(960,560,1200,'#FFE9B0',.5)+fireflies(t,0,-600,1920,2300,'#FFF6DA',16,.6);
-  {const dr=lt*hv(5,7);  // a bright hillside sky: soft clouds and sun rays from above
-    for(let i=0;i<9;i++){const an=Math.PI*(.25+i*.0625),x0=X(960,540),y0=Y(-400,-300);g+=P(`M${x0} ${y0}L${(x0+Math.cos(an-.03)*2800).toFixed(0)} ${(y0+Math.sin(an-.03)*2800).toFixed(0)}L${(x0+Math.cos(an+.03)*2800).toFixed(0)} ${(y0+Math.sin(an+.03)*2800).toFixed(0)}Z`,'#FFFFFF',{opacity:.12});}
-    g+=cloud(X(440,200)+dr,Y(140,600),hv(480,540),'#FFFFFF','#F0D8A8',.8,51)+cloud(X(1500,900)-dr*.6,Y(240,690),hv(440,500),'#FFFDF4','#F0C890',.75,53);
-    g+=`<path d="${ridge(90,Y(820,960),10,280)}" fill="#E0B070" opacity=".8"/>`;}
-  g+=`<path d="${ridge(91,Y(860,1010),12,300)}" fill="#D8A060"/><path d="${ridge(92,Y(920,1100),8,220)}" fill="#C08A4A"/>`;
-  g+=meadow(t,6,['#B07A3A','#9A6A30','#C89050'],['#FFE9A8']);
-  const ex=X(960,540),ey=Y(700,960);
-  // The ember (anger), glowing hot, with roots spreading below it.
-  const reveal=ease.inOut(prog(t,AT.under-.2,AT.under+.9));
-  if(reveal>0){
-    const fl=.7+.3*Math.sin(t*7)+.1*Math.sin(t*13);
-    g+=glow(ex,ey,220,RED,.6*fl*reveal)+Ell(ex,ey,62,40,'#8A1A10',{opacity:reveal.toFixed(2)})+Ell(ex-8,ey-6,40,24,'#FF5A2C',{opacity:(reveal*fl).toFixed(2)})+Ell(ex-14,ey-10,18,10,'#FFD06B',{opacity:(reveal*fl).toFixed(2)});
-    const rp=ease.inOut(prog(t,AT.root-.2,AT.root+1));
-    [-1,-.5,0,.5,1].forEach((k,i)=>g+=mark(`M${ex+k*30} ${ey+36}Q${ex+k*90} ${ey+90} ${ex+k*170} ${ey+hv(150,170)+Math.abs(k)*-30}`,rp,'#8A1A10',8));
-  }
-  // The command as a torn paper lid that lifts away.
-  const lid=strip(ex-hv(360,320),ey-hv(110,120),hv(720,640),hv(220,240),17,'#F6EFDC')+tape(ex,ey-hv(110,120),120,3)+
-    T(ex,ey-10,'DO NOT MURDER',{size:hv(56,62),font:'Segoe UI Black',weight:900,anchor:'middle',fill:INK})+
-    T(ex,ey+50,'(the hands)',{size:hv(34,38),font:'Georgia',style:'italic',anchor:'middle',fill:'#6A5A4A'});
-  if(reveal<1)g+=piece(t,AT.hillside,ex,ey,G(`translate(${(reveal*hv(500,300)).toFixed(1)} ${(-reveal*hv(500,700)).toFixed(1)}) rotate(${(reveal*14).toFixed(1)} ${ex} ${ey})`,lid,1-reveal*.6),1,1.3);
-  g+=verse(t,AT.quoted-.1,560,40,['You shall not murder.'],'EXODUS 20:13 ESV',{size:52,seed:5,id:8,end:AT.v522-.4});
-  g+=verse(t,AT.v522-.15,300,40,['But I say to you that everyone who is angry with his brother','will be liable to judgment.'],'MATTHEW 5:22 ESV',{size:46,hl:'who is angry',hlAt:AT.angry[0],hlDur:AT.angry[1]-AT.angry[0],seed:23,id:9});
-  g+=fade(t,AT.hands-.3,tag(t,AT.angry[1]+.3,ex+hv(220,0),ey+hv(0,-130),'ANGER',SZ(44,50),2,{bg:CORAL,rot:-3}));
-  // Back to Cain: a small red figure and an arrow from the ember.
-  const cIn=ease.out(prog(t,AT.whereCain-.2,AT.whereCain+.5));
-  if(cIn>0){const cx=X(400,150),cy=Y(900,1180);g+=G('',bro('cain',cx,cy,hv(.8,.85),{aura:RED,auraOp:.5}),cIn)+
-    arrow(ex-70,ey+20,lerp(ex,cx,.5),ey+hv(10,40),cx+50,cy-hv(150,160),ease.inOut(prog(t,AT.notField,AT.notField+.6)),CORAL,8);}
-  g+=fade(t,AT.hands-.3,tag(t,AT.notField,X(1460,730),Y(880,1120),'NOT THE FIELD',SZ(30,34),3)+
-    tag(t,AT.theFeeling,X(1460,730),Y(960,1185),'THE FEELING',SZ(34,38),4,{bg:CORAL}));
-  g+=fade(t,AT.hands-.3,tag(t,AT.angryWord,960,Y(980,1395),'THE ANGRY WORD',SZ(32,38),5)+
-    tag(t,AT.cruelName,960,Y(1030,1470),'THE CRUEL NAME',SZ(32,38),6)+
-    tag(t,AT.coldSilence,960,Y(1080,1545),'THE COLD SILENCE',SZ(32,38),7));
-  g+=tag(t,AT.hands,960,Y(1000,1420),'NOT ONLY OUR HANDS',SZ(38,44),8);
-  g+=tag(t,AT.hearts,960,Y(1070,1520),'OUR HEARTS',SZ(44,52),9,{bg:CORAL,rot:-2});
-  return g;
-}
-
-// ---------- 7. My brother's keeper: two glows meet ----------
-function bread(cx,cy){return Ell(cx,cy+10,80,46,'#C8843A',{stroke:'#8A5420','stroke-width':4})+P(`M${cx-50} ${cy-4}q14 -14 28 0M${cx-10} ${cy-10}q14 -14 28 0M${cx+28} ${cy-4}q14 -14 28 0`,'none',{stroke:'#8A5420','stroke-width':5});}
-function heartArt(cx,cy,c=CORAL){return glow(cx,cy,110,'#FFD86B',.5)+P(`M${cx} ${cy+60}C${cx-110} ${cy-10} ${cx-60} ${cy-90} ${cx} ${cy-40}C${cx+60} ${cy-90} ${cx+110} ${cy-10} ${cx} ${cy+60}Z`,c,{stroke:'#8A2A20','stroke-width':4});}
-function keeper(t,lt){
-  let g=glow(960,Y(500,900),1000,'#FFD08A',.45)+fireflies(t,0,-600,1920,2000,'#FFE9A8',14,.5);
-  {const dr=lt*hv(5,7);
-    g+=cloud(X(460,220)+dr,Y(120,200),hv(480,560),'#6A4A8A','#F0A0A0',.85,41)+cloud(X(1500,880)-dr*.6,Y(220,380),hv(440,520),'#7A5490','#FFB890',.85,43)+
-      cloud(X(900,420)+dr*.5,Y(360,600),hv(560,640),'#8A5E8E','#FFC890',.8,45);
-    for(let i=0;i<5;i++){const bx=X(1800,1180)-((lt*hv(30,36)+i*hv(70,80))%hv(1900,1500)),by=Y(260,440)+Math.abs(i-2)*20+Math.sin(t*1.2+i)*6;g+=bird(bx,by,hv(.9,1.1),t,i*1.3,'#3A2A50');}
-    g+=`<path d="${ridge(70,Y(800,960),10,280)}" fill="#6A7A6A"/>`;
-    [[X(240,90),.8],[X(360,175),.6],[X(1600,890),.85],[X(1720,990),.6]].forEach(([x,s])=>g+=tree(x,Y(810,970),s*hv(.8,1),'#4A6A50',t,.3));}
-  g+=`<path d="${ridge(71,Y(840,1040),12,300)}" fill="#5E8A4A"/><path d="${ridge(72,Y(900,1110),8,220)}" fill="#4A7A3A"/>`;
-  g+=meadow(t,7,['#4A7A3A','#3E6A30','#5A8A46'],['#FF7BD5','#FFD45E','#FFFFFF']);
-  // The ember from section 6 cools to gold.
-  const cool=ease.inOut(prog(t,AT.flip,AT.flip+1.6)),ex=960,ey=Y(700,960);
-  g+=G('',glow(ex,ey,200,mix('#FF3A2A','#FFD86B',cool),.6)+Ell(ex,ey,50,32,mix('#C82A1A','#FFD86B',cool)),1-ease.inOut(prog(t,AT.makePeace-.4,AT.makePeace+.4)));
-  // Two figures walk toward each other and their glows join.
-  const meet=ease.inOut(prog(t,AT.makePeace,AT.makePeace+2)),fy=Y(940,1180),s=hv(.95,1.25);
-  const lx=lerp(X(300,130),X(800,380),meet),rx=lerp(X(1620,900),X(1120,700),meet),mv=meet>0&&meet<1;
-  if(meet>.6)g+=glow((lx+rx)/2,fy-110,320,'#FFE9A8',.7*(meet-.6)/.4);
-  g+=crowd(t,lx,fy,1,0,s,{aura:'#FFE9A8',auraOp:.4,reach:meet>.9?.45:0})+crowd(t,rx,fy,1,0,s,{k:2,flip:-1,aura:'#FFE9A8',auraOp:.4,reach:meet>.9?.45:0});
-  g+=cutout(t,AT.protect,X(500,300),Y(500,720),bread(X(500,300),Y(500,720)),'SHARE',21,{w:220,h:200});
-  g+=cutout(t,AT.protect+.5,X(1420,780),Y(500,720),heartArt(X(1420,780),Y(500,720)),'PROTECT',22,{w:220,h:200});
-  g+=fade(t,AT.v311-.2,tag(t,AT.flip,960,Y(150,520),'THE FLIP SIDE',SZ(40,46),1));
-  g+=verse(t,AT.v311-.15,300,40,['For this is the message that you have heard from the beginning,','that we should love one another.'],'1 JOHN 3:11 ESV',{size:46,hl:'love one another.',hlAt:AT.loveOne[0],hlDur:AT.loveOne[1]-AT.loveOne[0],seed:29,id:6});
-  g+=fade(t,AT.nextVerse-.3,tag(t,AT.makePeace,960,Y(1000,1420),'MAKE PEACE FIRST',SZ(38,44),2,{bg:CORAL}));
-  g+=fade(t,AT.keeper-.3,tag(t,AT.nextVerse,960,Y(1000,1420),'THE NEXT VERSE NAMES CAIN',SZ(34,40),3));
-  g+=tag(t,AT.keeper,960,Y(1000,1420),"MY BROTHER'S KEEPER?",SZ(38,44),4);
-  g+=tag(t,AT.yes,960,Y(1070,1520),'YES.',SZ(56,64),5,{bg:CORAL,rot:-3});
-  return g;
-}
-
-// ---------- 8. Every face, then the end card ----------
-function everyFace(t,lt){
-  let g=glow(960,Y(200,500),1000,'#FFF6DA',.6);
-  const tb=ease.out(prog(t,AT.guard-.6,AT.guard+.6)),ty=Y(330,700),s=hv(.5,.5);
-  g+=G('',G(`translate(960 ${ty}) scale(${s}) translate(-960 -560)`,tablets(960,560,1,SIXTH(1.15,.4))),tb);
-  g+=`<path d="${ridge(81,Y(800,1000),14,320)}" fill="#7AB85A"/><path d="${ridge(82,Y(860,1110),10,240)}" fill="#5E9E4A"/>`;
-  g+=meadow(t,8,['#5E9E4A','#4E8A3E','#72B05A'],['#FF7BD5','#FFD45E','#FFFFFF']);
-  g+=crowd(t,X(380,190),Y(780,990),hv(6,4),hv(220,200),hv(.55,.62),{k:3,aura:'#FFE9A8',auraOp:.35});
-  g+=crowd(t,X(240,150),Y(960,1180),hv(7,4),hv(240,225),hv(.85,1.15),{aura:'#FFE9A8',auraOp:.45});
-  g+=fade(t,AT.next-.3,tag(t,AT.guard,960,Y(120,260),'GUARD YOUR ANGER',SZ(34,40),1,{bg:CORAL})+
-    tag(t,AT.kindly,960,Y(180,345),'SPEAK KINDLY',SZ(34,40),2)+
-    tag(t,AT.weak,960,Y(240,430),'HELP THE WEAK',SZ(34,40),3)+
-    tag(t,AT.peaceQ,960,Y(300,515),'MAKE PEACE',SZ(34,40),4));
-  g+=fade(t,AT.last+.5,tag(t,AT.everyPerson,960,Y(1010,1430),'EVERY FACE CARRIES HIS IMAGE',SZ(36,40),5,{bg:CORAL}));
-  // End card after the last word.
-  const ec=prog(t,AT.last+.6,AT.last+1.2);
-  if(ec>0){g+=G('',R(-200,-800,2400,2800,0,'#08060F',{opacity:.86})+
-    T(960,Y(380,700),'THE TEN COMMANDMENTS · PART 6',{size:SZ(40,40),font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
-    T(960,Y(470,810),'YOU SHALL NOT MURDER',{size:SZ(76,60),font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
-    g+=tag(t,AT.last+1.6,960,Y(620,960),'NEXT: THE SEVENTH COMMANDMENT',SZ(42,42),6,{bg:CORAL});
-    if(t>AT.last+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
-      .forEach((ln,i)=>{g+=T(960,Y(760,1080)+i*SZ(34,36),ln,{size:SZ(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});}
-  return g;
-}
-
-const wide=(a,b)=>[shot(a,b,...WIDE)];
 E.start({
   cast:{},
-  sheets:[
-    {name:'cold open',draw:coldOpen,bg:['#2A1E3A','#B8603A'],cam:wide(0,AT.brothers-.3)},
-    {name:'offerings',at:AT.brothers-.1,draw:offerings,bg:['#6AA8D8','#F0C890'],stars:false,cam:wide(AT.brothers,AT.didnt-.3)},
-    {name:'the field',at:AT.didnt-.1,draw:field,bg:['#1E1830','#8A4A3A'],cam:wide(AT.didnt,AT.came-.3)},
-    {name:'crying from the ground',at:AT.came-.1,draw:cry,bg:['#0E1230','#1A1A2A'],cam:wide(AT.came,AT.why-.3)},
-    {name:'image of God',at:AT.why-.1,draw:imageSheet,bg:['#3A2A5A','#E8A060'],cam:wide(AT.why,AT.spoke-.3)},
-    {name:'the sixth word',at:AT.spoke-.1,draw:sixth,bg:['#141020','#3A2418'],cam:wide(AT.spoke,AT.jesus-.3)},
-    {name:'underneath it',at:AT.jesus-.1,draw:under,bg:['#FFE9B0','#E8A060'],stars:false,vIn:'cut',cam:wide(AT.jesus,AT.flip-.3)},
-    {name:'keeper',at:AT.flip-.1,draw:keeper,bg:['#4A3A7A','#F0B07A'],cam:wide(AT.flip,AT.guard-.3)},
-    {name:'every face',at:AT.guard-.1,draw:everyFace,bg:['#9AD0F0','#FFE6B0'],stars:false,cam:wide(AT.guard,AT.last+6)},
-  ],
+  gentleZoom:true,
+  hud,
+  sheets,
   talk:[],
-  focus:[[AT.walksBack,.8],[AT.v1,1.0],[AT.angerBurn,.7],[AT.tookLife,.6],[AT.v410,.8],[AT.v96,.8],[AT.v2,1.0],[AT.v522,1.0],[AT.yes,.9],[AT.everyPerson,.8]],
-  flashes:[[AT.jesus-.1,.9,'#FFFBEC']],
+  // Only three big moments get a punch-in and shake: Cain's anger, "But God did", and the sixth word from the fire.
+  focus:[[AT.burned,1.0],[AT.godDid,1.0],[AT.v2,1.2]],
+  flashes:[[AT.v1-.12,.6,'#FFE9C8'],[AT.godDid-.05,.9,'#FFFBEC'],[AT.v2-.12,.7,'#FFE9C8'],[AT.jesus-.1,.9,'#FFFBEC'],[AT.answer-.1,.8,'#FFFBEC']],
   tail:7,
   fadeOut:1.2,
 });
