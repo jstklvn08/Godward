@@ -1,6 +1,6 @@
 // Godward people rig (window.PPL): the house's round "chubby" figures (same proportions, colours, faces and halftone
 // paper look as style-kit's chubby / E.chubby), rebuilt as a rig so they can act together: arms that bend and reach
-// (two-bone IK, never longer than the natural arm) with hands that meet hands, shoulders and children; eyes that look at a target; simple expressions;
+// (one straight stubby piece from shoulder to hand; an elbow only when the hand comes back to the body) with hands that meet hands, shoulders and children; eyes that look at a target; simple expressions;
 // kneeling, sitting and carrying; feet planted with a soft contact shadow; a thinner sticker edge.
 // Load after episode-engine.js. Nothing here changes existing pages; a page opts in by calling PPL.
 //
@@ -67,10 +67,13 @@
     return Object.assign({}, EXPR.calm, e);
   };
 
-  // Upper arm and forearm length (the arm's natural reach is 2*ARM = 92, about the old figure's longest gesture).
-  const ARM = 46;
+  // Arms are one straight, stubby piece from shoulder to hand, like the original round figures: no elbow unless it is
+  // needed. REST is the hanging length (shoulder to hand centre); a reach can lengthen a straight arm to REACH at most,
+  // never more (a target further away gets a straight arm pointing at it). Only a hand brought back close to the body
+  // (closer than BENT) folds at an elbow, with two short bones.
+  const ARM = 46, REST = 54, REACH = 86, BENT = 44;
   const rot = (p, c, deg) => { const a = deg * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a), dx = p[0] - c[0], dy = p[1] - c[1]; return [c[0] + dx * cs - dy * sn, c[1] + dx * sn + dy * cs]; };
-  // Two-bone IK. Limbs never grow: a target out of reach gets a straight limb pointing at it at full length.
+  // Two-bone IK (kept for the folded arm and for pages that use it). Limbs never grow.
   function ik(S0, T, a, b, bend, stretch = 1) {
     const dx = T[0] - S0[0], dy = T[1] - S0[1], d0 = Math.hypot(dx, dy) || .001;
     const k = clamp(d0 / (a + b - .6), 1, stretch); a *= k; b *= k;
@@ -83,6 +86,13 @@
     else if (bend === 'out') e = e1[0] < e2[0] ? e1 : e2;
     else e = e1[1] > e2[1] ? e1 : e2;
     return [e, [S0[0] + dx / d0 * d, S0[1] + dy / d0 * d]];
+  }
+  // The arm toward T: straight (elbow = midpoint) unless T is so close the hand must fold back.
+  function armTo(S0, T, bend) {
+    const dx = T[0] - S0[0], dy = T[1] - S0[1], d = Math.hypot(dx, dy) || .001;
+    if (d < BENT) { const [e, h] = ik(S0, T, 30, 30, bend); return { E: e, H: h, bent: true }; }
+    const L = Math.min(d, REACH), H = [S0[0] + dx / d * L, S0[1] + dy / d * L];
+    return { E: [(S0[0] + H[0]) / 2, (S0[1] + H[1]) / 2], H, bent: false };
   }
 
   // ---------- the rig ----------
@@ -138,17 +148,17 @@
       const S0 = SH[side], v = o[side], idle = Math.sin(ht * .8 + ph + (side === 'near' ? 0 : 1.3)) * 3;
       let T, bend = 'down';
       if (v && typeof v === 'object') { T = Lc(v); bend = o[side + 'Bend'] || 'down'; }
-      else if (v === 'up') { T = [S0[0] + 26 + idle, S0[1] - 2 * ARM]; bend = 'out'; }
-      else if (v === 'open') { T = [S0[0] + (side === 'near' ? 74 : 44), S0[1] - 14 + idle]; }
+      else if (v === 'up') { T = [S0[0] + 22 + idle, S0[1] - 80]; bend = 'out'; }
+      else if (v === 'open') { T = [S0[0] + (side === 'near' ? 66 : 40), S0[1] - 12 + idle]; }
       else if (v === 'chest') { T = U([side === 'near' ? 30 : 20, -86]); bend = 'fwd'; }
       else if (v === 'cover') { T = [HC[0] + 40, HC[1] + 6]; }
-      // at rest the arms hang almost straight down at the sides (a slight swing when walking, a tiny idle sway)
-      else if (side === 'near') { T = [S0[0] + 8 + sw * .6 + idle * .4, S0[1] + 2 * ARM - 3]; bend = 'fwd'; }
-      else { T = [S0[0] - 6 - sw * .6 - idle * .4, S0[1] + 2 * ARM - 3]; bend = 'fwd'; }
+      // at rest: a short straight arm hanging at the side, angled a little out (a swing when walking, a tiny idle sway)
+      else if (side === 'near') { T = [S0[0] + 10 + sw * .5 + idle * .4, S0[1] + REST]; }
+      else { T = [S0[0] - 10 - sw * .5 - idle * .4, S0[1] + REST]; }
       // keep hands off the person's own face: a target inside the head is moved down below the chin (o.allowFace opts out)
       if (!o.allowFace && v !== 'up' && T && Math.hypot(T[0] - HC[0], T[1] - HC[1]) < 66) T = [T[0] + 10, HC[1] + 72];
-      const [e, h] = ik(S0, T, ARM, ARM, bend);
-      arms[side] = { S: S0, E: e, H: h };
+      const a = armTo(S0, T, bend);
+      arms[side] = { S: S0, E: a.E, H: a.H, bent: a.bent };
     });
 
     // ---------- drawing ----------
@@ -170,7 +180,8 @@
     LY.backHair = () => o.f ? wrap(`<g transform="${headTr}"><path d="M-58 -168 C-74 -120 -72 -70 -46 -62 C-20 -58 -6 -90 -8 -150Z" fill="${pal.hair}"/></g>`) : '';
     const arm = side => {
       const A = arms[side], c = side === 'near' ? pal.skin : pal.shade;
-      return wrap(`<path d="M${f2(A.S[0])} ${f2(A.S[1])}L${f2(A.E[0])} ${f2(A.E[1])}L${f2(A.H[0])} ${f2(A.H[1])}" fill="none" stroke="${c}" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${f2(A.H[0])}" cy="${f2(A.H[1])}" r="13" fill="${c}"/>`);
+      const d = A.bent ? `M${f2(A.S[0])} ${f2(A.S[1])}L${f2(A.E[0])} ${f2(A.E[1])}L${f2(A.H[0])} ${f2(A.H[1])}` : `M${f2(A.S[0])} ${f2(A.S[1])}L${f2(A.H[0])} ${f2(A.H[1])}`;
+      return wrap(`<path d="${d}" fill="none" stroke="${c}" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${f2(A.H[0])}" cy="${f2(A.H[1])}" r="13" fill="${c}"/>`);
     };
     LY.farArm = () => o.hideFar ? '' : arm('far');
     LY.nearArm = () => o.hideNear ? '' : arm('near');
