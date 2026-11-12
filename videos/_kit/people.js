@@ -13,7 +13,7 @@
 //   PPL.hug(a, b, {k})          arms wrap round each other's backs (k 0..1 from open arms to held)
 //   PPL.handOn(a, b, where)     the world point of b's 'shoulder' | 'back' | 'head' | 'arm', to use as a's arm target
 //
-// Options (o): x, y, s, face (or flip), f (woman: long hair and flower), t (default E.t), phase
+// Options (o): x, y, s, face (or flip), f (woman: long hair and flower), kid (no beard), t (default E.t), phase, talk (head bob + moving mouth)
 //   pose:  lean (deg, + forward), kneel 0..1, sit 0..1 (with seat: world y of the seat), hipAt {x,y} (held, no ground),
 //          walk (phase in radians; omit/0 when standing), jump (px), tilt (head, deg)
 //   arms:  near / far = {x,y} world target for the hand (out of reach: the straight arm points at it) | 'up' | 'open' | 'chest' | 'cover' | null (rest at the side)
@@ -90,8 +90,7 @@
   // The arm toward T: straight (elbow = midpoint) unless T is so close the hand must fold back.
   function armTo(S0, T, bend) {
     const dx = T[0] - S0[0], dy = T[1] - S0[1], d = Math.hypot(dx, dy) || .001;
-    if (d < BENT) { const [e, h] = ik(S0, T, 30, 30, bend); return { E: e, H: h, bent: true }; }
-    const L = Math.min(d, REACH), H = [S0[0] + dx / d * L, S0[1] + dy / d * L];
+    const L = clamp(d, 36, REACH), H = [S0[0] + dx / d * L, S0[1] + dy / d * L];
     return { E: [(S0[0] + H[0]) / 2, (S0[1] + H[1]) / 2], H, bent: false };
   }
 
@@ -102,7 +101,7 @@
     const br = Math.sin(ht * 2.4 + ph), sway = Math.sin(ht * 1.1 + ph);
     const kneel = clamp(o.kneel || 0), sit = clamp(o.sit || 0), jump = o.jump || 0;
     const walking = !!o.walk;
-    const sw = walking ? Math.sin(o.walk) * 15 : 0, bob = walking ? Math.abs(Math.sin(o.walk)) * 5 : 0;
+    const sw = walking ? Math.sin(o.walk) * 15 : 0, bob = walking ? Math.abs(Math.sin(o.walk)) * 11 : 0, stepSq = walking ? (1 - Math.abs(Math.cos(o.walk))) * .05 : 0;
     // drop: how far the upper body sinks (kneeling, sitting)
     let drop = kneel * 24 - bob - jump / s;
     let X = o.x, Y = o.y;
@@ -139,7 +138,8 @@
     } else if (o.look === 'up') lv = [.45, -.9];
     else if (o.look === 'down') lv = [.6, .8];
     const lookTilt = clamp(Math.atan2(lv[1], lv[0]) * 180 / Math.PI * .3, -18, 16);
-    const headRot = headRotBase + (o.tilt || 0) + lookTilt * headFace + Math.sin(ht * .9 + ph) * 2.4;
+    const talkK = o.talk ? Math.abs(Math.sin(t * 9 + ph)) : 0;
+    const headRot = headRotBase + (o.talk ? Math.sin(t * 4.5 + ph) * 4 : 0) + (o.tilt || 0) + lookTilt * headFace + Math.sin(ht * .9 + ph) * 2.4;
 
     // arms
     const SH = { near: U([34, -106 - br * 1.2]), far: U([-24, -108 - br * 1.2]) };
@@ -150,8 +150,8 @@
       if (v && typeof v === 'object') { T = Lc(v); bend = o[side + 'Bend'] || 'down'; }
       else if (v === 'up') { T = [S0[0] + 22 + idle, S0[1] - 80]; bend = 'out'; }
       else if (v === 'open') { T = [S0[0] + (side === 'near' ? 66 : 40), S0[1] - 12 + idle]; }
-      else if (v === 'chest') { T = U([side === 'near' ? 30 : 20, -86]); bend = 'fwd'; }
-      else if (v === 'cover') { T = [HC[0] + 40, HC[1] + 6]; }
+      else if (v === 'chest') { T = [S0[0] + 30, S0[1] + 34]; }
+      else if (v === 'cover') { T = [S0[0] + 40, S0[1] + 30]; }
       // at rest: a short straight arm hanging at the side, angled a little out (a swing when walking, a tiny idle sway)
       else if (side === 'near') { T = [S0[0] + 10 + sw * .5 + idle * .4, S0[1] + REST]; }
       else { T = [S0[0] - 10 - sw * .5 - idle * .4, S0[1] + REST]; }
@@ -189,17 +189,17 @@
     LY.farLeg = () => wrap(leg('far'));
     LY.body = () => {
       const a = nid(), f = !!o.f, y0 = f ? -132 : -130, h = f ? 114 : 108;
-      const tr = `rotate(${f2(bodyRot)} ${HIP[0]} ${HIP[1]}) translate(0 ${f2(drop)}) translate(0 ${f2(-br * 1.2)}) scale(${f2(1 - .015 * br)} ${f2(1 + .02 * br)}) translate(0 ${f2(br * 1.2)})`;
+      const tr = `rotate(${f2(bodyRot)} ${HIP[0]} ${HIP[1]}) translate(0 ${f2(drop)}) translate(0 ${f2(-br * 1.2)}) scale(${f2(1 - .015 * br + stepSq)} ${f2(1 + .02 * br - stepSq)}) translate(0 ${f2(br * 1.2)})`;
       return wrap(leg('near') + `<linearGradient id="${a}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${pal.tunic}"/><stop offset="1" stop-color="${pal.tunic2}"/></linearGradient>` +
         `<g transform="${tr}"><rect x="-48" y="${y0}" width="96" height="${h}" rx="42" fill="url(#${a})"/>` +
         `<path d="M-44 ${f ? -46 : -48} Q0 ${f ? -28 : -30} 44 ${f ? -46 : -48}" fill="none" stroke="${pal.tunic2}" stroke-width="7" opacity=".55"/></g>`);
     };
     LY.head = () => {
-      const b = nid(), f = !!o.f, e = pal.eye, fc = ex;
+      const b = nid(), f = !!o.f, e = pal.eye, fc = o.talk ? Object.assign({}, ex, { open: Math.max(ex.open, .25 + .55 * talkK) }) : ex;
       let g = `<linearGradient id="${b}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${pal.skin}"/><stop offset="1" stop-color="${pal.shade}"/></linearGradient>`;
       g += `<circle cx="0" cy="-165" r="56" fill="url(#${b})"/>`;
       if (f) g += `<path d="M-58 -168 C-66 -252 66 -256 60 -172 C34 -196 -20 -198 -58 -168Z" fill="${pal.hair}"/><circle cx="40" cy="-214" r="11" fill="#FFD36B"/><circle cx="40" cy="-214" r="5" fill="#FF7A5C"/>`;
-      else g += `<path d="M-58 -172 C-66 -252 66 -256 60 -174 C28 -194 -24 -194 -58 -172Z" fill="${pal.hair}"/><path d="M-44 -136 C-34 -102 34 -96 56 -142 C40 -128 28 -130 8 -132 C-12 -132 -30 -130 -44 -136Z" fill="${pal.hair}"/>`;
+      else g += `<path d="M-58 -172 C-66 -252 66 -256 60 -174 C28 -194 -24 -194 -58 -172Z" fill="${pal.hair}"/>${o.kid ? '' : `<path d="M-44 -136 C-34 -102 34 -96 56 -142 C40 -128 28 -130 8 -132 C-12 -132 -30 -130 -44 -136Z" fill="${pal.hair}"/>`}`;
       // eyes: dots that look at the target (white rings when wide open, arcs when laughing, a line when blinking)
       const blink = ((t * .29 + hash(Math.floor(ph * 10), 3)) % 1) < .03;
       const lx = lv[0] * 3.6 - .6, ly = lv[1] * 4.2;
@@ -211,11 +211,12 @@
           g += `<circle cx="${f2(x + lx)}" cy="${f2(-165 + ly)}" r="${fc.wide > .4 ? 4.4 : 5.6}" fill="${e}"/>`;
         }
         // brows: the inner end lifts for worry and awe
+        if (fc.wide < .4) return;
         const inner = x < 30 ? 1 : -1, by = -180 - fc.brow - fc.wide * 2, lift = fc.tilt * .3;
         g += `<line x1="${x - 7}" y1="${f2(by + (inner < 0 ? -lift : 0))}" x2="${x + 7}" y2="${f2(by + (inner > 0 ? -lift : 0))}" stroke="${e}" stroke-width="3" stroke-linecap="round" opacity=".85"/>`;
       });
       // cheeks and mouth
-      if (o.blush !== false) g += `<ellipse cx="46" cy="-147" rx="8" ry="5" fill="#FF7A6A" opacity=".3"/>`;   // o.blush:false hides the cheek
+      if (o.blush === true) g += `<ellipse cx="46" cy="-147" rx="8" ry="5" fill="#FF7A6A" opacity=".3"/>`;   // o.blush:false hides the cheek
       const mx = 30, my = -141, cv = fc.smile * 6;
       if (fc.open > .2) {
         const w = 6 + 3 * fc.open, d = 5 + 9 * fc.open;
