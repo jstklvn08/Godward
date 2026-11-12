@@ -672,7 +672,7 @@ function earnLoved(t,lt){
     const kidR=PPL.rig(Object.assign({},kidO,{hipAt:hp,walk:null,jump:0,lean:-6,look:{x:D0.head[0],y:D0.head[1]},near:{x:nk[0],y:nk[1]},far:{x:nk[0]-10,y:nk[1]-4}}));
     const a=kidR0.chest(.25),b=kidR0.back(.25);
     const DR=PPL.rig(Object.assign({},dadO,{lean:-8*hugK,look:{x:kidR.head[0],y:kidR.head[1]},near:{x:b[0],y:b[1]},far:{x:a[0],y:a[1]}}));
-    g+=DR.draw('back')+DR.draw('body')+DR.draw('head')+kidR.draw('back')+kidR.draw('body')+kidR.draw('head')+kidR.draw('front')+DR.draw('front');}
+    g+=DR.draw('back')+DR.draw('body')+kidR.draw('back')+kidR.draw('body')+kidR.draw('front')+DR.draw('head')+kidR.draw('head')+DR.draw('front');}   // her arms go round his neck behind his head
   else g+=PPL.fig(dadO)+PPL.fig(kidO);
   g+=M.draw('front');
   return g;
@@ -716,7 +716,7 @@ function egyptGods(t,lt){
 const bowers=(t,xs,y,s,o={})=>xs.map((x,i)=>{const f=x>(o.c||960)?-1:1,b=Math.abs(Math.sin(E.held(t,8)*2+i));
   const q=Object.assign({flip:f,kneel:1,lean:o.lean??(26+b*20),look:o.reach?{x:o.c||960,y:200}:'down',expr:o.reach?'awe':'calm'},o.f||{});
   if(o.reach)q.reach=o.reach;else{q.near={x:x+f*64*s,y:y-6};q.far={x:x+f*42*s,y:y-6};}
-  return folk(i+(o.k||0),x,y,s,q);}).join('');
+  return [Math.abs(x-(o.c||960)),folk(i+(o.k||0),x,y,s,q)];}).sort((a,b)=>b[0]-a[0]).map(v=>v[1]).join('');   // nearest the centre drawn last: no arm over a neighbour's face
 function sunGod(t,lt){
   let g=glow(960,240,700,'#FFB04C',.8);
   for(let i=0;i<18;i++){const a=i/18*6.283+t*.15;g+=L(960+Math.cos(a)*230,240+Math.sin(a)*230,960+Math.cos(a)*330,240+Math.sin(a)*330,'#FFE36B',14,{opacity:.8});}

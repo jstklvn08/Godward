@@ -589,7 +589,7 @@ function devoted(t,lt){
   if(dv>0)for(let k=0;k<3;k++){const p=((t-AT.devoted)*.5+k/3)%1;g+=Ell(px,FY-40,200+p*360,50+p*120,'none',{stroke:'#FFFBEA','stroke-width':6,opacity:(.6*(1-p)*dv).toFixed(2)});}
   const sp=Math.abs(Math.sin(E.held(t,6)*2));
   g+=folk(1,560,FY-50,1.6,{look:{x:760,y:500},expr:'calm'})+folk(3,990,FY-40,1.25,{look:{x:px,y:FY-100},expr:'awe'});
-  g+=PPL.fig(elderOpts(760,FY,HS,{tunic:'#E8DCC0',tunic2:'#8A6A40',near:{x:1040,y:lerp(FY-260,FY-280,sp)},look:{x:px,y:FY-120},expr:'calm'}));
+  g+=PPL.fig(elderOpts(760,FY,HS,{tunic:'#E8DCC0',tunic2:'#8A6A40',near:{x:1040,y:lerp(FY-130,FY-150,sp)},look:{x:px,y:FY-120},expr:'calm'}));
   return g+foreRubble(t,960,1.04,{seed:7});
 }
 // A3. Nobody was to keep any of it: a man carries a chest to the pile and sets it down; a child puts down a cup.
@@ -747,10 +747,10 @@ function credit(t,lt){
   let g=roomIn(t,{wall:'#8A7AB0',wx:1500,hang:false});
   [0,1,2].map(i=>g+=R(260+i*300,-160,220,170,8,'#F6EFDC',{stroke:'#6A5A8A','stroke-width':6})+C(330+i*300,-90,26,['#FFC24C','#7ACB5A','#FF8FB1'][i])+P(`M${290+i*300} -20L${350+i*300} -70L${420+i*300} -20Z`,'#3DA060'));
   const st=ease.back(prog(t,AT.credit+.4,AT.credit+.9));
-  g+=PPL.fig(elderOpts(1260,FY,HS,{face:-1,tunic:'#E8DCC0',tunic2:'#8A6A40',look:{x:980,y:FY-240},expr:'joy',near:{x:lerp(1100,1010,st),y:lerp(FY-260,FY-230,st)}}));
+  g+=PPL.fig(elderOpts(1260,FY,HS,{face:-1,tunic:'#E8DCC0',tunic2:'#8A6A40',look:{x:980,y:FY-240},expr:'joy',near:{x:lerp(1110,1060,st),y:lerp(FY-230,FY-160,st)}}));
   const boy=pp(HERO,960,FY+6,1.75,{tunic:'#7CD4FF',tunic2:'#2F6FD0',near:at({x:960,y:FY,s:1.75,face:1},72,-100),far:at({x:960,y:FY,s:1.75,face:1},60,-96),look:{x:1250,y:FY-400},expr:'joy'});
-  g+=holding(boy,h=>R(h[0]-80,h[1]-130,160,130,6,'#FFFFFF',{stroke:'#B8B0A0','stroke-width':4})+C(h[0]-26,h[1]-80,22,'#FFC24C')+P(`M${h[0]-66} ${h[1]-10}L${h[0]-10} ${h[1]-60}L${h[0]+40} ${h[1]-10}Z`,'#3DA060'));
-  if(st>0)g+=G(`translate(${lerp(1120,990,st)} ${lerp(FY-300,FY-200,st)}) scale(${(1+st).toFixed(2)})`,P('M0 -26L8 -8L28 -8L12 4L18 24L0 12L-18 24L-12 4L-28 -8L-8 -8Z',GOLD,{stroke:'#8A5A12','stroke-width':3}));
+  g+=holding(boy,h=>R(h[0]-40,h[1]-60,160,130,6,'#FFFFFF',{stroke:'#B8B0A0','stroke-width':4})+C(h[0]+14,h[1]-10,22,'#FFC24C')+P(`M${h[0]-26} ${h[1]+60}L${h[0]+30} ${h[1]+10}L${h[0]+80} ${h[1]+60}Z`,'#3DA060'));   // held at his chest, below his face
+  if(st>0)g+=G(`translate(${lerp(1120,1040,st)} ${lerp(FY-300,FY-150,st)}) scale(${(1+st).toFixed(2)})`,P('M0 -26L8 -8L28 -8L12 4L18 24L0 12L-18 24L-12 4L-28 -8L-8 -8Z',GOLD,{stroke:'#8A5A12','stroke-width':3}));
   return g+folk(3,660,FY+6,1.55,{f:true,look:'down',expr:'sad',near:'chest'})+foreRug(t,980,1.04,{floor:'#5A4A3A',rug:'#3A4A8A',items:(xl,xr)=>R(xl+40,1500,200,140,10,'#2E3A34',{stroke:'#8A6A3A','stroke-width':8})+R(xr-220,1480,180,24,6,'#A86A3E')+R(xr-200,1504,20,140,4,'#6A4422')+R(xr-80,1504,20,140,4,'#6A4422')});
 }
 // T6. Nobody sees it, but it's still stealing: the tent at night; under the floor the hidden things glow.

@@ -408,12 +408,12 @@ const foreModern=(t,cx,z,o={})=>{const [xl,xr]=EDG(cx,z),fl=o.floor||'#2E2440';l
 const ACC=1000,WIT=1480;
 function courtNight(t,lt){
   const st=1-ease.inOut(prog(t,AT.standsUp,AT.standsUp+.7)),pt=ease.inOut(prog(t,AT.points-.2,AT.points+.3)),lookW=t>AT.standsUp+.2;
-  let g=gateSet(t,{mood:'night',crowd:[[0,560,1.3,{look:{x:WIT,y:600}}],[2,1240,1.25],[4,1720,1.3],[3,1830,1.2]],look:lookW?{x:WIT,y:600}:{x:ACC,y:600}});
+  let g=gateSet(t,{mood:'night',crowd:[[0,560,1.3,{look:{x:WIT,y:600}}],[2,1250,1.1],[4,1720,1.3],[3,1830,1.2]],look:lookW?{x:WIT,y:600}:{x:ACC,y:600}});
   g+=seated(t,[560],2.3,lookW?{x:WIT,y:560}:{x:ACC,y:560},{bc:'#5A5268',bd:'#2A2436',each:()=>({expr:lookW?['calm','surprised',pt]:'calm'})});
   const a=nab(ACC,FY,2.45,{face:lookW?1:-1,look:lookW?{x:WIT,y:560}:{x:560,y:600},expr:lookW?['calm','surprised',pt]:'calm'});
   g+=PPL.fig(a);
   g+=R(WIT-110,FY-120,220,120,20,'#5A4E6A',{stroke:'#2A2238','stroke-width':5});
-  g+=grey(0,WIT,FY,2.4,{face:-1,sit:st,seat:FY-118,look:{x:ACC,y:560},near:pt>0?{x:lerp(WIT-80,WIT-260,pt),y:lerp(FY-180,FY-290,pt)}:null,expr:'calm',lean:-4*pt});
+  g+=grey(0,WIT,FY,2.4,{face:-1,sit:st,seat:FY-118,look:{x:ACC,y:560},near:pt>0?{x:lerp(WIT-60,WIT-240,pt),y:lerp(FY-270,FY-350,pt)}:null,expr:'calm',lean:-4*pt});
   // every word he says: grey strips leave his mouth and drift toward the accused; on "lie" they crack
   if(t>AT.everyWord-.1){const cr=ease.out(prog(t,AT.lie1+.9,AT.lie1+1.3));
     for(let k=0;k<5;k++){const a0=AT.everyWord+k*.36;if(t<a0)continue;const u=ease.out(prog(t,a0,a0+1.3)),x=lerp(1380,1240-k*30,u),y=lerp(FY-520,FY-760-k*60-(k%2)*30,u);
@@ -685,7 +685,7 @@ function grief(t,lt){
   g+=basket(860,FY-10,2.2,1)+L(760,FY+10,900,FY-150,'#6A4A2A',12)+R(740,FY-6,80,28,4,'#8A8A90');
   const k=ease.out(prog(t,AT.onThatLie,AT.death));
   const w=wifeO(1060,FY,HS,{kneel:1,expr:'sad',look:'down'}),c=kidO(1230,FY,1.5,{face:-1,expr:'sad'});
-  const e=elderOpts(1420,FY,2.45,{face:-1,look:{x:1060,y:560},expr:'sad',lean:8});e.near=PPL.handOn(e,w,'shoulder');
+  const e=elderOpts(1420,FY,2.45,{face:-1,look:{x:1060,y:560},expr:'sad',lean:8});e.near=PPL.handOn(e,c,'head');   // his hand on the child's head; the arm never crosses the child's face
   const Er=PPL.rig(e);g+=Er.draw('back')+Er.draw('body')+Er.draw('head')+PPL.hug(w,c,{k}).svg+Er.draw('front');
   return g+foreVine(t,1140,1.08,{dark:1,grapes:false})+R(-120,-760,2160,2600,0,'#100A20',{opacity:.22});
 }

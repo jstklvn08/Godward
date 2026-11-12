@@ -688,7 +688,7 @@ function gate(t,lt){
   g+=G0.draw('back')+R(gx+20,FY-470,130,150,30,'#8A6A4A',{stroke:'#4A3420','stroke-width':5})+G0.draw('body')+G0.draw('head')+L(h[0],h[1]-80,h[0]-12,FY,'#7A4A2A',14)+G0.draw('front');
   const dx=lerp(740,860,ease.inOut(prog(t,AT.sojourner+.2,AT.sojourner+1.2)));
   const dad=who(DAD,dx,FY,HS,{walk:meet<1&&dx<859?t*6:0,look:{x:gx,y:FY-460},expr:['calm','joy',meet]});
-  if(meet>0)dad.near=PPL.handOn(dad,guest,'shoulder');
+  if(meet>0)dad.near=PPL.handOn(dad,guest,'arm');
   g+=grip(Object.assign({},dad,meet>0?{}:{near:{x:dx+110,y:FY-240}}),(x,y)=>meet>0?'':cup(x+10,y+30,2.2));
   return g+foreYard(t,1000,1.06,{seed:87,cols:['#5A3A20','#8A5A34','#C88A5A']});
 }
@@ -1001,7 +1001,7 @@ function freeDawn(t,lt){
   const up=ease.out(prog(t,AT.notSlave-.1,AT.notSlave+.8));
   let c;
   if(up<.5)c=fig(who(DAD,780,FY,HS,{expr:'joy',near:{x:960,y:FY-170},look:{x:1000,y:FY-260}}))+fig(who(GIRL,1010,FY,1.45,{face:-1,expr:'joy',near:'up',far:'up'}));
-  else c=PPL.carry(who(DAD,780,FY,HS,{expr:'joy'}),who(GIRL,0,0,1.45,{expr:'joy',near:'up'}),{dy:-60}).svg;
+  else c=PPL.carry(who(DAD,780,FY,HS,{expr:'joy'}),who(GIRL,0,0,1.45,{expr:'joy',far:'up'}),{dy:-36}).svg;
   g+=c+fig(who(MUM,1330,FY,VS,{face:-1,near:'up',far:'up',expr:'joy',jump:Math.abs(Math.sin(t*8))*14*up,look:{x:900,y:FY-500}}));
   return g+SC.fore(t,{y:1060,edges:EDG(1000,1.06),cols:['#A8783A','#D8B06A','#FFF0C8'],rocks:0,rockAt:[[1500,1600,160]],density:.25,seed:48,
     over:C(600,1500,30,'none',{stroke:'#8A8A90','stroke-width':12})+C(670,1520,30,'none',{stroke:'#8A8A90','stroke-width':12,'stroke-dasharray':'60 30'})+P('M630 1500Q660 1560 700 1520','none',{stroke:'#8A8A90','stroke-width':9,'stroke-dasharray':'16 8'})});
@@ -1147,7 +1147,8 @@ function friday(t,lt){
   g+=P(`M1040 ${FY-142}q34 -50 84 -34q50 -24 84 26q-84 26 -168 8z`,'#D89A4A',{stroke:'#8A5A2A','stroke-width':4})+P(`M1056 ${FY-162}q66 16 132 0`,'none',{stroke:'#8A5A2A','stroke-width':4});
   const cov=prog(t,AT.jewish+.1,AT.jewish+.6);
   g+=fig(who(MUM,560,FY,HS,{near:cov>0?'cover':{x:720,y:FY-200},far:cov>0?'cover':null,expr:'tender',look:{x:900,y:FY-300}}));
-  return g+fig(who(SON,1190,FY,KS,{face:-1,look:{x:900,y:FY-250},expr:'joy'}))+fig(who(DAD,1380,FY,VS,{face:-1,look:{x:900,y:FY-300},expr:'tender',near:{x:1250,y:FY-240}}))+foreRoom(t,980,1.04,true);
+  const son=who(SON,1190,FY,KS,{face:-1,look:{x:900,y:FY-250},expr:'joy'}),dad=who(DAD,1380,FY,VS,{face:-1,look:{x:900,y:FY-300},expr:'tender'});dad.near=PPL.handOn(dad,son,'back');
+  return g+fig(son)+fig(dad)+foreRoom(t,980,1.04,true);
 }
 // ---- 57. Many churches rest and worship on Sunday: the bell swings, families go in ----
 function sundayChurch(t,lt){

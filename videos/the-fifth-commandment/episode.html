@@ -1122,7 +1122,7 @@ function homeFirst(t){
   let g=homeIn(t,{mood:'night',wx:1540,sx:380,hx:960});
   const k=ease.out(prog(t,AT.arrives+.2,AT.homeFirst+.3));
   g+=PPL.hug(person(1,720,FY,HS,{f:true,expr:'joy'}),granOpts(990,FY,2.4,{face:-1,expr:'joy'}),{k}).svg;
-  g+=elder(1360,FY,2.4,{face:-1,expr:'joy',look:{x:760,y:FY-440},near:'open'});
+  g+=elder(1380,FY,2.4,{face:-1,expr:'joy',look:{x:760,y:FY-440},near:{x:1380-74*2.4,y:FY-74*2.4}});   // an open hand held low, clear of her face
   return g+foreHome(t,1000,1.0,{night:true,kind:'bread',mat:'#C8487A'});
 }
 // E4. Next time, the sixth commandment: the tablets; line VI flickers and the coral marker circles it.

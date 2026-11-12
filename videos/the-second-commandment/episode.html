@@ -1221,7 +1221,7 @@ function mosesTalk(t){
   // Moses, old, standing on a low rock with his staff, talking; a woman and her boy listen
   const talk=Math.sin(E.held(t,8)*3),s=2.45,mx=720;
   g+=SC.rock(mx,FY+10,190,60,{col:'#9A7A5A',seed:3});
-  const mo=elderOpts(mx,FY-40,s,{face:1,near:{x:mx+105*s,y:lerp(FY-40-125*s,FY-40-105*s,talk)},far:{x:mx-62*s,y:FY-40-90*s},look:{x:1150,y:600},expr:'tender',tunic:'#D8C8A8',tunic2:'#8A6A48'});
+  const mo=elderOpts(mx,FY-40,s,{face:1,near:{x:mx+70*s,y:lerp(FY-40-96*s,FY-40-80*s,talk)},far:{x:mx-62*s,y:FY-40-90*s},look:{x:1150,y:600},expr:'tender',tunic:'#D8C8A8',tunic2:'#8A6A48'});
   g+=withProp(mo,r=>{const f=r.hand('far');return L(f[0],f[1]-110,f[0]-6,FY-40,'#4A2E16',18)+L(f[0],f[1]-110,f[0]-6,FY-40,'#7A5432',11);});
   const wo=person(1,1080,FY+10,2.3,{face:-1,f:true,kneel:1,look:{x:mx,y:FY-500},expr:'tender'}),boy=person(4,1265,FY+14,1.4,{face:-1,kneel:1,look:{x:mx,y:FY-500},expr:'surprised'});
   boy.near=PPL.handOn(boy,wo,'back');
@@ -1488,7 +1488,7 @@ function peopleStreet(t){
   g+=SC.pair(t,'donkey',1700,950,.7,{face:-1,graze:'auto'});
   g+=PPL.hug(elderOpts(560,FY,1.7,{f:true,tunic:'#B98CFF',tunic2:'#6A4CD8',expr:'joy'}),person(3,680,FY,1.05,{face:-1,expr:'joy'}),{k:1}).svg;
   g+=carryHip(person(0,880,FY,1.8,{look:{x:900,y:FY-520},expr:'joy'}),person(4,0,0,1.1,{expr:'joy'}));
-  const a=person(1,1110,FY,1.75,{f:true,expr:'joy',look:{x:1420,y:FY-360}}),b=person(2,1350,FY,1.8,{face:-1,expr:'joy',look:{x:1180,y:FY-360}});
+  const a=person(1,1080,FY,1.75,{f:true,expr:'joy',look:{x:1400,y:FY-360}}),b=person(2,1380,FY,1.8,{face:-1,expr:'joy',look:{x:1180,y:FY-360}});
   g+=PPL.holdHands(a,b,{up:Math.sin(t*4)>0}).svg;
   return g+cobbleFore(t,{seed:113,over:pigeon(t,620,1300,2.4,1)+pigeon(t,760,1340,2.2,2,-1)+basket(1500,1560,2.2)+jar(380,1620,2.2)});
 }

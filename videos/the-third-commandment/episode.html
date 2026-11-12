@@ -272,12 +272,12 @@ function swearStreet(t){
   const x=760,s=HS,drop=ease.out(prog(t,AT.dont+.25,AT.dont+.6)),hit=t>AT.dont+.6,hop=hit&&t<AT.swear+1.2?Math.abs(Math.sin((t-AT.dont)*9))*56:0;
   const pot=G('',jar(lerp(x+170,x+230,drop),lerp(FY-250,FY,drop*drop),1.9,{rot:drop*40}),hit?0:1);
   let shards='';if(hit){const k=prog(t,AT.dont+.6,AT.dont+1.1);for(let i=0;i<7;i++){const a=-2.8+i*.45;shards+=P(`M0 0l${30+i*4} -14l-8 34z`,'#C2703A',{transform:`translate(${(x+240+Math.cos(a)*200*k).toFixed(0)} ${(FY+Math.sin(a)*50*k-Math.sin(k*3.14)*90).toFixed(0)}) rotate(${i*50+k*200})`});}}
-  const man=person(1,x,FY,s,{f:false,jump:hop,expr:hit?'surprised':'calm',look:hit?{x:x+240,y:FY+20}:{x:x+400,y:500},lean:hit?14:0,near:hit?'open':{x:x+170,y:FY-300},far:hit?{x:x-150,y:FY-420}:{x:x+110,y:FY-320}});
+  const man=person(1,x,FY,s,{f:false,jump:hop,expr:hit?'surprised':'calm',look:hit?{x:x+240,y:FY+20}:{x:x+400,y:500},lean:hit?14:0,near:hit?'chest':{x:x+170,y:FY-300},far:hit?{x:x-150,y:FY-420}:{x:x+110,y:FY-320}});
   g+=shards+PPL.fig(man)+pot;
   const cov=ease.out(prog(t,AT.swear-.1,AT.swear+.3));
   const kid=person(4,1110,FY+14,KS,{face:-1,expr:['calm','surprised',prog(t,AT.dont+.6,AT.dont+.9)],look:{x:x,y:560}});
   const kr=PPL.rig(kid),hd=kr.head;
-  const mom=person(3,1250,FY,2.4,{face:-1,f:true,expr:['calm','surprised',cov],look:{x:x,y:520},near:cov>0?{x:hd[0]-50*cov,y:hd[1]+6}:null,far:cov>0?{x:hd[0]+60,y:hd[1]-6}:null,lean:8*cov});
+  const mom=person(3,1250,FY,2.4,{face:-1,f:true,expr:['calm','surprised',cov],look:{x:x,y:520},near:cov>0?{x:lerp(hd[0]+70,hd[0]+16,cov),y:hd[1]+6}:null,far:cov>0?{x:hd[0]+50,y:hd[1]-6}:null,lean:8*cov});
   const Mr=PPL.rig(mom);g+=Mr.draw('back')+Mr.draw('body')+Mr.draw('head')+kr.draw('all')+Mr.draw('front');
   g+=bubble(t,AT.swear,960,250,230,140,curseTxt(960,250,84),880,380,3);
   return g+fr(t,980,1.05,'dry',{seed:41,flowers:['#FFFFFF','#FFD84A'],rockAt:[[1380,1520,160]],over:SC.animal(t,'bird',620,1460,1.6,{look:'down'})+SC.animal(t,'bird',700,1480,1.4,{face:-1,graze:'auto'})});

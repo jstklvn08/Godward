@@ -1,6 +1,6 @@
 // Godward people rig (window.PPL): the house's round "chubby" figures (same proportions, colours, faces and halftone
-// paper look as style-kit's chubby / E.chubby), rebuilt as a rig so they can act together: arms that bend and reach
-// (one straight stubby piece from shoulder to hand; an elbow only when the hand comes back to the body) with hands that meet hands, shoulders and children; eyes that look at a target; simple expressions;
+// paper look as style-kit's chubby / E.chubby), rebuilt as a rig so they can act together: arms that reach
+// (one straight stubby piece from shoulder to hand, never an elbow) with hands that meet hands, shoulders and children; eyes that look at a target; simple expressions;
 // kneeling, sitting and carrying; feet planted with a soft contact shadow; a thinner sticker edge.
 // Load after episode-engine.js. Nothing here changes existing pages; a page opts in by calling PPL.
 //
@@ -69,9 +69,8 @@
 
   // Arms are one straight, stubby piece from shoulder to hand, like the original round figures: no elbow unless it is
   // needed. REST is the hanging length (shoulder to hand centre); a reach can lengthen a straight arm to REACH at most,
-  // never more (a target further away gets a straight arm pointing at it). Only a hand brought back close to the body
-  // (closer than BENT) folds at an elbow, with two short bones.
-  const ARM = 46, REST = 54, REACH = 86, BENT = 44;
+  // never more (a target further away gets a straight arm pointing at it). There is no elbow.
+  const REST = 54, REACH = 86;
   const rot = (p, c, deg) => { const a = deg * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a), dx = p[0] - c[0], dy = p[1] - c[1]; return [c[0] + dx * cs - dy * sn, c[1] + dx * sn + dy * cs]; };
   // Two-bone IK (kept for the folded arm and for pages that use it). Limbs never grow.
   function ik(S0, T, a, b, bend, stretch = 1) {
@@ -87,8 +86,9 @@
     else e = e1[1] > e2[1] ? e1 : e2;
     return [e, [S0[0] + dx / d0 * d, S0[1] + dy / d0 * d]];
   }
-  // The arm toward T: straight (elbow = midpoint) unless T is so close the hand must fold back.
-  function armTo(S0, T, bend) {
+  // The arm toward T: always one straight piece, no elbow. A target closer than the hand's own size gives a short
+  // stub (the arm seen end-on, pointing at the viewer); a far target gives an arm of REACH pointing at it.
+  function armTo(S0, T) {
     const dx = T[0] - S0[0], dy = T[1] - S0[1], d = Math.hypot(dx, dy) || .001;
     const L = clamp(d, 36, REACH), H = [S0[0] + dx / d * L, S0[1] + dy / d * L];
     return { E: [(S0[0] + H[0]) / 2, (S0[1] + H[1]) / 2], H, bent: false };
@@ -146,9 +146,9 @@
     const arms = {};
     ['near', 'far'].forEach(side => {
       const S0 = SH[side], v = o[side], idle = Math.sin(ht * .8 + ph + (side === 'near' ? 0 : 1.3)) * 3;
-      let T, bend = 'down';
-      if (v && typeof v === 'object') { T = Lc(v); bend = o[side + 'Bend'] || 'down'; }
-      else if (v === 'up') { T = [S0[0] + 22 + idle, S0[1] - 80]; bend = 'out'; }
+      let T;
+      if (v && typeof v === 'object') T = Lc(v);
+      else if (v === 'up') { T = side === 'near' ? [S0[0] + 60 + idle, S0[1] - 66] : [S0[0] - 50 + idle, S0[1] - 64]; }   // raised up and out, clear of the face
       else if (v === 'open') { T = [S0[0] + (side === 'near' ? 66 : 40), S0[1] - 12 + idle]; }
       else if (v === 'chest') { T = [S0[0] + 30, S0[1] + 34]; }
       else if (v === 'cover') { T = [S0[0] + 40, S0[1] + 30]; }
@@ -157,7 +157,7 @@
       else { T = [S0[0] - 10 - sw * .5 - idle * .4, S0[1] + REST]; }
       // keep hands off the person's own face: a target inside the head is moved down below the chin (o.allowFace opts out)
       if (!o.allowFace && v !== 'up' && T && Math.hypot(T[0] - HC[0], T[1] - HC[1]) < 66) T = [T[0] + 10, HC[1] + 72];
-      const a = armTo(S0, T, bend);
+      const a = armTo(S0, T);
       arms[side] = { S: S0, E: a.E, H: a.H, bent: a.bent };
     });
 
@@ -179,12 +179,15 @@
     const headTr = `translate(${f2(HC[0])} ${f2(HC[1])}) rotate(${f2(headRot)}) scale(${headFace} 1) translate(0 165)`;
     LY.backHair = () => o.f ? wrap(`<g transform="${headTr}"><path d="M-58 -168 C-74 -120 -72 -70 -46 -62 C-20 -58 -6 -90 -8 -150Z" fill="${pal.hair}"/></g>`) : '';
     const arm = side => {
-      const A = arms[side], c = side === 'near' ? pal.skin : pal.shade;
+      const A = arms[side], c = side === 'near' ? mix(pal.skin, pal.shade, .3) : pal.shade;
       const d = A.bent ? `M${f2(A.S[0])} ${f2(A.S[1])}L${f2(A.E[0])} ${f2(A.E[1])}L${f2(A.H[0])} ${f2(A.H[1])}` : `M${f2(A.S[0])} ${f2(A.S[1])}L${f2(A.H[0])} ${f2(A.H[1])}`;
       return wrap(`<path d="${d}" fill="none" stroke="${c}" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${f2(A.H[0])}" cy="${f2(A.H[1])}" r="13" fill="${c}"/>`);
     };
     LY.farArm = () => o.hideFar ? '' : arm('far');
-    LY.nearArm = () => o.hideNear ? '' : arm('near');
+    // a near arm whose line crosses this person's own face is drawn behind the head (it reaches past it) instead of over it
+    const segD = (A, P) => { const vx = A.H[0] - A.S[0], vy = A.H[1] - A.S[1], u = clamp(((P[0] - A.S[0]) * vx + (P[1] - A.S[1]) * vy) / (vx * vx + vy * vy || 1)); return Math.hypot(A.S[0] + vx * u - P[0], A.S[1] + vy * u - P[1]); };
+    const faceC = [HC[0] + 22 * headFace, HC[1]], behind = !o.allowFace && segD(arms.near, faceC) < 40;
+    LY.nearArm = () => o.hideNear || behind ? '' : arm('near');
     const leg = side => { const [a, b] = legs[side]; return `<line x1="${f2(a[0])}" y1="${f2(a[1])}" x2="${f2(b[0])}" y2="${f2(b[1])}" stroke="${side === 'far' ? mix(pal.shade, '#000000', .12) : pal.shade}" stroke-width="27" stroke-linecap="round"/>`; };
     LY.farLeg = () => wrap(leg('far'));
     LY.body = () => {
@@ -194,7 +197,8 @@
         `<g transform="${tr}"><rect x="-48" y="${y0}" width="96" height="${h}" rx="42" fill="url(#${a})"/>` +
         `<path d="M-44 ${f ? -46 : -48} Q0 ${f ? -28 : -30} 44 ${f ? -46 : -48}" fill="none" stroke="${pal.tunic2}" stroke-width="7" opacity=".55"/></g>`);
     };
-    LY.head = () => {
+    LY.head = () => (behind && !o.hideNear ? arm('near') : '') + headSvg();
+    const headSvg = () => {
       const b = nid(), f = !!o.f, e = pal.eye, fc = o.talk ? Object.assign({}, ex, { open: Math.max(ex.open, .25 + .55 * talkK) }) : ex;
       let g = `<linearGradient id="${b}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${pal.skin}"/><stop offset="1" stop-color="${pal.shade}"/></linearGradient>`;
       g += `<circle cx="0" cy="-165" r="56" fill="url(#${b})"/>`;
@@ -270,15 +274,23 @@
     if (!ad.look) A.look = { x: rc.head[0], y: rc.head[1] };
     const ra = rig(A);
     const childArm = armC === 'near' ? 'nearArm' : 'farArm', other = armC === 'near' ? 'farArm' : 'nearArm';
+    // the carrier's arms go over the child, except an arm that would cross the child's face: that one goes behind its head
+    const xn = crossesFace(ra, 'near', rc), xf = crossesFace(ra, 'far', rc);
     const svg = ra.draw('shadow') + ra.draw('backHair') + ra.draw('farLeg') + ra.draw('body') + ra.draw('head') +
-      rc.draw('backHair') + rc.draw(other) + rc.draw('farLeg') + rc.draw('body') + rc.draw('head') + rc.draw(childArm) +
-      ra.draw('farArm') + ra.draw('nearArm');
+      rc.draw('backHair') + rc.draw(other) + rc.draw('farLeg') + rc.draw('body') + (xf ? ra.draw('farArm') : '') + (xn ? ra.draw('nearArm') : '') +
+      rc.draw('head') + rc.draw(childArm) + (xf ? '' : ra.draw('farArm')) + (xn ? '' : ra.draw('nearArm'));
     return { svg, ra, rc, A, C: C0 };
+  }
+  // does r's arm (shoulder to hand) pass over q's face?
+  function crossesFace(r, side, q) {
+    const S0 = r.shoulder(side), H = r.hand(side), P = q.head;
+    const vx = H[0] - S0[0], vy = H[1] - S0[1], u = clamp(((P[0] - S0[0]) * vx + (P[1] - S0[1]) * vy) / (vx * vx + vy * vy || 1));
+    return Math.hypot(S0[0] + vx * u - P[0], S0[1] + vy * u - P[1]) < q.headR + 6 * r.s;   // the arm (half-width ~10) touches the head
   }
   function hug(a, b, o = {}) {
     const k = o.k == null ? 1 : o.k;
     const ra0 = rig(Object.assign({}, a, { near: null, far: null })), rb0 = rig(Object.assign({}, b, { near: null, far: null }));
-    const pa = rb0.back(o.uB ?? .3), pb = ra0.back(o.uA ?? .3);
+    const pa = rb0.back(o.uB ?? .55), pb = ra0.back(o.uA ?? .55);   // round the back below the chin, so no arm crosses a face
     const A = Object.assign({}, a), B = Object.assign({}, b);
     const lp = (p, q) => ({ x: lerp(p[0], q[0], k), y: lerp(p[1], q[1], k) });
     const open = (r) => [r.shoulder('near')[0] + r.face * 74 * r.s, r.shoulder('near')[1] - 14 * r.s];
@@ -290,15 +302,19 @@
     if (!a.look) A.look = { x: rb0.head[0], y: rb0.head[1] };
     if (!b.look) B.look = { x: ra0.head[0], y: ra0.head[1] };
     const ra = rig(A), rb = rig(B);
-    return { svg: ra.draw('back') + rb.draw('back') + ra.draw('body') + ra.draw('head') + rb.draw('body') + rb.draw('head') + ra.draw('front') + rb.draw('front'), ra, rb, A, B };
+    // an arm that would cross the other person's face goes round behind their head instead (drawn before that head)
+    const xa = crossesFace(ra, 'near', rb), xb = crossesFace(rb, 'near', ra);
+    const svg = ra.draw('back') + rb.draw('back') + ra.draw('body') + (xb ? rb.draw('body') + rb.draw('front') : '') + ra.draw('head') +
+      (xb ? '' : rb.draw('body')) + (xa ? ra.draw('front') : '') + rb.draw('head') + (xa ? '' : ra.draw('front')) + (xb ? '' : rb.draw('front'));
+    return { svg, ra, rb, A, B };
   }
   function handOn(a, b, where = 'shoulder') {
     const rb = rig(Object.assign({}, b));
-    if (where === 'head') return { x: rb.top[0], y: rb.top[1] + 8 * rb.s };
+    if (where === 'head') return { x: rb.top[0], y: rb.top[1] - 4 * rb.s };   // resting on the crown, not over the eyes
     if (where === 'back') { const p = rb.back(.3); return { x: p[0], y: p[1] }; }
     const side = Math.abs(rb.shoulder('near')[0] - a.x) < Math.abs(rb.shoulder('far')[0] - a.x) ? 'near' : 'far', p = rb.shoulder(side);
-    return { x: p[0], y: p[1] + (where === 'arm' ? 34 : -4) * rb.s };
+    return { x: p[0], y: p[1] + (where === 'arm' ? 34 : 16) * rb.s };   // on the shoulder, below the chin line
   }
 
-  window.PPL = { rig, fig, layers, clasp, holdHands, carry, hug, handOn, armToward, ik, EXPR, FILTERS };
+  window.PPL = { rig, fig, layers, clasp, holdHands, carry, hug, handOn, armToward, crossesFace, ik, EXPR, FILTERS };
 })();

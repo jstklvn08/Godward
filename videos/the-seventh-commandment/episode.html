@@ -656,7 +656,7 @@ function supper(t){
   g+=R(760,tt,400,28,8,'#7A4A2A',{stroke:'#3A2414','stroke-width':4})+P(`M760 ${tt}L1160 ${tt}L1140 ${tt+90}L780 ${tt+90}Z`,'#E8D8B8',{opacity:.9})+R(790,tt+28,22,FY-tt-28,4,'#5A3418')+R(1110,tt+28,22,FY-tt-28,4,'#5A3418');
   g+=Ell(960,tt-10,70,20,'#C88A4A')+loaf(960,tt-22,.9)+cupS(860,tt)+cupS(1070,tt)+oilLamp(t,1110,tt,1.2,2);
   const tk=Math.sin(E.held(t,8)*3)>0;
-  g+=PPL.fig(pp(MAN,700,FY,2.3,{sit:1,seat:FY-58*2.3,expr:'joy',look:{x:880,y:600},near:tk?{x:800,y:tt-8}:'open'}))+PPL.fig(pp(WOM,1225,FY,2.2,{face:-1,sit:1,seat:FY-58*2.2,expr:'tender',look:{x:1050,y:620},near:{x:1130,y:tt-6}}));
+  g+=PPL.fig(pp(MAN,700,FY,2.3,{sit:1,seat:FY-58*2.3,expr:'joy',look:{x:880,y:600},near:tk?{x:772,y:tt-10}:{x:766,y:tt+16}}))+PPL.fig(pp(WOM,1225,FY,2.2,{face:-1,sit:1,seat:FY-58*2.2,expr:'tender',look:{x:1050,y:620},near:{x:1130,y:tt-6}}));
   return g+homeFore(t,960,{seed:54,rc:'#2A5A7A',rc2:'#FFD45E'});
 }
 // ---- 4d. A mom and a dad who promised to stay: the family at the open door; mum carries the little one ----
