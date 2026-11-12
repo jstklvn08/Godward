@@ -258,7 +258,7 @@ function nameFire(t){
   g+=SC.ground(t,7,{y:910,col:'#3A2430',col2:'#140A14',stones:14,tufts:8,grassCols:['#1E1220','#3A2430','#6A3A40']});
   [[300,930,1.2,'#5A3A4A'],[1640,926,1.3,'#4A3040'],[1440,948,.85,'#5A3A4A']].forEach(([x,y,k,c])=>g+=tentN(t,x,y,k,c));
   const up={x:960,y:60},aw=['calm','awe',prog(t,.4,1.6)];
-  g+=PPL.fig(elderOpts(540,950,1.1,{kneel:prog(t,1,2),look:up,expr:aw,near:'chest',far:'chest'}))+folk(2,1400,962,1.15,{face:-1,look:up,expr:aw,near:'cover'});
+  g+=PPL.fig(elderOpts(540,950,1.1,{kneel:prog(t,1,2),look:up,expr:aw,near:'chest',far:'chest'}))+folk(2,1400,962,1.15,{kid:true,face:-1,look:up,expr:aw,near:'cover'});
   const mom=person(1,1190,FY,2.45,{face:-1,look:up,expr:aw,hairStyle:'veil'}),kid=person(3,960,FY+12,KS,{face:-1,look:up,expr:'surprised'});
   g+=PPL.holdHands(mom,kid,{armB:'far'}).svg;
   g+=folk(0,700,FY,HS,{look:up,expr:aw,phase:1.1,near:{x:860,y:FY-310}});
@@ -719,7 +719,7 @@ function bigCamp(t){
   g+=SC.pair(t,'sheep',420,930,.75,{graze:'auto'})+SC.animal(t,'camel',1560,935,.8,{face:-1,graze:'auto'})+SC.pair(t,'goat',1260,940,.7,{face:-1,walk:t*5});
   const up={x:960,y:100};
   [[560,952,1.15],[1380,955,1.2]].forEach(([x,y,s],i)=>g+=folk(i+2,x,y,s,{face:x>960?-1:1,look:up,expr:'awe'}));
-  g+=folk(0,720,FY,HS,{look:up,expr:'awe',near:{x:880,y:FY-300}})+PPL.carry(person(1,1200,FY,2.45,{face:-1,look:up,expr:'awe'}),person(4,0,0,1.25,{look:up,expr:'joy'}),{out:true}).svg;
+  g+=folk(0,720,FY,HS,{look:up,expr:'awe',near:{x:880,y:FY-300}})+PPL.carry(person(1,1200,FY,2.45,{face:-1,look:up,expr:'awe'}),person(4,0,0,1.25,{kid:true,look:up,expr:'joy'}),{out:true}).svg;
   return g+fr(t,960,.9,'desert',{seed:81,rockAt:[[560,1600,200],[1420,1700,220]]});
 }
 // ---- 36/37. "Israel didn't only speak God's name. They wore it." A family by their tent at night ----
@@ -892,8 +892,8 @@ function looksSmall(t){
   g+=SC.ground(t,51,{y:900,col:'#6A4A5A',col2:'#2A1A2A',stones:12,tufts:10});
   g+=townWall(1020,2040,460,'#5A4A6A');
   const sm=ease.inOut(prog(t,AT.small-.3,AT.small+.8));
-  [[1090,'#C83A5A'],[1195,'#3A8A6A'],[1300,'#C8903A']].forEach(([x,c],i)=>g+=folk(i,x,460,1.3,{face:-1,tunic:c,tunic2:mix(c,'#000000',.35),look:{x:800,y:700},expr:i===1?'joy':'calm',near:i===0?{x:x-150,y:330}:i===2?'open':'chest',tilt:i===1?Math.sin(t*12)*4:0}));
-  g+=folk(1,1120,FY-20,2.1,{f:true,look:'down',expr:'sad',near:'chest'})+folk(4,1300,FY+10,1.4,{face:-1,look:{x:1450,y:300},expr:'sad'});
+  [[1090,'#C83A5A'],[1195,'#3A8A6A'],[1300,'#C8903A']].forEach(([x,c],i)=>g+=folk(i,x,460,1.3,{kid:true,face:-1,tunic:c,tunic2:mix(c,'#000000',.35),look:{x:800,y:700},expr:i===1?'joy':'calm',near:i===0?{x:x-150,y:330}:i===2?'open':'chest',tilt:i===1?Math.sin(t*12)*4:0}));
+  g+=folk(1,1120,FY-20,2.1,{f:true,look:'down',expr:'sad',near:'chest'})+folk(4,1300,FY+10,1.4,{kid:true,face:-1,look:{x:1450,y:300},expr:'sad'});
   const x=760;g+=withFront(person(2,x,FY,HS,{near:{x:x+200,y:FY-220},look:'down',expr:'sad'}),r=>{const h=r.hand('near');return L(h[0],h[1]+150,h[0],h[1]-540,'#6A4026',14)+namePlate(t,h[0],h[1]-600,lerp(.6,.18,sm),lerp(1,.35,sm),{halo:1-sm});});
   return g+fr(t,1010,1.05,'dusk',{seed:109,rockAt:[[1400,1540,150]],over:SC.animal(t,'bird',620,1480,1.8,{graze:'auto'})});
 }
@@ -1000,7 +1000,7 @@ function restDay(t){
   g+=SC.birds(t,{x:900,y:200,n:6,s:1,col:'#2A1A2A'});
   g+=R(520,FY-130,900,90,40,'#6A4026')+Ell(520,FY-85,40,45,'#8A5A34')+Ell(520,FY-85,24,28,'#C8946A');
   g+=folk(0,670,FY,HS,{sit:1,seat:FY-130,look:{x:960,y:560},expr:'tender'})+folk(1,1250,FY,2.45,{face:-1,f:true,sit:1,seat:FY-130,look:{x:960,y:560},expr:'tender'});
-  g+=PPL.fig(person(4,960,FY,1.45,{sit:1,seat:FY-120,look:{x:960,y:560},expr:'joy'}));
+  g+=PPL.fig(person(4,960,FY,1.45,{kid:true,sit:1,seat:FY-120,look:{x:960,y:560},expr:'joy'}));
   return g+fr(t,950,1.0,'dusk',{seed:127,flowers:['#FFB0C0','#FFE0A0'],rockAt:[[1380,1560,160]]});
 }
 

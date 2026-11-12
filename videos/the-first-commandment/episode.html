@@ -296,7 +296,7 @@ function mudPit(t,lt){
   g+=folk(0,710,800,1.05,{kneel:1,lean:22+press*8,near:{x:850,y:768+press*6},far:{x:815,y:770+press*6},look:{x:835,y:775},expr:'sad'});
   g+=folk(1,1000,800,1.0,{flip:-1,kneel:1,lean:20+(1-press)*8,near:{x:925,y:768+(1-press)*6},far:{x:955,y:770},look:glance?{x:1110,y:700}:{x:925,y:775},expr:glance?'tender':'sad'});
   const sx=1120,sy=812-75;
-  g+=folk(2,sx,812,.66,{flip:-1,near:{x:sx-46,y:sy},far:{x:sx-30,y:sy+6},look:{x:1000,y:660},expr:'calm'})+P(`M${sx-82} ${sy-12}l66 -10l4 26l-66 10z`,'#E8C870')+L(sx-78,sy-4,sx-14,sy-12,'#C8A040',3);
+  g+=folk(2,sx,812,.66,{kid:true,flip:-1,near:{x:sx-46,y:sy},far:{x:sx-30,y:sy+6},look:{x:1000,y:660},expr:'calm'})+P(`M${sx-82} ${sy-12}l66 -10l4 26l-66 10z`,'#E8C870')+L(sx-78,sy-4,sx-14,sy-12,'#C8A040',3);
   // the crowd pushing a great block up the ramp (seen when the camera pulls back)
   const push=prog(t,AT.crowd,AT.crowd+6);
   g+=P('M1100 820L1900 560L1980 560L1980 830Z','#8E4A22');
@@ -366,7 +366,7 @@ function seaCloses(t,lt){
   // everyone watches the sea; when it crashes shut they flinch: a mother drops to her knees and pulls her child in,
   // the father's hand on her shoulder, a man shields his eyes and his wife clings to his arm, an old man clasps his hands
   const startle=ease.out(prog(t,AT.egyptians-.2,AT.egyptians+.3)),see={x:960,y:300},ex=['calm','fear',startle],au={aura:'#7CFFE6',auraOp:.35};
-  const mom=person(1,600,775,.95,Object.assign({kneel:startle,look:see,expr:ex},au)),kid=person(3,672,780,.6,Object.assign({face:-1,expr:['surprised','fear',startle]},au));
+  const mom=person(1,600,775,.95,Object.assign({kneel:startle,look:see,expr:ex},au)),kid=person(3,672,780,.6,{kid:true},Object.assign({face:-1,expr:['surprised','fear',startle]},au));
   const dad=person(0,470,790,.98,Object.assign({look:see,expr:ex,lean:-10*startle},au));dad.near=PPL.handOn(dad,mom,'shoulder');
   const D=PPL.rig(dad);g+=D.draw('back')+D.draw('body')+D.draw('head');
   if(startle>0)g+=PPL.hug(mom,kid,{k:startle}).svg;else g+=PPL.fig(Object.assign({},mom,{near:'open'}))+PPL.fig(Object.assign({},kid,{look:see,face:1}));
@@ -897,7 +897,7 @@ function waiting(t,lt){
   const yawn=Math.abs(Math.sin(E.held(t,6)*.9));
   g+=R(560,740,400,46,20,'#7A4A2A',{stroke:'#4A2A14','stroke-width':4});
   g+=folk(0,630,800,.95,{sit:1,seat:742,lean:24,near:{x:680,y:735},far:{x:660,y:738},look:'down',expr:'sad'});
-  const kidO=person(3,870,800,.62,{sit:1,seat:742,face:-1,lean:-16,tilt:-14,near:yawn>.5?'cover':{x:820,y:720},expr:'sad',look:{x:630,y:650}});
+  const kidO=person(3,870,800,.62,{kid:true,sit:1,seat:742,face:-1,lean:-16,tilt:-14,near:yawn>.5?'cover':{x:820,y:720},expr:'sad',look:{x:630,y:650}});
   const momO=person(1,770,800,.9,{f:true,flip:-1,sit:1,seat:742,lean:8,look:{x:650,y:640},expr:'sad'});momO.far=PPL.handOn(momO,kidO,'head');
   g+=PPL.fig(momO)+PPL.fig(kidO);
   const ph=Math.sin((t-AT.camp)*1.7),px=1170+ph*80,dir=Math.cos((t-AT.camp)*1.7)>0?1:-1;

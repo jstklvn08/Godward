@@ -457,7 +457,7 @@ function sinaiTablets(t,lt){
   const tip=prog(t,AT.falseW-.2,AT.falseW+1.2);
   if(tip>0&&tip<1)g+=G(`translate(${lerp(1070,1300,ease.inOut(tip)).toFixed(0)} 552)`,FX.flames(t,[[-18,0],[0,-6],[18,0]],{H:70,sp:7,seed:4}));
   const up={x:960,y:300},ex=['calm','awe',prog(t,AT.falseW,AT.falseW+1)];
-  g+=folk(0,620,830,1.4,{look:up,expr:ex})+folk(3,760,826,1.3,{f:true,look:up,expr:ex,near:'chest'})+folk(2,860,834,.9,{look:up,expr:'surprised',near:{x:900,y:640}})+folk(4,1250,830,1.4,{face:-1,look:up,expr:ex,near:'cover'})+folk(1,1380,826,1.3,{face:-1,f:true,look:up,expr:ex});
+  g+=folk(0,620,830,1.4,{look:up,expr:ex})+folk(3,760,826,1.3,{f:true,look:up,expr:ex,near:'chest'})+folk(2,860,834,.9,{kid:true,look:up,expr:'surprised',near:{x:900,y:640}})+folk(4,1250,830,1.4,{face:-1,look:up,expr:ex,near:'cover'})+folk(1,1380,826,1.3,{face:-1,f:true,look:up,expr:ex});
   return g+fireflies(t,300,-300,1320,1100,'#FFB04C',18,.8)+SC.fore(t,{y:900,cols:['#120A0C','#2A1A1A','#6A3A2A'],rocks:0,rockAt:[[560,1280,200],[1380,1340,240]],edges:[460,1460],density:.5,seed:4});
 }
 // ---- "Just don't lie"? A mother kneels and wags her finger at her child; then both look again ----
@@ -490,7 +490,7 @@ function wordsDo(t,lt){
   for(let k=0;k<4;k++){const s0=a0+k*.45;if(t<s0)continue;const u=ease.inOut(prog(t,s0,s0+1.6)),x=lerp(820,1400+k*30,u),y=lerp(FY-620,FY-680+k*40,u)-Math.sin(u*Math.PI)*260;
     g+=wordStrip(x,y,200,60+k,lerp(-10,k%2?20:-15,u),{op:1-.4*prog(u,.9,1),h:52});}
   const dad=person(4,1440,FY,HS,{face:-1,lean:lerp(0,16,hit),look:hit>.5?'down':{x:860,y:460},expr:['calm','sad',hit]});
-  const kid=person(1,1590,FY+6,1.45,{face:-1,look:{x:1440,y:500},expr:['joy','sad',hit]});
+  const kid=person(1,1590,FY+6,1.45,{kid:true,face:-1,look:{x:1440,y:500},expr:['joy','sad',hit]});
   g+=PPL.holdHands(dad,kid,{armA:'far'}).svg;
   return g+foreStreet(t,1000,1.12,{seed:73,rockAt:[[1000,1560,160]],pets:SC.animal(t,'dove',700,1520,2.2,{graze:'auto'})+SC.animal(t,'dove',1500,1560,2.1,{graze:'auto',face:-1,phase:1})});
 }
@@ -509,7 +509,7 @@ function town(t,lt){
   g+=folk(3,wx-240,FY,2.4,{f:true,lean:10,near:{x:wx-40,y:lerp(FY-330,FY-390,pull)},far:{x:wx-60,y:lerp(FY-390,FY-330,pull)},look:{x:wx,y:FY-260},expr:'calm'});
   // children with a ball in the lane
   const bx=960+Math.sin(t*2)*120,by=FY-260-Math.abs(Math.cos(t*2))*220;
-  g+=folk(4,820,FY,1.5,{look:{x:bx,y:by},expr:'joy',near:'up'})+folk(1,1100,FY,1.5,{face:-1,look:{x:bx,y:by},expr:'joy',far:'up'})+C(bx,by,30,CORAL)+C(bx-8,by-8,10,'#FFB0A0');
+  g+=folk(4,820,FY,1.5,{kid:true,look:{x:bx,y:by},expr:'joy',near:'up'})+folk(1,1100,FY,1.5,{kid:true,face:-1,look:{x:bx,y:by},expr:'joy',far:'up'})+C(bx,by,30,CORAL)+C(bx-8,by-8,10,'#FFB0A0');
   // a man loads his donkey by a door
   g+=SC.animal(t,'donkey',1490,FY-10,1.6,{face:-1,graze:'auto'})+folk(0,1310,FY,2.4,{near:{x:1420,y:FY-280},look:{x:1490,y:FY-260},expr:'calm'});
   g+=cutout(t,AT.cameras-.4,960,240,camIcon(960,240),1)+xMark(960,240,120,ease.inOut(prog(t,AT.cameras+.2,AT.cameras+.6)));
@@ -1063,7 +1063,7 @@ function growing(t,lt){
   g+=P(`M944 ${FY}Q930 ${(FY+top)/2} 958 ${top}L966 ${top}Q980 ${(FY+top)/2} 976 ${FY}Z`,'#6A4A2A');
   const n=Math.floor(lerp(2,10,gr));for(let k=0;k<n;k++){const y=lerp(FY-30,top,(k+1)/(n+.5)),side=k%2?1:-1,L0=lerp(50,170,(k+1)/n)*(.5+.5*gr);g+=L(962,y,962+side*L0,y-60,'#6A4A2A',8)+C(962+side*L0,y-66,36+24*gr,['#4CB858','#3FA04A'][k%2]);}
   g+=C(962,top-20,44+36*gr,'#5AC868');
-  g+=folk(1,640,FY,VS,{look:{x:962,y:top},expr:['calm','awe',gr]})+folk(3,1260,FY,2.15,{face:-1,look:{x:962,y:top},expr:['calm','awe',gr],near:'chest'})+folk(4,1150,FY+10,1.4,{face:-1,look:{x:962,y:top},expr:'joy',near:{x:1060,y:FY-300}});
+  g+=folk(1,640,FY,VS,{look:{x:962,y:top},expr:['calm','awe',gr]})+folk(3,1260,FY,2.15,{face:-1,look:{x:962,y:top},expr:['calm','awe',gr],near:'chest'})+folk(4,1150,FY+10,1.4,{kid:true,face:-1,look:{x:962,y:top},expr:'joy',near:{x:1060,y:FY-300}});
   return g+foreMeadow(t,960,1.04,{flowers:['#FFD84A','#FFFFFF'],seed:107});
 }
 // ---- Not only keeping quiet: she covers her mouth, the chat bubbles hang in the air ----

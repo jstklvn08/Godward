@@ -186,7 +186,7 @@
     LY.farArm = () => o.hideFar ? '' : arm('far');
     // a near arm whose line crosses this person's own face is drawn behind the head (it reaches past it) instead of over it
     const segD = (A, P) => { const vx = A.H[0] - A.S[0], vy = A.H[1] - A.S[1], u = clamp(((P[0] - A.S[0]) * vx + (P[1] - A.S[1]) * vy) / (vx * vx + vy * vy || 1)); return Math.hypot(A.S[0] + vx * u - P[0], A.S[1] + vy * u - P[1]); };
-    const faceC = [HC[0] + 22 * headFace, HC[1]], behind = !o.allowFace && segD(arms.near, faceC) < 40;
+    const faceC = [HC[0] + 22 * headFace, HC[1]], behind = !o.allowFace && segD(arms.near, faceC) < 48;
     LY.nearArm = () => o.hideNear || behind ? '' : arm('near');
     const leg = side => { const [a, b] = legs[side]; return `<line x1="${f2(a[0])}" y1="${f2(a[1])}" x2="${f2(b[0])}" y2="${f2(b[1])}" stroke="${side === 'far' ? mix(pal.shade, '#000000', .12) : pal.shade}" stroke-width="27" stroke-linecap="round"/>`; };
     LY.farLeg = () => wrap(leg('far'));

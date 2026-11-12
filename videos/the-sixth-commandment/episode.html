@@ -483,7 +483,7 @@ function street(t,lt){
   let g=SC.env(t,'village',{seed:43,mood:'golden',gy:900});
   g+=home(t,1440,950,.95,{wall:'#E2C49A'})+home(t,360,940,.8,{wall:'#D8A878'});
   g+=elder(1420,955,1.35,{face:-1,near:reachF(1420,1.35,-1),expr:'joy',look:{x:1100,y:700}});
-  g+=PPL.carry(person(0,600,955,1.4,{expr:'tender'}),person(3,0,0,.9,{expr:'joy'})).svg;
+  g+=PPL.carry(person(0,600,955,1.4,{expr:'tender'}),person(3,0,0,.9,{kid:true,expr:'joy'})).svg;
   g+=SC.animal(t,'donkey',1760,965,1.1,{face:-1,graze:'auto'})+SC.animal(t,'bird',820,958,.9,{graze:'auto',col:'#E8E0D0'});
   const hand=ease.inOut(prog(t,AT.most-.1,AT.never+.2)),bx=lerp(890,960,hand),by=FY-300;
   const giver=person(1,740,FY,HS,{f:true,expr:'joy',look:{x:1160,y:FY-460},near:{x:bx-16,y:by+10}});
@@ -988,7 +988,7 @@ function sinai2(t,lt){
   const up={x:960,y:220},k=prog(t,AT.spoke,AT.spoke+1),ex=['calm','awe',k];
   const dad=person(0,620,FY,2.45,{look:up,expr:ex}),mom=person(1,1000,FY-6,2.3,{look:up,expr:ex,f:true});
   dad.near=PPL.handOn(dad,mom,'shoulder');
-  const c=PPL.carry(mom,person(3,0,0,1.4,{look:up,expr:ex}),{out:true});
+  const c=PPL.carry(mom,person(3,0,0,1.4,{kid:true,look:up,expr:ex}),{out:true});
   const D=PPL.rig(dad);
   g+=D.draw('back')+c.svg+D.draw('body')+D.draw('head')+D.draw('front');
   g+=elder(1390,FY-10,2.2,{face:-1,kneel:k,look:up,expr:ex,near:'chest',far:'chest'});
@@ -1236,7 +1236,7 @@ function streamS(t,lt){
   [[780,1010],[960,1000],[1140,1012]].forEach(([x,y])=>g+=Ell(x,y,84,26,'#8A8478')+Ell(x,y-8,72,18,'#A8A296'));
   g+=SC.reeds(t,300,980,1.4)+SC.reeds(t,1700,990,1.5)+SC.animal(t,'dove',1560,990,1,{graze:'auto'});
   const p=ease.inOut(prog(t,AT.notJust-.4,AT.notJust+1.2)),kx=lerp(800,960,p),hop=Math.sin(p*Math.PI)*50;
-  const bigB=person(0,1260,FY+10,2.45,{face:-1,expr:'tender',look:{x:kx,y:FY-300}}),sis=person(3,kx,FY-6-hop,1.55,{f:true,expr:['surprised','joy',p],look:{x:1260,y:FY-450}});
+  const bigB=person(0,1260,FY+10,2.45,{face:-1,expr:'tender',look:{x:kx,y:FY-300}}),sis=person(3,kx,FY-6-hop,1.55,{kid:true,f:true,expr:['surprised','joy',p],look:{x:1260,y:FY-450}});
   g+=PPL.holdHands(sis,bigB).svg;
   return g+SC.fore(t,{y:1120,edges:EDG(1000,1.08),cols:GR.spring,rocks:0,reeds:1,density:.7,seed:97,flowers:['#FFFFFF','#FFE36B'],rockAt:[[600,1580,170]]});
 }
@@ -1364,8 +1364,8 @@ function facesS(t,lt){
   const on=k=>ease.out(prog(t,AT.imageL-.4+k*.12,AT.imageL+.1+k*.12));
   let k=0;const gl=(o)=>{const [cx,cy]=chestOf(o);return glint(cx,cy,o.s,on(k++));};
   [[420,4,1.25],[620,1,1.3],[1300,2,1.3],[1500,0,1.25]].forEach(([x,i,s])=>{const o=person(i,x,925,s,{face:x<960?1:-1,f:i===1,expr:'joy',look:{x:960,y:600}});g+=PPL.fig(o)+gl(o);});
-  const cr=PPL.carry(person(5,1000,940,1.4,{face:-1,expr:'joy'}),person(2,0,0,.85,{expr:'joy'}));g+=cr.svg+gl(cr.A);
-  const mom=person(1,620,FY,2.25,{f:true,expr:'tender',look:{x:900,y:FY-300}}),kid=person(3,900,FY,1.35,{expr:'joy',look:{x:620,y:FY-450}});
+  const cr=PPL.carry(person(5,1000,940,1.4,{kid:true,face:-1,expr:'joy'}),person(2,0,0,.85,{kid:true,expr:'joy'}));g+=cr.svg+gl(cr.A);
+  const mom=person(1,620,FY,2.25,{f:true,expr:'tender',look:{x:900,y:FY-300}}),kid=person(3,900,FY,1.35,{kid:true,expr:'joy',look:{x:620,y:FY-450}});
   const hh=PPL.holdHands(mom,kid);g+=hh.svg+gl(mom)+gl(kid);
   const old=elderOpts(1320,FY,2.25,{face:-1,expr:'joy',look:{x:960,y:FY-450},near:reachF(1320,2.25,-1,.5)});g+=PPL.fig(old)+gl(old);
   return g+foreG(t,960,.96,{cols:GR.spring,flowers:['#FFFFFF','#FFD45E','#FF7BD5'],seed:117,rockAt:[[1440,1580,160]],over:SC.pair(t,'sheep',520,1590,2,{graze:'auto',gap:90,dy:-30})});

@@ -396,8 +396,8 @@ function sinaiSteal(t,lt){
   [[420,950,.7,'#7A4A3A'],[1500,950,.75,'#6A3E30']].forEach(([x,y,k,c])=>g+=tentBig(x,y,k,c,{lit:.6}));
   g+=fire(t,960,980,.8,5);
   const up={x:960,y:420};
-  g+=PPL.fig(person(0,620,FY,1.75,{look:up,expr:'awe'}))+carryHip(person(1,1300,FY,1.7,{face:-1,f:true,look:up,expr:'awe'}),person(3,0,0,1.0,{look:up,expr:'awe'}));
-  g+=folk(4,760,FY+10,1.15,{look:up,expr:'awe',near:{x:830,y:FY-200}});
+  g+=PPL.fig(person(0,620,FY,1.75,{look:up,expr:'awe'}))+carryHip(person(1,1300,FY,1.7,{face:-1,f:true,look:up,expr:'awe'}),person(3,0,0,1.0,{kid:true,look:up,expr:'awe'}));
+  g+=folk(4,760,FY+10,1.15,{kid:true,look:up,expr:'awe',near:{x:830,y:FY-200}});
   return g+SC.fore(t,{y:1080,cols:['#1A0E0C','#3A2418','#8A5A34'],rocks:0,rockAt:[[560,1500,200],[1380,1600,240]],edges:EDG(960,.92),density:.5,seed:12});
 }
 // O4. Most of us read that and relax: in his sunny courtyard a man sits on his bench with a scroll; "never robbed a bank" thought.
@@ -467,13 +467,13 @@ function sinaiCamp(t,lt){
   const up={x:1100,y:100},ex=['calm','awe',prog(t,AT.heard,AT.heard+1.5)];
   g+=PPL.fig(elderOpts(1400,FY-90,1.35,{face:-1,kneel:1,look:up,expr:ex,near:'chest',far:'chest'}));
   const dad=person(0,700,FY,HS,{look:up,expr:ex,near:at({x:700,y:FY,s:HS,face:1},100,-104)});
-  g+=PPL.fig(dad)+carryHip(person(1,1090,FY,2.35,{face:-1,f:true,look:up,expr:ex}),person(3,0,0,1.4,{look:up,expr:ex}));
+  g+=PPL.fig(dad)+carryHip(person(1,1090,FY,2.35,{face:-1,f:true,look:up,expr:ex}),person(3,0,0,1.4,{kid:true,look:up,expr:ex}));
   return g+SC.fore(t,{y:1050,cols:['#120A10','#2A1A20','#6A3A3A'],rocks:0,rockAt:[[640,1520,180]],edges:EDG(980,1.06),density:.5,seed:62,over:fire(t,1350,1420,1.4,3)});
 }
 // L2. A nation of freed slaves: a family walks out across the desert at the head of the column; a broken chain lies in the sand.
 function freed(t,lt){
   let g=SC.env(t,'desert',{seed:72,mood:'golden',gy:900});
-  for(let i=0;i<7;i++){const x=200+i*130+lt*14,y=900+(i%2)*6;g+=folk(i,x,y,.62,{walk:t*7+i,expr:'joy',look:{x:x+200,y:y-140}});}
+  for(let i=0;i<7;i++){const x=200+i*130+lt*14,y=900+(i%2)*6;g+=folk(i,x,y,.62,{kid:true,walk:t*7+i,expr:'joy',look:{x:x+200,y:y-140}});}
   g+=SC.pair(t,'camel',1500+lt*10,912,.62,{face:1,walk:t*5})+SC.pair(t,'goat',1240+lt*12,930,.6,{face:1,walk:t*6});
   const w=t*6.5,dx=lt*12;
   g+=PPL.fig(pp(FARM,650+dx,FY-30,2.0,{tunic:'#C8885A',tunic2:'#7A4A2A',walk:w+2,expr:'joy',look:{x:1300,y:500},f:true}));
@@ -573,7 +573,7 @@ function toJericho(t,lt){
   g+=brickWall(560,2060,260,880,5,'#C08A58')+brickWall(500,760,140,880,6,'#B88050')+brickWall(1500,1760,140,880,7,'#B88050')+[0,1,2].map(i=>SC.house(1000+i*230,280,.7,{col:'#D2A468'})).join('');
   g+=cityGate(1130,880,.9,'#B88050');
   g+=SC.ground(t,102,{y:880,col:'#C89A60',col2:'#8A6038',stones:18,tufts:8,grassCols:['#6A5A2A','#8A7A3A','#B8A060']});
-  for(let i=5;i>=0;i--){const x=360+i*130+lt*14,y=900+(i%2)*8;g+=folk(i,x,y,.7,{walk:t*7+i,look:{x:1200,y:500},expr:i%2?'awe':'calm'});}
+  for(let i=5;i>=0;i--){const x=360+i*130+lt*14,y=900+(i%2)*8;g+=folk(i,x,y,.7,{kid:true,walk:t*7+i,look:{x:1200,y:500},expr:i%2?'awe':'calm'});}
   const w=t*6.5,dx=lt*12;
   g+=who(FARM,740+dx,FY-30,2.1,{walk:w+1,look:{x:1300,y:300},expr:'awe'})+who(HERO,1080+dx,FY,HS,{walk:w,look:{x:1300,y:300},expr:'awe',tunic:'#7CD4FF',tunic2:'#2F6FD0'});
   const cr=ease.out(prog(t,AT.broke,AT.broke+.5));
@@ -850,8 +850,8 @@ function intoJericho(t,lt){
   const w=ease.inOut(prog(t,AT.centuries,AT.sameCity-.2)),lx=960,ly=lerp(760,FY-180,w);
   g+=presence(t,lx,ly,lerp(60,110,w),ease.out(prog(t,AT.centuries-.2,AT.centuries+.8)));
   const ex=['calm','awe',w];
-  g+=folk(2,820,930,.9,{look:{x:lx,y:ly-40},expr:ex,face:1})+folk(3,1120,936,.7,{look:{x:lx,y:ly-40},expr:ex,face:-1})+SC.pair(t,'donkey',1500,940,.6,{face:-1});
-  g+=who(FARM,640,FY,HS,{look:{x:lx,y:ly-60},expr:ex,near:'chest'})+carryHip(person(1,1290,FY,2.35,{face:-1,f:true,look:{x:lx,y:ly-60},expr:ex}),person(4,0,0,1.35,{look:{x:lx,y:ly},expr:ex}));
+  g+=folk(2,820,930,.9,{kid:true,look:{x:lx,y:ly-40},expr:ex,face:1})+folk(3,1120,936,.7,{kid:true,look:{x:lx,y:ly-40},expr:ex,face:-1})+SC.pair(t,'donkey',1500,940,.6,{face:-1});
+  g+=who(FARM,640,FY,HS,{look:{x:lx,y:ly-60},expr:ex,near:'chest'})+carryHip(person(1,1290,FY,2.35,{face:-1,f:true,look:{x:lx,y:ly-60},expr:ex}),person(4,0,0,1.35,{kid:true,look:{x:lx,y:ly},expr:ex}));
   return g+foreCobble(t,960,1.04,{col:'#B89A6A',over:SC.branch(t,EDG(960,1.04)[0]-120,1240,1.4,{leaf:'#3E8A3A',col:'#5A4A2A'})+basketB(EDG(960,1.04)[1]-90,1600,2.4,C(-20,-30,18,'#E8C060')+C(14,-34,16,'#FF8A3A'))});
 }
 // Z2. The same city where Achan stole: the old ruins and Achan's tent show through faintly over the new street.
@@ -876,7 +876,7 @@ function taxBooth(t,lt){
 // Z4. He was rich, and everyone knew how: he takes an extra coin from a farmer; neighbours whisper and stare.
 function everyoneKnew(t,lt){
   let g=townEnv(t,{seed:40,gate:false,mood:'golden',sx:400,sy:100});
-  g+=folk(1,1420,FY-140,1.15,{face:-1,look:{x:820,y:FY-300},expr:'sad',near:'cover'});
+  g+=folk(1,1420,FY-140,1.15,{kid:true,face:-1,look:{x:820,y:FY-300},expr:'sad',near:'cover'});
   g+=R(700,FY-200,380,30,6,'#8A5A2E',{stroke:'#4A2A14','stroke-width':4})+R(720,FY-170,340,170,4,'#6A4422')+silverPile(800,FY-210,1.3);
   const gr=ease.inOut(prog(t,AT.rich+.3,AT.rich+1.1));
   g+=who(ZAC,820,FY-20,2.2,{near:{x:lerp(1030,980,gr),y:FY-252},look:{x:1050,y:FY-260},expr:'joy'});
@@ -912,7 +912,7 @@ function comingHouse(t,lt){
   let g=townEnv(t,{seed:46,gate:false})+syc(t,640,FY,1.9);
   const bx=640+280*1.9,by=FY-326*1.9;
   g+=presence(t,1360,FY-200,100,1)+rings(t,AT.jesusSaid,1360,FY-240,900)+rings(t,AT.house-.3,1360,FY-240,900);
-  g+=folk(2,1600,FY-30,1.6,{face:-1,look:{x:bx,y:by},expr:'awe'})+folk(3,1700,FY-20,1.1,{face:-1,look:{x:bx,y:by},expr:'awe'});
+  g+=folk(2,1600,FY-30,1.6,{face:-1,look:{x:bx,y:by},expr:'awe'})+folk(3,1700,FY-20,1.1,{kid:true,face:-1,look:{x:bx,y:by},expr:'awe'});
   const hp=ease.out(prog(t,AT.jesusSaid,AT.house+.4));
   return g+who(ZAC,bx,by,1.9,{hipAt:{x:bx,y:by-6},sit:1,lean:-6,near:hp>.5?'open':{x:bx+160,y:by-100},far:hp>.5?'open':{x:bx-80,y:by-40},look:{x:1360,y:FY-240},expr:['surprised','joy',hp]})+foreCobble(t,1040,.98,{col:'#C0A070',over:SC.tuft(t,1400,1500,2.6,{cols:['#2E5A26','#4A8A3A','#8AC060'],n:8})});
 }
@@ -933,7 +933,7 @@ function halfGoods(t,lt){
   for(let k=0;k<6;k++){const p=((pr+k/6)%1+1)%1;if(t>AT.half[0])g+=coin(lerp(1010,1140,p),lerp(FY-240,FY-250,p)-Math.sin(p*Math.PI)*90,16);}
   g+=who(ZAC,780,FY,2.05,{near:{x:1010,y:FY-230},far:{x:960,y:FY-220},look:{x:1180,y:FY-300},expr:'joy',lean:8});
   g+=PPL.fig(pp(WIDOW,1220,FY,VS,{face:-1,near:{x:1140,y:FY-250},far:{x:1150,y:FY-240},look:{x:1000,y:FY-330},expr:'joy',skin:'#D9965E',shade:'#A86A3E',hair:'#2E1C52'}));
-  return g+folk(3,1430,FY+6,1.35,{face:-1,jump:Math.abs(Math.sin(E.held(t,10)*6))*40,far:'up',look:{x:1000,y:FY-300},expr:'joy'})+foreCobble(t,1060,1.06,{col:'#C8A070',over:jarB(EDG(1060,1.06)[0]+80,1640,2.6,'#B8683A')+[0,1,2].map(i=>coin(EDG(1060,1.06)[1]-80-i*50,1600+i*30,22)).join('')});
+  return g+folk(3,1430,FY+6,1.35,{kid:true,face:-1,jump:Math.abs(Math.sin(E.held(t,10)*6))*40,far:'up',look:{x:1000,y:FY-300},expr:'joy'})+foreCobble(t,1060,1.06,{col:'#C8A070',over:jarB(EDG(1060,1.06)[0]+80,1640,2.6,'#B8683A')+[0,1,2].map(i=>coin(EDG(1060,1.06)[1]-80-i*50,1600+i*30,22)).join('')});
 }
 // Z10. "I restore it fourfold": four coins dropped one by one into the farmer's hands; a coral x4.
 function fourfold(t,lt){
@@ -958,7 +958,7 @@ function achanAgain(t,lt){
 function gaveBack(t,lt){
   let g=townEnv(t,{seed:52,gate:false,sx:960,sy:-200});
   for(let k=0;k<14;k++){const p=((t*.7+k/14)%1),x=lerp(960,300+k*100,p),y=500-Math.sin(p*Math.PI)*260+p*200;g+=coin(x,y,14);}
-  g+=folk(1,640,FY-50,1.7,{far:'up',near:'up',look:{x:800,y:300},expr:'joy',jump:Math.abs(Math.sin(E.held(t,10)*6+1))*30})+folk(3,1350,FY+6,1.35,{face:-1,far:'up',look:{x:1000,y:300},expr:'joy',jump:Math.abs(Math.sin(E.held(t,10)*6))*36});
+  g+=folk(1,640,FY-50,1.7,{far:'up',near:'up',look:{x:800,y:300},expr:'joy',jump:Math.abs(Math.sin(E.held(t,10)*6+1))*30})+folk(3,1350,FY+6,1.35,{kid:true,face:-1,far:'up',look:{x:1000,y:300},expr:'joy',jump:Math.abs(Math.sin(E.held(t,10)*6))*36});
   const hg=ease.out(prog(t,AT.timesOver-.4,AT.timesOver+.4));
   g+=PPL.hug(pp(ZAC,880,FY,2.05,{expr:'joy'}),pp(FARM,1100,FY,2.4,{face:-1,expr:'joy'}),{k:hg}).svg;
   return g+foreCobble(t,960,1.04,{col:'#D0A870',over:[...Array(8)].map((_,k)=>coin(500+hash(k,3)*900,1300+hash(k,4)*360,22)).join('')+SC.animal(t,'dove',1360,1360,2,{face:-1,look:'up'})});
@@ -992,7 +992,7 @@ function ephesus(t,lt){
   g+=P('M220 800l90 -70l24 70z','#F6EFDC')+L(290,800,290,690,'#6A4A2A',5)+P('M180 800h170l-20 24h-130z','#7A4A2A');
   g+=[0,1,2,3,4,5].map(i=>R(1160+i*120,420,46,460,4,'#F2E8D8',{stroke:'#B8A888','stroke-width':3})).join('')+R(1130,390,740,40,4,'#E8DCC4')+P('M1130 390L1500 280L1870 390Z','#E8DCC4');
   g+=SC.ground(t,186,{y:880,col:'#D8C8A8',col2:'#B0A07C',stones:10,tufts:6,grassCols:['#8A8A5A','#A8A870','#D8D0A0']});
-  g+=folk(2,1360,FY-60,1.6,{face:-1,look:{x:1000,y:FY-340},expr:'joy'})+folk(3,560,FY-30,1.3,{look:{x:900,y:FY-340},expr:'joy'});
+  g+=folk(2,1360,FY-60,1.6,{face:-1,look:{x:1000,y:FY-340},expr:'joy'})+folk(3,560,FY-30,1.3,{kid:true,look:{x:900,y:FY-340},expr:'joy'});
   const hd=ease.out(prog(t,AT.ephesus-.6,AT.ephesus));
   const m=pp(HERO,760,FY,HS,{near:{x:lerp(950,1010,hd),y:FY-260},look:{x:1150,y:FY-380},expr:'joy'});
   const scr=(x,y)=>R(x-14,y-60,28,110,10,'#F6EFDC',{stroke:'#B89A6A','stroke-width':4});
@@ -1027,7 +1027,7 @@ function shareLoaf(t,lt){
   const gv=ease.inOut(prog(t,AT.shareW[0]-.3,AT.shareW[0]+.6));
   const o=pp(EXT,760,FY,VS,{near:{x:lerp(940,1040,gv),y:lerp(FY-250,FY-230,gv)},far:{x:880,y:FY-250},look:{x:1200,y:FY-300},expr:['calm','joy',gv]});
   g+=holding(o,(h,h2)=>G(`translate(${h[0]} ${h[1]-16}) scale(1.4)`,P('M-4 -34Q60 -30 56 22H-4Z','#D9963E',{stroke:'#8A5A22','stroke-width':4}))+G(`translate(${h2[0]} ${h2[1]-16}) scale(1.4)`,P('M4 -34Q-60 -30 -56 22H4Z','#D9963E',{stroke:'#8A5A22','stroke-width':4})));
-  const kid=person(3,1080,FY+6,1.4,{face:-1,near:{x:lerp(1060,1050,gv),y:FY-150},look:{x:900,y:FY-350},expr:['sad','joy',gv]});
+  const kid=person(3,1080,FY+6,1.4,{kid:true,face:-1,near:{x:lerp(1060,1050,gv),y:FY-150},look:{x:900,y:FY-350},expr:['sad','joy',gv]});
   const mom=pp(WIDOW,1290,FY,2.15,{face:-1,look:{x:1000,y:FY-300},expr:['sad','tender',gv],skin:'#D9965E',shade:'#A86A3E',hair:'#2E1C52'});mom.near=PPL.handOn(mom,kid,'shoulder');
   const MR=PPL.rig(mom);
   return g+MR.draw('back')+MR.draw('body')+MR.draw('head')+PPL.fig(kid)+MR.draw('front')+foreCobble(t,1010,1.1,{col:'#C09A6A',over:SC.animal(t,'bird',1350,1300,2.2,{face:-1,look:'up'})});
@@ -1059,7 +1059,7 @@ function toYourself(t,lt){
   g+=who(HERO,700,FY,HS,{near:'chest',far:'chest',look:{x:300,y:500},expr:'calm',lean:-4});
   const st=Math.sin(t*3)*6;
   const w=pp(WIDOW,1150,FY,2.3,{face:-1,lean:-14,near:{x:1060,y:FY-180+st},far:{x:1050,y:FY-186+st},look:{x:800,y:FY-400},expr:'sad',skin:'#D9965E',shade:'#A86A3E',hair:'#2E1C52'});
-  return g+holding(w,h=>jarB(h[0]-6,h[1]+150,2.2,'#B8683A'))+folk(3,1370,FY+6,1.35,{face:-1,look:{x:1150,y:FY-400},expr:'sad'})+foreCobble(t,950,1.04,{col:'#A89A80'});
+  return g+holding(w,h=>jarB(h[0]-6,h[1]+150,2.2,'#B8683A'))+folk(3,1370,FY+6,1.35,{kid:true,face:-1,look:{x:1150,y:FY-400},expr:'sad'})+foreCobble(t,950,1.04,{col:'#A89A80'});
 }
 // P9. It's opening them: he unfolds his arms, light pours from his hands; he takes the jar from her.
 function openingThem(t,lt){
@@ -1118,7 +1118,7 @@ function onceTook(t,lt){
 function learnGive(t,lt){
   let g=SC.env(t,'village',{seed:207,mood:'golden',gy:880,sun:{x:960,y:-100,r:90}})+home(t,200,920,.9)+home(t,1760,920,.9);
   g+=SC.pair(t,'sheep',1500,920,.7,{face:-1,graze:'auto'})+SC.animal(t,'donkey',420,926,.8,{face:1});
-  const ds=[pp(ZAC,560,FY,1.85,{expr:'joy'}),pp(EXT,790,FY,2.0,{face:1,expr:'joy'}),person(3,990,FY+6,1.35,{face:1,expr:'joy'}),pp(WIDOW,1170,FY,1.95,{face:-1,expr:'joy',skin:'#D9965E',shade:'#A86A3E',hair:'#2E1C52'}),pp(FARM,1380,FY,2.0,{face:-1,expr:'joy'})];
+  const ds=[pp(ZAC,560,FY,1.85,{expr:'joy'}),pp(EXT,790,FY,2.0,{face:1,expr:'joy'}),person(3,990,FY+6,1.35,{kid:true,face:1,expr:'joy'}),pp(WIDOW,1170,FY,1.95,{face:-1,expr:'joy',skin:'#D9965E',shade:'#A86A3E',hair:'#2E1C52'}),pp(FARM,1380,FY,2.0,{face:-1,expr:'joy'})];
   ds.forEach(o=>o.look={x:960,y:300});
   g+=chain(ds,true);
   const p=((t-AT.learn)*.6%1+1)%1,lx=lerp(600,1360,p);

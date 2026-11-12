@@ -338,7 +338,7 @@ function tentFamily(t){
   g+=glow(980,640,520*glowK+10,'#FFD27A',.45*glowK)+campfire(t,1420,FY+10,1.3);
   const up={x:980,y:420},ex=['calm','joy',glowK],au={aura:'#FFE9A8',auraOp:.35*glowK};
   g+=folk(0,640,FY,HS,Object.assign({look:up,expr:ex,phase:1.1,near:{x:900,y:FY-360}},au));
-  g+=PPL.carry(person(1,1220,FY,2.4,Object.assign({face:-1,f:true,look:up,expr:ex},au)),person(3,0,0,1.45,{look:up,expr:['surprised','joy',glowK]}),{out:true}).svg;
+  g+=PPL.carry(person(1,1220,FY,2.4,Object.assign({face:-1,f:true,look:up,expr:ex},au)),person(3,0,0,1.45,{kid:true,look:up,expr:['surprised','joy',glowK]}),{out:true}).svg;
   return g+foreNight(t,960,1.08,{cols:['#120C10','#2A1E24','#5A3A38'],flowers:['#FFB04C'],seed:43,over:SC.pair(t,'goat',1300,1690,1.7,{face:-1,graze:'auto',gap:90,dy:-30,col:'#5A4A44'})});
 }
 // O5. Honor your father and your mother: at dawn a grown son helps his old father up from the bench; the mother smiles.
@@ -461,7 +461,7 @@ function cameFrom(t){
   // the ones before: a row of glowing outlines on the ridge
   for(let k=0;k<7;k++){const x=420+k*180;g+=G('',folk(k,x,SC.yAt(pts,x)+6,1.15,{look:{x:960,y:300},expr:'calm',filter:''}),.28);}
   g+=SC.light(960,620,800,'#FF9A5A',.2);
-  const ps=[elderOpts(620,FY,2.3,{expr:'tender'}),person(0,930,FY,HS,{expr:'joy'}),person(3,1110,FY+10,1.5,{expr:'joy',look:{x:900,y:FY-450}}),person(1,1350,FY,2.35,{f:true,face:-1,expr:'joy'})];
+  const ps=[elderOpts(620,FY,2.3,{expr:'tender'}),person(0,930,FY,HS,{expr:'joy'}),person(3,1110,FY+10,1.5,{kid:true,expr:'joy',look:{x:900,y:FY-450}}),person(1,1350,FY,2.35,{f:true,face:-1,expr:'joy'})];
   ps.forEach(p=>{if(!p.look)p.look={x:1090,y:FY-300};p.aura='#FFD27A';p.auraOp=.25;});
   return g+chain(ps,false)+SC.fore(t,{y:1040,edges:EDG(950,1.0),cols:['#1A0810','#3A1A24','#7A3A44'],flowers:['#FFD27A'],rocks:0,rockAt:[[1360,1560,180]],density:.6,seed:125});
 }
@@ -485,7 +485,7 @@ function heavenHome(t){
   g+=mark('M960 -240Q1180 0 900 260T960 560',d,'#FFE9A8',12,{opacity:.85});
   g+=SC.ground(t,133,{y:900,col:'#24304A',col2:'#121A2C',stones:12,tufts:14,grassCols:['#121A2A','#1E2A40','#3A4A6A']});
   g+=home(t,960,FY-30,1.2,{lit:.5+.5*d});
-  g+=folk(0,620,FY,HS,{look:{x:960,y:-200},expr:['calm','awe',d],near:'chest'})+folk(1,1310,FY,2.4,{face:-1,f:true,look:{x:960,y:-200},expr:['calm','joy',d]})+folk(3,960,FY+16,1.45,{look:'up',expr:'joy',near:'up',far:'up'});
+  g+=folk(0,620,FY,HS,{look:{x:960,y:-200},expr:['calm','awe',d],near:'chest'})+folk(1,1310,FY,2.4,{face:-1,f:true,look:{x:960,y:-200},expr:['calm','joy',d]})+folk(3,960,FY+16,1.45,{kid:true,look:'up',expr:'joy',near:'up',far:'up'});
   return g+foreNight(t,960,1.0,{flowers:['#FFE9A8'],seed:135});
 }
 
@@ -691,7 +691,7 @@ function homesLane(t){
   g+=SC.ground(t,215,{y:900,col:'#6A4A4A',col2:'#3A2A30',stones:10,tufts:10,grassCols:['#3A2A30','#5A3A3A','#8A5A4A']});
   g+=home(t,980,FY-50,1.35,{lit:1,wall:'#D8B488'});
   const hold=ease.out(prog(t,AT.homes,AT.homes+.8));
-  const ps=[elderOpts(630,FY,2.3,{expr:'joy',look:{x:900,y:FY-400}}),person(0,940,FY,HS,{expr:'joy',look:{x:630,y:FY-400}}),person(3,1120,FY+10,1.45,{expr:'joy',look:{x:940,y:FY-400}}),person(1,1360,FY,2.35,{face:-1,f:true,expr:'joy',look:{x:940,y:FY-400}})];
+  const ps=[elderOpts(630,FY,2.3,{expr:'joy',look:{x:900,y:FY-400}}),person(0,940,FY,HS,{expr:'joy',look:{x:630,y:FY-400}}),person(3,1120,FY+10,1.45,{kid:true,expr:'joy',look:{x:940,y:FY-400}}),person(1,1360,FY,2.35,{face:-1,f:true,expr:'joy',look:{x:940,y:FY-400}})];
   g+=hold>.5?chain(ps,false):ps.map(o=>PPL.fig(o)).join('');
   return g+foreG(t,960,1.0,{cols:['#1E1418','#3A2A2A','#7A5A4A'],flowers:['#FFD27A','#FF9A6A'],seed:217,over:SC.animal(t,'sheep',xR(960,1)-120,1560,1.8,{face:-1,graze:'auto'})})+fireflies(t,300,300,1300,600,'#FFE9A8',10,.5);
 }
@@ -705,7 +705,7 @@ function familyHug(t){
   g+=GA.draw('back')+GA.draw('body')+GA.draw('head')+GM.draw('back')+GM.draw('body')+GM.draw('head');
   g+=PPL.hug(person(0,820,FY,HS,{expr:'joy'}),person(1,1100,FY,2.4,{face:-1,f:true,expr:'joy'}),{k}).svg;
   g+=GA.draw('front')+GM.draw('front');
-  g+=folk(3,960,FY+40,1.4,{expr:'joy',look:'up',near:'up',far:'up'});
+  g+=folk(3,960,FY+40,1.4,{kid:true,expr:'joy',look:'up',near:'up',far:'up'});
   return g+foreHome(t,960,.98,{night:true,kind:'cushion',mat:'#C8487A'});
 }
 
@@ -748,7 +748,7 @@ function leftWindow(t){
     SC.range(231,{y:wy+wh*.6,h:120,col:'#4A5468',hazeOp:.3})+R(wx,wy+wh*.6,ww,wh*.4,0,'#3A4250')+SC.house(wx+640,wy+wh*.6+10,.9,{col:'#5A6070'});
   const p=prog(t,AT.left-.4,AT.knew),fx=lerp(wx+360,wx+600,p),gy=wy+wh*.6+90;
   g+=R(wx+560,gy-120,10,120,2,'#2A2A34')+R(wx+660,gy-120,10,120,2,'#2A2A34')+L(wx+560,gy-110,wx+660,gy-96,'#2A2A34',8);
-  g+=G('',folk(0,fx,gy,.62,{walk:t*6,expr:'calm',filter:''}),(1-p*.8).toFixed(2));
+  g+=G('',folk(0,fx,gy,.62,{kid:true,walk:t*6,expr:'calm',filter:''}),(1-p*.8).toFixed(2));
   for(let k=0;k<50;k++){const x=wx+hash(k,1)*ww,y=wy+((hash(k,2)*wh+t*600)%wh);g+=L(x,y,x-8,y+36,'#C8D4E8',3,{opacity:.6});}
   g+='</g>'+L(wx+ww/2,wy,wx+ww/2,wy+wh,'#2A2A34',14)+L(wx,wy+wh/2,wx+ww,wy+wh/2,'#2A2A34',14)+R(wx,wy,ww,wh,6,'none',{stroke:'#2A2A34','stroke-width':18})+R(wx-40,wy+wh,ww+80,34,6,'#3A3A44');
   g+=folk(3,900,FY,1.85,{look:{x:fx,y:gy-60},expr:'sad',near:{x:1020,y:FY-160},aura:'#9AB0D0',auraOp:.15});
@@ -803,7 +803,7 @@ function teachers(t){
   const tk=Math.sin(E.held(t,6)*4);
   g+=withFront(elderOpts(1320,FY,HS,{face:-1,sit:1,seat:FY-110,look:{x:860,y:FY-300},expr:tk>0?'joy':'calm',near:{x:1150,y:lerp(FY-240,FY-290,(tk+1)/2)},far:{x:1190,y:FY-200},tunic:'#E8DCC0',tunic2:'#9A7A50'}),()=>scrollP(1185,FY-200,120,70));
   const lis={x:1300,y:FY-470};
-  g+=folk(1,620,FY,2.3,{kneel:1,f:true,look:lis,expr:'tender',near:'chest'})+folk(3,910,FY+10,1.45,{kneel:1,look:lis,expr:'surprised'});
+  g+=folk(1,620,FY,2.3,{kneel:1,f:true,look:lis,expr:'tender',near:'chest'})+folk(3,910,FY+10,1.45,{kid:true,kneel:1,look:lis,expr:'surprised'});
   return g+foreG(t,960,1.04,{seed:253,over:SC.pair(t,'sheep',xL(960,1.04)+230,1600,1.8,{graze:'auto',gap:90,dy:-30})});
 }
 // D10. Respect the place a parent holds: the chair at the head of the table; she bows and sets the lamp there.
@@ -837,7 +837,7 @@ function paulTurns(t){
   const turn=t>AT.paulTurns+.6,tk=Math.sin(E.held(t,6)*4);
   g+=withFront(elderOpts(640,FY,HS,Object.assign({face:turn?1:-1,look:turn?{x:1100,y:FY-420}:{x:200,y:FY-400},expr:'joy',near:turn?{x:800,y:lerp(FY-250,FY-290,(tk+1)/2)}:'chest',far:{x:680,y:FY-200}},PAUL)),()=>scrollP(690,FY-200,70,110));
   const lk={x:640,y:FY-460};
-  g+=PPL.carry(person(0,1020,FY,2.35,{face:-1,look:lk,expr:'calm'}),person(3,0,0,1.4,{expr:'joy'}),{out:true}).svg;
+  g+=PPL.carry(person(0,1020,FY,2.35,{face:-1,look:lk,expr:'calm'}),person(3,0,0,1.4,{kid:true,expr:'joy'}),{out:true}).svg;
   g+=folk(1,1390,FY,2.3,{face:-1,f:true,look:lk,expr:'calm',near:'chest'});
   return g+foreFlag(t,1040,.98,{col:'#9A7A58'});
 }

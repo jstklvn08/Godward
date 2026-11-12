@@ -1084,7 +1084,7 @@ function madeForMan(t,lt){
   const away=sq(prog(t,AT.madeFor+.2,AT.madeFor+2.2));
   g+=Ell(980,FY+10,420,50,'#F2E8D0');
   const s=prog(t,AT.notMan-.4,AT.notMan+.4);
-  g+=fig(who(DAD,620,FY,HS,{sit:1,seat:FY-30,look:{x:1700,y:-60},expr:['awe','joy',s]}))+fig(who(MUM,1000,FY-10,2.3,{sit:1,seat:FY-40,look:{x:1700,y:-60},expr:['awe','joy',s]}))+fig(who(GIRL,1300,FY+10,1.5,{sit:1,seat:FY-20,face:-1,look:{x:1700,y:-60},expr:'joy',near:'up'}));
+  g+=fig(who(DAD,620,FY,HS,{sit:1,seat:FY-30,look:{x:1700,y:-60},expr:['awe','joy',s]}))+fig(who(MUM,1000,FY-10,2.3,{sit:1,seat:FY-40,look:{x:1700,y:-60},expr:['awe','joy',s]}))+fig(who(GIRL,1300,FY+10,1.5,{kid:true,sit:1,seat:FY-20,face:-1,look:{x:1700,y:-60},expr:'joy',near:'up'}));
   for(let i=0;i<18;i++){const x=600+hash(i,1)*800+away*1800*(.6+hash(i,2)),y=FY-40-hash(i,3)*200-away*900*hash(i,4);if(x<2200)g+=slipS(x,y,(hash(i,5)-.5)*40+away*300,i,1.7);}
   for(let i=0;i<10;i++){const y=-400+i*140,x=((t*700+i*230)%2400)-300;g+=L(x,y,x+200,y-16,'#FFFFFF',4,{opacity:.4});}
   return g+foreWheat(t,960,1.04,31);
@@ -1137,7 +1137,7 @@ function saturdayWalk(t,lt){
   g+=chapel(1450,FY-20,2.0);
   const x=lerp(580,680,prog(t,AT.adventists-.2,AT.jewish));
   g+=grip(who(DAD,x,FY,HS,{walk:t*5+.5,expr:'calm',look:{x:1450,y:FY-300},near:{x:x+110,y:FY-250}}),(hx,hy)=>R(hx-10,hy-60,70,96,6,'#2A2A5A',{stroke:'#C8A060','stroke-width':4}));
-  g+=PPL.holdHands(who(MUM,x+360,FY-10,2.3,{walk:t*5,expr:'joy',look:{x:1450,y:FY-300}}),who(GIRL,x+600,FY+10,1.45,{walk:t*5+1,expr:'joy',look:{x:x+360,y:FY-500}})).svg;
+  g+=PPL.holdHands(who(MUM,x+360,FY-10,2.3,{walk:t*5,expr:'joy',look:{x:1450,y:FY-300}}),who(GIRL,x+600,FY+10,1.45,{kid:true,walk:t*5+1,expr:'joy',look:{x:x+360,y:FY-500}})).svg;
   return g+SC.fore(t,{y:1060,edges:EDG(980,1.04),cols:['#2A4A1C','#4A7A2E','#9AC060'],flowers:['#FFD45E','#FFFFFF'],rocks:0,density:.6,seed:87});
 }
 // ---- 56. The day Jewish families still keep: two candles and the braided bread; the mother covers her eyes for the blessing ----
@@ -1196,7 +1196,7 @@ function hammock(t,lt){
   const sw=Math.sin(t*1.2)*12;
   g+=P(`M470 ${FY-420}Q960 ${FY-80+sw} 1470 ${FY-420}`,'none',{stroke:'#E8D8B0','stroke-width':8})+P(`M540 ${FY-360}Q960 ${FY+20+sw} 1400 ${FY-360}Q960 ${FY-140+sw} 540 ${FY-360}Z`,'#FF8A5A',{stroke:'#8A3A2A','stroke-width':5});
   const dad=who(DAD,880,0,2.2,{hipAt:{x:880,y:FY-200+sw},sit:1,look:'up',expr:'tender',lean:-40,near:{x:1000,y:FY-310+sw}});
-  g+=fig(dad)+fig(who(GIRL,1000,0,1.3,{hipAt:{x:1020,y:FY-290+sw},sit:1,face:-1,lean:30,expr:'calm',tilt:20}))+Ell(960,FY-170+sw,180,26,'#FF8A5A',{opacity:.85});
+  g+=fig(dad)+fig(who(GIRL,1000,0,1.3,{kid:true,hipAt:{x:1020,y:FY-290+sw},sit:1,face:-1,lean:30,expr:'calm',tilt:20}))+Ell(960,FY-170+sw,180,26,'#FF8A5A',{opacity:.85});
   return g+SC.pair(t,'sheep',1620,FY+60,1.1,{face:-1,graze:'auto'})+SC.fore(t,{y:1080,edges:EDG(960,1.04),cols:['#2A4A1C','#4A7A2E','#9AC060'],flowers:['#FFD45E','#FFFFFF'],rocks:0,density:.8,seed:100});
 }
 // ---- 61. But almost all agree that you were made to stop: families on blankets at sunset on the hillside ----

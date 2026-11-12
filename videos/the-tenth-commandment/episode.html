@@ -227,61 +227,26 @@ function sinaiOpen(t,lt){
   return g;
 }
 // A1. "The last one is about what you want": the man LARGE at his fence, staring at his neighbour's glowing house.
-// ---- The man at his fence (A1, A2, B9, G1). He leans on a low fence on the left third of the frame, both hands resting
-// on the top rail, the heart on his chest; the neighbour's warm golden yard is on the right. The fence is drawn below
-// the rail only (the posts end at the rail), so it never covers his face. The motion stays small: a breath, a look,
-// the heart beating, a hand lifting off the rail.
-const LX=560, LS=2.7;                                   // his x and scale (feet at FY)
-// his own fence, the posts ending under the top rail; ends at an end post (x1) where the neighbour's yard begins
-function fenceLow(x0,x1,y,s=2.6,col='#6A5A5A'){const dk=mix(col,'#0A0A14',.45),lt=mix(col,'#C8D8F0',.3),top=y-68*s;let g='';
-  for(let x=x0;x<=x1+1;x+=58*s)g+=R(x-8*s,top+2*s,16*s,y+6*s-top-2*s,3*s,mix(col,'#000000',.12),{stroke:dk,'stroke-width':2.5*s})+L(x-3*s,top+10*s,x-2*s,y-8*s,lt,1.6*s,{opacity:.4});
-  [62,30].forEach(h=>{g+=R(x0-10*s,y-h*s-6*s,x1-x0+20*s,12*s,4*s,col,{stroke:dk,'stroke-width':2.5*s})+L(x0,y-h*s-3*s,x1,y-h*s-3*s,lt,2*s,{opacity:.55});});
-  return g;}
-// the neighbour's yard to the right, golden: lamplight on the ground, a fig tree, his ox and donkey, a string of lamps
-function goldYard(t,o={}){const k=o.k??1,hx=o.hx??1180;let g='';
-  const id=S.nid(),ic=S.nid();
-  g+=`<linearGradient id="${ic}" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1A2A60" stop-opacity=".45"/><stop offset=".42" stop-color="#1A2A60" stop-opacity=".22"/><stop offset=".6" stop-color="#1A2A60" stop-opacity="0"/></linearGradient><rect x="-200" y="-900" width="2400" height="2900" fill="url(#${ic})"/>`;
-  g+=`<radialGradient id="${id}" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC86A" stop-opacity="${(.55*k).toFixed(2)}"/><stop offset=".6" stop-color="#E8903A" stop-opacity="${(.22*k).toFixed(2)}"/><stop offset="1" stop-color="#E8903A" stop-opacity="0"/></radialGradient><ellipse cx="${hx}" cy="900" rx="760" ry="200" fill="url(#${id})"/>`;
-  g+=P('M960 1030 Q1040 872 1200 868 Q1600 862 2200 880 L2200 1100 L960 1100Z','#D8A050',{opacity:(.5*k).toFixed(2)})+glow(hx+60,930,420,'#FFD27A',.4*k);
-  g+=glow(hx,640,620,'#FFB24C',.32*k);
-  // a string of lamps from the house to a pole
-  const pole=hx+420;g+=L(pole,900,pole,600,'#3A2A1A',7);
-  for(let i=0;i<=8;i++){const u=i/8,x=lerp(hx-150,pole,u),y=600+Math.sin(u*Math.PI)*60+lerp(-20,0,u);g+=glow(x,y,44,'#FFD27A',.8*k)+C(x,y,9,'#FFE6A0');}
-  g+=P(`M${hx-150} 580 Q${(hx-150+pole)/2} 700 ${pole} 600`,'none',{stroke:'#3A2A1A','stroke-width':3});
-  g+=SC.animal(t,'donkey',hx+90,905,.75,{face:-1,graze:'auto',phase:1})+SC.animal(t,'ox',hx+300,915,.85,{face:-1,graze:'auto',phase:2.4});
-  return g;}
-function leanAt(t,o={}){
-  // o: mood, look, expr, lean, heart(r,c) extra, wave (0..1 lifts the near hand off the rail), k (gold), seed, hx, near/far
-  let g=nightVillage(t,{mood:o.mood||'night',hx:o.hx??1300,lit:o.lit??1,seed:o.seed||7});
-  g+=goldYard(t,{k:o.k});
-  g+=glow(LX,700,520,'#5A7AE0',.22);                               // a cool light on him
-  const br=Math.sin(t*1.6)*1.5, w=o.wave||0;
-  const nearH=[lerp(66,74,w),lerp(-68,-118,w)+br], farH=[54,-70+br];  // hands on the rail (local units)
-  const q=who('cov',LX,FY,LS,Object.assign({lean:o.lean??6,look:o.look||{x:1240,y:600},expr:o.expr||'calm',
-    near:{x:LX+nearH[0]*LS,y:FY+nearH[1]*LS},far:{x:LX+farH[0]*LS,y:FY+farH[1]*LS}},o.q||{}));
-  const r=PPL.rig(q),c=r.W([8,-90]);
-  g+=r.draw('back')+r.draw('body')+r.draw('head');
-  g+=fenceLow(150,980,FY+14);
-  g+=(o.heart?o.heart(r,c):heart(c[0],c[1],40,.8));
-  return g+r.draw('front');
-}
+function atFence(q,extra=()=>'',x0=340,x1=1060){const r=PPL.rig(q);return r.draw('back')+r.draw('body')+r.draw('head')+extra(r)+fence2(x0,x1,FY+14)+r.draw('front');}
 function fenceLook(t,lt){
+  let g=nightVillage(t,{hx:1230});
   const want=ease.inOut(prog(t,AT.want-.4,AT.want+.6)),beat=Math.pow(Math.max(0,Math.sin((t-AT.want)*3.4)),4);
-  const g=leanAt(t,{expr:['calm','awe',want*.7],k:.6+.4*want,heart:(r,c)=>want>0?heart(c[0],c[1],40+10*beat,want*(.6+.6*beat)):''});
-  return g+foreNight(t,800,1.1);
+  const q=who('cov',640,FY,HS,{look:{x:1200,y:560},expr:['calm','awe',want*.7],lean:5,near:{x:760,y:FY-170},far:{x:720,y:FY-166}});
+  g+=atFence(q,r=>{const c=r.W([22,-96]);return want>0?heart(c[0],c[1],40+12*beat,want*(.6+.6*beat)):'';});
+  return g+foreNight(t,880,1.1);
 }
 // A2. "Without moving a muscle, and nobody would know": he stands still; the neighbours stroll past with a lantern and wave.
 function lane(t,lt){
-  // A2. "Without moving a muscle, and nobody would know": the neighbours stroll home through their golden yard with a
-  // lantern and wave; he lifts one hand off the rail to wave back. A thread runs from his heart to their house.
-  const walk=prog(t,AT.youCan,AT.know-.2),x=lerp(1500,1180,ease.out(walk)),wave=prog(t,AT.know-.3,AT.know+.2);
-  const th=ease.inOut(prog(t,AT.muscle,AT.muscle+1)),wv=ease.inOut(prog(t,AT.know,AT.know+.6));
-  let g=leanAt(t,{seed:9,look:{x,y:640},expr:['calm','joy',wv],wave:.6*wv,heart:(r,c)=>{let s=heart(c[0],c[1],34,.6);
-    if(th>0){const v=Math.sin(t*3)*14;s+=mark(`M${c[0]} ${c[1]}Q${(c[0]+1240)/2} ${c[1]-260+v} 1240 560`,th,CORAL,6,{opacity:.85});}return s;}});
-  const nei=who('nei',x,940,1.45,{face:-1,walk:walk<1?t*7:null,look:{x:LX,y:600},expr:'joy',near:wave>0?{x:x-90,y:940-260}:null}),wf=who('neiW',x+150,936,1.4,{face:-1,walk:walk<1?t*7+1:null,look:{x:LX,y:600},expr:'joy'});
+  let g=nightVillage(t,{hx:1250,seed:9});
+  const walk=prog(t,AT.youCan,AT.know-.2),x=lerp(1400,1050,ease.out(walk)),wave=prog(t,AT.know-.3,AT.know+.2);
+  const nei=who('nei',x,930,1.5,{face:-1,walk:walk<1?t*7:null,look:{x:640,y:600},expr:'joy',near:wave>0?'up':null}),wf=who('neiW',x+150,926,1.44,{face:-1,walk:walk<1?t*7+1:null,look:{x:640,y:600},expr:'joy'});
   const N=PPL.rig(nei),hn=N.hand('far');
   g+=PPL.fig(wf)+N.draw('back')+L(hn[0],hn[1],hn[0],hn[1]+60,'#4A2A14',6)+glow(hn[0],hn[1]+96,150,'#FFD27A',.6)+R(hn[0]-22,hn[1]+60,44,56,8,'#FFE29A',{stroke:'#6A4A2A','stroke-width':4})+N.draw('body')+N.draw('head')+N.draw('front');
-  return g+foreNight(t,800,1.08,{seed:33});
+  const th=ease.inOut(prog(t,AT.muscle,AT.muscle+1));
+  const q=who('cov',620,FY,HS,{look:{x:x,y:640},expr:['calm','joy',wave],near:{x:740,y:FY-170},far:wave>0?{x:500,y:FY-430}:{x:700,y:FY-166}});
+  g+=atFence(q,r=>{const c=r.W([22,-96]);let s=heart(c[0],c[1],34,.6);
+    if(th>0){const wv=Math.sin(t*3)*14;s+=mark(`M${c[0]} ${c[1]}Q${(c[0]+1250)/2} ${c[1]-260+wv} 1250 560`,th,CORAL,6,{opacity:.85});}return s;});
+  return g+foreNight(t,900,1.08,{seed:33});
 }
 // A3. "So why would God end with that one?": the two tablets on a storm-lit summit; the tenth line beats like a heart.
 function whyTen(t,lt){
@@ -309,7 +274,7 @@ function sinaiFire(t,lt){
   g+=SC.ground(t,10,{y:880,col:'#5A3A30',col2:'#2A1A1A',stones:16,tufts:10,grassCols:['#2A1A14','#5A3A2A','#9A6A40']});
   [[420,910,1.1,'#7A4A3A'],[1500,906,1.2,'#6A3E30']].forEach(([x,y,k,c])=>g+=tent(x,y,c,k)+glow(x+130*k,y,80,'#FF9A4C',.4));
   const up={x:960,y:200},ex=['calm','awe',prog(t,AT.fromFire,AT.fromFire+1)];
-  const dad=person(0,700,FY,2.5,{look:up,expr:ex}),mom=person(1,1050,FY-4,2.3,{f:true,look:up,expr:ex,near:'chest'}),kid=person(3,1300,FY+6,1.45,{face:-1,look:up,expr:['surprised','awe',.5],near:{x:1240,y:640}});
+  const dad=person(0,700,FY,2.5,{look:up,expr:ex}),mom=person(1,1050,FY-4,2.3,{f:true,look:up,expr:ex,near:'chest'}),kid=person(3,1300,FY+6,1.45,{kid:true,face:-1,look:up,expr:['surprised','awe',.5],near:{x:1240,y:640}});
   dad.near=PPL.handOn(dad,mom,'shoulder');
   const D=PPL.rig(dad);
   g+=D.draw('back')+PPL.fig(mom)+D.draw('body')+D.draw('head')+D.draw('front')+PPL.fig(kid);
@@ -321,7 +286,7 @@ const foreYard=(t,cx,z,o={})=>SC.fore(t,{y:1040,edges:EDG(cx,z),cols:o.cols||['#
 // B2. your neighbour's house: the neighbour at his door with his child; the man peeks over his own wall.
 function nbHouse(t,lt){
   let g=dayV(t,{mood:'golden',hx:1280});
-  const kid=person(3,1330,950,1.1,{face:-1,look:{x:1180,y:700},expr:'joy',near:'open'});
+  const kid=person(3,1330,950,1.1,{kid:true,face:-1,look:{x:1180,y:700},expr:'joy',near:'open'});
   const nei=who('nei',1180,946,1.75,{look:{x:1330,y:800},expr:'joy'});nei.near=PPL.handOn(nei,kid,'shoulder');
   const NR=PPL.rig(nei);g+=NR.draw('back')+NR.draw('body')+NR.draw('head')+PPL.fig(kid)+NR.draw('front');
   const peek=ease.out(prog(t,AT.v17,AT.house));
@@ -404,12 +369,11 @@ function liking(t,lt){
 }
 // B9. "It is wanting what belongs to someone else, for yourself": alone at night, he grips his chest, eyes on the house.
 function wanting(t,lt){
-  // B9. "It is wanting what belongs to someone else, for yourself": alone at night he leans a little further over his
-  // rail, eyes on the golden yard; the heart pulls toward it on a thread.
-  const pull=ease.inOut(prog(t,AT.wanting,AT.yourself+.6));
-  const g=leanAt(t,{seed:11,lean:lerp(6,12,pull),look:{x:1260,y:560},expr:['calm','sad',pull*.6],k:.7+.3*pull,heart:(r,c)=>{const wv=Math.sin(t*3)*12;
-    return heart(c[0],c[1],40,.8)+mark(`M${c[0]} ${c[1]}Q${(c[0]+1260)/2} ${c[1]-260+wv} 1260 560`,1,CORAL,7,{opacity:(.4+.5*pull).toFixed(2)});}});
-  return g+glow(LX,600,500,'#C0504A',.12)+foreNight(t,800,1.1,{seed:35,lamp:.6});
+  let g=nightVillage(t,{hx:1280,seed:11})+glow(700,600,500,'#C0504A',.2);
+  const pull=ease.inOut(prog(t,AT.wanting,AT.yourself+.6)),grab=ease.out(prog(t,AT.yourself-.2,AT.yourself+.4));
+  const q=who('cov',lerp(640,700,pull),FY,HS,{lean:lerp(4,14,pull),look:{x:1260,y:560},expr:['calm','sad',pull*.6],near:grab>0?'chest':{x:800,y:FY-180},far:grab>0?'chest':{x:770,y:FY-176}});
+  g+=atFence(q,r=>{const c=r.W([22,-96]),wv=Math.sin(t*3)*12;return heart(c[0],c[1],40,.8)+mark(`M${c[0]} ${c[1]}Q${(c[0]+1280)/2} ${c[1]-260+wv} 1280 560`,1,CORAL,7,{opacity:(.4+.5*pull).toFixed(2)});});
+  return g+foreNight(t,920,1.1,{seed:35,lamp:.6});
 }
 
 // ================= ACT 2. No judge could catch you: the court at the city gate, at night =================
@@ -909,9 +873,10 @@ function needHelp(t,lt){
 // ================= ACT 6. The cure =================
 // G1. "So what's the cure?": grey dawn; the man at his fence, his heart still knotted.
 function cureQ(t,lt){
-  // G1. "So what's the cure?": grey dawn; the man at his fence, his heart still knotted; the yard over there still warm.
-  const g=leanAt(t,{mood:'dawn',lit:.3,seed:13,k:.5,look:{x:1240,y:600},expr:'sad',heart:(r,c)=>heart(c[0],c[1],40,.7)+mark(scribble(c[0],c[1],50,40,4),1,'#5A0A14',5)});
-  return g+SC.fore(t,{y:1040,edges:EDG(800,1.08),cols:['#2A3A3A','#4A5A54','#8A9A88'],flowers:['#E8E0F0'],rocks:0,rockAt:[[1260,1520,190]],wet:.6,density:.8,seed:91});
+  let g=nightVillage(t,{mood:'dawn',hx:1240,lit:.3,seed:13});
+  const q=who('cov',660,FY,HS,{look:{x:1240,y:600},expr:'sad',near:{x:780,y:FY-170},far:{x:740,y:FY-166}});
+  g+=atFence(q,r=>{const c=r.W([22,-96]);return heart(c[0],c[1],40,.7)+mark(scribble(c[0],c[1],50,40,4),1,'#5A0A14',5);},340,1100);
+  return g+SC.fore(t,{y:1040,edges:EDG(900,1.08),cols:['#2A3A3A','#4A5A54','#8A9A88'],flowers:['#E8E0F0'],rocks:0,rockAt:[[1300,1520,190]],wet:.6,density:.8,seed:91});
 }
 // The family's own home: a humble room in warm light. lamp: night (the lamp lit, the window dark).
 function homeIn(t,o={}){
@@ -947,7 +912,7 @@ function content(t,lt){
   let g=homeIn(t);
   const k=ease.out(prog(t,AT.content1-.2,AT.content1+.8));
   g+=fig('neiW',1280,FY,2.4,{tunic:'#3DE0B8',tunic2:'#1787A8',skin:'#F5BE8E',shade:'#C4835E',face:-1,sit:1,seat:FY-130,look:{x:700,y:560},expr:'joy'});
-  g+=PPL.fig(person(3,1040,FY-30,1.6,{face:-1,look:{x:700,y:560},expr:'joy',near:{x:960,y:FY-230}}));
+  g+=PPL.fig(person(3,1040,FY-30,1.6,{kid:true,face:-1,look:{x:700,y:560},expr:'joy',near:{x:960,y:FY-230}}));
   g+=homeTable(t,980,FY+10,1.9);
   g+=fig('cov',700,FY,HS,{sit:1,seat:FY-130,look:{x:1040,y:600},expr:['calm','joy',k],near:{x:880,y:FY-230}});
   return g+foreHome(t,980,1.0);
@@ -1179,7 +1144,7 @@ function shore(t,lt){
   for(let i=0;i<16;i++)g+=P(`M${-40+(i%8)*260} ${730+Math.floor(i/8)*100+(i%3)*30}q40 -18 80 0t80 0`,'none',{stroke:'#BFE8FF','stroke-width':5,opacity:(.4+.3*Math.sin(t*2+i)).toFixed(2)});
   g+=SC.ground(t,193,{y:930,col:'#E8C890',col2:'#C8A060',stones:12,tufts:6,grassCols:['#A8904A','#C8B06A','#E8D898']});
   const up={x:1280,y:300},k=prog(t,AT.obedience-.2,AT.wants);
-  const mom=person(1,1080,FY,2.4,{f:true,look:up,expr:['tender','joy',k]}),kid=person(3,1330,FY+6,1.5,{look:up,expr:'joy',near:{x:1400,y:FY-330}});
+  const mom=person(1,1080,FY,2.4,{f:true,look:up,expr:['tender','joy',k]}),kid=person(3,1330,FY+6,1.5,{kid:true,look:up,expr:'joy',near:{x:1400,y:FY-330}});
   const dad=who('cov',720,FY,HS,{look:up,expr:['tender','joy',k]});dad.near=PPL.handOn(dad,mom,'shoulder');
   const D=PPL.rig(dad),hh=PPL.holdHands(mom,kid);
   return g+D.draw('back')+D.draw('body')+D.draw('head')+hh.svg+D.draw('front')+SC.fore(t,{y:1040,edges:EDG(1000,1.04),cols:['#8A7A4A','#B8A060','#E8D898'],rocks:0,rockAt:[[600,1520,180]],density:.5,seed:195,
@@ -1277,8 +1242,8 @@ const SH=[];
 const sh=(name,at,draw,bg,cam,o={})=>SH.push(Object.assign({name,at,draw,bg,camF:cam},o));
 // act 0
 sh('sinai burns, ten lines',0,sinaiOpen,['#0C0818','#2A1020'],(a,b)=>[[0,960,600,.86],[b,960,430,1.0]],{stars:false});
-sh('what you want',AT.want-.12,fenceLook,['#0C1030','#05061C'],M(820,FY,1.08,800,FY,1.16,1190),{vIn:'cut',stars:false});
-sh('nobody would know',AT.youCan-.12,lane,['#0E2438','#06121E'],H(820,FY,1.08,1190),{stars:false});
+sh('what you want',AT.want-.12,fenceLook,['#0C1030','#05061C'],M(880,FY,1.08,860,FY,1.2,1190),{vIn:'cut',stars:false});
+sh('nobody would know',AT.youCan-.12,lane,['#0E2438','#06121E'],H(900,FY,1.08,1190),{stars:false});
 sh('why end with it',AT.why-.12,whyTen,['#2A0E2A','#0A0404'],(a,b)=>[[a,960,600,.95],[b,1000,620,1.12]],{vIn:'cut',stars:false});
 // act 1
 sh('fire on sinai',AT.fromFire-.12,sinaiFire,['#141020','#3A2418'],M(1000,FY,1.0,1000,FY,1.1,1190),{vIn:'cut',stars:false});
@@ -1289,7 +1254,7 @@ sh('his ox',AT.ox-.35,nbOx,['#E8C060','#8A6A20'],H(980,FY,1.08,1190),{stars:fals
 sh('his donkey',AT.donkey-.4,nbDonkey,['#D89A6A','#7A4A30'],H(960,FY,1.08,1190),{stars:false,vIn:'cut'});
 sh('anything',AT.anything-.4,nbAnything,['#5A2A6A','#2A1030'],H(960,FY,1.08,1190),{vIn:'cut',stars:false});
 sh('liking',AT.toCovet-.12,liking,['#BDE8A0','#4A9A5A'],H(960,FY,1.1,1190),{stars:false});
-sh('wanting',AT.wanting-.12,wanting,['#0C1030','#05061C'],M(820,FY,1.06,800,FY,1.14,1190),{vIn:'cut',stars:false});
+sh('wanting',AT.wanting-.12,wanting,['#0C1030','#05061C'],M(940,FY,1.06,920,FY,1.16,1190),{vIn:'cut',stars:false});
 // act 2
 sh('the court',AT.strange-.12,court,['#16203A','#0A0E1C'],H(960,FY,1.05,1190),{vIn:'cut',stars:false});
 sh('the judge',AT.judge-.12,judgeLamp,['#2A2014','#0E0A06'],H(960,FY,1.05,1190),{vIn:'cut',stars:false});
@@ -1332,7 +1297,7 @@ sh('like a mirror',AT.mirrorS-.12,mirrorClose,['#3A4A60','#1A2430'],M(960,FY,1.0
 sh("doesn't make us good",AT.notGood-.12,notGood,['#2A2A4A','#0E0E20'],H(960,FY,1.12,1190),{vIn:'cut',stars:false});
 sh('we need help',AT.help-.12,needHelp,['#1A1438','#06040E'],M(960,FY,1.02,960,FY,1.08,1190),{stars:false});
 // act 6
-sh('the cure?',AT.cure-.12,cureQ,['#9AA0B0','#4A4A5A'],H(820,FY,1.08,1190),{vIn:'cut',stars:false});
+sh('the cure?',AT.cure-.12,cureQ,['#9AA0B0','#4A4A5A'],H(900,FY,1.08,1190),{vIn:'cut',stars:false});
 sh('contentment',AT.bible-.12,content,['#FFE2A0','#E8A84C'],H(980,FY,1.0,1190),{vIn:'cut',stars:false});
 sh('prison',AT.paulL-.12,prison,['#3A3A48','#14141C'],M(960,FY,1.04,960,FY,1.12,1190),{vIn:'cut',stars:false});
 sh('to be content',AT.phil-.12,philip,['#5A4A3A','#1A140E'],M(1000,FY,1.02,980,FY,1.08,1190),{stars:false});

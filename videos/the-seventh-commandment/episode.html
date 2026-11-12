@@ -417,7 +417,7 @@ function sinaiSeven(t){
   const on=ease.out(prog(t,AT.seventh1+.3,AT.seventh1+1.2));
   g+=glow(960,170,600,'#FFD86B',.25)+tablets(960,170,.58,litOne(6,on));
   const up={x:960,y:200},ex=['calm','awe',prog(t,AT.seventh1,AT.seventh1+1)];
-  const kid=pp(GIRL,0,0,1.4,{look:up,expr:['surprised','awe',.6],near:{x:1100,y:560}});
+  const kid=pp(GIRL,0,0,1.4,{kid:true,look:up,expr:['surprised','awe',.6],near:{x:1100,y:560}});
   const dad=pp(MAN,760,FY,2.4,{look:up,expr:ex});
   g+=PPL.fig(dad)+carryHip(pp(WOM,1160,FY,2.3,{face:-1,look:up,expr:ex}),kid,{dy:-14,dx:40});
   return g+foreCamp(t,960,1.08,{seed:72});
@@ -509,9 +509,9 @@ function startsGod(t){
   g+=P('M820 -700L1100 -700L1240 960L700 960Z','#FFF6DA',{opacity:(.16*k).toFixed(2)})+presence(t,960,120,110,k)+lightRings(t,AT.withGod+.4,960,120,1300);
   g+=glow(960,960,500,'#FFF6DA',.3*k);
   const up={x:960,y:120},ex=['calm','awe',k];
-  const kid=pp(GIRL,930,FY+4,1.45,{face:-1,look:up,expr:['surprised','joy',k],near:{x:900,y:720}});
+  const kid=pp(GIRL,930,FY+4,1.45,{kid:true,face:-1,look:up,expr:['surprised','joy',k],near:{x:900,y:720}});
   const dad=pp(MAN,760,FY,2.45,{look:up,expr:ex});dad.near=PPL.handOn(dad,kid,'shoulder');
-  g+=onto(dad,kid)+carryHip(pp(WOM,1200,FY,2.35,{face:-1,look:up,expr:ex}),pp(BOY,0,0,1.4,{look:up,expr:['calm','awe',k]}),{out:true});
+  g+=onto(dad,kid)+carryHip(pp(WOM,1200,FY,2.35,{face:-1,look:up,expr:ex}),pp(BOY,0,0,1.4,{kid:true,look:up,expr:['calm','awe',k]}),{out:true});
   return g+foreNight(t,980,1.06,{seed:37,cols:['#0E0E22','#20224A','#4A4A8A']});
 }
 // ---- 2a. The very beginning: the first morning over a new world; animals in pairs ----
@@ -645,14 +645,14 @@ function homeWall(t,wl,crack,flick=1,lit=1,o={}){
 // ---- 4b. A wall around a home: stones of light rise round the house; the family stands at the door ----
 function wallBuild(t){
   let g=nightBG(t,{seed:55,mood:'dusk',moon:false,gy:930,gc:'#3A3A50'})+SC.tree(t,300,960,1.4,{kind:'olive',col:'#3A4A4A',col2:'#5A6A6A'})+SC.tree(t,1640,950,1.3,{kind:'cypress',col:'#1E3030'});
-  const fam=PPL.fig(pp(MAN,880,975,1.45,{expr:'joy',look:{x:960,y:500}}))+PPL.fig(pp(BOY,980,980,.95,{expr:'joy',look:{x:880,y:700}}))+PPL.fig(pp(WOM,1070,975,1.4,{face:-1,expr:'tender',look:{x:960,y:500}}));
+  const fam=PPL.fig(pp(MAN,880,975,1.45,{expr:'joy',look:{x:960,y:500}}))+PPL.fig(pp(BOY,980,980,.95,{kid:true,expr:'joy',look:{x:880,y:700}}))+PPL.fig(pp(WOM,1070,975,1.4,{face:-1,expr:'tender',look:{x:960,y:500}}));
   return g+homeWall(t,ease.inOut(prog(t,AT.wall,AT.wall+2)),0,1,.8,{people:fam})+foreNight(t,960,.98,{seed:53,cols:['#141420','#2A2A3E','#5A5A7A'],flowers:['#FFE9A8'],y:1120});
 }
 // ---- 4c. Think of a family: supper round the table by lamplight ----
 function supper(t){
   let g=room(t,{wall:'#C8945A',view:'moon',wx:480,ww:240,id:7,lx:960,sx:1500});
   const tt=FY-124*2.3;
-  g+=PPL.fig(pp(BOY,885,FY-110,1.5,{expr:'joy',look:{x:740,y:560}}))+PPL.fig(pp(GIRL,1045,FY-110,1.45,{face:-1,expr:'joy',look:{x:1190,y:560}}));
+  g+=PPL.fig(pp(BOY,885,FY-110,1.5,{kid:true,expr:'joy',look:{x:740,y:560}}))+PPL.fig(pp(GIRL,1045,FY-110,1.45,{kid:true,face:-1,expr:'joy',look:{x:1190,y:560}}));
   g+=R(760,tt,400,28,8,'#7A4A2A',{stroke:'#3A2414','stroke-width':4})+P(`M760 ${tt}L1160 ${tt}L1140 ${tt+90}L780 ${tt+90}Z`,'#E8D8B8',{opacity:.9})+R(790,tt+28,22,FY-tt-28,4,'#5A3418')+R(1110,tt+28,22,FY-tt-28,4,'#5A3418');
   g+=Ell(960,tt-10,70,20,'#C88A4A')+loaf(960,tt-22,.9)+cupS(860,tt)+cupS(1070,tt)+oilLamp(t,1110,tt,1.2,2);
   const tk=Math.sin(E.held(t,8)*3)>0;
@@ -662,9 +662,9 @@ function supper(t){
 // ---- 4d. A mom and a dad who promised to stay: the family at the open door; mum carries the little one ----
 function atTheDoor(t){
   let g=villageH(t,{mood:'golden',hx:1060,hs:1.25,lit:.6,seed:57});
-  const son=pp(BOY,620,FY,1.45,{expr:'joy',look:{x:790,y:560}}),dad=pp(MAN,790,FY,2.45,{expr:'joy',look:{x:1160,y:560}});
+  const son=pp(BOY,620,FY,1.45,{kid:true,expr:'joy',look:{x:790,y:560}}),dad=pp(MAN,790,FY,2.45,{expr:'joy',look:{x:1160,y:560}});
   const hh=PPL.holdHands(son,dad);
-  g+=hh.svg+carryHip(pp(WOM,1160,FY,2.35,{face:-1,expr:'tender',look:{x:790,y:560}}),pp(GIRL,0,0,1.4,{expr:'joy',look:{x:620,y:760}}));
+  g+=hh.svg+carryHip(pp(WOM,1160,FY,2.35,{face:-1,expr:'tender',look:{x:790,y:560}}),pp(GIRL,0,0,1.4,{kid:true,expr:'joy',look:{x:620,y:760}}));
   const sp=Math.max(0,Math.sin(t*3));g+=tw4(hh.m[0]+8,hh.m[1]-18,20*sp,'#FFF6D8',sp);
   return g+foreYard(t,900,1.08,{seed:46,over:SC.pair(t,'bird',1250,1350,1.8,{face:-1,graze:'auto',col:'#F4EEE0',col2:'#C8462A'})});
 }
@@ -713,7 +713,7 @@ function sinaiLives(t){
   let g=sinaiBG(t,{seed:41,pk:PK2,k:1.05,drift:90,mood:'night',gx:1700})+lightRings(t,AT.lives,960,300,1500);
   const up={x:960,y:300},ex=['awe','joy',prog(t,AT.lives,AT.lives+1)];
   const mom=pp(WOM,1100,FY,2.3,{face:-1,expr:ex,look:up,near:'chest'}),dad=pp(MAN,760,FY,2.45,{expr:ex,look:up});dad.near=PPL.handOn(dad,mom,'shoulder');
-  g+=onto(dad,mom)+PPL.fig(pp(BOY,1265,FY+6,1.4,{face:-1,expr:ex,look:up,near:{x:1200,y:680}}));
+  g+=onto(dad,mom)+PPL.fig(pp(BOY,1265,FY+6,1.4,{kid:true,face:-1,expr:ex,look:up,near:{x:1200,y:680}}));
   return g+foreCamp(t,1000,1.08,{seed:73});
 }
 
@@ -831,7 +831,7 @@ function pillarCamp(t){
     extra:pillar(t,960,880,1)+R(860,780,200,110,4,'#E8D8B0',{stroke:'#A88A5A','stroke-width':4})+P('M840 780L960 720L1080 780Z','#C8A878')+R(760,880,400,14,3,'#B89A6A')});
   const up={x:960,y:300},aw=['calm','awe',prog(t,AT.know,AT.know+1.5)];
   const mom=pp(WOM,1130,FY,2.15,{face:-1,expr:aw,look:up}),dad=pp(MAN,790,FY,VS,{expr:aw,look:up});
-  g+=PPL.holdHands(dad,mom).svg+PPL.fig(pp(GIRL,1300,FY+10,1.3,{face:-1,expr:aw,look:up,near:'chest'}));
+  g+=PPL.holdHands(dad,mom).svg+PPL.fig(pp(GIRL,1300,FY+10,1.3,{kid:true,face:-1,expr:aw,look:up,near:'chest'}));
   return g+foreCamp(t,960,1.08,{seed:74});
 }
 // ---- 6b. Keeps covenant and steadfast love: manna in the morning; mum gathers, the girl holds the basket, the boy catches it ----
@@ -845,7 +845,7 @@ function manna(t){
   g+=PPL.fig(pp(WOM,720,FY,2.2,{kneel:1,lean:22+pick*8,expr:'joy',look:{x:860,y:FY},near:{x:860,y:FY-10-pick*20},far:{x:830,y:FY-6}}));
   const bk=h=>Ell(h[0],h[1]+40,60,40,'#C8904A',{stroke:'#8A5A2A','stroke-width':5})+Ell(h[0],h[1]+12,54,14,'#FFFDF2')+[0,1,2,3].map(i=>Ell(h[0]-30+i*20,h[1]+8,8,5,'#FFFDF2')).join('');
   g+=holding(pp(GIRL,1110,FY,1.5,{face:-1,expr:'joy',look:{x:860,y:900},near:{x:1040,y:FY-170}}),bk);
-  g+=PPL.fig(pp(BOY,1290,FY,1.45,{face:-1,expr:'joy',look:{x:1240,y:500},near:'up',far:'up',jump:Math.abs(Math.sin(E.held(t,10)*6))*20}));
+  g+=PPL.fig(pp(BOY,1290,FY,1.45,{kid:true,face:-1,expr:'joy',look:{x:1240,y:500},near:'up',far:'up',jump:Math.abs(Math.sin(E.held(t,10)*6))*20}));
   return g+foreSand(t,980,1.08,{seed:92,over:[...Array(30)].map((_,i)=>Ell(hash(i,8)*1920,1150+hash(i,9)*500,12,7,'#FFFDF2',{opacity:.8})).join('')});
 }
 // ---- 6c. Faithful means he stays: the pillar burns on over the sleeping camp ----
@@ -895,7 +895,7 @@ function prophet(t){
   const pr=pp(OLDM,680,870,2.2,{tunic:'#7A5A8A',tunic2:'#3A2A4A',expr:'calm',look:{x:1150,y:600},far:null,near:{x:790,y:760},lean:4});
   g+=withProp(pr,r=>{const h=r.hand('near');return L(h[0]+4,h[1]-120,h[0]+20,870,'#4A2E16',16)+L(h[0]+4,h[1]-120,h[0]+20,870,'#7A5432',9);});
   const ls={x:680,y:400};
-  g+=PPL.fig(pp(WOM,1260,935,1.5,{face:-1,expr:'calm',look:ls,near:'chest'}))+PPL.fig(pp(MAN,1140,FY,2.3,{face:-1,expr:'surprised',look:ls}))+PPL.fig(pp(BOY,910,FY+4,1.35,{face:-1,expr:'calm',look:ls}));
+  g+=PPL.fig(pp(WOM,1260,935,1.5,{kid:true,face:-1,expr:'calm',look:ls,near:'chest'}))+PPL.fig(pp(MAN,1140,FY,2.3,{face:-1,expr:'surprised',look:ls}))+PPL.fig(pp(BOY,910,FY+4,1.35,{kid:true,face:-1,expr:'calm',look:ls}));
   return g+foreSand(t,940,1.06,{seed:95});
 }
 // ---- 7c. A wife who broke her promise: the picture pinned on the wall; the cord snaps, a ring falls ----
@@ -969,7 +969,7 @@ function sunriseVillage(t){
   const k=ease.out(prog(t,AT.andYou-.2,AT.andYou+1.5));
   let g=SC.env(t,'village',{seed:95,mood:'dawn',gy:900,sun:{x:960,y:420,r:90}})+glow(960,420,600+500*k,'#FFF2C8',.3+.3*k)+lightRings(t,AT.andYou+.6,960,420,1500);
   const up={x:960,y:420},ex=['calm','joy',k];
-  g+=carryHip(pp(MAN,770,FY,VS,{look:up,expr:ex}),pp(GIRL,0,0,1.35,{look:up,expr:ex}),{out:true});
+  g+=carryHip(pp(MAN,770,FY,VS,{look:up,expr:ex}),pp(GIRL,0,0,1.35,{kid:true,look:up,expr:ex}),{out:true});
   g+=PPL.fig(pp(WOM,1140,FY,2.2,{face:-1,look:up,expr:ex,near:'chest',far:'chest'}));
   return g+foreYard(t,960,1.08,{seed:47,cols:['#4A3A1E','#8A6A34','#E0B060']});
 }
@@ -1029,9 +1029,9 @@ function listeners(t){
   g+=SC.ground(t,98,{y:700,col:'#86BC5E',col2:'#4A8A3A',stones:6,tufts:36,flowers:['#FFFFFF','#FFE36B','#FF8AB0']});
   [[600,840,1.1,2],[740,850,1.15,4],[1400,830,1.1,1],[1540,845,1.2,3]].forEach(([x,y,s,i])=>g+=backView(t,x,y,s,i));
   const L0={x:0,y:0},s=FY-50;
-  const dad=pp(MAN,800,FY,2.2,{face:-1,sit:1,seat:s,expr:'calm',look:L0}),son=pp(BOY,660,FY,1.45,{face:-1,sit:1,seat:FY-34,expr:'calm',look:L0});
+  const dad=pp(MAN,800,FY,2.2,{face:-1,sit:1,seat:s,expr:'calm',look:L0}),son=pp(BOY,660,FY,1.45,{kid:true,face:-1,sit:1,seat:FY-34,expr:'calm',look:L0});
   dad.near=null;
-  g+=PPL.fig(son)+PPL.fig(dad)+PPL.holdHands(pp(WOM,1130,FY,2.1,{face:-1,sit:1,seat:s,expr:'calm',look:L0}),pp(GIRL,1290,FY,1.4,{face:-1,sit:1,seat:FY-34,expr:'calm',look:L0})).svg;
+  g+=PPL.fig(son)+PPL.fig(dad)+PPL.holdHands(pp(WOM,1130,FY,2.1,{face:-1,sit:1,seat:s,expr:'calm',look:L0}),pp(GIRL,1290,FY,1.4,{kid:true,face:-1,sit:1,seat:FY-34,expr:'calm',look:L0})).svg;
   return g+foreG(t,970,1.06,['#1E4A1C','#3A7A2E','#8AC060'],{flowers:['#FFFFFF','#FFD84A'],seed:99});
 }
 // ---- 9d. It begins long before anything happens: a seed sprouts under the soil ----
@@ -1205,10 +1205,10 @@ function sinaiEnd(t){
 function familyHug(t){
   let g=villageH(t,{mood:'golden',hx:960,hs:1.25,lit:.7,seed:61});
   const k=ease.out(prog(t,AT.keepYour-.1,AT.keepYour+.5));
-  g+=PPL.fig(pp(BOY,640,FY,1.4,{expr:'joy',look:{x:880,y:560},near:'up',jump:k*Math.abs(Math.sin(E.held(t,10)*6))*16}));
+  g+=PPL.fig(pp(BOY,640,FY,1.4,{kid:true,expr:'joy',look:{x:880,y:560},near:'up',jump:k*Math.abs(Math.sin(E.held(t,10)*6))*16}));
   const mom=pp(WOM,1120,FY,2.25,{face:-1,expr:'joy',look:{x:810,y:520},near:'open'}),dad=pp(MAN,810,FY,2.4,{expr:'joy',look:{x:1120,y:520}});mom.near=null;
   g+=PPL.holdHands(dad,mom).svg;
-  return g+PPL.fig(pp(GIRL,1290,FY,1.4,{face:-1,expr:'joy',look:{x:1120,y:560},near:'open',far:'open',jump:k*Math.abs(Math.sin(E.held(t,10)*6+1))*16}))+foreYard(t,960,1.08,{seed:51});
+  return g+PPL.fig(pp(GIRL,1290,FY,1.4,{kid:true,face:-1,expr:'joy',look:{x:1120,y:560},near:'open',far:'open',jump:k*Math.abs(Math.sin(E.held(t,10)*6+1))*16}))+foreYard(t,960,1.08,{seed:51});
 }
 // ---- 11c. Because God keeps his: a rainbow over the valley and the home; the couple looks up ----
 function rainbowHome(t){
