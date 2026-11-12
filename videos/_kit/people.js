@@ -142,8 +142,11 @@
       else if (v === 'open') { T = [S0[0] + (side === 'near' ? 74 : 44), S0[1] - 14 + idle]; }
       else if (v === 'chest') { T = U([side === 'near' ? 30 : 20, -86]); bend = 'fwd'; }
       else if (v === 'cover') { T = [HC[0] + 40, HC[1] + 6]; }
-      else if (side === 'near') { T = [50 + sw * .5 + idle, -30 + drop]; bend = 'fwd'; }
-      else { T = [-42 - sw * .5 - idle, -32 + drop]; bend = 'out'; }
+      // at rest the arms hang almost straight down at the sides (a slight swing when walking, a tiny idle sway)
+      else if (side === 'near') { T = [S0[0] + 8 + sw * .6 + idle * .4, S0[1] + 2 * ARM - 3]; bend = 'fwd'; }
+      else { T = [S0[0] - 6 - sw * .6 - idle * .4, S0[1] + 2 * ARM - 3]; bend = 'fwd'; }
+      // keep hands off the person's own face: a target inside the head is moved down below the chin (o.allowFace opts out)
+      if (!o.allowFace && v !== 'up' && T && Math.hypot(T[0] - HC[0], T[1] - HC[1]) < 66) T = [T[0] + 10, HC[1] + 72];
       const [e, h] = ik(S0, T, ARM, ARM, bend);
       arms[side] = { S: S0, E: e, H: h };
     });
@@ -171,7 +174,7 @@
     };
     LY.farArm = () => o.hideFar ? '' : arm('far');
     LY.nearArm = () => o.hideNear ? '' : arm('near');
-    const leg = side => { const [a, b] = legs[side]; return `<line x1="${f2(a[0])}" y1="${f2(a[1])}" x2="${f2(b[0])}" y2="${f2(b[1])}" stroke="${side === 'far' ? mix(pal.shade, '#000', .12) : pal.shade}" stroke-width="27" stroke-linecap="round"/>`; };
+    const leg = side => { const [a, b] = legs[side]; return `<line x1="${f2(a[0])}" y1="${f2(a[1])}" x2="${f2(b[0])}" y2="${f2(b[1])}" stroke="${side === 'far' ? mix(pal.shade, '#000000', .12) : pal.shade}" stroke-width="27" stroke-linecap="round"/>`; };
     LY.farLeg = () => wrap(leg('far'));
     LY.body = () => {
       const a = nid(), f = !!o.f, y0 = f ? -132 : -130, h = f ? 114 : 108;
