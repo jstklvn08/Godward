@@ -1,0 +1,665 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Godward: The Ten Plagues of Egypt</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="words.js"></script>
+<script src="../_kit/episode-engine.js"></script>
+<script src="../_kit/people.js"></script>
+<script src="../_kit/fire.js"></script>
+<script src="../_kit/scenery.js"></script>
+<script>
+// The Ten Plagues of Egypt. Script: scripts/12-the-ten-plagues.md (ESV fill). Built like the Ten Commandments episodes
+// (videos/the-tenth-commandment): a new setting every few seconds, the story acted by the round PPL figures, one slow
+// camera move per shot, one label at a time, verse cards and the end card in hud. Every time comes from the spoken words
+// (words.js), so the real narration re-times the episode. God is never a figure: light, wind, a voice. Death on the last
+// night is a cold wind and a shadow, never a figure and never a body.
+// Guides: .claude/skills/godward-episode/reference/scene-pacing.md, engine.md, taste.md. K.E is the ellipse helper (Ell).
+const {G,R,C,L,P,T,prog,ease,lerp,mix,clamp,rng}=K, Ell=K.E;
+const {hash,piece,glow,label,mark,scribble,strip,tape}=S;
+const {cue,end,after,shot,verse,fade,hv,fireflies,INK,YEL,CORAL}=E;
+const GOLD='#E8B53A', NILE='#2E7AB8', BLOOD='#B0182A', GREEN='#1E9A5A';
+
+const AT={
+  river:cue('A river turns'), frogs0:cue('Frogs fill'), hail0:cue('Hail falls'), dark0:cue('And then comes'), most:cue('Most people'), angry:cue('An angry God'),
+  read:cue('But read it'), contest:cue("It's a contest"), losing:cue("Egypt's gods are losing"),
+  gens:cue('For generations'), sent:cue('Then God sent'), message:cue('one message'), laughed:cue('Pharaoh laughed'), v52:after('Pharaoh laughed',1,.35),
+  question:cue('That question'), tenTimes:cue('Ten times'),
+  nile:cue('First, the Nile'), worship:cue('They worshipped'), v720:after('fed the whole country',1,.35), fish:cue('The fish died'), nothing:cue('could do nothing'),
+  magic:cue("Pharaoh's magicians"), shrug:cue('shrugged it off'),
+  frogs:cue('Then frogs'), bedroom:cue("king's own bedroom"), goddess:cue('Egypt had a goddess'), everywhere:cue('were everywhere'),
+  gnats:cue('Then gnats'), failed:cue('This time the magicians'), v819:after('told Pharaoh so',1,.35), flies:cue('Then swarms'), goshen:cue('But not in Goshen'),
+  turn:cue("That's the turn"), line:cue('draws a line'), livestock:cue("Egypt's livestock"), spared:cue("Israel's are spared"), boils:cue('Then boils'),
+  cantStand:cue("can't even stand"), still:cue('And still'),
+  hail:cue('Then hail'), worst:cue('The worst storm'), locusts:cue('Locusts eat'), green:cue('Not one green'), darkness:cue('then, darkness'), v1022:after('then, darkness',1,.35),
+  sunGod:cue("Egypt's greatest god"), gone:cue('simply gone'),
+  whyTen:cue('So why ten'), saysWhy:cue('God says why'), v1212:after('says why himself',1,.35), aimed:cue('Every plague was aimed'),
+  riv6:cue('The river. The land'), land6:cue('The land. The cattle'), cat6:cue('The cattle. The sky'), sky6:cue('The sky. The sun'), sun6:cue('The sun. One by'), powerless:cue('shown to be powerless'),
+  last:cue('The last plague'), midnight:cue('At midnight'), firstborn:cue('every firstborn'), wayThrough:cue('But God gave'), lamb:cue('killed a lamb'), painted:cue('painted its blood'),
+  v1213:after('on the doorframe',1,.35), night:cue('That night'), cry:cue('a great cry'), behind:cue('But behind the doors'), safe:cue('was safe'), morning:cue('By morning'), begging:cue('begging'),
+  remember:cue("Remember Pharaoh's"), who2:cue('question? Who is'), knew:cue('Now all of Egypt'), soIsrael:cue('And so did Israel'),
+  centuries:cue('Centuries later'), picture:cue('a picture of'), v57:after('something bigger',1,.35), rescue:cue('The rescue came first'), sea:cue('Then came the sea'),
+  mountain:cue('And then, a mountain'), next:cue("But that's the next"),
+};
+AT.last1=WORDS[WORDS.length-1][2];
+
+// ---------- framing helpers (vertical) ----------
+const aim=(a,b,x,y,F,z)=>shot(a,b,x,y+(1010-F)/z,z), sq=p=>p*p;
+const H=(x,y,z,F=1170)=>(a,b)=>[aim(a,b,x,y,F,z)];
+const M=(x0,y0,z0,x1,y1,z1,F=1170,F1)=>(a,b)=>[[a,x0,y0+(1010-F)/z0,z0],[b,x1,y1+(1010-(F1??F))/z1,z1]];
+const FY=1000, HS=2.7, VS=2.35;
+const EDG=(cx,z)=>[cx-540/z+70,cx+540/z-70];
+
+// ---------- people (videos/_kit/people.js) ----------
+const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
+const SKIN=[['#F5BE8E','#C4835E'],['#D9965E','#A86A3E'],['#B87444','#8A5230']], HAIR=['#2E1C52','#4A2A16','#1A1A2A'];
+const pplOpts=(i,x,y,s,o={})=>{const [a,b]=TUN[i%5],[sk,sh]=SKIN[i%3],face=o.flip||o.face||1,f=o.f??(i%2===1);
+  const q=Object.assign({x,y,s,face,f,tunic:a,tunic2:b,skin:sk,shade:sh,hair:HAIR[i%3],phase:i*.7},o);
+  q.face=face;delete q.flip;if(!o.walk)delete q.walk;return q;};
+const person=pplOpts, folk=(i,x,y,s,o={})=>PPL.fig(pplOpts(i,x,y,s,o));
+// The recurring cast (same colours in every scene).
+const CAST={
+  moses:{tunic:'#E8DCC0',tunic2:'#8A6A40',skin:'#D9965E',shade:'#A86A3E',hair:'#ECE8DE',f:false,phase:.4},
+  aaron:{tunic:'#7CD4FF',tunic2:'#2F6FD0',skin:'#D9965E',shade:'#A86A3E',hair:'#8A8A8A',f:false,phase:1.2},
+  phar:{tunic:'#FFF6E0',tunic2:'#C8A060',skin:'#B87444',shade:'#8A5230',hair:'#1A1A2A',f:false,kid:true,phase:.9},
+  mag1:{tunic:'#3A2A5A',tunic2:'#1A1030',skin:'#B87444',shade:'#8A5230',hair:'#1A1A2A',f:false,phase:2.1},
+  mag2:{tunic:'#5A2A3A',tunic2:'#2A1018',skin:'#D9965E',shade:'#A86A3E',hair:'#1A1A2A',f:false,phase:2.9},
+  dad:{tunic:'#3DE0B8',tunic2:'#1787A8',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',f:false,phase:.3},
+  mum:{tunic:'#FF8FB1',tunic2:'#C8487A',skin:'#D9965E',shade:'#A86A3E',hair:'#2E1C52',f:true,phase:1.7},
+  boy:{tunic:'#FFC24C',tunic2:'#E0623C',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',f:false,kid:true,phase:2.3},
+  girl:{tunic:'#B98CFF',tunic2:'#6A4CD8',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',f:true,kid:true,phase:.8},
+};
+const who=(c,x,y,s,o={})=>pplOpts(0,x,y,s,Object.assign({},CAST[c],o));
+const fig=(c,x,y,s,o={})=>PPL.fig(who(c,x,y,s,o));
+const withProp=(q,prop)=>{const r=PPL.rig(q);return r.draw('back')+r.draw('body')+r.draw('head')+prop(r)+r.draw('front');};
+// Moses with his staff, held upright in his far hand (the staff stands in front, under the gripping hand).
+const staffAt=(x,y0,y1,k=1)=>L(x,y0,x+4,y1,'#4A2E16',18*k)+L(x,y0,x+4,y1,'#7A5432',11*k)+C(x,y0,12*k,'#7A5432');
+function moses(x,y,s,o={}){
+  const raise=o.raise||0,q=who('moses',x,y,s,Object.assign({},o));delete q.raise;
+  const r0=PPL.rig(q),sh=r0.shoulder('near'),f=q.face||1;
+  if(raise>0)q.near={x:sh[0]+f*lerp(40,70,raise)*s,y:sh[1]-lerp(30,75,raise)*s};
+  else if(!q.near)q.near={x:x+f*62*s,y:y-96*s};
+  const r=PPL.rig(q),h=r.hand('near');
+  return r.draw('back')+r.draw('body')+r.draw('head')+staffAt(h[0],h[1]-lerp(110,150,raise)*s,lerp(y,h[1]+130*s,raise),s/2.4)+r.draw('front');
+}
+// Pharaoh: a striped headcloth (nemes) in gold and blue, and a broad collar.
+function nemes(r,k=1){const [x,y]=r.head,s=r.s,f=r.face;
+  return G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(s*f).toFixed(3)} ${s.toFixed(3)})`,
+    P('M-62 -6Q-66 -66 0 -72Q66 -66 62 -6L74 70L46 70L40 0Q0 -24 -40 0L-46 70L-74 70Z',GOLD,{stroke:'#6A4A12','stroke-width':5})+
+    [-46,-24,0,24,46].map(xx=>P(`M${xx} -64L${xx*1.2} -4`,'none',{stroke:'#2A4AA8','stroke-width':9})).join('')+
+    [ -60,-52].map((yy,i)=>'').join('')+C(0,-58,9,'#2A4AA8')+P('M-4 -70L0 -86L4 -70Z',GOLD));}
+const collar=(r)=>{const [x,y]=r.neck,s=r.s;return Ell(x,y+10*s,46*s,16*s,'#2A4AA8')+Ell(x,y+8*s,40*s,11*s,GOLD);};
+function pharaoh(x,y,s,o={},extra=()=>''){
+  const q=who('phar',x,y,s,o),r=PPL.rig(q);
+  return r.draw('back')+r.draw('body')+collar(r)+r.draw('head')+nemes(r)+extra(r)+r.draw('front');
+}
+
+// ---------- props and set pieces ----------
+const jar=(x,y,s=1,c='#C8703A')=>P(`M${x-22*s} ${y}Q${x-34*s} ${y-40*s} ${x-16*s} ${y-62*s}H${x+16*s}Q${x+34*s} ${y-40*s} ${x+22*s} ${y}Z`,c,{stroke:'#6A2E14','stroke-width':4*s})+R(x-18*s,y-72*s,36*s,12*s,4*s,mix(c,'#000',.15));
+const column=(x,y,h,w=90,c='#E8D2A0')=>R(x-w/2,y-h,w,h,6,c,{stroke:'#8A6A3A','stroke-width':5})+R(x-w/2-16,y-h-30,w+32,34,6,mix(c,'#C8A060',.4),{stroke:'#8A6A3A','stroke-width':5})+
+  P(`M${x-w/2-10} ${y-h}Q${x} ${y-h-60} ${x+w/2+10} ${y-h}`,'#5AA060',{stroke:'#2A5A2A','stroke-width':4})+R(x-w/2-10,y-24,w+20,24,4,mix(c,'#000',.1))+
+  [.3,.5,.7].map(u=>L(x-w/2+8,y-h*u,x+w/2-8,y-h*u,'#B88A4A',4,{opacity:.6})).join('');
+const sunDisc=(x,y,r,k=1)=>glow(x,y,r*2.4,'#FFC24C',.35*k)+C(x,y,r,mix('#5A4A3A','#FFC24C',k),{stroke:'#8A5A12','stroke-width':6})+C(x,y,r*.7,mix('#4A3A2A','#FFE07A',k))+
+  [-1,1].map(f=>P(`M${x+f*r*.9} ${y+r*.2}Q${x+f*r*1.8} ${y-r*.2} ${x+f*r*2.4} ${y+r*.6}Q${x+f*r*1.7} ${y+r*.5} ${x+f*r*.9} ${y+r*.7}Z`,mix('#4A3A2A','#E8B53A',k))).join('');
+// Egypt's "gods" are carved things on pedestals (never a figure of the true God): a river emblem, a frog, a cow, a sky arch, the sun.
+const pedestal=(x,y,w=150,h=120,c='#B89A6A')=>R(x-w/2,y-h,w,h,8,c,{stroke:'#6A5030','stroke-width':5})+R(x-w/2-14,y-h-16,w+28,20,6,mix(c,'#fff',.2),{stroke:'#6A5030','stroke-width':4});
+function idol(kind,x,y,s=1,crack=0){
+  let g='';const c='#C8B08A',dk='#6A5030';
+  if(kind==='river')g=R(x-46*s,y-170*s,92*s,170*s,40*s,c,{stroke:dk,'stroke-width':5})+[0,1,2].map(i=>P(`M${x-32*s} ${y-120*s+i*36*s}q16 -14 32 0t32 0`,'none',{stroke:NILE,'stroke-width':8*s})).join('');
+  else if(kind==='frog')g=frog(0,x,y,1.6*s,{stone:true});
+  else if(kind==='cow')g=SC.animal(0,'cow',x,y,.75*s,{col:GOLD,face:1});
+  else if(kind==='sky')g=P(`M${x-80*s} ${y}V${y-110*s}Q${x} ${y-200*s} ${x+80*s} ${y-110*s}V${y}Z`,'#3A5AA8',{stroke:dk,'stroke-width':5})+[0,1,2,3,4].map(i=>C(x-50*s+i*25*s,y-100*s-Math.sin(i/4*Math.PI)*40*s,6*s,'#FFE9A8')).join('');
+  else if(kind==='sun')g=sunDisc(x,y-90*s,60*s,1);
+  if(crack>0)g+=mark(`M${x-10*s} ${y-180*s}L${x+12*s} ${y-120*s}L${x-8*s} ${y-80*s}L${x+14*s} ${y-20*s}`,crack,'#1A1010',7*s);
+  return g;
+}
+// A frog (feet at x,y; s=1 is about 60 wide). hop 0..1 lifts it; stone draws it as a carved statue.
+function frog(t,x,y,s=1,o={}){
+  const hop=o.hop||0,col=o.stone?'#B8A07A':(o.col||'#4AAA3A'),dk=o.stone?'#6A5030':'#1E5A1A',f=o.face||1,yy=y-hop*40*s;
+  return G(`translate(${x} ${yy}) scale(${s*f} ${s})`,
+    Ell(-14,-6,16,10,dk)+Ell(22,-4,12,8,dk)+Ell(0,-22,34,22,col,{stroke:dk,'stroke-width':3})+
+    C(14,-40,11,col,{stroke:dk,'stroke-width':3})+C(-6,-40,11,col,{stroke:dk,'stroke-width':3})+C(15,-41,5,o.stone?dk:'#111')+C(-5,-41,5,o.stone?dk:'#111')+
+    P('M2 -18Q14 -12 28 -20','none',{stroke:dk,'stroke-width':2.5})+(o.stone?'':Ell(-4,-16,12,6,'#8AD86A',{opacity:.6})));
+}
+// A swarm: n small marks drifting in a box. kind 'gnat' | 'fly' | 'locust'.
+function swarm(t,x0,y0,w,h,n,kind,o={}){
+  let g='';const col=o.col||(kind==='locust'?'#7A5A2A':'#1A1A1A'),seed=o.seed||1,dx=o.dx||0;
+  for(let i=0;i<n;i++){const u=hash(i,seed),v=hash(i,seed+3),sp=.6+hash(i,seed+5);
+    const x=x0+((u*w+t*dx*sp+Math.sin(t*3*sp+i)*30)%w+w)%w,y=y0+v*h+Math.cos(t*2.6*sp+i*1.3)*24;
+    if(kind==='gnat')g+=C(x,y,3+hash(i,seed+7)*2,col,{opacity:.85});
+    else if(kind==='fly')g+=Ell(x,y,6,4,col)+Ell(x-3,y-5,5,3,'#DDE6EE',{opacity:.6})+Ell(x+3,y-5,5,3,'#DDE6EE',{opacity:.6});
+    else g+=G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(-20+hash(i,seed+9)*40).toFixed(0)})`,Ell(0,0,16,5,col)+Ell(-2,-4,12,4,'#B8A06A',{opacity:.7})+L(-8,2,-16,10,col,2)+L(4,2,10,10,col,2));}
+  return g;
+}
+// Hail with fire inside it, falling in slanted streaks.
+function hailFall(t,x0,x1,y0,y1,n,k=1){let g='';
+  for(let i=0;i<n;i++){const u=hash(i,41),sp=900+hash(i,43)*500,y=y0+((t*sp+hash(i,47)*(y1-y0))%(y1-y0)),x=x0+u*(x1-x0)-(y-y0)*.25,r=8+hash(i,49)*10;
+    g+=L(x+r*1.4,y-r*5,x,y,'#DDEEFF',r*.5,{opacity:.35*k})+C(x,y,r,'#EAF4FF',{opacity:.9*k,stroke:'#9AB8D8','stroke-width':2});
+    if(i%3===0)g+=glow(x,y,r*3,'#FF8A3C',.6*k)+C(x,y,r*.5,'#FFB04C',{opacity:k});}
+  return g;}
+const lightning=(t,a,x,y0,y1)=>{const p=prog(t,a,a+.35);if(p<=0||p>=1)return '';let d=`M${x} ${y0}`,xx=x;for(let i=1;i<=6;i++){xx+=(hash(i,x|0)-.5)*120;d+=`L${xx} ${y0+(y1-y0)*i/6}`;}
+  return P(d,'none',{stroke:'#F4F8FF','stroke-width':9,opacity:(1-p).toFixed(2)})+glow(xx,y1,300,'#CFE6FF',.6*(1-p));};
+// God is never a figure: his presence is a soft oval of light, or rings of light going out.
+const presence=(t,x,y,r,k=1)=>k<=0?'':glow(x,y,r*2.6,'#FFF6DA',.5*k)+glow(x,y,r*1.2,'#FFFFFF',.65*k)+
+  Ell(x,y,r*.74,r,'none',{stroke:'#FFFBEA','stroke-width':8,opacity:(.75*k).toFixed(2)})+Ell(x,y,r*.6,r*.82,'#FFFBEA',{opacity:(.22*k*(1+.25*Math.sin(t*2))).toFixed(2)});
+const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,10)+mark(`M${cx+r} ${cy-r}L${cx-r} ${cy+r}`,p*2-1,CORAL,10);
+// A mud-brick Israelite house with a door; mark 0..1 paints the blood on the doorframe (lintel and both posts).
+function doorHouse(x,y,s,o={}){
+  const w=320*s,h=230*s,mk=o.mark||0,lit=o.lit??1,wall=o.wall||'#C8A070';
+  let g=R(x-w/2,y-h,w,h,6*s,wall,{stroke:'#5A3A1E','stroke-width':5*s})+R(x-w/2-10*s,y-h-14*s,w+20*s,22*s,5*s,mix(wall,'#5A3A1E',.3));
+  g+=R(x-48*s,y-150*s,96*s,150*s,6*s,lit?mix('#3A2414','#FFC86A',.7*lit):'#3A2414',{stroke:'#5A3A1E','stroke-width':5*s})+glow(x,y-80*s,140*s,'#FFC86A',.45*lit);
+  if(mk>0){const c=BLOOD;g+=mark(`M${x-58*s} ${y-160*s}L${x+58*s} ${y-160*s}`,clamp(mk*3),c,14*s)+mark(`M${x-56*s} ${y-150*s}L${x-56*s} ${y-20*s}`,clamp(mk*3-1),c,12*s)+mark(`M${x+56*s} ${y-150*s}L${x+56*s} ${y-20*s}`,clamp(mk*3-2),c,12*s);}
+  g+=R(x+w*.28,y-h+50*s,56*s,48*s,6*s,lit?'#FFD27A':'#2A1C14',{stroke:'#5A3A1E','stroke-width':4*s});
+  return g;
+}
+// Egyptian town: flat-roofed white houses, palms, a temple with columns and a sun disc, a pyramid far behind.
+function egyptTown(t,o={}){
+  const m=o.mood||'day',gy=o.gy??880,night=m==='night',dark=o.dark||0;
+  let g=SC.sky(t,{mood:m,hz:gy-80});
+  if(!night&&o.sun!==false)g+=SC.sun(t,o.sx??1500,o.sy??220,70,{k:1-dark});
+  g+=P(`M${o.px??420} ${gy-30}L${(o.px??420)+260} ${gy-330}L${(o.px??420)+520} ${gy-30}Z`,night?'#3A3448':'#D8B070')+P(`M${(o.px??420)+260} ${gy-330}L${(o.px??420)+520} ${gy-30}L${(o.px??420)+300} ${gy-30}Z`,night?'#2A2438':'#B8904A');
+  g+=SC.hills(o.seed||5,{y:gy-20,amp:14,wave:300,col:night?'#2A2A40':'#C8A870',trees:5,treeKind:'palm'});
+  [[200,gy+10,.9],[520,gy+20,1],[1450,gy+16,.95],[1720,gy+8,.85]].forEach(([x,y,s])=>g+=SC.house(x,y,s,{col:night?'#5A5670':'#F0E6D0'}));
+  g+=SC.ground(t,o.seed||5,{y:gy+40,col:night?'#2A2A3A':'#D8B878',col2:night?'#141420':'#A8884A',stones:10,tufts:12});
+  if(dark>0)g+=R(-200,-900,2400,2900,0,'#05040A',{opacity:(.86*dark).toFixed(2)});
+  return g;
+}
+// Palace hall: columns, a red-gold wall with a big sun disc, the throne on steps.
+function palace(t,o={}){
+  let g=R(-200,-900,2400,2900,0,o.wall||'#7A3A2A')+R(-200,-900,2400,700,0,'#5A2A20',{opacity:.6});
+  g+=sunDisc(960,o.discY??160,110,o.disc??1);
+  for(let i=0;i<7;i++){const x=40+i*307;g+=column(x,FY+30,980,110,'#E8D2A0');}
+  g+=R(-200,FY+20,2400,800,0,'#B88A5A')+[...Array(12)].map((_,i)=>L(-200+i*200,FY+20,-200+i*200-120,1800,'#9A6A3A',4,{opacity:.4})).join('');
+  if(o.throne!==false){const tx=o.tx??1280;g+=R(tx-260,FY-40,520,60,6,'#C8A060',{stroke:'#6A4A12','stroke-width':5})+R(tx-110,FY-360,220,330,20,GOLD,{stroke:'#6A4A12','stroke-width':6})+R(tx-90,FY-340,180,140,14,'#2A4AA8');}
+  return g;
+}
+// The Nile at a given mood. red 0..1 turns it to blood from upstream (left) to downstream.
+function nileScene(t,o={}){
+  const m=o.mood||'dawn',red=o.red||0,gy=o.gy??760,night=m==='night';
+  let g=SC.sky(t,{mood:m,hz:gy-60});
+  if(night)g+=SC.sun(t,1460,180,46,{col:'#F4F0DC',rays:0,k:.8});
+  else g+=SC.sun(t,o.sx??1500,o.sy??260,74,{});
+  g+=SC.range(o.seed||3,{y:gy-20,h:160,peaks:4,mood:m,hazeOp:.5});
+  g+=SC.hills(o.seed||3,{y:gy,amp:10,wave:260,col:night?'#1A2A30':'#8AA060',trees:6,treeKind:'palm'});
+  // the river band
+  const water=night?'#1A3A5A':NILE;let d='';
+  g+=R(-200,gy+10,2400,260,0,water);
+  if(red>0){const front=lerp(-300,2300,clamp(red));g+=P(`M-200 ${gy+10}H${front}Q${front+120} ${gy+140} ${front} ${gy+270}H-200Z`,BLOOD,{opacity:.95});}
+  for(let i=0;i<14;i++){const x=-80+i*160+Math.sin(t*.8+i)*20,y=gy+50+(i%4)*55;g+=P(`M${x} ${y}q30 -12 60 0t60 0`,'none',{stroke:'#FFFFFF',opacity:.25,'stroke-width':4});}
+  if(night)g+=Ell(1460,gy+120,40,10,red>.6?'#FF6A6A':'#F4F0DC',{opacity:.5});
+  g+=SC.reeds(t,140,gy+40,1.2,{})+SC.reeds(t,1780,gy+30,1.1,{});
+  g+=SC.ground(t,o.seed||3,{y:gy+270,col:night?'#2A3A2A':'#A89A60',col2:night?'#141C14':'#6A6A3A',stones:8,tufts:14});
+  return g;
+}
+const foreReeds=(t,cx,z,o={})=>SC.fore(t,{y:1060,edges:EDG(cx,z),cols:o.cols||['#1E3A1A','#3A6A2A','#7AA050'],reeds:true,rocks:0,density:.7,seed:o.seed||11,over:o.over||''});
+const foreSand=(t,cx,z,o={})=>SC.fore(t,{y:1060,edges:EDG(cx,z),cols:o.cols||['#6A4A20','#A8803A','#E0B860'],rocks:0,rockAt:o.rockAt||[[cx+320,1520,170]],density:.5,seed:o.seed||21,over:o.over||''});
+const foreNight=(t,cx,z,o={})=>SC.fore(t,{y:1060,edges:EDG(cx,z),cols:['#0A0C18','#161C30','#2A3450'],rocks:0,rockAt:[[cx-300,1500,180]],density:.6,seed:o.seed||31,over:o.over||''});
+const floorFore=(t,cx,z,c='#9A6A3A')=>R(cx-700,1060,1400,900,0,c)+[...Array(8)].map((_,i)=>L(cx-700+i*200,1060,cx-760+i*200,1900,'#7A4A2A',5,{opacity:.4})).join('');
+
+// ================= 0. Cold open =================
+function redRiver(t,lt){
+  const red=ease.inOut(prog(t,AT.river+.2,AT.frogs0-.1));
+  return nileScene(t,{mood:'night',red,gy:780})+foreReeds(t,960,1.0,{cols:['#0A140E','#16281A','#2A4A2A']});
+}
+function frogSteps(t,lt){
+  let g=palace(t,{throne:false,wall:'#5A2A3A'});
+  for(let i=0;i<5;i++)g+=R(300,FY-60+i*40,1320,44,4,'#D8C090',{stroke:'#8A6A3A','stroke-width':4});
+  for(let i=0;i<16;i++){const x=340+hash(i,3)*1240,y=FY-30+Math.floor(hash(i,5)*5)*40,hp=Math.max(0,Math.sin(t*5+i*1.7))*.7;g+=frog(t,x,y+40,1.5+hash(i,7)*.8,{hop:hp,face:hash(i,9)>.5?1:-1});}
+  return g+floorFore(t,960,1.1,'#8A5A3A');
+}
+function fireHail(t,lt){
+  let g=egyptTown(t,{mood:'night',sun:false,seed:7})+SC.clouds(t,{seed:9,n:7,y:-620,h:420,cols:['#2A2A3A','#141420','#FF8A4C'],storm:'#1A1A28',drift:20,op:.9});
+  g+=lightning(t,AT.hail0+.2,1300,-500,600)+hailFall(t,0,2000,-600,1000,70);
+  return g+foreSand(t,960,1.05,{cols:['#1A140A','#3A2A14','#6A4A20']});
+}
+function oneWindow(t,lt){
+  let g=egyptTown(t,{mood:'night',dark:ease.out(prog(t,AT.dark0,AT.dark0+1.2)),sun:false,seed:13});
+  g+=R(1160,700,70,60,6,'#FFD27A')+glow(1195,730,200,'#FFC86A',.7);
+  return g;
+}
+function disasterList(t,lt){
+  // paper list on a dark wall: ten numbered rows with small icons, ticked off one by one
+  let g=R(-200,-900,2400,2900,0,'#2A1A14');
+  g+=strip(560,-80,800,1180,5,'#F6EFDC',{ax:6,ay:4})+tape(960,-80,140,-3);
+  const ic=['💧','','','','','','','','',''];
+  for(let i=0;i<10;i++){const y=40+i*104,on=prog(t,AT.most+.3+i*.22,AT.most+.5+i*.22);
+    g+=T(640,y+40,String(i+1),{size:44,font:'Georgia',weight:700,fill:INK});
+    g+=mark(`M710 ${y+26}h${300+hash(i,3)*260}`,on,'#4A4038',8,{opacity:.7});}
+  // an angry storm cloud over the list
+  const st=ease.out(prog(t,AT.angry,AT.angry+.6));
+  g+=SC.clouds(t,{seed:15,n:4,y:-640,h:240,x0:500,x1:1400,cols:['#3A3448','#1A1424','#8A7AA0'],storm:'#1A1424',op:st*.9,drift:4})+lightning(t,AT.angry+.3,1100,-420,40);
+  return g;
+}
+function contest(t,lt){
+  let g=SC.sky(t,{mood:'dusk',hz:780})+glow(1400,300,800,'#FFF6DA',.25);
+  g+=SC.ground(t,17,{y:900,col:'#A8885A',col2:'#5A4A30',stones:10,tufts:6});
+  const k=ease.out(prog(t,AT.contest,AT.contest+.8)),lose=ease.inOut(prog(t,AT.losing,AT.losing+1.4));
+  [['river',520],['frog',740],['cow',960],['sun',1180]].forEach(([kind,x],i)=>{g+=G(`rotate(${(lose*(8+i*5)).toFixed(1)} ${x} 960) translate(${x} 960) scale(1.25) translate(${-x} -960)`,pedestal(x,960,150,110)+idol(kind,x,850,1,lose));});
+  g+=presence(t,1340,420,150,k);
+  return g+foreSand(t,960,1.0,{seed:23});
+}
+
+// ================= 1. Who is the LORD? =================
+function bricks(t,lt){
+  let g=SC.sky(t,{mood:'golden',hz:760})+R(-200,-900,2400,1700,0,'#C8483A',{opacity:.35});
+  g+=SC.sun(t,1500,240,90,{col:'#FF8A4C'});
+  g+=P('M1100 760L1380 420L1660 760Z','#B8804A')+P('M1380 420L1660 760L1420 760Z','#8A5A30');
+  g+=SC.ground(t,25,{y:820,col:'#B8784A',col2:'#7A4A2A',stones:12,tufts:4});
+  for(let r=0;r<4;r++)for(let c=0;c<6-r;c++)g+=R(1240+c*92+r*46,FY-30-r*44,88,42,4,'#B85A3A',{stroke:'#6A2A14','stroke-width':4});
+  const lift=Math.sin(t*2.4);
+  [[360,0],[640,1],[920,2]].forEach(([x,i],j)=>{const b=Math.abs(Math.sin(t*2+j));g+=folk(i,x,FY,1.8,{lean:16+b*8,expr:'sad',look:'down',near:{x:x+90,y:FY-90+b*20},far:{x:x+70,y:FY-80+b*20}})+R(x+60,FY-110+b*20,84,40,4,'#B85A3A',{stroke:'#6A2A14','stroke-width':4});});
+  // the taskmaster is only a long shadow on the ground
+  g+=P(`M1080 ${FY+40}l420 -24l60 40l-440 30Z`,'#1A0A08',{opacity:.45});
+  return g+foreSand(t,900,1.04,{seed:25});
+}
+function throneHall(t,lt){
+  let g=palace(t,{tx:1260});
+  g+=pharaoh(1260,FY-30,2.3,{face:-1,look:{x:700,y:600},expr:'calm'});
+  g+=moses(560,FY,2.2,{look:{x:1260,y:560},expr:'calm'})+fig('aaron',900,FY,2.1,{look:{x:1260,y:560},expr:'calm',talk:t>AT.message&&t<AT.laughed});
+  return g+floorFore(t,960,1.0);
+}
+function laugh(t,lt){
+  let g=palace(t,{tx:1060});
+  const k=Math.abs(Math.sin(t*7));
+  g+=pharaoh(1060,FY-30,2.7,{expr:'joy',look:'up',tilt:-6-6*k,lean:-8,near:{x:1060+90,y:FY-30-140},talk:true});
+  return g+floorFore(t,960,1.1);
+}
+function whoIsHe(t,lt){
+  let g=palace(t,{tx:1260});
+  g+=pharaoh(1260,FY-30,2.3,{face:-1,expr:'calm',look:{x:700,y:600},near:{x:1260-150,y:FY-30-150},talk:true});
+  g+=moses(560,FY,2.1,{look:{x:1260,y:560},expr:'calm'})+fig('aaron',890,FY,2.0,{look:{x:1260,y:560},expr:'surprised'});
+  return g+floorFore(t,960,1.0);
+}
+function tenSlots(t,lt){
+  let g=R(-200,-900,2400,2900,0,'#1A1424');
+  g+=strip(480,160,960,230,9,'#F6EFDC',{ax:6,ay:4})+T(960,312,'WHO IS THE LORD?',{size:78,font:'Georgia',weight:700,anchor:'middle',fill:INK});
+  g+=mark(scribble(960,285,450,100,5),ease.inOut(prog(t,AT.question+.4,AT.question+1.2)),CORAL,9);
+  for(let i=0;i<10;i++){const x=560+(i%5)*200,y=620+Math.floor(i/5)*230,on=prog(t,AT.tenTimes+i*.12,AT.tenTimes+.3+i*.12);
+    g+=R(x-80,y-80,160,160,14,'none',{stroke:'#8A7AA0','stroke-width':6,'stroke-dasharray':'18 12'})+T(x,y+30,String(i+1),{size:80,font:'Georgia',weight:700,anchor:'middle',fill:mix('#3A3448','#FFE9A8',on)})+glow(x,y,120,'#FFE9A8',.3*on);}
+  return g;
+}
+
+// ================= 2. The river =================
+function nileDawn(t,lt){
+  let g=nileScene(t,{mood:'dawn',gy:700});
+  g+=SC.animal(t,'bird',600,560,1,{fly:true,face:1})+pedestal(1500,1000,150,110)+idol('river',1500,890,1);
+  g+=folk(0,640,FY,2.0,{expr:'calm',look:{x:900,y:900}})+jar(760,FY,1.6)+folk(3,900,FY+4,1.9,{f:true,expr:'joy',look:{x:640,y:600},near:{x:900+60,y:FY-150}})+jar(990,FY-140,1.3);
+  return g+foreReeds(t,1000,1.0,{seed:13});
+}
+function staffStrike(t,lt){
+  const red=ease.inOut(prog(t,AT.v720+.6,AT.fish-.2));
+  let g=nileScene(t,{mood:'day',gy:700,red});
+  const up=ease.out(prog(t,AT.v720,AT.v720+.5));
+  g+=moses(760,FY,2.4,{raise:up,look:{x:1100,y:800},expr:'calm'})+fig('aaron',480,FY,2.2,{look:{x:1100,y:800},expr:'awe'});
+  return g+foreReeds(t,820,1.05,{seed:15});
+}
+function deadFish(t,lt){
+  let g=nileScene(t,{mood:'day',gy:700,red:1});
+  for(let i=0;i<8;i++){const x=200+i*200+Math.sin(t+i)*12,y=760+(i%3)*50;g+=Ell(x,y,34,12,'#C8C8B8',{stroke:'#6A6A5A','stroke-width':3})+P(`M${x+30} ${y}l20 -14v28Z`,'#C8C8B8')+C(x-20,y-3,3,'#333');}
+  const crack=ease.out(prog(t,AT.nothing,AT.nothing+.8));
+  g+=pedestal(1560,1000,150,110)+idol('river',1560,890,1,crack);
+  g+=folk(0,640,FY,2.0,{expr:'fear',look:{x:700,y:780},near:'chest',lean:-8})+folk(3,860,FY+4,1.9,{f:true,expr:'sad',look:{x:600,y:760},near:{x:860-10,y:FY-160},face:-1});
+  return g+foreReeds(t,1000,1.0,{seed:17,cols:['#3A1A14','#6A2A1E','#A04A3A']});
+}
+function copyTrick(t,lt){
+  let g=palace(t,{tx:1280});
+  g+=pharaoh(1280,FY-30,2.2,{expr:'calm',look:{x:800,y:700},tilt:t>AT.shrug?8:0,face:-1});
+  const k=ease.out(prog(t,AT.magic+.4,AT.magic+1));
+  g+=R(700,FY-170,200,170,10,'#C8C0B0',{stroke:'#6A6458','stroke-width':5})+Ell(800,FY-168,96,18,mix(NILE,BLOOD,k));
+  g+=fig('mag1',560,FY,2.2,{look:{x:800,y:FY-180},expr:'joy',near:{x:700,y:FY-210},far:'up'})+fig('mag2',1050,FY,2.1,{face:-1,look:{x:800,y:FY-180},expr:'joy',near:{x:900,y:FY-210}});
+  return g+floorFore(t,960,1.0);
+}
+
+// ================= 3. Frogs, gnats, flies =================
+function frogBedroom(t,lt){
+  let g=R(-200,-900,2400,2900,0,'#6A3A5A')+R(-200,FY+20,2400,800,0,'#9A6A4A');
+  g+=R(380,FY-200,820,200,30,'#E8D8F0',{stroke:'#6A4A6A','stroke-width':6})+R(380,FY-260,220,260,30,'#C8B0E0',{stroke:'#6A4A6A','stroke-width':6})+R(1180,FY-120,60,140,8,GOLD);
+  // the bread oven
+  g+=P(`M1400 ${FY+20}V${FY-160}Q1520 ${FY-300} 1640 ${FY-160}V${FY+20}Z`,'#B8784A',{stroke:'#6A3A1A','stroke-width':6})+Ell(1520,FY-60,70,60,'#2A1408');
+  for(let i=0;i<22;i++){const x=300+hash(i,11)*1400,y=FY-200*hash(i,13)*(hash(i,17)>.6?1:0)+20,hp=Math.max(0,Math.sin(t*4.5+i*2.1))*.8;g+=frog(t,x,y,1.4+hash(i,19),{hop:hp,face:hash(i,23)>.5?1:-1});}
+  g+=pharaoh(860,FY,2.0,{expr:'fear',look:{x:600,y:FY-80},lean:-10,face:1,near:'chest'});
+  return g;
+}
+function frogGoddess(t,lt){
+  let g=SC.sky(t,{mood:'golden',hz:760})+column(560,FY,820)+column(1360,FY,820)+R(-200,FY,2400,800,0,'#C8A870');
+  g+=pedestal(960,FY,240,160)+frog(0,960,FY-160,4.2,{stone:true});
+  const n=Math.floor(lerp(4,40,prog(t,AT.goddess,AT.everywhere+.6)));
+  for(let i=0;i<n;i++){const x=200+hash(i,29)*1520,y=FY+40+hash(i,31)*120,hp=Math.max(0,Math.sin(t*5+i))*.7;g+=frog(t,x,y,1.3+hash(i,37)*.7,{hop:hp,face:hash(i,41)>.5?1:-1});}
+  return g;
+}
+function gnatsDust(t,lt){
+  let g=egyptTown(t,{mood:'day',seed:31,sx:1600});
+  const k=ease.out(prog(t,AT.gnats,AT.gnats+1.2));
+  g+=moses(700,FY,2.3,{raise:.3,look:{x:1100,y:FY-50},expr:'calm'});
+  g+=Ell(1100,FY+20,300,40,'#C8A870',{opacity:.6});
+  g+=swarm(t,700,FY-500*k,900,500*k+40,Math.floor(260*k),'gnat',{seed:3,dx:10});
+  return g+foreSand(t,960,1.04,{seed:27});
+}
+function magiFail(t,lt){
+  let g=palace(t,{tx:1340});
+  g+=pharaoh(1340,FY-30,2.1,{expr:'calm',face:-1,look:{x:900,y:700}});
+  g+=fig('mag1',640,FY,2.3,{expr:'fear',look:{x:1340,y:600},near:{x:640+100,y:FY-260},far:{x:600,y:FY-80}})+fig('mag2',900,FY,2.2,{expr:'sad',look:{x:1340,y:600},near:'chest'});
+  g+=L(560,FY-10,780,FY-30,'#5A3A1A',12)+swarm(t,300,FY-700,1500,700,140,'gnat',{seed:5,dx:6});
+  return g+floorFore(t,960,1.0);
+}
+function fliesTown(t,lt){
+  let g=egyptTown(t,{mood:'day',seed:35});
+  g+=swarm(t,0,300,2000,600,220,'fly',{seed:7,dx:40});
+  g+=folk(0,700,FY,2.1,{expr:'fear',look:'up',near:'up',far:'up'})+folk(3,960,FY+4,2.0,{f:true,expr:'fear',look:'up',near:'chest'});
+  return g+foreSand(t,900,1.04,{seed:29});
+}
+function goshen(t,lt){
+  let g=SC.sky(t,{mood:'day',hz:760});
+  // left: Egypt under the swarm; right: Goshen green and quiet; a glowing line between them
+  g+=R(-200,700,1160,1100,0,'#C8A870')+R(960,700,1260,1100,0,'#7AB85A');
+  g+=SC.house(400,820,1,{col:'#F0E6D0'})+SC.house(1500,820,1,{col:'#D8B888'})+SC.tree(t,1700,860,1.1,{kind:'olive'})+SC.pair(t,'sheep',1320,940,.9,{graze:'auto'});
+  g+=swarm(t,-100,200,1040,700,200,'fly',{seed:9,dx:30});
+  const ln=ease.out(prog(t,AT.goshen,AT.goshen+.8));
+  g+=R(950,-900,20,2800,0,'#FFF6DA',{opacity:.8*ln})+glow(960,500,500,'#FFF6DA',.3*ln);
+  g+=fig('dad',1200,FY,2.0,{face:-1,expr:'calm',look:{x:900,y:600}})+fig('girl',1350,FY+6,1.25,{face:-1,expr:'joy',look:{x:1200,y:700}});
+  return g+SC.fore(t,{y:1060,edges:EDG(960,1.0),cols:['#3A5A2A','#5A8A3A','#9AC860'],flowers:['#FFFFFF','#FFD84A'],rocks:0,density:.6,seed:33});
+}
+
+// ================= 4. A line between =================
+function lineBetween(t,lt){
+  let g=SC.sky(t,{mood:'golden',hz:760})+R(-200,700,1160,1100,0,'#B89A60')+R(960,700,1260,1100,0,'#6AA84A');
+  const ln=ease.out(prog(t,AT.line,AT.line+.9));
+  g+=mark(`M960 -600L960 ${lerp(-600,1700,ln)}`,1,'#FFF6DA',22)+glow(960,560,300,'#FFF6DA',.4*ln);
+  g+=SC.tree(t,300,800,1.2,{kind:'acacia'})+SC.tree(t,1600,800,1.2,{kind:'palm'});
+  g+=presence(t,960,140,90,.6*ln);
+  return g+SC.fore(t,{y:1060,edges:EDG(960,1.0),cols:['#4A4A20','#6A8A3A','#A8C860'],rocks:0,density:.5,seed:37});
+}
+function herds(t,lt){
+  let g=SC.sky(t,{mood:'golden',hz:760})+R(-200,700,1160,1100,0,'#B89A60')+R(960,700,1260,1100,0,'#6AA84A')+R(950,-900,20,2800,0,'#FFF6DA',{opacity:.5});
+  const fall=ease.inOut(prog(t,AT.livestock+.3,AT.livestock+1.4));
+  g+=G(`translate(${640} ${940}) rotate(${(fall*-12).toFixed(1)}) translate(-560 -940)`,SC.animal(t,'cow',640,940,1.3,{face:1,look:'down'}));
+  g+=SC.animal(t,'ox',420,900,.9,{face:1,look:'down'});
+  g+=SC.pair(t,'cow',1180,930,1.1,{graze:'auto',face:-1})+SC.animal(t,'sheep',1480,980,.9,{graze:'auto',face:-1});
+  g+=fig('dad',1240,FY+40,1.7,{face:-1,expr:'joy',look:{x:1180,y:800}})+fig('boy',1350,FY+50,1.1,{face:-1,expr:'joy',look:{x:1240,y:700},kid:true});
+  return g+SC.fore(t,{y:1080,edges:EDG(960,1.0),cols:['#4A4A20','#6A8A3A','#A8C860'],rocks:0,density:.5,seed:39});
+}
+// red dots (boils) drawn over a rig's face and arm, small and stylised
+const boilDots=(r,k)=>{let g='';const [x,y]=r.head,s=r.s;for(let i=0;i<7;i++)g+=C(x+(hash(i,51)-.3)*70*s*r.face,y+(hash(i,53)-.4)*70*s,(4+hash(i,57)*4)*s,'#D8483A',{opacity:k});return g;};
+function boils(t,lt){
+  let g=palace(t,{throne:false,wall:'#5A3A2A'});
+  const k=ease.out(prog(t,AT.boils,AT.boils+.8)),back=ease.inOut(prog(t,AT.cantStand,AT.cantStand+.8));
+  [[lerp(680,520,back),'mag1'],[lerp(900,740,back),'mag2']].forEach(([x,c])=>{const r=PPL.rig(who(c,x,FY,2.2,{expr:['sad','fear',back],look:{x:400,y:600},face:back>.5?-1:1,near:'chest'}));g+=r.draw('back')+r.draw('body')+r.draw('head')+boilDots(r,k)+r.draw('front');});
+  g+=moses(1260,FY,2.2,{face:-1,look:{x:800,y:600},expr:'calm'});
+  return g+floorFore(t,960,1.0);
+}
+function hardHeart(t,lt){
+  let g=palace(t,{tx:960});
+  g+=pharaoh(960,FY-30,2.7,{expr:'calm',look:{x:500,y:700},near:{x:960+60*2.7,y:FY-30-110*2.7}},r=>{const c=r.W([10,-90]);return C(c[0],c[1],34,'#6A6A70',{stroke:'#2A2A30','stroke-width':6})+glow(c[0],c[1],60,'#8A8A90',.3);});
+  return g+floorFore(t,960,1.1);
+}
+
+// ================= 5. Hail, locusts, darkness =================
+function hailStorm(t,lt){
+  let g=egyptTown(t,{mood:'night',sun:false,seed:41})+SC.clouds(t,{seed:43,n:8,y:-640,h:460,cols:['#2A2A3A','#141420','#FF8A4C'],storm:'#1A1A28',drift:24,op:.95});
+  g+=lightning(t,AT.hail+.3,700,-560,620)+lightning(t,AT.worst+.2,1400,-560,600)+hailFall(t,0,2000,-700,1000,90);
+  // barley flattened, people running under a roof
+  for(let i=0;i<30;i++){const x=100+i*60;g+=L(x,1000,x+40+Math.sin(t*3+i)*6,960,'#C8A84A',5);}
+  const run=prog(t,AT.hail,AT.worst+1.2);
+  g+=folk(0,lerp(500,1200,run),FY,1.9,{walk:t*9,expr:'fear',look:'up',near:'up'})+folk(3,lerp(380,1080,run),FY+4,1.8,{f:true,walk:t*9+1,expr:'fear',look:'up',near:'up'});
+  return g+foreSand(t,900,1.04,{cols:['#1A140A','#3A2A14','#6A4A20'],seed:45});
+}
+function locustCloud(t,lt){
+  const bare=ease.inOut(prog(t,AT.green-.2,AT.green+1));
+  let g=SC.sky(t,{mood:'golden',hz:760})+R(-200,-900,2400,1700,0,'#6A4A1A',{opacity:.45*(1-bare*.4)});
+  g+=SC.hills(47,{y:780,amp:14,wave:300,col:mix('#6A9A3A','#A8884A',bare),trees:6,treeCol:mix('#3A6A2A','#6A5A3A',bare)});
+  g+=R(-200,820,2400,1000,0,mix('#7AB040','#B89A5A',bare));
+  for(let i=0;i<40;i++){const x=40+i*48;g+=L(x,1000,x,lerp(900,990,bare),'#5A8A2A',6,{opacity:1-bare*.9});}
+  g+=swarm(t,-100,-300,2200,1100,320,'locust',{seed:11,dx:120});
+  g+=folk(4,800,FY,2.1,{expr:'fear',look:'up',near:'chest'});
+  return g+SC.fore(t,{y:1060,edges:EDG(900,1.04),cols:['#5A4A20','#8A6A30','#C8A050'],rocks:0,density:.4,seed:49});
+}
+function darkLand(t,lt){
+  let g=egyptTown(t,{mood:'night',sun:false,seed:51,dark:.92});
+  // across the river, Israel's houses glow with lamplight
+  [[1280,880],[1480,870],[1680,885]].forEach(([x,y])=>g+=doorHouse(x,y,.8,{lit:1,wall:'#8A6A48'})+glow(x,y-80,220,'#FFC86A',.5));
+  g+=fig('mum',1480,FY,1.8,{face:-1,expr:'calm',look:{x:900,y:700},near:{x:1480-80,y:FY-170}})+glow(1400,FY-180,120,'#FFD27A',.8)+C(1400,FY-180,14,'#FFE29A');
+  return g+foreNight(t,1100,1.04,{seed:53});
+}
+function sunGone(t,lt){
+  const k=1-ease.inOut(prog(t,AT.sunGod+.4,AT.gone));
+  let g=R(-200,-900,2400,2900,0,mix('#05040A','#E8A84C',k*.4));
+  g+=column(560,FY,820,110,mix('#3A3428','#E8D2A0',k))+column(1360,FY,820,110,mix('#3A3428','#E8D2A0',k))+R(-200,FY,2400,800,0,mix('#141210','#C8A870',k));
+  g+=sunDisc(960,300,150,k);
+  g+=folk(1,800,FY,2.0,{f:true,expr:['calm','fear',1-k],look:{x:960,y:300}})+folk(2,1120,FY,2.0,{face:-1,expr:['calm','fear',1-k],look:{x:960,y:300}});
+  return g;
+}
+
+// ================= 6. Why ten? =================
+const PINS=[['river',0],['frog',1],['cow',2],['sky',3],['sun',4]];
+function pinBoard(t,lt,o={}){
+  let g=R(-200,-900,2400,2900,0,'#2A1E18')+strip(440,220,1040,660,13,'#E8DCC0',{ax:6,ay:4});
+  const xs=[600,780,960,1140,1320],xt=[AT.riv6,AT.land6,AT.cat6,AT.sky6,AT.sun6];
+  PINS.forEach(([kind],i)=>{const x=xs[i];g+=R(x-80,320,160,480,10,'#F6EFDC',{stroke:'#B8A888','stroke-width':4})+tape(x,320,80,(i%2?4:-4))+
+    G(`translate(${x} 640) scale(.85) translate(${-x} -640)`,idol(kind,x,720,1))+(o.xs?xMark(x,580,64,ease.out(prog(t,xt[i],xt[i]+.45))):'');});
+  return g;
+}
+function whyTen(t,lt){return pinBoard(t,lt)+mark(scribble(960,560,560,340,7),ease.inOut(prog(t,AT.whyTen+.3,AT.whyTen+1)),CORAL,8);}
+function godSays(t,lt){
+  let g=R(-200,-900,2400,2900,0,'#0E0A1A')+SC.sky(t,{mood:'night',hz:900});
+  const k=ease.out(prog(t,AT.saysWhy,AT.saysWhy+1));
+  g+=presence(t,960,520,200,k);
+  for(let i=0;i<3;i++){const p=((t-AT.saysWhy)*.4+i/3)%1;if(t>AT.saysWhy)g+=C(960,520,120+p*800,'none',{stroke:'#FFF6DA','stroke-width':8*(1-p),opacity:(.6*(1-p)*k).toFixed(2)});}
+  return g;
+}
+function xBoard(t,lt){return pinBoard(t,lt,{xs:true});}
+
+// ================= 7. The last night =================
+function lastNight(t,lt){
+  let g=SC.sky(t,{mood:'night',hz:760})+SC.sun(t,1500,160,40,{col:'#F4F0DC',rays:0,k:.7});
+  g+=SC.hills(55,{y:780,amp:12,wave:300,col:'#1A2238',trees:5,treeCol:'#10141E'});
+  [[300,880],[760,890],[1220,880],[1680,890]].forEach(([x,y],i)=>g+=doorHouse(x,y,.9,{lit:.8,wall:'#6A5444'}));
+  g+=SC.ground(t,57,{y:900,col:'#2A2A3A',col2:'#141420',stones:8,tufts:8});
+  return g+foreNight(t,960,1.0,{seed:59});
+}
+function paintDoor(t,lt){
+  let g=SC.sky(t,{mood:'night',hz:760})+SC.hills(61,{y:780,amp:12,wave:300,col:'#1A2238',trees:4,treeCol:'#10141E'});
+  g+=SC.ground(t,61,{y:900,col:'#2A2A3A',col2:'#141420',stones:6,tufts:6});
+  const mk=ease.inOut(prog(t,AT.painted,AT.v1213-.2));
+  g+=doorHouse(1060,FY,2.0,{mark:mk,lit:.9});
+  const br=Math.sin(t*4)*.5+.5,hx=lerp(940,1180,(mk*3)%1),hy=mk<.34?FY-320:lerp(FY-300,FY-60,((mk-.34)/.66*2)%1);
+  const dad=who('dad',760,FY,2.3,{expr:'calm',look:{x:hx,y:hy},near:{x:Math.min(hx,920),y:Math.max(hy,FY-280)}});
+  g+=withProp(dad,r=>{const h=r.hand('near');return L(h[0],h[1],h[0]+40,h[1]-30,'#4A6A2A',8)+Ell(h[0]+48,h[1]-36,18,10,'#6A8A3A');});
+  g+=fig('mum',460,FY,2.1,{f:true,expr:'tender',look:{x:760,y:FY-300},near:{x:460+80,y:FY-200}})+glow(560,FY-210,120,'#FFD27A',.8)+C(560,FY-210,14,'#FFE29A');
+  g+=fig('boy',300,FY+6,1.3,{expr:'surprised',look:{x:1060,y:FY-300}});
+  return g+foreNight(t,820,1.04,{seed:63});
+}
+function windPasses(t,lt){
+  let g=SC.sky(t,{mood:'night',hz:760})+SC.hills(65,{y:780,amp:12,wave:300,col:'#141A2A',trees:4,treeCol:'#0C1018'});
+  g+=SC.ground(t,65,{y:900,col:'#222234',col2:'#10101A',stones:6,tufts:6});
+  [[420,880,0],[960,890,1],[1500,880,1]].forEach(([x,y,m])=>g+=doorHouse(x,y,.95,{mark:m,lit:m?.9:.3,wall:m?'#7A6050':'#5A5A66'}));
+  // the cold wind and a shadow sweep across; at the marked doors the lamps only flicker
+  const p=(t-AT.v1213)/2.6%1,sx=lerp(-400,2300,p);
+  g+=P(`M${sx-600} -200Q${sx} 300 ${sx-200} 1100L${sx-900} 1100Q${sx-700} 300 ${sx-1200} -200Z`,'#04040A',{opacity:.55});
+  for(let i=0;i<8;i++){const y=200+i*110,x=((t*900+i*260)%2600)-300;g+=P(`M${x} ${y}q120 -30 240 0t240 0`,'none',{stroke:'#C8D8F0',opacity:.25,'stroke-width':5});}
+  return g+foreNight(t,960,1.0,{seed:67});
+}
+function safeInside(t,lt){
+  let g=R(-200,-900,2400,2900,0,'#6A4428')+glow(960,500,900,'#FFB04C',.35);
+  g+=R(-200,FY+20,2400,800,0,'#4A2E1C');
+  g+=R(1300,180,260,380,10,'#141A3A',{stroke:'#6A4422','stroke-width':12});
+  // through the window: Egypt's roofs under the shadow
+  g+=R(1310,420,240,130,0,'#0A0A14')+[1340,1420,1490].map(x=>R(x,440,50,110,4,'#2A2A3A')).join('');
+  g+=R(360,FY-120,600,20,6,'#7A4A2A')+R(380,FY-100,20,100,4,'#5A3418')+R(920,FY-100,20,100,4,'#5A3418')+Ell(660,FY-128,90,16,'#D8963E');
+  const h=PPL.hug(who('mum',600,FY,2.2,{expr:'tender'}),who('girl',760,FY+6,1.4,{face:-1,expr:'calm',look:{x:600,y:600}}),{k:1});
+  g+=h.svg+fig('dad',1000,FY,2.3,{face:-1,expr:'tender',look:{x:700,y:FY-300}})+fig('boy',1160,FY+6,1.3,{face:-1,expr:'calm',look:{x:1000,y:FY-400}});
+  g+=glow(860,FY-300,160,'#FFD27A',.6);
+  return g;
+}
+function morningGo(t,lt){
+  let g=egyptTown(t,{mood:'dawn',seed:71,sx:1600,sy:420});
+  g+=pharaoh(620,FY,2.3,{expr:'fear',look:{x:1200,y:700},near:{x:620+80*2.3,y:FY-100*2.3},talk:true});
+  const go=prog(t,AT.morning,AT.morning+6);
+  for(let i=0;i<5;i++){const x=lerp(1000,1300,go)+i*150;g+=folk(i,x,FY+i%2*10,1.7,{walk:t*6+i,face:1,expr:'joy',look:{x:1900,y:700}});}
+  return g+foreSand(t,960,1.0,{seed:73,cols:['#4A3A2A','#8A6A4A','#D8A870']});
+}
+
+// ================= 8. The answer =================
+function exodusLine(t,lt){
+  let g=SC.env(t,'desert',{seed:75,mood:'dawn',gy:820});
+  g+=R(-200,700,2400,30,0,NILE,{opacity:.5});
+  for(let i=0;i<9;i++){const p=(t*.03+i/9)%1,x=lerp(1700,300,p),y=lerp(820,1000,p),s=lerp(.6,1.6,p);g+=folk(i,x,y,s,{walk:t*6+i,face:-1,expr:'joy',op:Math.min(1,p*5,(1-p)*5)});}
+  g+=SC.pair(t,'sheep',900,960,1.0,{walk:t*5,face:-1})+SC.pair(t,'donkey',1300,900,.8,{walk:t*5,face:-1});
+  return g+foreSand(t,960,1.0,{seed:77});
+}
+function questionBack(t,lt){
+  let g=R(-200,-900,2400,2900,0,'#2A1E14')+strip(470,260,980,280,17,'#F6EFDC',{ax:6,ay:4});
+  g+=T(960,430,'WHO IS THE LORD?',{size:80,font:'Georgia',weight:700,anchor:'middle',fill:INK});
+  g+=mark(scribble(960,400,460,120,5),ease.inOut(prog(t,AT.who2,AT.who2+.9)),CORAL,10);
+  const k=ease.out(prog(t,AT.knew,AT.knew+1));
+  g+=presence(t,960,840,150,k);
+  return g;
+}
+function lambHill(t,lt){
+  let g=SC.sky(t,{mood:'dawn',hz:820})+SC.sun(t,960,560,110,{});
+  g+=SC.godRays(t,960,560,{n:9,a0:-Math.PI*.95,a1:-Math.PI*.05,len:1400,op:.25});
+  g+=SC.hills(79,{y:860,amp:40,wave:500,col:'#6A8A4A',trees:0});
+  g+=SC.animal(t,'sheep',960,880,1.6,{face:-1,graze:0});
+  return g+SC.fore(t,{y:1080,edges:EDG(960,1.0),cols:['#3A5A2A','#5A8A3A','#9AC860'],flowers:['#FFFFFF','#FFD84A'],rocks:0,density:.5,seed:81});
+}
+function seaMountain(t,lt){
+  let g=SC.sky(t,{mood:'golden',hz:760});
+  const pts=FX.peak(83,1400,280,{halfW:520,rough:14});
+  g+=P(SC.fill(pts,1800),'#5A4A5A');
+  g+=R(-200,760,1400,180,0,NILE)+[0,1,2,3].map(i=>P(`M${-100+i*300} ${800+i%2*40}q40 -14 80 0t80 0`,'none',{stroke:'#FFFFFF',opacity:.4,'stroke-width':4})).join('');
+  g+=SC.ground(t,85,{y:940,col:'#C8A870',col2:'#8A6A3A',stones:8,tufts:6});
+  const tk=ease.out(prog(t,AT.mountain,AT.mountain+1));
+  g+=glow(1400,300,300,'#FFF6DA',.5*tk);
+  for(let i=0;i<6;i++){const x=680+i*120;g+=folk(i,x,FY-40+i%2*12,1.2,{walk:t*6+i,face:1,expr:'joy',look:{x:1400,y:300}});}
+  return g+foreSand(t,960,1.0,{seed:87});
+}
+function nextStory(t,lt){
+  let g=SC.sky(t,{mood:'dusk',hz:820});
+  const pts=FX.peak(89,960,300,{halfW:900,rough:16});g+=P(SC.fill(pts,1800),'#2A1E2A');
+  const k=ease.out(prog(t,AT.next,AT.next+1.2));
+  g+=G('',P('M760 760V440Q760 360 860 360Q950 360 950 440V760Z','#9C988C',{stroke:'#5E5A52','stroke-width':5})+P('M970 760V440Q970 360 1060 360Q1160 360 1160 440V760Z','#9C988C',{stroke:'#5E5A52','stroke-width':5})+glow(960,560,400,'#FFD86B',.4),k);
+  return g+SC.fore(t,{y:1080,edges:EDG(960,1.0),cols:['#140A14','#2A1A2A','#5A3A4A'],rocks:0,density:.4,seed:91});
+}
+
+// ---------- frame-space overlays: verse cards, the one label, the end card ----------
+// ESV text, as filled in scripts/12-the-ten-plagues.esv.md (trimmed to the parts the narration reads).
+const VTXT={
+  e52:['But Pharaoh said, ‘Who is the LORD, that I should','obey his voice and let Israel go?’'],
+  e720:['and all the water in the Nile turned into blood.'],
+  e819:['This is the finger of God.'],
+  e1022:['and there was pitch darkness in all the land of','Egypt three days. … but all the people of Israel','had light where they lived.'],
+  e1212:['and on all the gods of Egypt I will execute','judgments: I am the LORD.'],
+  e1213:['And when I see the blood, I will pass over you'],
+  c57:['For Christ, our Passover lamb, has been sacrificed.'],
+};
+const VERSES=[
+  [AT.v52-.15,300,40,VTXT.e52,'EXODUS 5:2 ESV',{size:42,seed:3,id:1,hl:'Who is the LORD,',hlAt:AT.v52+1.2,hlDur:.8,end:AT.question-.2}],
+  [AT.v720-.15,300,40,VTXT.e720,'EXODUS 7:20 ESV',{size:42,hl:'turned into blood.',hlAt:AT.v720+1.2,hlDur:.7,seed:5,id:2,end:AT.fish-.2}],
+  [AT.v819-.15,300,40,VTXT.e819,'EXODUS 8:19 ESV',{size:52,hl:'the finger of God.',hlAt:AT.v819+.5,hlDur:.7,seed:7,id:3,end:AT.flies-.2}],
+  [AT.v1022-.15,300,40,VTXT.e1022,'EXODUS 10:22–23 ESV',{size:40,hl:'had light where they lived.',hlAt:AT.v1022+5,hlDur:.8,seed:9,id:4,end:AT.sunGod-.2}],
+  [AT.v1212-.15,300,40,VTXT.e1212,'EXODUS 12:12 ESV',{size:42,hl:'on all the gods of Egypt',hlAt:AT.v1212+.4,hlDur:.9,seed:11,id:5,end:AT.aimed-.2}],
+  [AT.v1213-.15,300,40,VTXT.e1213,'EXODUS 12:13 ESV',{size:40,hl:'I will pass over you',hlAt:AT.v1213+1.4,hlDur:.8,seed:13,id:6,end:AT.night-.2}],
+  [AT.v57-.15,300,40,VTXT.c57,'1 CORINTHIANS 5:7 ESV',{size:40,hl:'our Passover lamb,',hlAt:AT.v57+.6,hlDur:.8,seed:15,id:7,end:AT.rescue-.2}],
+];
+// One label at a time, frame coordinates (vertical line y 1430, clear of the caption band 1220-1340).
+const TAGS=[
+  [AT.most+.2,AT.read-.4,'TEN PLAGUES',{size:hv(48,56)}],
+  [AT.contest,AT.gens-.4,'A CONTEST',{bg:CORAL,rot:-2,size:hv(48,56)}],
+  [AT.nile+.4,AT.v720-.4,'THE NILE',{}],
+  [AT.goddess+.4,AT.gnats-.3,'A FROG GODDESS',{}],
+  [AT.goshen,AT.turn-.3,'GOSHEN',{bg:GREEN}],
+  [AT.line,AT.livestock-.3,'A LINE BETWEEN',{bg:CORAL,rot:-2}],
+  [AT.sunGod+.4,AT.whyTen-.4,'THE SUN GOD',{}],
+  [AT.whyTen+.2,AT.saysWhy-.3,'WHY TEN?',{bg:CORAL,size:hv(48,56)}],
+  [AT.powerless,AT.last-.4,'POWERLESS',{bg:CORAL,rot:-2,size:hv(48,56)}],
+  [AT.lamb,AT.painted-.2,'A LAMB',{}],
+  [AT.v1213+.4,AT.night-.3,'PASSOVER',{bg:CORAL,size:hv(48,56)}],
+  [AT.knew+.3,AT.centuries-.4,'NOW THEY KNEW',{}],
+];
+const ftag=(t,[a,b,s,o],k)=>{if(t<a||t>b+.4)return '';const size=o.size||hv(40,46),x=hv(960,540),y=o.y||hv(90,1430);
+  return E.fade(t,b,piece(t,a,x,y+size*.8,label(x,y,s,{size,anchor:'middle',bg:o.bg||'#101014',rot:o.rot||0}),40+k,1.3));};
+function endCard(t){
+  const ec=prog(t,AT.last1+.6,AT.last1+1.2);if(ec<=0)return '';
+  const W=E.W,x=W/2,fy=f=>hv(f[0],f[1]);
+  let g=G('',R(0,0,W,E.H,0,'#08060F',{opacity:.86})+
+    T(x,fy([380,700]),'THE TEN PLAGUES OF EGYPT',{size:hv(44,46),font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
+    T(x,fy([470,810]),'WHO IS THE LORD?',{size:hv(84,74),font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
+  const ty=fy([600,940]);g+=piece(t,AT.last1+1.6,x,ty,label(x,ty-42*.81,'NEXT: THE TEN COMMANDMENTS',{size:hv(42,40),anchor:'middle',bg:CORAL}),55,1.3);
+  if(t>AT.last1+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
+    .forEach((ln,i)=>{g+=T(x,fy([800,1180])+i*hv(34,36),ln,{size:hv(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});
+  return g;
+}
+const hud=t=>{let g='';VERSES.forEach(v=>g+=verse(t,v[0],v[1],v[2],v[3],v[4],v[5]));TAGS.forEach((x,k)=>g+=ftag(t,x,k));return g+endCard(t);};
+
+// ---------- the sheet list: one setting per beat, a cut or scroll between, one camera move or a hold each ----------
+const SH=[];
+const sh=(name,at,draw,bg,cam,o={})=>SH.push(Object.assign({name,at,draw,bg,camF:cam,stars:false},o));
+// 0. cold open
+sh('red river',0,redRiver,['#0A1230','#05081A'],(a,b)=>[[0,960,760,.86],[b,960,800,1.0]]);
+sh('frogs on the steps',AT.frogs0-.12,frogSteps,['#5A2A3A','#2A1018'],H(960,FY,1.08,1190),{vIn:'cut'});
+sh('fire in the hail',AT.hail0-.12,fireHail,['#141420','#2A1A14'],H(960,FY,1.02,1190),{vIn:'cut'});
+sh('darkness',AT.dark0-.12,oneWindow,['#05040A','#0A0A14'],M(960,FY,1.0,1120,FY,1.12,1190),{vIn:'cut'});
+sh('a list of disasters',AT.most-.12,disasterList,['#2A1A14','#140A08'],(a,b)=>[[a,960,560,.9],[b,960,520,1.0]],{vIn:'cut'});
+sh('a contest',AT.read-.12,contest,['#FFB46A','#5A3A4A'],M(860,FY,.96,960,FY,1.04,1190),{vIn:'cut'});
+// 1. who is the LORD?
+sh('brick kilns',AT.gens-.12,bricks,['#E07A4A','#5A2A1A'],M(820,FY,1.04,860,FY,1.1,1190),{vIn:'cut'});
+sh("pharaoh's hall",AT.sent-.12,throneHall,['#7A3A2A','#3A1A10'],M(960,FY,.96,1000,FY,1.04,1190),{vIn:'cut'});
+sh('pharaoh laughed',AT.laughed-.12,laugh,['#7A3A2A','#3A1A10'],H(1060,FY,1.12,1190),{vIn:'cut'});
+sh('who is the LORD',AT.v52-.3,whoIsHe,['#7A3A2A','#3A1A10'],H(980,FY,.98,1190),{vIn:'cut'});
+sh('ten answers',AT.question-.12,tenSlots,['#1A1424','#0A0814'],(a,b)=>[[a,960,560,.9],[b,960,600,1.0]],{vIn:'cut'});
+// 2. the river
+sh('the nile',AT.nile-.12,nileDawn,['#FFB46A','#4A7AB8'],M(1000,FY,1.0,1040,FY,1.06,1190),{vIn:'cut'});
+sh('the staff strikes',AT.v720-.3,staffStrike,['#9AD0F0','#2E7AB8'],M(820,FY,1.04,900,FY,1.0,1190),{vIn:'cut'});
+sh('the fish died',AT.fish-.12,deadFish,['#C8483A','#5A1A14'],H(1000,FY,1.0,1190),{vIn:'cut'});
+sh('the magicians copy it',AT.magic-.12,copyTrick,['#7A3A2A','#3A1A10'],H(980,FY,1.0,1190),{vIn:'cut'});
+// 3. frogs, gnats, flies
+sh('frogs in the bedroom',AT.frogs-.12,frogBedroom,['#6A3A5A','#2A1424'],H(960,FY,1.04,1190),{vIn:'cut'});
+sh('the frog goddess',AT.goddess-.12,frogGoddess,['#E8B860','#8A5A2A'],M(960,FY,1.0,960,FY,1.1,1190),{vIn:'cut'});
+sh('gnats from the dust',AT.gnats-.12,gnatsDust,['#E8D0A0','#A8884A'],H(900,FY,1.04,1190),{vIn:'cut'});
+sh('the finger of God',AT.failed-.12,magiFail,['#7A3A2A','#3A1A10'],H(980,FY,1.0,1190),{vIn:'cut'});
+sh('flies',AT.flies-.12,fliesTown,['#C8B890','#6A5A3A'],H(900,FY,1.04,1190),{vIn:'cut'});
+sh('not in goshen',AT.goshen-.12,goshen,['#9AD0F0','#5A9A44'],M(900,FY,1.0,1000,FY,1.0,1190),{vIn:'cut'});
+// 4. a line between
+sh('a line between',AT.turn-.12,lineBetween,['#FFB46A','#5A8A3A'],H(960,FY,1.0,1190),{vIn:'cut'});
+sh('the herds',AT.livestock-.12,herds,['#FFB46A','#5A8A3A'],M(900,FY,1.0,1020,FY,1.0,1190),{vIn:'cut'});
+sh('boils',AT.boils-.12,boils,['#5A3A2A','#2A1A10'],H(980,FY,1.0,1190),{vIn:'cut'});
+sh('a hard heart',AT.still-.12,hardHeart,['#4A2A2A','#1A0A0A'],M(960,FY,1.06,960,FY,1.16,1190),{vIn:'cut'});
+// 5. hail, locusts, darkness
+sh('hail and fire',AT.hail-.12,hailStorm,['#141420','#2A1A14'],H(900,FY,1.04,1190),{vIn:'cut'});
+sh('locusts',AT.locusts-.12,locustCloud,['#C8A050','#5A4A20'],M(880,FY,1.04,900,FY,1.1,1190),{vIn:'cut'});
+sh('darkness in egypt',AT.darkness-.12,darkLand,['#05040A','#0A0A14'],M(1000,FY,1.0,1160,FY,1.06,1190),{vIn:'cut'});
+sh('the sun is gone',AT.sunGod-.12,sunGone,['#E8A84C','#05040A'],H(960,FY,1.0,1190),{vIn:'cut'});
+// 6. why ten?
+sh('why ten',AT.whyTen-.12,whyTen,['#2A1E18','#140E0A'],(a,b)=>[[a,960,780,.88],[b,960,760,.96]],{vIn:'cut'});
+sh('god says why',AT.saysWhy-.12,godSays,['#0E0A1A','#05040A'],(a,b)=>[[a,960,640,.9],[b,960,620,1.0]],{vIn:'cut'});
+sh('crossed out',AT.aimed-.12,xBoard,['#2A1E18','#140E0A'],(a,b)=>[[a,960,780,.9],[b,960,770,.96]],{vIn:'cut'});
+// 7. the last night
+sh('the last night',AT.last-.12,lastNight,['#0A1230','#05081A'],M(960,FY,.9,960,FY,1.0,1190),{vIn:'cut'});
+sh('blood on the doorframe',AT.wayThrough-.12,paintDoor,['#0A1230','#05081A'],M(800,FY,1.04,860,FY,1.1,1190),{vIn:'cut'});
+sh('the wind passes',AT.v1213-.3,windPasses,['#05081A','#020208'],H(960,FY,1.0,1190),{vIn:'cut'});
+sh('safe inside',AT.behind-.12,safeInside,['#6A4428','#2A1A0E'],M(860,FY,1.04,860,FY,1.1,1190),{vIn:'cut'});
+sh('by morning',AT.morning-.12,morningGo,['#FFB46A','#C86A3A'],H(900,FY,1.0,1190),{vIn:'cut'});
+// 8. the answer
+sh('out of egypt',AT.remember-.12,exodusLine,['#FFB46A','#E8A84C'],M(1000,FY,.96,980,FY,1.04,1190),{vIn:'cut'});
+sh('now they knew',AT.who2-.4,questionBack,['#2A1E14','#140A08'],(a,b)=>[[a,960,600,.9],[b,960,620,1.0]],{vIn:'cut'});
+sh('the lamb',AT.centuries-.12,lambHill,['#FFB46A','#C86A3A'],M(960,FY,1.0,960,FY,1.08,1190),{vIn:'cut'});
+sh('the sea and the mountain',AT.rescue-.12,seaMountain,['#FFC27A','#5A7AB8'],M(820,FY,1.0,1060,FY,1.0,1190),{vIn:'cut'});
+sh('the next story',AT.next-.12,nextStory,['#3A2A4A','#140A14'],M(960,FY,.96,960,FY,1.06,1190),{vIn:'cut'});
+const ENDT=AT.last1+7;
+SH.forEach((s,i)=>{const nx=i+1<SH.length?SH[i+1].at:ENDT;s.cam=s.camF(i===0?0:s.at+.1,nx-.1);delete s.camF;});
+delete SH[0].at;
+
+E.start({
+  cast:{},
+  gentleZoom:true,
+  hud,
+  sheets:SH,
+  talk:[],
+  // three big moments only: the river turns, the darkness, the last night
+  focus:[[AT.v720+.8,1.0],[AT.darkness,1.0],[AT.cry,1.1]],
+  flashes:[[AT.frogs0-.12,.5,'#FFE9C8'],[AT.hail0-.12,.6,'#E8F0FF'],[AT.read-.12,.6,'#FFFBEC'],[AT.hail-.12,.7,'#E8F0FF'],[AT.saysWhy-.12,.8,'#FFFBEC'],[AT.morning-.12,.7,'#FFF6DA'],[AT.centuries-.12,.8,'#FFFBEC']],
+  tail:7,
+  fadeOut:1.2,
+});
+</script>
