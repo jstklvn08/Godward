@@ -33,6 +33,18 @@ draft against this list before sending it; it is cheaper than another round of n
 - Text must never be hidden, cut off or covered (a yellow label at 242 s was invisible; a "GENESIS
   1–3" label covered a word; a tag sat on the serpent).
 
+## People and settings (Ten Commandments and Ten Plagues feedback, Nov 2026)
+- People are the simple round figures (PPL): big round head, dot eyes, small smile, rounded tunic, stub legs, and each
+  arm ONE short straight stub with a round hand; no elbow ("u dont have to put extra joints unless nessesarry").
+  Resting arms hang straight. Children get `kid:true` (no beard).
+- No hand or arm ever crosses a face, the person's own or anyone else's (a raised arm goes up and out; a hug or
+  carry arm goes behind the other head; a hand on a shoulder rests below the chin).
+- Houses must not be plain boxes ("houses look bland, refine it"): mud-brick courses, flat roofs with parapets and
+  beam ends, upper rooms, ladders, awnings, lattice windows, lamplight, jars, laundry, smoke.
+- Backgrounds must not be bland ("background looks bland fix it"): no big empty gradient skies, no repeated
+  grass-and-rock foreground, no small subject in a thin band. Every scene gets a sky in its own mood colour,
+  landmark silhouettes, a real mid-ground and a foreground that belongs to the place, plus matching particles.
+
 ## Captions
 - Below the picture (vertical: about 68% of the height, y≈1300), clear of the platform's buttons.
 - One to three words at a time ("too much words at once ... bores ppl"), the spoken word in yellow.
