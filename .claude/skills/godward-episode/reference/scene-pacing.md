@@ -257,3 +257,26 @@ Rules:
 - Objects rest on things: the ark's keel sits on a ledge (`SC.profile` with a flat tilted segment, tilt from the two
   ends, rocks/tufts over the keel line, ramp foot on the ground). Never floating.
 - Cost: every animal/person carries a halftone filter; ~15 animals + 8 people per sheet rendered fine.
+
+## Settings that are not bland: the Ten Plagues backdrop kit (Nov 2026)
+User notes: "houses look bland, refine it", then "background looks bland fix it". The worked example is
+`videos/the-ten-plagues/episode.html`, the "backdrop kit" and `mudHouse()` blocks; copy them into a new episode, or
+move them into `_kit` if a third episode needs them.
+- `eSky(t,kind,{hz,sun,moon,seed})`: banded gradient sky per mood, with paper strata, stars, a haloed moon, layered
+  clouds and horizon haze. Give each story beat its own colour (the plagues: blood, plague green-gold, storm, locust
+  ochre, dark, night, dawn, gold).
+- Landmark silhouettes: `pyramid`, `obelisk`, `pylon` (temple gate with flags and sun disc), `palms`, `sailboat`.
+- Mid-ground: `field`, `granary`, `stall`, `pen`. The palace gets a frieze, hieroglyph bands, statues in niches and
+  braziers with embers.
+- A foreground that belongs to the place, instead of the same `SC.fore` grass and rock every time:
+  `forePapyrus` (river), `foreSteps` (palace: steps, column bases, tiled floor, rug), `foreBarley` (fields; `bare`
+  for after the locusts), `foreWall` (village: mud-brick wall, jars, lamp, cobbled lane).
+- `motes(t,kind,...)`: dust, ash, ember, green, spark particles matching the scene.
+- `mudHouse(t,x,y,s,o)`: brick courses, parapet and beam ends, `storey`, `ladder`, awning, lattice window, lamplight
+  spill, jars and basket, laundry, `smoke`; `egypt` (whitewashed, blue trim), `night`, `dim`; `mark` paints the lintel
+  and both posts red, with drips, hyssop and a bowl. Put a back row of smaller houses behind three big ones so the
+  village fills the middle third.
+- Pitfall: `K.mix` returns `rgb(...)`, so `mix(mix(a,b),c)` is invalid and renders BLACK (the black roofs). Chain
+  colours with `SC.mx` (hex in, hex out), or only ever pass hex to `mix`.
+- `tools/standin-words.js <script.md> <words.js>` makes stand-in word timings from a script, so a page can be drawn
+  and checked before the narration exists; `align_words.py` output replaces it.
