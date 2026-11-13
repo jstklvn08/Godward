@@ -1,0 +1,130 @@
+{
+ "s00-01-grave-f64af9.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "A river turns to blood.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true
+ },
+ "s00-02-story-837dba.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Frogs fill the palace. Hail falls with fire inside it.",
+  "seed": 2,
+  "words_per_second": 2.84,
+  "in_range": true
+ },
+ "s00-03-story-0e54ae.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And then comes a darkness you can feel.",
+  "seed": 1,
+  "words_per_second": 3.43,
+  "in_range": true
+ },
+ "s00-04-talk-91f7ab.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most people remember the ten plagues as a list of disasters.",
+  "seed": 1,
+  "words_per_second": 3.63,
+  "in_range": true
+ },
+ "s00-05-story-a29952.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "An angry God, hitting Egypt again and again.",
+  "seed": 3,
+  "words_per_second": 2.4,
+  "in_range": true
+ },
+ "s00-06-pivot-2ebbd4.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But read it closely, and it's something else.",
+  "seed": 1,
+  "words_per_second": 3.09,
+  "in_range": true
+ },
+ "s00-07-talk-5e5ae5.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It's a contest.",
+  "seed": 1,
+  "words_per_second": 2.94,
+  "in_range": true
+ },
+ "s00-08-story-9daf19.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And Egypt's gods are losing.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true
+ },
+ "s07-01-grave-6ad359.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "The last plague was the heaviest.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": false
+ },
+ "s07-02-story-ee0910.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "At midnight, death would pass through the land, to every firstborn son.",
+  "seed": 1,
+  "words_per_second": 2.48,
+  "in_range": true
+ },
+ "s07-03-story-42ed64.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "But God gave Israel a way through.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true
+ },
+ "s07-04-story-faa980.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Each family killed a lamb, and painted its blood on the doorframe.",
+  "seed": 1,
+  "words_per_second": 2.93,
+  "in_range": true
+ },
+ "s07-05-grave-7f79f8.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "And when I see the blood, I will pass over you",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": false
+ },
+ "s07-06-story-7e15bb.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "That night, a great cry went up across Egypt.",
+  "seed": 1,
+  "words_per_second": 2.73,
+  "in_range": true
+ },
+ "s07-07-story-ffab4c.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "But behind the doors marked with blood, every child was safe.",
+  "seed": 1,
+  "words_per_second": 2.51,
+  "in_range": true
+ },
+ "s07-08-story-809e89.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "By morning, Pharaoh was begging them to leave.",
+  "seed": 1,
+  "words_per_second": 3.08,
+  "in_range": true
+ }
+}
