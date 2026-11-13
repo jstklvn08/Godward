@@ -236,7 +236,7 @@
     return {
       o, s, face, X, Y, draw, W, L: Lc,
       hand: side => W(arms[side].H), shoulder: side => W(SH[side]), elbow: side => W(arms[side].E),
-      head: W(HC), headR: 56 * s, hip: W(HIP), neck: W(U([0, -118])), top: W(U([0, -221])),
+      head: W(HC), headR: 56 * s, hf: headFace, hip: W(HIP), neck: W(U([0, -118])), top: W(U([0, -221])),
       back: (u = .35) => W(U([-46, lerp(-118, -40, u)])), chest: (u = .35) => W(U([46, lerp(-118, -40, u)])),
       lap: () => W(U([40, -34])),
     };
