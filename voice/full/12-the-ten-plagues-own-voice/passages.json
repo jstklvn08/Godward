@@ -235,9 +235,10 @@
   "section": 3,
   "mode": "story",
   "text": "Then frogs.",
-  "seed": 2,
-  "words_per_second": 1.69,
-  "in_range": false
+  "seed": 4,
+  "words_per_second": 1.55,
+  "in_range": false,
+  "word_check": "match"
  },
  "s03-02-story-e54b66.wav": {
   "section": 3,
@@ -275,9 +276,10 @@
   "section": 3,
   "mode": "story",
   "text": "This time the magicians failed, and they told Pharaoh so.",
-  "seed": 1,
-  "words_per_second": 2.77,
-  "in_range": true
+  "seed": 4,
+  "words_per_second": 3.02,
+  "in_range": true,
+  "word_check": "match"
  },
  "s03-07-grave-6e841f.wav": {
   "section": 3,
@@ -291,9 +293,10 @@
   "section": 3,
   "mode": "story",
   "text": "Then swarms of flies.",
-  "seed": 2,
-  "words_per_second": 2.33,
-  "in_range": false
+  "seed": 6,
+  "words_per_second": 2.08,
+  "in_range": false,
+  "word_check": "match"
  },
  "s03-09-pivot-3ed158.wav": {
   "section": 3,
@@ -427,9 +430,10 @@
   "section": 6,
   "mode": "pivot",
   "text": "So why ten?",
-  "seed": 2,
-  "words_per_second": 2.91,
-  "in_range": true
+  "seed": 8,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "word_check": "match"
  },
  "s06-02-story-eafc23.wav": {
   "section": 6,
