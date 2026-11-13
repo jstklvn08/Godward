@@ -97,14 +97,14 @@ function pharaoh(x,y,s,o={},extra=()=>''){
 }
 
 // ---------- props and set pieces ----------
-const jar=(x,y,s=1,c='#C8703A')=>P(`M${x-22*s} ${y}Q${x-34*s} ${y-40*s} ${x-16*s} ${y-62*s}H${x+16*s}Q${x+34*s} ${y-40*s} ${x+22*s} ${y}Z`,c,{stroke:'#6A2E14','stroke-width':4*s})+R(x-18*s,y-72*s,36*s,12*s,4*s,mix(c,'#000',.15));
+const jar=(x,y,s=1,c='#C8703A')=>P(`M${x-22*s} ${y}Q${x-34*s} ${y-40*s} ${x-16*s} ${y-62*s}H${x+16*s}Q${x+34*s} ${y-40*s} ${x+22*s} ${y}Z`,c,{stroke:'#6A2E14','stroke-width':4*s})+R(x-18*s,y-72*s,36*s,12*s,4*s,mix(c,'#000000',.15));
 const column=(x,y,h,w=90,c='#E8D2A0')=>R(x-w/2,y-h,w,h,6,c,{stroke:'#8A6A3A','stroke-width':5})+R(x-w/2-16,y-h-30,w+32,34,6,mix(c,'#C8A060',.4),{stroke:'#8A6A3A','stroke-width':5})+
-  P(`M${x-w/2-10} ${y-h}Q${x} ${y-h-60} ${x+w/2+10} ${y-h}`,'#5AA060',{stroke:'#2A5A2A','stroke-width':4})+R(x-w/2-10,y-24,w+20,24,4,mix(c,'#000',.1))+
+  P(`M${x-w/2-10} ${y-h}Q${x} ${y-h-60} ${x+w/2+10} ${y-h}`,'#5AA060',{stroke:'#2A5A2A','stroke-width':4})+R(x-w/2-10,y-24,w+20,24,4,mix(c,'#000000',.1))+
   [.3,.5,.7].map(u=>L(x-w/2+8,y-h*u,x+w/2-8,y-h*u,'#B88A4A',4,{opacity:.6})).join('');
 const sunDisc=(x,y,r,k=1)=>glow(x,y,r*2.4,'#FFC24C',.35*k)+C(x,y,r,mix('#5A4A3A','#FFC24C',k),{stroke:'#8A5A12','stroke-width':6})+C(x,y,r*.7,mix('#4A3A2A','#FFE07A',k))+
   [-1,1].map(f=>P(`M${x+f*r*.9} ${y+r*.2}Q${x+f*r*1.8} ${y-r*.2} ${x+f*r*2.4} ${y+r*.6}Q${x+f*r*1.7} ${y+r*.5} ${x+f*r*.9} ${y+r*.7}Z`,mix('#4A3A2A','#E8B53A',k))).join('');
 // Egypt's "gods" are carved things on pedestals (never a figure of the true God): a river emblem, a frog, a cow, a sky arch, the sun.
-const pedestal=(x,y,w=150,h=120,c='#B89A6A')=>R(x-w/2,y-h,w,h,8,c,{stroke:'#6A5030','stroke-width':5})+R(x-w/2-14,y-h-16,w+28,20,6,mix(c,'#fff',.2),{stroke:'#6A5030','stroke-width':4});
+const pedestal=(x,y,w=150,h=120,c='#B89A6A')=>R(x-w/2,y-h,w,h,8,c,{stroke:'#6A5030','stroke-width':5})+R(x-w/2-14,y-h-16,w+28,20,6,mix(c,'#ffffff',.2),{stroke:'#6A5030','stroke-width':4});
 function idol(kind,x,y,s=1,crack=0){
   let g='';const c='#C8B08A',dk='#6A5030';
   if(kind==='river')g=R(x-46*s,y-170*s,92*s,170*s,40*s,c,{stroke:dk,'stroke-width':5})+[0,1,2].map(i=>P(`M${x-32*s} ${y-120*s+i*36*s}q16 -14 32 0t32 0`,'none',{stroke:NILE,'stroke-width':8*s})).join('');
@@ -154,17 +154,17 @@ const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,10)+m
 function mudHouse(t,x,y,s,o={}){
   const sd=o.seed||((x*7+y)|0),r=rng(sd),W=300*s*(o.w||1),Hh=210*s*(o.h||1),lit=o.lit??1,mk=o.mark||0,eg=!!o.egypt,night=!!o.night;
   let wall=o.wall||(eg?'#EEE4CE':['#C89A62','#B8865A','#D4A872','#A87A4E'][sd%4]);
-  if(night)wall=mix(wall,'#3A3A58',.45);if(o.dim)wall=mix(wall,'#1A1A28',o.dim*.6);
-  const dk=mix(wall,'#2A1808',.45),lt=mix(wall,'#FFF4DC',.25),x0=x-W/2,top=y-Hh;
+  if(night)wall=SC.mx(wall,'#3A3A58',.45);if(o.dim)wall=SC.mx(wall,'#1A1A28',o.dim*.6);
+  const dk=SC.mx(wall,'#2A1808',.45),lt=SC.mx(wall,'#FFF4DC',.25),x0=x-W/2,top=y-Hh;
   let g='';
   // upper room (set back to one side)
   if(o.storey){const uw=W*.45,ux=o.storey>0?x0+W-uw-14*s:x0+14*s,uh=Hh*.55;
-    g+=R(ux,top-uh,uw,uh+6*s,4*s,mix(wall,'#000',.06),{stroke:dk,'stroke-width':4*s})+R(ux+uw*.35,top-uh*.7,uw*.3,uh*.45,uw*.12,lit?mix('#2A1C14','#FFD27A',.8*lit):'#2A1C14',{stroke:dk,'stroke-width':3*s})+
+    g+=R(ux,top-uh,uw,uh+6*s,4*s,SC.mx(wall,'#000000',.06),{stroke:dk,'stroke-width':4*s})+R(ux+uw*.35,top-uh*.7,uw*.3,uh*.45,uw*.12,lit?SC.mx('#2A1C14','#FFD27A',.8*lit):'#2A1C14',{stroke:dk,'stroke-width':3*s})+
       R(ux-6*s,top-uh-10*s,uw+12*s,14*s,3*s,lt,{stroke:dk,'stroke-width':3*s});}
   // main block, plinth, brick courses (offset rows, a few bricks a shade darker or lighter)
-  g+=R(x0,top,W,Hh,4*s,wall,{stroke:dk,'stroke-width':5*s})+R(x0-4*s,y-22*s,W+8*s,24*s,3*s,mix(wall,'#5A3A1E',.3));
+  g+=R(x0,top,W,Hh,4*s,wall,{stroke:dk,'stroke-width':5*s})+R(x0-4*s,y-22*s,W+8*s,24*s,3*s,SC.mx(wall,'#5A3A1E',.3));
   if(!eg){for(let row=0;row<Math.floor(Hh/(26*s))-1;row++){const yy=top+14*s+row*26*s;g+=L(x0+6*s,yy,x0+W-6*s,yy,dk,1.6*s,{opacity:.35});
-    for(let bx=x0+(row%2?18:44)*s;bx<x0+W-10*s;bx+=52*s){g+=L(bx,yy,bx,yy+26*s,dk,1.4*s,{opacity:.3});if(r()<.18)g+=R(bx+3*s,yy+3*s,46*s,20*s,2*s,r()<.5?lt:mix(wall,'#5A3A1E',.2),{opacity:.55});}}}
+    for(let bx=x0+(row%2?18:44)*s;bx<x0+W-10*s;bx+=52*s){g+=L(bx,yy,bx,yy+26*s,dk,1.4*s,{opacity:.3});if(r()<.18)g+=R(bx+3*s,yy+3*s,46*s,20*s,2*s,r()<.5?lt:SC.mx(wall,'#5A3A1E',.2),{opacity:.55});}}}
   else{g+=R(x0,top,W,16*s,2*s,'#2A6AB8',{opacity:.8})+R(x0,y-40*s,W,10*s,2*s,'#2A6AB8',{opacity:.6});}
   // flat roof: parapet with a gap, round beam ends under it
   g+=R(x0-8*s,top-16*s,W+16*s,20*s,3*s,lt,{stroke:dk,'stroke-width':4*s})+R(x0-4*s,top-34*s,W*.42,20*s,3*s,lt,{stroke:dk,'stroke-width':3*s})+R(x0+W*.58,top-34*s,W*.42+4*s,20*s,3*s,lt,{stroke:dk,'stroke-width':3*s});
@@ -177,9 +177,9 @@ function mudHouse(t,x,y,s,o={}){
   // door (arched), lamplight on the ground; lattice window
   const dx=x+(o.doorX||-.12)*W,dw=86*s,dh=140*s;
   if(lit>0)g+=P(`M${dx-dw/2} ${y}L${dx+dw/2} ${y}L${dx+dw*1.4} ${y+70*s}L${dx-dw*1.4} ${y+70*s}Z`,'#FFC86A',{opacity:(.28*lit).toFixed(2)});
-  g+=P(`M${dx-dw/2} ${y}V${y-dh+dw/2}Q${dx-dw/2} ${y-dh} ${dx} ${y-dh}Q${dx+dw/2} ${y-dh} ${dx+dw/2} ${y-dh+dw/2}V${y}Z`,lit?mix('#3A2414','#FFC86A',.75*lit):'#24180E',{stroke:dk,'stroke-width':5*s})+glow(dx,y-dh*.5,120*s,'#FFC86A',.45*lit);
+  g+=P(`M${dx-dw/2} ${y}V${y-dh+dw/2}Q${dx-dw/2} ${y-dh} ${dx} ${y-dh}Q${dx+dw/2} ${y-dh} ${dx+dw/2} ${y-dh+dw/2}V${y}Z`,lit?SC.mx('#3A2414','#FFC86A',.75*lit):'#24180E',{stroke:dk,'stroke-width':5*s})+glow(dx,y-dh*.5,120*s,'#FFC86A',.45*lit);
   const wx=x+(o.doorX>0?-.3:.28)*W,wy=top+50*s;
-  g+=R(wx-30*s,wy,60*s,54*s,6*s,lit?mix('#2A1C14','#FFD27A',.85*lit):'#1A140E',{stroke:dk,'stroke-width':4*s})+L(wx,wy,wx,wy+54*s,dk,3*s)+L(wx-30*s,wy+27*s,wx+30*s,wy+27*s,dk,3*s)+glow(wx,wy+27*s,80*s,'#FFD27A',.4*lit);
+  g+=R(wx-30*s,wy,60*s,54*s,6*s,lit?SC.mx('#2A1C14','#FFD27A',.85*lit):'#1A140E',{stroke:dk,'stroke-width':4*s})+L(wx,wy,wx,wy+54*s,dk,3*s)+L(wx-30*s,wy+27*s,wx+30*s,wy+27*s,dk,3*s)+glow(wx,wy+27*s,80*s,'#FFD27A',.4*lit);
   // palm-frond awning over the door on two poles
   if(!eg&&o.awning!==false){const ax0=dx-dw*.9,ax1=dx+dw*.9,ay=y-dh-14*s;g+=L(ax0,ay,ax0,y,'#6A4422',5*s)+L(ax1,ay,ax1,y,'#6A4422',5*s);
     for(let k=0;k<9;k++){const fx=lerp(ax0-10*s,ax1+10*s,k/8);g+=P(`M${fx} ${ay}q${8*s} ${-6*s} ${22*s} ${2*s}q${-12*s} ${4*s} ${-22*s} ${18*s}Z`,k%2?'#6A8A3A':'#5A7A2E');}
@@ -500,8 +500,10 @@ function xBoard(t,lt){return pinBoard(t,lt,{xs:true});}
 function lastNight(t,lt){
   let g=SC.sky(t,{mood:'night',hz:760})+SC.sun(t,1500,160,40,{col:'#F4F0DC',rays:0,k:.7});
   g+=SC.hills(55,{y:780,amp:12,wave:300,col:'#1A2238',trees:5,treeCol:'#10141E'});
-  g+=SC.tree(t,540,890,1.0,{kind:'palm',col:'#1A2A30',col2:'#2A3A40'})+SC.tree(t,1460,885,1.1,{kind:'palm',col:'#1A2A30',col2:'#2A3A40'});
-  [[330,930,1.05,1,1],[960,950,1.25,0,-1],[1590,934,1.1,-1,1]].forEach(([x,y,s,st,ld],i)=>g+=mudHouse(t,x,y,s,{lit:.85,night:true,storey:st,ladder:ld,smoke:i===1,seed:30+i}));
+  // a back row, smaller, then three big houses in front: the village fills the middle of the frame
+  [[380,860,.7,1],[760,850,.75,0],[1200,856,.7,-1],[1580,852,.72,1]].forEach(([x,y,s,st],i)=>g+=mudHouse(t,x,y,s,{lit:.7,night:true,storey:st,seed:70+i,cloth:false}));
+  g+=SC.tree(t,600,900,1.3,{kind:'palm',col:'#1A2A30',col2:'#2A3A40'})+SC.tree(t,1360,895,1.4,{kind:'palm',col:'#1A2A30',col2:'#2A3A40'});
+  [[470,1000,1.35,1,1],[960,1012,1.55,0,-1],[1450,1002,1.35,-1,1]].forEach(([x,y,s,st,ld],i)=>g+=mudHouse(t,x,y,s,{lit:.85,night:true,storey:st,ladder:ld,smoke:i===1,seed:30+i}));
   g+=SC.ground(t,57,{y:900,col:'#2A2A3A',col2:'#141420',stones:8,tufts:8});
   return g+foreNight(t,960,1.0,{seed:59});
 }
@@ -521,7 +523,7 @@ function windPasses(t,lt){
   let g=SC.sky(t,{mood:'night',hz:760})+SC.hills(65,{y:780,amp:12,wave:300,col:'#141A2A',trees:4,treeCol:'#0C1018'});
   g+=SC.ground(t,65,{y:900,col:'#222234',col2:'#10101A',stones:6,tufts:6});
   // marked Israelite houses in front; unmarked Egyptian houses across the way, darker, under the shadow
-  [[260,800,.6,0],[700,790,.66,1],[1240,796,.6,0],[1680,792,.62,1]].forEach(([x,y,s,st],i)=>g+=mudHouse(t,x,y,s,{egypt:true,night:true,storey:st,dim:1,lit:0,seed:50+i,cloth:false}));
+  [[260,760,.85,0],[960,748,.95,1],[1660,756,.85,0]].forEach(([x,y,s,st],i)=>g+=mudHouse(t,x,y,s,{egypt:true,night:true,storey:st,dim:.8,lit:0,seed:50+i,cloth:false}));
   [[560,960,1.3,1,-1],[1380,968,1.35,-1,1]].forEach(([x,y,s,st,ld],i)=>g+=mudHouse(t,x,y,s,{mark:1,lit:.9,night:true,storey:st,ladder:ld,smoke:i===1,seed:60+i}));
   // the cold wind and a shadow sweep across; at the marked doors the lamps only flicker
   const p=(t-AT.v1213)/2.6%1,sx=lerp(-400,2300,p);
@@ -633,7 +635,7 @@ function endCard(t){
   const W=E.W,x=W/2,fy=f=>hv(f[0],f[1]);
   let g=G('',R(0,0,W,E.H,0,'#08060F',{opacity:.86})+
     T(x,fy([380,700]),'THE TEN PLAGUES OF EGYPT',{size:hv(44,46),font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
-    T(x,fy([470,810]),'WHO IS THE LORD?',{size:hv(84,74),font:'Georgia',weight:700,anchor:'middle',fill:'#fff'}),ec);
+    T(x,fy([470,810]),'WHO IS THE LORD?',{size:hv(84,74),font:'Georgia',weight:700,anchor:'middle',fill:'#ffffff'}),ec);
   const ty=fy([600,940]);g+=piece(t,AT.last1+1.6,x,ty,label(x,ty-42*.81,'NEXT: THE TEN COMMANDMENTS',{size:hv(42,40),anchor:'middle',bg:CORAL}),55,1.3);
   if(t>AT.last1+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
     .forEach((ln,i)=>{g+=T(x,fy([800,1180])+i*hv(34,36),ln,{size:hv(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});
@@ -684,7 +686,7 @@ sh('why ten',AT.whyTen-.12,whyTen,['#2A1E18','#140E0A'],(a,b)=>[[a,960,780,.88],
 sh('god says why',AT.saysWhy-.12,godSays,['#0E0A1A','#05040A'],(a,b)=>[[a,960,640,.9],[b,960,620,1.0]],{vIn:'cut'});
 sh('crossed out',AT.aimed-.12,xBoard,['#2A1E18','#140E0A'],(a,b)=>[[a,960,780,.9],[b,960,770,.96]],{vIn:'cut'});
 // 7. the last night
-sh('the last night',AT.last-.12,lastNight,['#0A1230','#05081A'],M(960,FY,.9,960,FY,1.0,1190),{vIn:'cut'});
+sh('the last night',AT.last-.12,lastNight,['#0A1230','#05081A'],M(960,FY,1.02,960,FY,1.1,1230),{vIn:'cut'});
 sh('blood on the doorframe',AT.wayThrough-.12,paintDoor,['#0A1230','#05081A'],M(800,FY,1.04,860,FY,1.1,1190),{vIn:'cut'});
 sh('the wind passes',AT.v1213-.3,windPasses,['#05081A','#020208'],M(820,FY,1.02,1100,FY,1.02,1190),{vIn:'cut'});
 sh('safe inside',AT.behind-.12,safeInside,['#6A4428','#2A1A0E'],M(860,FY,1.04,860,FY,1.1,1190),{vIn:'cut'});
