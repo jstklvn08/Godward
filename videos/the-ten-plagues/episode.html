@@ -39,7 +39,7 @@ const AT={
   riv6:cue('The river. The land'), land6:cue('The land. The cattle'), cat6:cue('The cattle. The sky'), sky6:cue('The sky. The sun'), sun6:cue('The sun. One by'), powerless:cue('shown to be powerless'),
   last:cue('The last plague'), midnight:cue('At midnight'), firstborn:cue('every firstborn'), wayThrough:cue('But God gave'), lamb:cue('killed a lamb'), painted:cue('painted its blood'),
   v1213:after('on the doorframe',1,.35), night:cue('That night'), cry:cue('a great cry'), behind:cue('But behind the doors'), safe:cue('was safe'), morning:cue('By morning'), begging:cue('begging'),
-  remember:cue("Remember Pharaoh's"), who2:cue('question? Who is'), knew:cue('Now all of Egypt'), soIsrael:cue('And so did Israel'),
+  remember:cue("Remember Pharaoh's"), who2:cue('Who is the LORD'), knew:cue('Now all of Egypt'), soIsrael:cue('And so did Israel'),
   centuries:cue('Centuries later'), picture:cue('a picture of'), v57:after('something bigger',1,.35), rescue:cue('The rescue came first'), sea:cue('Then came the sea'),
   mountain:cue('And then, a mountain'), next:cue("But that's the next"),
 };
@@ -145,15 +145,60 @@ const lightning=(t,a,x,y0,y1)=>{const p=prog(t,a,a+.35);if(p<=0||p>=1)return '';
 const presence=(t,x,y,r,k=1)=>k<=0?'':glow(x,y,r*2.6,'#FFF6DA',.5*k)+glow(x,y,r*1.2,'#FFFFFF',.65*k)+
   Ell(x,y,r*.74,r,'none',{stroke:'#FFFBEA','stroke-width':8,opacity:(.75*k).toFixed(2)})+Ell(x,y,r*.6,r*.82,'#FFFBEA',{opacity:(.22*k*(1+.25*Math.sin(t*2))).toFixed(2)});
 const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,10)+mark(`M${cx+r} ${cy-r}L${cx-r} ${cy+r}`,p*2-1,CORAL,10);
-// A mud-brick Israelite house with a door; mark 0..1 paints the blood on the doorframe (lintel and both posts).
-function doorHouse(x,y,s,o={}){
-  const w=320*s,h=230*s,mk=o.mark||0,lit=o.lit??1,wall=o.wall||'#C8A070';
-  let g=R(x-w/2,y-h,w,h,6*s,wall,{stroke:'#5A3A1E','stroke-width':5*s})+R(x-w/2-10*s,y-h-14*s,w+20*s,22*s,5*s,mix(wall,'#5A3A1E',.3));
-  g+=R(x-48*s,y-150*s,96*s,150*s,6*s,lit?mix('#3A2414','#FFC86A',.7*lit):'#3A2414',{stroke:'#5A3A1E','stroke-width':5*s})+glow(x,y-80*s,140*s,'#FFC86A',.45*lit);
-  if(mk>0){const c=BLOOD;g+=mark(`M${x-58*s} ${y-160*s}L${x+58*s} ${y-160*s}`,clamp(mk*3),c,14*s)+mark(`M${x-56*s} ${y-150*s}L${x-56*s} ${y-20*s}`,clamp(mk*3-1),c,12*s)+mark(`M${x+56*s} ${y-150*s}L${x+56*s} ${y-20*s}`,clamp(mk*3-2),c,12*s);}
-  g+=R(x+w*.28,y-h+50*s,56*s,48*s,6*s,lit?'#FFD27A':'#2A1C14',{stroke:'#5A3A1E','stroke-width':4*s});
+// A mud-brick house in the collage style (base centre x, ground y, scale s). Built from: brick courses on a plinth, a flat
+// roof with a parapet and round beam ends, an optional upper room, a ladder to the roof, a palm-frond awning over the
+// door, a lattice window, lamplight spilling from the door onto the ground, jars and a basket by the door, laundry on
+// the roof, and smoke from a cooking fire. o: w/h (size factors), wall, lit 0..1, mark 0..1 (blood painted on the lintel
+// and both posts, with a hyssop bunch and a bowl), egypt (whitewashed, blue trim, no awning), storey, ladder, cloth,
+// smoke, seed, night (cooler, darker wall), dim 0..1 (an unlit house under the shadow).
+function mudHouse(t,x,y,s,o={}){
+  const sd=o.seed||((x*7+y)|0),r=rng(sd),W=300*s*(o.w||1),Hh=210*s*(o.h||1),lit=o.lit??1,mk=o.mark||0,eg=!!o.egypt,night=!!o.night;
+  let wall=o.wall||(eg?'#EEE4CE':['#C89A62','#B8865A','#D4A872','#A87A4E'][sd%4]);
+  if(night)wall=mix(wall,'#3A3A58',.45);if(o.dim)wall=mix(wall,'#1A1A28',o.dim*.6);
+  const dk=mix(wall,'#2A1808',.45),lt=mix(wall,'#FFF4DC',.25),x0=x-W/2,top=y-Hh;
+  let g='';
+  // upper room (set back to one side)
+  if(o.storey){const uw=W*.45,ux=o.storey>0?x0+W-uw-14*s:x0+14*s,uh=Hh*.55;
+    g+=R(ux,top-uh,uw,uh+6*s,4*s,mix(wall,'#000',.06),{stroke:dk,'stroke-width':4*s})+R(ux+uw*.35,top-uh*.7,uw*.3,uh*.45,uw*.12,lit?mix('#2A1C14','#FFD27A',.8*lit):'#2A1C14',{stroke:dk,'stroke-width':3*s})+
+      R(ux-6*s,top-uh-10*s,uw+12*s,14*s,3*s,lt,{stroke:dk,'stroke-width':3*s});}
+  // main block, plinth, brick courses (offset rows, a few bricks a shade darker or lighter)
+  g+=R(x0,top,W,Hh,4*s,wall,{stroke:dk,'stroke-width':5*s})+R(x0-4*s,y-22*s,W+8*s,24*s,3*s,mix(wall,'#5A3A1E',.3));
+  if(!eg){for(let row=0;row<Math.floor(Hh/(26*s))-1;row++){const yy=top+14*s+row*26*s;g+=L(x0+6*s,yy,x0+W-6*s,yy,dk,1.6*s,{opacity:.35});
+    for(let bx=x0+(row%2?18:44)*s;bx<x0+W-10*s;bx+=52*s){g+=L(bx,yy,bx,yy+26*s,dk,1.4*s,{opacity:.3});if(r()<.18)g+=R(bx+3*s,yy+3*s,46*s,20*s,2*s,r()<.5?lt:mix(wall,'#5A3A1E',.2),{opacity:.55});}}}
+  else{g+=R(x0,top,W,16*s,2*s,'#2A6AB8',{opacity:.8})+R(x0,y-40*s,W,10*s,2*s,'#2A6AB8',{opacity:.6});}
+  // flat roof: parapet with a gap, round beam ends under it
+  g+=R(x0-8*s,top-16*s,W+16*s,20*s,3*s,lt,{stroke:dk,'stroke-width':4*s})+R(x0-4*s,top-34*s,W*.42,20*s,3*s,lt,{stroke:dk,'stroke-width':3*s})+R(x0+W*.58,top-34*s,W*.42+4*s,20*s,3*s,lt,{stroke:dk,'stroke-width':3*s});
+  for(let bx=x0+20*s;bx<x0+W-10*s;bx+=44*s)g+=C(bx,top+8*s,6*s,'#6A4422',{stroke:'#3A2410','stroke-width':2*s});
+  // laundry on a line across the roof
+  if(o.cloth!==false&&!o.dim){const cy=top-60*s;g+=L(x0+20*s,cy-30*s,x0+20*s,top-16*s,'#5A3A1E',4*s)+L(x0+W*.55,cy-30*s,x0+W*.55,top-16*s,'#5A3A1E',4*s)+P(`M${x0+20*s} ${cy-26*s}Q${x0+W*.3} ${cy-12*s} ${x0+W*.55} ${cy-26*s}`,'none',{stroke:'#3A2410','stroke-width':2*s});
+    [['#C8483A',.12],['#E8D8B0',.3],['#2E7AB8',.45]].forEach(([c,u],i)=>{const cx=x0+20*s+u*(W*.55-20*s)*1.6,sw=Math.sin(t*2+i+sd)*4*s;g+=P(`M${cx} ${cy-20*s}h${30*s}l${sw} ${36*s}h${-30*s}Z`,c,{opacity:.95});});}
+  // ladder to the roof
+  if(o.ladder){const lx=o.ladder>0?x0+W+6*s:x0-34*s;g+=L(lx,y,lx+8*s,top-30*s,'#7A5432',5*s)+L(lx+28*s,y,lx+36*s,top-30*s,'#7A5432',5*s);for(let k=1;k<7;k++){const yy=y-(y-top+30*s)*k/7;g+=L(lx+k*1.1*s,yy,lx+28*s+k*1.1*s,yy,'#7A5432',4*s);}}
+  // door (arched), lamplight on the ground; lattice window
+  const dx=x+(o.doorX||-.12)*W,dw=86*s,dh=140*s;
+  if(lit>0)g+=P(`M${dx-dw/2} ${y}L${dx+dw/2} ${y}L${dx+dw*1.4} ${y+70*s}L${dx-dw*1.4} ${y+70*s}Z`,'#FFC86A',{opacity:(.28*lit).toFixed(2)});
+  g+=P(`M${dx-dw/2} ${y}V${y-dh+dw/2}Q${dx-dw/2} ${y-dh} ${dx} ${y-dh}Q${dx+dw/2} ${y-dh} ${dx+dw/2} ${y-dh+dw/2}V${y}Z`,lit?mix('#3A2414','#FFC86A',.75*lit):'#24180E',{stroke:dk,'stroke-width':5*s})+glow(dx,y-dh*.5,120*s,'#FFC86A',.45*lit);
+  const wx=x+(o.doorX>0?-.3:.28)*W,wy=top+50*s;
+  g+=R(wx-30*s,wy,60*s,54*s,6*s,lit?mix('#2A1C14','#FFD27A',.85*lit):'#1A140E',{stroke:dk,'stroke-width':4*s})+L(wx,wy,wx,wy+54*s,dk,3*s)+L(wx-30*s,wy+27*s,wx+30*s,wy+27*s,dk,3*s)+glow(wx,wy+27*s,80*s,'#FFD27A',.4*lit);
+  // palm-frond awning over the door on two poles
+  if(!eg&&o.awning!==false){const ax0=dx-dw*.9,ax1=dx+dw*.9,ay=y-dh-14*s;g+=L(ax0,ay,ax0,y,'#6A4422',5*s)+L(ax1,ay,ax1,y,'#6A4422',5*s);
+    for(let k=0;k<9;k++){const fx=lerp(ax0-10*s,ax1+10*s,k/8);g+=P(`M${fx} ${ay}q${8*s} ${-6*s} ${22*s} ${2*s}q${-12*s} ${4*s} ${-22*s} ${18*s}Z`,k%2?'#6A8A3A':'#5A7A2E');}
+    g+=R(ax0-10*s,ay-6*s,ax1-ax0+20*s,10*s,3*s,'#7A5432');}
+  // blood on the doorframe: lintel and both posts, drips, a bowl and the hyssop bunch at the door
+  if(mk>0){const c=BLOOD,fx0=dx-dw/2-8*s,fx1=dx+dw/2+8*s,fy=y-dh-6*s;
+    g+=mark(`M${fx0} ${fy}L${fx1} ${fy}`,clamp(mk*3),c,16*s)+mark(`M${fx0} ${fy+8*s}L${fx0} ${y-6*s}`,clamp(mk*3-1),c,13*s)+mark(`M${fx1} ${fy+8*s}L${fx1} ${y-6*s}`,clamp(mk*3-2),c,13*s);
+    if(mk>.4)for(let k=0;k<4;k++){const ddx=lerp(fx0+10*s,fx1-10*s,k/3);g+=P(`M${ddx-3*s} ${fy}q${3*s} ${16*s+k*4*s} ${6*s} 0Z`,c);}
+    if(o.bowl!==false)g+=Ell(fx1+44*s,y-10*s,26*s,12*s,'#C8B08A',{stroke:'#6A5030','stroke-width':3*s})+Ell(fx1+44*s,y-16*s,20*s,5*s,c)+L(fx1+30*s,y-14*s,fx1+64*s,y-50*s,'#5A7A2E',4*s)+Ell(fx1+66*s,y-54*s,12*s,8*s,'#6A8A3A');}
+  // jars and a basket by the door
+  if(!o.dim){g+=jar(x0+26*s,y,1.1*s,eg?'#D8A86A':'#C8703A')+jar(x0+60*s,y,.85*s)+P(`M${x0+W-70*s} ${y}l${-8*s} ${-40*s}h${66*s}l${-8*s} ${40*s}Z`,'#B8904A',{stroke:'#6A4A1E','stroke-width':3*s})+[0,1,2].map(k=>L(x0+W-74*s,y-12*s*k-8*s,x0+W-12*s,y-12*s*k-8*s,'#8A6A2A',2*s)).join('');}
+  // cooking fire and smoke
+  if(o.smoke){const fx=x0+W+40*s;g+=FX.flames(t,[[fx-14*s,y],[fx+14*s,y]],{H:28*s,seed:sd})+glow(fx,y-10*s,60*s,'#FF9A4C',.6);
+    for(let k=0;k<5;k++){const p=((t*.25+k/5)%1),px=fx+Math.sin(t+k)*10*s+p*40*s,py=y-30*s-p*260*s;g+=C(px,py,(14+p*30)*s,night?'#8A8AA0':'#C8C0B8',{opacity:(.5*(1-p)).toFixed(2)});}}
+  if(o.dim)g+=R(x0-20*s,top-80*s,W+40*s,Hh+80*s,0,'#05050C',{opacity:(.35*o.dim).toFixed(2)});
   return g;
 }
+// The old name, used by a few scenes: the same house.
+const doorHouse=(x,y,s,o={})=>mudHouse(0,x,y,s,o);
 // Egyptian town: flat-roofed white houses, palms, a temple with columns and a sun disc, a pyramid far behind.
 function egyptTown(t,o={}){
   const m=o.mood||'day',gy=o.gy??880,night=m==='night',dark=o.dark||0;
@@ -161,7 +206,8 @@ function egyptTown(t,o={}){
   if(!night&&o.sun!==false)g+=SC.sun(t,o.sx??1500,o.sy??220,70,{k:1-dark});
   g+=P(`M${o.px??420} ${gy-30}L${(o.px??420)+260} ${gy-330}L${(o.px??420)+520} ${gy-30}Z`,night?'#3A3448':'#D8B070')+P(`M${(o.px??420)+260} ${gy-330}L${(o.px??420)+520} ${gy-30}L${(o.px??420)+300} ${gy-30}Z`,night?'#2A2438':'#B8904A');
   g+=SC.hills(o.seed||5,{y:gy-20,amp:14,wave:300,col:night?'#2A2A40':'#C8A870',trees:5,treeKind:'palm'});
-  [[200,gy+10,.9],[520,gy+20,1],[1450,gy+16,.95],[1720,gy+8,.85]].forEach(([x,y,s])=>g+=SC.house(x,y,s,{col:night?'#5A5670':'#F0E6D0'}));
+  g+=SC.tree(t,330,gy+12,1.0,{kind:'palm'})+SC.tree(t,1590,gy+10,1.1,{kind:'palm'});
+  [[180,gy+16,.62,1,0],[470,gy+26,.72,0,1],[1380,gy+22,.7,1,-1],[1730,gy+14,.6,0,0]].forEach(([x,y,s,st,ld],i)=>g+=mudHouse(t,x,y,s,{egypt:i%2===0,storey:st?(i%3?1:-1):0,ladder:ld,night,lit:night?.8:.25,smoke:i===1,seed:i+3,cloth:!night}));
   g+=SC.ground(t,o.seed||5,{y:gy+40,col:night?'#2A2A3A':'#D8B878',col2:night?'#141420':'#A8884A',stones:10,tufts:12});
   if(dark>0)g+=R(-200,-900,2400,2900,0,'#05040A',{opacity:(.86*dark).toFixed(2)});
   return g;
@@ -354,7 +400,7 @@ function goshen(t,lt){
   let g=SC.sky(t,{mood:'day',hz:760});
   // left: Egypt under the swarm; right: Goshen green and quiet; a glowing line between them
   g+=R(-200,700,1160,1100,0,'#C8A870')+R(960,700,1260,1100,0,'#7AB85A');
-  g+=SC.house(400,820,1,{col:'#F0E6D0'})+SC.house(1500,820,1,{col:'#D8B888'})+SC.tree(t,1700,860,1.1,{kind:'olive'})+SC.pair(t,'sheep',1320,940,.9,{graze:'auto'});
+  g+=mudHouse(t,400,830,.8,{egypt:true,storey:1,lit:.2,seed:5})+mudHouse(t,1500,830,.8,{storey:-1,ladder:1,lit:.3,smoke:true,seed:6})+SC.tree(t,1700,860,1.1,{kind:'olive'})+SC.pair(t,'sheep',1320,940,.9,{graze:'auto'});
   g+=swarm(t,-100,200,1040,700,200,'fly',{seed:9,dx:30});
   const ln=ease.out(prog(t,AT.goshen,AT.goshen+.8));
   g+=R(950,-900,20,2800,0,'#FFF6DA',{opacity:.8*ln})+glow(960,500,500,'#FFF6DA',.3*ln);
@@ -418,7 +464,7 @@ function locustCloud(t,lt){
 function darkLand(t,lt){
   let g=egyptTown(t,{mood:'night',sun:false,seed:51,dark:.92});
   // across the river, Israel's houses glow with lamplight
-  [[1280,880],[1480,870],[1680,885]].forEach(([x,y])=>g+=doorHouse(x,y,.8,{lit:1,wall:'#8A6A48'})+glow(x,y-80,220,'#FFC86A',.5));
+  [[1240,880,.75,1,0],[1480,872,.85,0,1],[1720,886,.7,-1,0]].forEach(([x,y,s,st,ld],i)=>g+=mudHouse(t,x,y,s,{lit:1,night:true,storey:st,ladder:ld,smoke:i===1,seed:20+i})+glow(x,y-80,240,'#FFC86A',.45));
   g+=fig('mum',1480,FY,1.8,{face:-1,expr:'calm',look:{x:900,y:700},near:{x:1480-80,y:FY-170}})+glow(1400,FY-180,120,'#FFD27A',.8)+C(1400,FY-180,14,'#FFE29A');
   return g+foreNight(t,1100,1.04,{seed:53});
 }
@@ -454,7 +500,8 @@ function xBoard(t,lt){return pinBoard(t,lt,{xs:true});}
 function lastNight(t,lt){
   let g=SC.sky(t,{mood:'night',hz:760})+SC.sun(t,1500,160,40,{col:'#F4F0DC',rays:0,k:.7});
   g+=SC.hills(55,{y:780,amp:12,wave:300,col:'#1A2238',trees:5,treeCol:'#10141E'});
-  [[300,880],[760,890],[1220,880],[1680,890]].forEach(([x,y],i)=>g+=doorHouse(x,y,.9,{lit:.8,wall:'#6A5444'}));
+  g+=SC.tree(t,540,890,1.0,{kind:'palm',col:'#1A2A30',col2:'#2A3A40'})+SC.tree(t,1460,885,1.1,{kind:'palm',col:'#1A2A30',col2:'#2A3A40'});
+  [[330,930,1.05,1,1],[960,950,1.25,0,-1],[1590,934,1.1,-1,1]].forEach(([x,y,s,st,ld],i)=>g+=mudHouse(t,x,y,s,{lit:.85,night:true,storey:st,ladder:ld,smoke:i===1,seed:30+i}));
   g+=SC.ground(t,57,{y:900,col:'#2A2A3A',col2:'#141420',stones:8,tufts:8});
   return g+foreNight(t,960,1.0,{seed:59});
 }
@@ -462,7 +509,7 @@ function paintDoor(t,lt){
   let g=SC.sky(t,{mood:'night',hz:760})+SC.hills(61,{y:780,amp:12,wave:300,col:'#1A2238',trees:4,treeCol:'#10141E'});
   g+=SC.ground(t,61,{y:900,col:'#2A2A3A',col2:'#141420',stones:6,tufts:6});
   const mk=ease.inOut(prog(t,AT.painted,AT.v1213-.2));
-  g+=doorHouse(1060,FY,2.0,{mark:mk,lit:.9});
+  g+=mudHouse(t,1060,FY,1.9,{mark:mk,lit:.9,night:true,storey:1,ladder:1,seed:41,bowl:mk>0});
   const br=Math.sin(t*4)*.5+.5,hx=lerp(940,1180,(mk*3)%1),hy=mk<.34?FY-320:lerp(FY-300,FY-60,((mk-.34)/.66*2)%1);
   const dad=who('dad',760,FY,2.3,{expr:'calm',look:{x:hx,y:hy},near:{x:Math.min(hx,920),y:Math.max(hy,FY-280)}});
   g+=withProp(dad,r=>{const h=r.hand('near');return L(h[0],h[1],h[0]+40,h[1]-30,'#4A6A2A',8)+Ell(h[0]+48,h[1]-36,18,10,'#6A8A3A');});
@@ -473,7 +520,9 @@ function paintDoor(t,lt){
 function windPasses(t,lt){
   let g=SC.sky(t,{mood:'night',hz:760})+SC.hills(65,{y:780,amp:12,wave:300,col:'#141A2A',trees:4,treeCol:'#0C1018'});
   g+=SC.ground(t,65,{y:900,col:'#222234',col2:'#10101A',stones:6,tufts:6});
-  [[420,880,0],[960,890,1],[1500,880,1]].forEach(([x,y,m])=>g+=doorHouse(x,y,.95,{mark:m,lit:m?.9:.3,wall:m?'#7A6050':'#5A5A66'}));
+  // marked Israelite houses in front; unmarked Egyptian houses across the way, darker, under the shadow
+  [[260,800,.6,0],[700,790,.66,1],[1240,796,.6,0],[1680,792,.62,1]].forEach(([x,y,s,st],i)=>g+=mudHouse(t,x,y,s,{egypt:true,night:true,storey:st,dim:1,lit:0,seed:50+i,cloth:false}));
+  [[560,960,1.3,1,-1],[1380,968,1.35,-1,1]].forEach(([x,y,s,st,ld],i)=>g+=mudHouse(t,x,y,s,{mark:1,lit:.9,night:true,storey:st,ladder:ld,smoke:i===1,seed:60+i}));
   // the cold wind and a shadow sweep across; at the marked doors the lamps only flicker
   const p=(t-AT.v1213)/2.6%1,sx=lerp(-400,2300,p);
   g+=P(`M${sx-600} -200Q${sx} 300 ${sx-200} 1100L${sx-900} 1100Q${sx-700} 300 ${sx-1200} -200Z`,'#04040A',{opacity:.55});
@@ -637,7 +686,7 @@ sh('crossed out',AT.aimed-.12,xBoard,['#2A1E18','#140E0A'],(a,b)=>[[a,960,780,.9
 // 7. the last night
 sh('the last night',AT.last-.12,lastNight,['#0A1230','#05081A'],M(960,FY,.9,960,FY,1.0,1190),{vIn:'cut'});
 sh('blood on the doorframe',AT.wayThrough-.12,paintDoor,['#0A1230','#05081A'],M(800,FY,1.04,860,FY,1.1,1190),{vIn:'cut'});
-sh('the wind passes',AT.v1213-.3,windPasses,['#05081A','#020208'],H(960,FY,1.0,1190),{vIn:'cut'});
+sh('the wind passes',AT.v1213-.3,windPasses,['#05081A','#020208'],M(820,FY,1.02,1100,FY,1.02,1190),{vIn:'cut'});
 sh('safe inside',AT.behind-.12,safeInside,['#6A4428','#2A1A0E'],M(860,FY,1.04,860,FY,1.1,1190),{vIn:'cut'});
 sh('by morning',AT.morning-.12,morningGo,['#FFB46A','#C86A3A'],H(900,FY,1.0,1190),{vIn:'cut'});
 // 8. the answer
