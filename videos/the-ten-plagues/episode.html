@@ -543,20 +543,24 @@ function nextStory(t,lt){
 }
 
 // ---------- frame-space overlays: verse cards, the one label, the end card ----------
-// ESV text: filled from scripts/12-the-ten-plagues.esv.md once the narration is recorded (see VTXT). Until then a
-// placeholder line shows where the card sits and how long it stays.
+// ESV text, as filled in scripts/12-the-ten-plagues.esv.md (trimmed to the parts the narration reads).
 const VTXT={
-  e52:['[Exodus 5:2, ESV text pending]'], e720:['[Exodus 7:20, ESV text pending]'], e819:['[Exodus 8:19, ESV text pending]'],
-  e1022:['[Exodus 10:22-23, ESV text pending]'], e1212:['[Exodus 12:12, ESV text pending]'], e1213:['[Exodus 12:13, ESV text pending]'], c57:['[1 Corinthians 5:7, ESV text pending]'],
+  e52:['But Pharaoh said, ‘Who is the LORD, that I should','obey his voice and let Israel go?’'],
+  e720:['and all the water in the Nile turned into blood.'],
+  e819:['This is the finger of God.'],
+  e1022:['and there was pitch darkness in all the land of','Egypt three days. … but all the people of Israel','had light where they lived.'],
+  e1212:['and on all the gods of Egypt I will execute','judgments: I am the LORD.'],
+  e1213:['And when I see the blood, I will pass over you'],
+  c57:['For Christ, our Passover lamb, has been sacrificed.'],
 };
 const VERSES=[
-  [AT.v52-.15,300,40,VTXT.e52,'EXODUS 5:2 ESV',{size:46,seed:3,id:1,end:AT.question-.2}],
-  [AT.v720-.15,300,40,VTXT.e720,'EXODUS 7:20 ESV',{size:46,seed:5,id:2,end:AT.fish-.2}],
-  [AT.v819-.15,300,40,VTXT.e819,'EXODUS 8:19 ESV',{size:48,seed:7,id:3,end:AT.flies-.2}],
-  [AT.v1022-.15,300,40,VTXT.e1022,'EXODUS 10:22–23 ESV',{size:42,seed:9,id:4,end:AT.sunGod-.2}],
-  [AT.v1212-.15,300,40,VTXT.e1212,'EXODUS 12:12 ESV',{size:44,seed:11,id:5,end:AT.aimed-.2}],
-  [AT.v1213-.15,300,40,VTXT.e1213,'EXODUS 12:13 ESV',{size:46,seed:13,id:6,end:AT.night-.2}],
-  [AT.v57-.15,300,40,VTXT.c57,'1 CORINTHIANS 5:7 ESV',{size:46,seed:15,id:7,end:AT.rescue-.2}],
+  [AT.v52-.15,300,40,VTXT.e52,'EXODUS 5:2 ESV',{size:42,seed:3,id:1,hl:'Who is the LORD,',hlAt:AT.v52+1.2,hlDur:.8,end:AT.question-.2}],
+  [AT.v720-.15,300,40,VTXT.e720,'EXODUS 7:20 ESV',{size:42,hl:'turned into blood.',hlAt:AT.v720+1.2,hlDur:.7,seed:5,id:2,end:AT.fish-.2}],
+  [AT.v819-.15,300,40,VTXT.e819,'EXODUS 8:19 ESV',{size:52,hl:'the finger of God.',hlAt:AT.v819+.5,hlDur:.7,seed:7,id:3,end:AT.flies-.2}],
+  [AT.v1022-.15,300,40,VTXT.e1022,'EXODUS 10:22–23 ESV',{size:40,hl:'had light where they lived.',hlAt:AT.v1022+5,hlDur:.8,seed:9,id:4,end:AT.sunGod-.2}],
+  [AT.v1212-.15,300,40,VTXT.e1212,'EXODUS 12:12 ESV',{size:42,hl:'on all the gods of Egypt',hlAt:AT.v1212+.4,hlDur:.9,seed:11,id:5,end:AT.aimed-.2}],
+  [AT.v1213-.15,300,40,VTXT.e1213,'EXODUS 12:13 ESV',{size:40,hl:'I will pass over you',hlAt:AT.v1213+1.4,hlDur:.8,seed:13,id:6,end:AT.night-.2}],
+  [AT.v57-.15,300,40,VTXT.c57,'1 CORINTHIANS 5:7 ESV',{size:40,hl:'our Passover lamb,',hlAt:AT.v57+.6,hlDur:.8,seed:15,id:7,end:AT.rescue-.2}],
 ];
 // One label at a time, frame coordinates (vertical line y 1430, clear of the caption band 1220-1340).
 const TAGS=[
