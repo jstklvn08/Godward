@@ -126,5 +126,437 @@
   "seed": 1,
   "words_per_second": 3.08,
   "in_range": true
+ },
+ "s01-01-story-bd4ffd.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "For generations, Israel had been slaves in Egypt.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true
+ },
+ "s01-02-story-8e39d1.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Then God sent Moses to Pharaoh, the most powerful king on earth, with one message: let my people go.",
+  "seed": 1,
+  "words_per_second": 2.51,
+  "in_range": true
+ },
+ "s01-03-story-5b1202.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Pharaoh laughed.",
+  "seed": 3,
+  "words_per_second": 1.63,
+  "in_range": false
+ },
+ "s01-04-grave-63a4f1.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "But Pharaoh said, \u2018Who is the LORD, that I should obey his voice and let Israel go?\u2019",
+  "seed": 2,
+  "words_per_second": 2.69,
+  "in_range": true
+ },
+ "s01-05-pivot-2800a8.wav": {
+  "section": 1,
+  "mode": "pivot",
+  "text": "That question is the whole story.",
+  "seed": 1,
+  "words_per_second": 3.66,
+  "in_range": true
+ },
+ "s01-06-talk-5e01aa.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Ten times, God is going to answer it.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s02-01-story-ad9a3c.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "First, the Nile. It was Egypt's lifeline.",
+  "seed": 1,
+  "words_per_second": 2.24,
+  "in_range": false
+ },
+ "s02-02-story-eb3914.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "They worshipped it, because it fed the whole country.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s02-03-grave-53f568.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "and all the water in the Nile turned into blood.",
+  "seed": 3,
+  "words_per_second": 3.25,
+  "in_range": false
+ },
+ "s02-04-story-89ddc5.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The fish died. The river stank.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true
+ },
+ "s02-05-story-772797.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And the god of the Nile could do nothing.",
+  "seed": 3,
+  "words_per_second": 3.64,
+  "in_range": false
+ },
+ "s02-06-talk-9a7f0f.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "Pharaoh's magicians copied the trick, so Pharaoh shrugged it off.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true
+ },
+ "s02-07-story-57d8ed.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "His heart was hard, and he would not listen.",
+  "seed": 1,
+  "words_per_second": 3.28,
+  "in_range": true
+ },
+ "s03-01-story-dda239.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then frogs.",
+  "seed": 2,
+  "words_per_second": 1.69,
+  "in_range": false
+ },
+ "s03-02-story-e54b66.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "In the ovens, in the beds, in the king's own bedroom.",
+  "seed": 1,
+  "words_per_second": 2.79,
+  "in_range": true
+ },
+ "s03-03-story-aad073.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Egypt had a goddess with the head of a frog.",
+  "seed": 1,
+  "words_per_second": 3.25,
+  "in_range": true
+ },
+ "s03-04-story-c2cb65.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Now her frogs were everywhere.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true
+ },
+ "s03-05-story-2b59e0.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then gnats, from the dust of the ground.",
+  "seed": 1,
+  "words_per_second": 2.68,
+  "in_range": true
+ },
+ "s03-06-story-2edcf8.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "This time the magicians failed, and they told Pharaoh so.",
+  "seed": 1,
+  "words_per_second": 2.77,
+  "in_range": true
+ },
+ "s03-07-grave-6e841f.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "This is the finger of God.",
+  "seed": 2,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s03-08-story-846f75.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then swarms of flies.",
+  "seed": 2,
+  "words_per_second": 2.33,
+  "in_range": false
+ },
+ "s03-09-pivot-3ed158.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "But not in Goshen, where Israel lived.",
+  "seed": 1,
+  "words_per_second": 2.51,
+  "in_range": true
+ },
+ "s04-01-talk-89b918.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "That's the turn.",
+  "seed": 1,
+  "words_per_second": 3.53,
+  "in_range": true
+ },
+ "s04-02-story-143fe3.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "God draws a line between his people and Egypt.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true
+ },
+ "s04-03-story-1f0696.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Egypt's livestock die in the fields. Israel's are spared.",
+  "seed": 1,
+  "words_per_second": 2.26,
+  "in_range": false
+ },
+ "s04-04-story-13eb21.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Then boils break out on people and animals alike.",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true
+ },
+ "s04-05-story-da77a8.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "The magicians can't even stand in front of Moses.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": true
+ },
+ "s04-06-talk-0eff8b.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "And still, Pharaoh's heart is hard.",
+  "seed": 1,
+  "words_per_second": 2.97,
+  "in_range": true
+ },
+ "s05-01-grave-1c7116.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Then hail, with fire flashing through it.",
+  "seed": 2,
+  "words_per_second": 2.77,
+  "in_range": true
+ },
+ "s05-02-story-1b7322.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "The worst storm Egypt had ever seen.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true
+ },
+ "s05-03-story-15a1fb.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Locusts eat whatever the hail left.",
+  "seed": 1,
+  "words_per_second": 3.05,
+  "in_range": true
+ },
+ "s05-04-story-bc29a3.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Not one green thing remains.",
+  "seed": 2,
+  "words_per_second": 2.35,
+  "in_range": false
+ },
+ "s05-05-grave-2624aa.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "And then, darkness.",
+  "seed": 3,
+  "words_per_second": 2.0,
+  "in_range": true
+ },
+ "s05-06-grave-d544ac.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "and there was pitch darkness in all the land of Egypt three days.",
+  "seed": 1,
+  "words_per_second": 3.48,
+  "in_range": false
+ },
+ "s05-07-grave-ccdf16.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "\u2026 but all the people of Israel had light where they lived.",
+  "seed": 3,
+  "words_per_second": 3.65,
+  "in_range": false
+ },
+ "s05-08-talk-4ac570.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Egypt's greatest god was the sun.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true
+ },
+ "s05-09-story-9d20db.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "For three days, it was simply gone.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s06-01-pivot-afc882.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "So why ten?",
+  "seed": 2,
+  "words_per_second": 2.91,
+  "in_range": true
+ },
+ "s06-02-story-eafc23.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Why not one plague, and done?",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s06-03-talk-5140c1.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "God says why himself.",
+  "seed": 3,
+  "words_per_second": 2.9,
+  "in_range": true
+ },
+ "s06-04-grave-205745.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "and on all the gods of Egypt I will execute judgments: I am the LORD.",
+  "seed": 2,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s06-05-talk-7da3a2.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Every plague was aimed at something Egypt trusted.",
+  "seed": 1,
+  "words_per_second": 3.01,
+  "in_range": true
+ },
+ "s06-06-story-780879.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "The river. The land. The cattle. The sky. The sun.",
+  "seed": 2,
+  "words_per_second": 2.34,
+  "in_range": false
+ },
+ "s06-07-talk-895f9d.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "One by one, each was shown to be powerless.",
+  "seed": 1,
+  "words_per_second": 3.41,
+  "in_range": true
+ },
+ "s08-01-talk-f48181.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "Remember Pharaoh's question?",
+  "seed": 3,
+  "words_per_second": 2.38,
+  "in_range": false
+ },
+ "s08-02-story-af70cd.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Who is the LORD?",
+  "seed": 2,
+  "words_per_second": 2.9,
+  "in_range": true
+ },
+ "s08-03-talk-f95d2b.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "Now all of Egypt knew.",
+  "seed": 1,
+  "words_per_second": 3.62,
+  "in_range": true
+ },
+ "s08-04-story-0abfe2.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "And so did Israel.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s08-05-talk-557f97.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "Centuries later, Christians looked back at that night and saw a picture of something bigger.",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": true
+ },
+ "s08-06-grave-31137b.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "For Christ, our Passover lamb, has been sacrificed.",
+  "seed": 1,
+  "words_per_second": 2.2,
+  "in_range": true
+ },
+ "s08-07-story-99cc0a.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "The rescue came first, through the blood of a lamb.",
+  "seed": 1,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s08-08-story-6f278c.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Then came the sea.",
+  "seed": 3,
+  "words_per_second": 2.42,
+  "in_range": true
+ },
+ "s08-09-story-5dac49.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "And then, a mountain, where God would speak.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true
+ },
+ "s08-10-pivot-ad65a7.wav": {
+  "section": 8,
+  "mode": "pivot",
+  "text": "But that's the next story.",
+  "seed": 1,
+  "words_per_second": 3.79,
+  "in_range": true
  }
 }
