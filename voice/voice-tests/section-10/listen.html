@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godward Voice Test</title>
+<style>
+  :root { color-scheme: light dark; --bg: #f6f3ec; --card: #fffdf8; --ink: #24211c; --muted: #6f685c; --line: #ded7c9; --warn: #9a4a12; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #191815; --card: #24221e; --ink: #f0ebe0; --muted: #aaa294; --line: #3a362f; --warn: #eda66f; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 Georgia, "Times New Roman", serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 21px; margin: 36px 0 12px; }
+  p { margin: 0 0 12px; }
+  .note, .take small, .meta { font-family: system-ui, "Segoe UI", sans-serif; }
+  .note { color: var(--muted); font-size: 15px; }
+  .voice { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; margin-bottom: 10px; }
+  .head strong { font-size: 19px; }
+  .meta { color: var(--muted); font-size: 14px; }
+  .take { display: grid; grid-template-columns: 92px minmax(0, 1fr) 118px; gap: 10px; align-items: center; margin-top: 6px; }
+  .take span { font: 600 14px system-ui, "Segoe UI", sans-serif; }
+  .take small { color: var(--muted); font-size: 13px; text-align: right; }
+  audio { width: 100%; height: 40px; }
+  .flag { color: var(--warn); font: 14px/1.4 system-ui, "Segoe UI", sans-serif; margin: 8px 0 0; }
+  @media (max-width: 600px) { .take { grid-template-columns: 1fr auto; } .take audio { grid-column: 1 / -1; grid-row: 2; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Godward voice test</h1>
+  <p class="note">Ten voices reading the Judgment section, each in two versions. Kokoro is the voice itself. Chatterbox is Chatterbox imitating that voice. Starting one player stops the other.</p>
+  <div id="voices"></div>
+</main>
+<script>
+  const voices = [
+    ["Female", "01", "female", "af_heart", "Heart", "American", "A", "30.9 s · 201 Hz", "31.6 s · 196 Hz", ["Chatterbox: check “pain in childbearing”, which the transcript heard as “pain and”."]],
+    ["Female", "02", "female", "bf_emma", "Emma", "British", "B-", "31.4 s · 183 Hz", "30.5 s · 183 Hz", []],
+    ["Female", "03", "female", "af_nicole", "Nicole", "American", "B-", "46.2 s · 160 Hz", "37.0 s · 162 Hz", ["Kokoro: much slower than the others, at 108 words a minute.", "Chatterbox: check “pain in childbearing”, which the transcript heard as “pain and”."]],
+    ["Female", "04", "female", "bf_alice", "Alice", "British", "D", "32.0 s · 221 Hz", "33.2 s · 193 Hz", ["Chatterbox: the last sentence is probably misread. The transcript heard “To no dust you all”."]],
+    ["Female", "05", "female", "af_kore", "Kore", "American", "C+", "31.4 s · 147 Hz", "34.7 s · 150 Hz", []],
+    ["Male", "06", "male", "am_michael", "Michael", "American", "C+", "35.2 s · 115 Hz", "29.1 s · 112 Hz", ["Kokoro: check “pain in childbearing”, which the transcript heard as “pain and”."]],
+    ["Male", "07", "male", "am_fenrir", "Fenrir", "American", "C+", "30.5 s · 136 Hz", "32.6 s · 126 Hz", []],
+    ["Male", "08", "male", "bm_daniel", "Daniel", "British", "D", "31.2 s · 124 Hz", "27.0 s · 118 Hz", []],
+    ["Male", "09", "male", "bm_fable", "Fable", "British", "C", "33.0 s · 107 Hz", "29.5 s · 115 Hz", ["Chatterbox: check “pain in childbearing”, which the transcript heard as “pain and”."]],
+    ["Male", "10", "male", "bm_lewis", "Lewis", "British", "D+", "35.3 s · 81 Hz", "32.3 s · 102 Hz", []]
+  ];
+
+  const root = document.getElementById("voices");
+  let group = "";
+  for (const [section, number, gender, id, name, accent, grade, kokoro, chatterbox, flags] of voices) {
+    if (section !== group) {
+      group = section;
+      const heading = document.createElement("h2");
+      heading.textContent = section;
+      root.append(heading);
+    }
+    const file = `${number}-${gender}-${id}.wav`;
+    const card = document.createElement("section");
+    card.className = "voice";
+    card.innerHTML = `
+      <div class="head"><strong>${Number(number)}. ${name}</strong><span class="meta">${accent} · Kokoro grade ${grade}</span></div>
+      <div class="take"><span>Kokoro</span><audio controls preload="metadata" src="kokoro/${file}"></audio><small>${kokoro}</small></div>
+      <div class="take"><span>Chatterbox</span><audio controls preload="metadata" src="chatterbox-cloned/${file}"></audio><small>${chatterbox}</small></div>
+      ${flags.map(flag => `<p class="flag">${flag}</p>`).join("")}`;
+    root.append(card);
+  }
+
+  document.addEventListener("play", event => {
+    document.querySelectorAll("audio").forEach(audio => { if (audio !== event.target) audio.pause(); });
+  }, true);
+</script>
+</body>
+</html>

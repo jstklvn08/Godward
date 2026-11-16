@@ -1,0 +1,1019 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Godward: The Red Sea</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="words.js"></script>
+<script src="../_kit/episode-engine.js"></script>
+<script src="../_kit/people.js"></script>
+<script src="../_kit/fire.js"></script>
+<script src="../_kit/scenery.js"></script>
+<script>
+// The Red Sea. Script: scripts/13-the-red-sea.md (ESV fill via fill_esv.py --bg). Built like The Ten Plagues
+// (videos/the-ten-plagues), whose Egypt, palace, Pharaoh, Moses, people and house kit is copied below unchanged:
+// a new picture every few seconds, the story acted by the round PPL figures, one slow camera move per shot, one label at
+// a time, verse cards and the end card in hud. Every time comes from the spoken words (words.js).
+// God is never a figure: the pillar of cloud and fire, the wind, light. The Egyptians' end is shown with restraint:
+// chariot wheels in mud, water closing, foam, a calm sea. No bodies, no faces in the water.
+// Guides: .claude/skills/godward-episode/reference/scene-pacing.md, engine.md, taste.md. K.E is the ellipse helper (Ell).
+const {G,R,C,L,P,T,prog,ease,lerp,mix,clamp,rng}=K, Ell=K.E;
+const {hash,piece,glow,label,mark,scribble,strip,tape}=S;
+const {cue,end,after,shot,verse,fade,hv,fireflies,INK,YEL,CORAL}=E;
+const GOLD='#E8B53A', NILE='#2E7AB8', BLOOD='#B0182A', GREEN='#1E9A5A', SEA='#0B4A9A', NEON='#7CFFE6';
+
+const AT={
+  sea0:cue('In front of them'), behind:cue('Behind them'), nowhere:cue('And nowhere'), most:cue('Most people'), read:cue('But read it'), neither:cue('Neither is Israel'),
+  finally:cue('When Pharaoh finally'), coast:cue('It ran straight'), longWay:cue('God chose the long'), soldiers:cue('The short road was'), knew:cue('And God knew'),
+  oneBattle:cue('One battle'), v1317:cue('Lest the people'),
+  alone:cue("And they weren't"), v1321:cue('And the LORD went'), byNight:cue('and by night in'), strange:cue('Then God told Moses something'), turnBack:cue('Turn back'),
+  changed:cue('Then Pharaoh changed'), slaves:cue('His slaves'), officials:cue('And his officials'), v145:cue('What is this'), took:cue('So Pharaoh took'), wentAfter:cue('and went after'),
+  lookedUp:cue('Israel looked up'), terrified:cue('And they were terrified'), turned:cue('They turned on'), v1411:cue('Is it because'),
+  answered:cue('Moses answered'), v1413:cue('Fear not'), v1414:cue('The LORD will fight for you, and'), trust:cue("Israel didn't have"), forward:cue('Then God told Moses to'),
+  cloudMoved:cue('Then the cloud moved'), wentBehind:cue('It went behind'), darkSide:cue('Darkness on one'), v1421:cue('Then Moses stretched'), eastWind:cue('strong east wind'), divided:cue('the waters were divided'),
+  walkedIn:cue('And the people walked'), v1422:cue('And the people of Israel'), wall:cue('the waters being a wall'), crossed:cue('Through the night'),
+  followed:cue("Pharaoh's army followed"), stick:cue('Then their chariot'), egKnew:cue('And the Egyptians knew'), v1425:cue('Let us flee'),
+  morning:cue('Then the morning'), stretched2:cue('Moses stretched out his hand, and'), cameBack:cue('the sea came back'), sunrise:cue('By sunrise'), remained:cue('Not one of them'),
+  shore:cue('On the other shore'), women:cue('and all the women'), v1521:cue('Sing to the LORD'), notice:cue('Notice who'), notMoses:cue('Not Moses'), theLord:cue('Not themselves'),
+  remember:cue('Remember the line'), fight2:cue('The LORD will fight',2), need:cue('Israel would need'), ahead:cue('Ahead lay'), mountain:cue('And a mountain'), next:cue("But that's the next"),
+};
+AT.last1=WORDS[WORDS.length-1][2];
+
+// ---------- framing helpers (vertical) ----------
+const aim=(a,b,x,y,F,z)=>shot(a,b,x,y+(1010-F)/z,z), sq=p=>p*p;
+const H=(x,y,z,F=1170)=>(a,b)=>[aim(a,b,x,y,F,z)];
+const M=(x0,y0,z0,x1,y1,z1,F=1170,F1)=>(a,b)=>[[a,x0,y0+(1010-F)/z0,z0],[b,x1,y1+(1010-(F1??F))/z1,z1]];
+const FY=1000, HS=2.7, VS=2.35;
+const EDG=(cx,z)=>[cx-540/z+70,cx+540/z-70];
+
+// ---------- people (videos/_kit/people.js) ----------
+const TUN=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
+const SKIN=[['#F5BE8E','#C4835E'],['#D9965E','#A86A3E'],['#B87444','#8A5230']], HAIR=['#2E1C52','#4A2A16','#1A1A2A'];
+const pplOpts=(i,x,y,s,o={})=>{const [a,b]=TUN[i%5],[sk,sh]=SKIN[i%3],face=o.flip||o.face||1,f=o.f??(i%2===1);
+  const q=Object.assign({x,y,s,face,f,tunic:a,tunic2:b,skin:sk,shade:sh,hair:HAIR[i%3],phase:i*.7},o);
+  q.face=face;delete q.flip;if(!o.walk)delete q.walk;return q;};
+const person=pplOpts, folk=(i,x,y,s,o={})=>PPL.fig(pplOpts(i,x,y,s,o));
+// The recurring cast (same colours in every scene).
+const CAST={
+  moses:{tunic:'#E8DCC0',tunic2:'#8A6A40',skin:'#D9965E',shade:'#A86A3E',hair:'#ECE8DE',f:false,phase:.4},
+  aaron:{tunic:'#7CD4FF',tunic2:'#2F6FD0',skin:'#D9965E',shade:'#A86A3E',hair:'#8A8A8A',f:false,phase:1.2},
+  phar:{tunic:'#FFF6E0',tunic2:'#C8A060',skin:'#B87444',shade:'#8A5230',hair:'#1A1A2A',f:false,kid:true,phase:.9},
+  mag1:{tunic:'#3A2A5A',tunic2:'#1A1030',skin:'#B87444',shade:'#8A5230',hair:'#1A1A2A',f:false,phase:2.1},
+  mag2:{tunic:'#5A2A3A',tunic2:'#2A1018',skin:'#D9965E',shade:'#A86A3E',hair:'#1A1A2A',f:false,phase:2.9},
+  dad:{tunic:'#3DE0B8',tunic2:'#1787A8',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',f:false,phase:.3},
+  mum:{tunic:'#FF8FB1',tunic2:'#C8487A',skin:'#D9965E',shade:'#A86A3E',hair:'#2E1C52',f:true,phase:1.7},
+  boy:{tunic:'#FFC24C',tunic2:'#E0623C',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',f:false,kid:true,phase:2.3},
+  girl:{tunic:'#B98CFF',tunic2:'#6A4CD8',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',f:true,kid:true,phase:.8},
+};
+const who=(c,x,y,s,o={})=>pplOpts(0,x,y,s,Object.assign({},CAST[c],o));
+const fig=(c,x,y,s,o={})=>PPL.fig(who(c,x,y,s,o));
+const withProp=(q,prop)=>{const r=PPL.rig(q);return r.draw('back')+r.draw('body')+r.draw('head')+prop(r)+r.draw('front');};
+// Moses with his staff, held upright in his far hand (the staff stands in front, under the gripping hand).
+const staffAt=(x,y0,y1,k=1)=>L(x,y0,x+4,y1,'#4A2E16',18*k)+L(x,y0,x+4,y1,'#7A5432',11*k)+C(x,y0,12*k,'#7A5432');
+function moses(x,y,s,o={}){
+  const raise=o.raise||0,q=who('moses',x,y,s,Object.assign({},o));delete q.raise;
+  const r0=PPL.rig(q),sh=r0.shoulder('near'),f=q.face||1;
+  if(raise>0)q.near={x:sh[0]+f*lerp(40,70,raise)*s,y:sh[1]-lerp(30,75,raise)*s};
+  else if(!q.near)q.near={x:x+f*62*s,y:y-96*s};
+  const r=PPL.rig(q),h=r.hand('near');
+  return r.draw('back')+r.draw('body')+r.draw('head')+staffAt(h[0],h[1]-lerp(110,150,raise)*s,lerp(y,h[1]+130*s,raise),s/2.4)+r.draw('front');
+}
+// Pharaoh: a striped headcloth (nemes) in gold and blue, and a broad collar.
+// Drawn in the head's three-quarter view (the face looks toward +x): the cap stops above the brows, the back cloth
+// hangs behind the head and the front lappet falls beside the cheek, so the eyes and mouth stay clear. It turns
+// with the head (r.hf) as well as the body.
+function nemes(r,k=1){const [x,y]=r.head,s=r.s,f=r.face*(r.hf||1),B='#2A4AA8',ED={stroke:'#6A4A12','stroke-width':4},cid=S.nid(),
+    CAP='M-62 -12Q-72 -78 -2 -82Q64 -80 66 -26Q32 -42 -8 -32Q-40 -24 -62 -12Z';
+  return G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(s*f).toFixed(3)} ${s.toFixed(3)})`,
+    P('M-58 -22Q-76 30 -68 80L-34 80Q-42 30 -30 -14Z',GOLD,ED)+[0,1,2].map(i=>L(-70+i*1,4+i*24,-38+i*1,4+i*24,B,7)).join('')+
+    `<clipPath id="${cid}"><path d="${CAP}"/></clipPath>`+P(CAP,GOLD)+
+    `<g clip-path="url(#${cid})">`+[-46,-28,-10,8,26,44].map(xx=>L(xx,-90,xx+4,-10,B,7)).join('')+'</g>'+P(CAP,'none',ED)+
+    P('M52 -30L68 -30L74 70L54 70Z',GOLD,ED)+[0,1,2].map(i=>L(54,0+i*24,72,0+i*24,B,6)).join('')+
+    C(60,-36,6,B,{stroke:'#6A4A12','stroke-width':2})+P('M57 -40L60 -52L63 -40Z',GOLD,{stroke:'#6A4A12','stroke-width':2}));}
+// A heart turned to stone: grey, cracked, with a cold sheen.
+const stoneHeart=(cx,cy,r)=>P(`M${cx} ${cy+r*.9}C${cx-r*1.7} ${cy-r*.1} ${cx-r*.95} ${cy-r*1.35} ${cx} ${cy-r*.42}C${cx+r*.95} ${cy-r*1.35} ${cx+r*1.7} ${cy-r*.1} ${cx} ${cy+r*.9}Z`,'#7A7A84',{stroke:'#2A2A32','stroke-width':r*.12})+
+  P(`M${cx-r*.1} ${cy-r*.4}L${cx+r*.15} ${cy}L${cx-r*.12} ${cy+r*.3}L${cx+r*.08} ${cy+r*.7}`,'none',{stroke:'#2A2A32','stroke-width':r*.09,'stroke-linejoin':'round'})+
+  Ell(cx-r*.5,cy-r*.35,r*.28,r*.16,'#C8C8D2',{opacity:.6});
+const collar=(r)=>{const [x,y]=r.neck,s=r.s;return Ell(x,y+10*s,46*s,16*s,'#2A4AA8')+Ell(x,y+8*s,40*s,11*s,GOLD);};
+function pharaoh(x,y,s,o={},extra=()=>''){
+  const q=who('phar',x,y,s,o),r=PPL.rig(q);
+  return r.draw('back')+r.draw('body')+collar(r)+r.draw('head')+nemes(r)+extra(r)+r.draw('front');
+}
+
+// ---------- props and set pieces ----------
+const jar=(x,y,s=1,c='#C8703A')=>P(`M${x-22*s} ${y}Q${x-34*s} ${y-40*s} ${x-16*s} ${y-62*s}H${x+16*s}Q${x+34*s} ${y-40*s} ${x+22*s} ${y}Z`,c,{stroke:'#6A2E14','stroke-width':4*s})+R(x-18*s,y-72*s,36*s,12*s,4*s,mix(c,'#000000',.15));
+const column=(x,y,h,w=90,c='#E8D2A0')=>R(x-w/2,y-h,w,h,6,c,{stroke:'#8A6A3A','stroke-width':5})+R(x-w/2-16,y-h-30,w+32,34,6,mix(c,'#C8A060',.4),{stroke:'#8A6A3A','stroke-width':5})+
+  P(`M${x-w/2-10} ${y-h}Q${x} ${y-h-60} ${x+w/2+10} ${y-h}`,'#5AA060',{stroke:'#2A5A2A','stroke-width':4})+R(x-w/2-10,y-24,w+20,24,4,mix(c,'#000000',.1))+
+  [.3,.5,.7].map(u=>L(x-w/2+8,y-h*u,x+w/2-8,y-h*u,'#B88A4A',4,{opacity:.6})).join('');
+const sunDisc=(x,y,r,k=1)=>glow(x,y,r*2.4,'#FFC24C',.35*k)+C(x,y,r,mix('#5A4A3A','#FFC24C',k),{stroke:'#8A5A12','stroke-width':6})+C(x,y,r*.7,mix('#4A3A2A','#FFE07A',k))+
+  [-1,1].map(f=>P(`M${x+f*r*.9} ${y+r*.2}Q${x+f*r*1.8} ${y-r*.2} ${x+f*r*2.4} ${y+r*.6}Q${x+f*r*1.7} ${y+r*.5} ${x+f*r*.9} ${y+r*.7}Z`,mix('#4A3A2A','#E8B53A',k))).join('');
+// Egypt's "gods" are carved things on pedestals (never a figure of the true God): a river emblem, a frog, a cow, a sky arch, the sun.
+const pedestal=(x,y,w=150,h=120,c='#B89A6A')=>R(x-w/2,y-h,w,h,8,c,{stroke:'#6A5030','stroke-width':5})+R(x-w/2-14,y-h-16,w+28,20,6,mix(c,'#ffffff',.2),{stroke:'#6A5030','stroke-width':4});
+function idol(kind,x,y,s=1,crack=0){
+  let g='';const c='#C8B08A',dk='#6A5030';
+  if(kind==='river')g=R(x-46*s,y-170*s,92*s,170*s,40*s,c,{stroke:dk,'stroke-width':5})+[0,1,2].map(i=>P(`M${x-32*s} ${y-120*s+i*36*s}q16 -14 32 0t32 0`,'none',{stroke:NILE,'stroke-width':8*s})).join('');
+  else if(kind==='frog')g=frog(0,x,y,1.6*s,{stone:true});
+  else if(kind==='cow')g=SC.animal(0,'cow',x,y,.75*s,{col:GOLD,face:1});
+  else if(kind==='sky')g=P(`M${x-80*s} ${y}V${y-110*s}Q${x} ${y-200*s} ${x+80*s} ${y-110*s}V${y}Z`,'#3A5AA8',{stroke:dk,'stroke-width':5})+[0,1,2,3,4].map(i=>C(x-50*s+i*25*s,y-100*s-Math.sin(i/4*Math.PI)*40*s,6*s,'#FFE9A8')).join('');
+  else if(kind==='sun')g=sunDisc(x,y-90*s,60*s,1);
+  if(crack>0)g+=mark(`M${x-10*s} ${y-180*s}L${x+12*s} ${y-120*s}L${x-8*s} ${y-80*s}L${x+14*s} ${y-20*s}`,crack,'#1A1010',7*s);
+  return g;
+}
+// A frog (feet at x,y; s=1 is about 60 wide). hop 0..1 lifts it; stone draws it as a carved statue.
+function frog(t,x,y,s=1,o={}){
+  const hop=o.hop||0,col=o.stone?'#B8A07A':(o.col||'#4AAA3A'),dk=o.stone?'#6A5030':'#1E5A1A',f=o.face||1,yy=y-hop*40*s;
+  return G(`translate(${x} ${yy}) scale(${s*f} ${s})`,
+    Ell(-14,-6,16,10,dk)+Ell(22,-4,12,8,dk)+Ell(0,-22,34,22,col,{stroke:dk,'stroke-width':3})+
+    C(14,-40,11,col,{stroke:dk,'stroke-width':3})+C(-6,-40,11,col,{stroke:dk,'stroke-width':3})+C(15,-41,5,o.stone?dk:'#111')+C(-5,-41,5,o.stone?dk:'#111')+
+    P('M2 -18Q14 -12 28 -20','none',{stroke:dk,'stroke-width':2.5})+(o.stone?'':Ell(-4,-16,12,6,'#8AD86A',{opacity:.6})));
+}
+// A swarm: n small marks drifting in a box. kind 'gnat' | 'fly' | 'locust'.
+function swarm(t,x0,y0,w,h,n,kind,o={}){
+  let g='';const col=o.col||(kind==='locust'?'#7A5A2A':'#1A1A1A'),seed=o.seed||1,dx=o.dx||0;
+  for(let i=0;i<n;i++){const u=hash(i,seed),v=hash(i,seed+3),sp=.6+hash(i,seed+5);
+    const x=x0+((u*w+t*dx*sp+Math.sin(t*3*sp+i)*30)%w+w)%w,y=y0+v*h+Math.cos(t*2.6*sp+i*1.3)*24;
+    if(kind==='gnat')g+=C(x,y,3+hash(i,seed+7)*2,col,{opacity:.85});
+    else if(kind==='fly')g+=Ell(x,y,6,4,col)+Ell(x-3,y-5,5,3,'#DDE6EE',{opacity:.6})+Ell(x+3,y-5,5,3,'#DDE6EE',{opacity:.6});
+    else g+=G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(-20+hash(i,seed+9)*40).toFixed(0)})`,Ell(0,0,16,5,col)+Ell(-2,-4,12,4,'#B8A06A',{opacity:.7})+L(-8,2,-16,10,col,2)+L(4,2,10,10,col,2));}
+  return g;
+}
+// Hail with fire inside it, falling in slanted streaks.
+function hailFall(t,x0,x1,y0,y1,n,k=1){let g='';
+  for(let i=0;i<n;i++){const u=hash(i,41),sp=900+hash(i,43)*500,y=y0+((t*sp+hash(i,47)*(y1-y0))%(y1-y0)),x=x0+u*(x1-x0)-(y-y0)*.25,r=8+hash(i,49)*10;
+    g+=L(x+r*1.4,y-r*5,x,y,'#DDEEFF',r*.5,{opacity:.35*k})+C(x,y,r,'#EAF4FF',{opacity:.9*k,stroke:'#9AB8D8','stroke-width':2});
+    if(i%3===0)g+=glow(x,y,r*3,'#FF8A3C',.6*k)+C(x,y,r*.5,'#FFB04C',{opacity:k});}
+  return g;}
+const lightning=(t,a,x,y0,y1)=>{const p=prog(t,a,a+.35);if(p<=0||p>=1)return '';let d=`M${x} ${y0}`,xx=x;for(let i=1;i<=6;i++){xx+=(hash(i,x|0)-.5)*120;d+=`L${xx} ${y0+(y1-y0)*i/6}`;}
+  return P(d,'none',{stroke:'#F4F8FF','stroke-width':9,opacity:(1-p).toFixed(2)})+glow(xx,y1,300,'#CFE6FF',.6*(1-p));};
+// God is never a figure: his presence is a soft oval of light, or rings of light going out.
+const presence=(t,x,y,r,k=1)=>k<=0?'':glow(x,y,r*2.6,'#FFF6DA',.5*k)+glow(x,y,r*1.2,'#FFFFFF',.65*k)+
+  Ell(x,y,r*.74,r,'none',{stroke:'#FFFBEA','stroke-width':8,opacity:(.75*k).toFixed(2)})+Ell(x,y,r*.6,r*.82,'#FFFBEA',{opacity:(.22*k*(1+.25*Math.sin(t*2))).toFixed(2)});
+const xMark=(cx,cy,r,p)=>mark(`M${cx-r} ${cy-r}L${cx+r} ${cy+r}`,p*2,CORAL,10)+mark(`M${cx+r} ${cy-r}L${cx-r} ${cy+r}`,p*2-1,CORAL,10);
+// A mud-brick house in the collage style (base centre x, ground y, scale s). Built from: brick courses on a plinth, a flat
+// roof with a parapet and round beam ends, an optional upper room, a ladder to the roof, a palm-frond awning over the
+// door, a lattice window, lamplight spilling from the door onto the ground, jars and a basket by the door, laundry on
+// the roof, and smoke from a cooking fire. o: w/h (size factors), wall, lit 0..1, mark 0..1 (blood painted on the lintel
+// and both posts, with a hyssop bunch and a bowl), egypt (whitewashed, blue trim, no awning), storey, ladder, cloth,
+// smoke, seed, night (cooler, darker wall), dim 0..1 (an unlit house under the shadow).
+function mudHouse(t,x,y,s,o={}){
+  const sd=o.seed||((x*7+y)|0),r=rng(sd),W=300*s*(o.w||1),Hh=210*s*(o.h||1),lit=o.lit??1,mk=o.mark||0,eg=!!o.egypt,night=!!o.night;
+  let wall=o.wall||(eg?'#EEE4CE':['#C89A62','#B8865A','#D4A872','#A87A4E'][sd%4]);
+  if(night)wall=SC.mx(wall,'#3A3A58',.45);if(o.dim)wall=SC.mx(wall,'#1A1A28',o.dim*.6);
+  const dk=SC.mx(wall,'#2A1808',.45),lt=SC.mx(wall,'#FFF4DC',.25),x0=x-W/2,top=y-Hh;
+  let g='';
+  // upper room (set back to one side)
+  if(o.storey){const uw=W*.45,ux=o.storey>0?x0+W-uw-14*s:x0+14*s,uh=Hh*.55;
+    g+=R(ux,top-uh,uw,uh+6*s,4*s,SC.mx(wall,'#000000',.06),{stroke:dk,'stroke-width':4*s})+R(ux+uw*.35,top-uh*.7,uw*.3,uh*.45,uw*.12,lit?SC.mx('#2A1C14','#FFD27A',.8*lit):'#2A1C14',{stroke:dk,'stroke-width':3*s})+
+      R(ux-6*s,top-uh-10*s,uw+12*s,14*s,3*s,lt,{stroke:dk,'stroke-width':3*s});}
+  // main block, plinth, brick courses (offset rows, a few bricks a shade darker or lighter)
+  g+=R(x0,top,W,Hh,4*s,wall,{stroke:dk,'stroke-width':5*s})+R(x0-4*s,y-22*s,W+8*s,24*s,3*s,SC.mx(wall,'#5A3A1E',.3));
+  if(!eg){for(let row=0;row<Math.floor(Hh/(26*s))-1;row++){const yy=top+14*s+row*26*s;g+=L(x0+6*s,yy,x0+W-6*s,yy,dk,1.6*s,{opacity:.35});
+    for(let bx=x0+(row%2?18:44)*s;bx<x0+W-10*s;bx+=52*s){g+=L(bx,yy,bx,yy+26*s,dk,1.4*s,{opacity:.3});if(r()<.18)g+=R(bx+3*s,yy+3*s,46*s,20*s,2*s,r()<.5?lt:SC.mx(wall,'#5A3A1E',.2),{opacity:.55});}}}
+  else{g+=R(x0,top,W,16*s,2*s,'#2A6AB8',{opacity:.8})+R(x0,y-40*s,W,10*s,2*s,'#2A6AB8',{opacity:.6});}
+  // flat roof: parapet with a gap, round beam ends under it
+  g+=R(x0-8*s,top-16*s,W+16*s,20*s,3*s,lt,{stroke:dk,'stroke-width':4*s})+R(x0-4*s,top-34*s,W*.42,20*s,3*s,lt,{stroke:dk,'stroke-width':3*s})+R(x0+W*.58,top-34*s,W*.42+4*s,20*s,3*s,lt,{stroke:dk,'stroke-width':3*s});
+  for(let bx=x0+20*s;bx<x0+W-10*s;bx+=44*s)g+=C(bx,top+8*s,6*s,'#6A4422',{stroke:'#3A2410','stroke-width':2*s});
+  // laundry on a line across the roof
+  if(o.cloth!==false&&!o.dim){const cy=top-60*s;g+=L(x0+20*s,cy-30*s,x0+20*s,top-16*s,'#5A3A1E',4*s)+L(x0+W*.55,cy-30*s,x0+W*.55,top-16*s,'#5A3A1E',4*s)+P(`M${x0+20*s} ${cy-26*s}Q${x0+W*.3} ${cy-12*s} ${x0+W*.55} ${cy-26*s}`,'none',{stroke:'#3A2410','stroke-width':2*s});
+    [['#C8483A',.12],['#E8D8B0',.3],['#2E7AB8',.45]].forEach(([c,u],i)=>{const cx=x0+20*s+u*(W*.55-20*s)*1.6,sw=Math.sin(t*2+i+sd)*4*s;g+=P(`M${cx} ${cy-20*s}h${30*s}l${sw} ${36*s}h${-30*s}Z`,c,{opacity:.95});});}
+  // ladder to the roof
+  if(o.ladder){const lx=o.ladder>0?x0+W+6*s:x0-34*s;g+=L(lx,y,lx+8*s,top-30*s,'#7A5432',5*s)+L(lx+28*s,y,lx+36*s,top-30*s,'#7A5432',5*s);for(let k=1;k<7;k++){const yy=y-(y-top+30*s)*k/7;g+=L(lx+k*1.1*s,yy,lx+28*s+k*1.1*s,yy,'#7A5432',4*s);}}
+  // door (arched), lamplight on the ground; lattice window
+  const dx=x+(o.doorX||-.12)*W,dw=86*s,dh=140*s;
+  if(lit>0)g+=P(`M${dx-dw/2} ${y}L${dx+dw/2} ${y}L${dx+dw*1.4} ${y+70*s}L${dx-dw*1.4} ${y+70*s}Z`,'#FFC86A',{opacity:(.28*lit).toFixed(2)});
+  g+=P(`M${dx-dw/2} ${y}V${y-dh+dw/2}Q${dx-dw/2} ${y-dh} ${dx} ${y-dh}Q${dx+dw/2} ${y-dh} ${dx+dw/2} ${y-dh+dw/2}V${y}Z`,lit?SC.mx('#3A2414','#FFC86A',.75*lit):'#24180E',{stroke:dk,'stroke-width':5*s})+glow(dx,y-dh*.5,120*s,'#FFC86A',.45*lit);
+  const wx=x+(o.doorX>0?-.3:.28)*W,wy=top+50*s;
+  g+=R(wx-30*s,wy,60*s,54*s,6*s,lit?SC.mx('#2A1C14','#FFD27A',.85*lit):'#1A140E',{stroke:dk,'stroke-width':4*s})+L(wx,wy,wx,wy+54*s,dk,3*s)+L(wx-30*s,wy+27*s,wx+30*s,wy+27*s,dk,3*s)+glow(wx,wy+27*s,80*s,'#FFD27A',.4*lit);
+  // palm-frond awning over the door on two poles
+  if(!eg&&o.awning!==false){const ax0=dx-dw*.9,ax1=dx+dw*.9,ay=y-dh-14*s;g+=L(ax0,ay,ax0,y,'#6A4422',5*s)+L(ax1,ay,ax1,y,'#6A4422',5*s);
+    for(let k=0;k<9;k++){const fx=lerp(ax0-10*s,ax1+10*s,k/8);g+=P(`M${fx} ${ay}q${8*s} ${-6*s} ${22*s} ${2*s}q${-12*s} ${4*s} ${-22*s} ${18*s}Z`,k%2?'#6A8A3A':'#5A7A2E');}
+    g+=R(ax0-10*s,ay-6*s,ax1-ax0+20*s,10*s,3*s,'#7A5432');}
+  // blood on the doorframe: lintel and both posts, drips, a bowl and the hyssop bunch at the door
+  if(mk>0){const c=BLOOD,fx0=dx-dw/2-8*s,fx1=dx+dw/2+8*s,fy=y-dh-6*s;
+    g+=mark(`M${fx0} ${fy}L${fx1} ${fy}`,clamp(mk*3),c,16*s)+mark(`M${fx0} ${fy+8*s}L${fx0} ${y-6*s}`,clamp(mk*3-1),c,13*s)+mark(`M${fx1} ${fy+8*s}L${fx1} ${y-6*s}`,clamp(mk*3-2),c,13*s);
+    if(mk>.4)for(let k=0;k<4;k++){const ddx=lerp(fx0+10*s,fx1-10*s,k/3);g+=P(`M${ddx-3*s} ${fy}q${3*s} ${16*s+k*4*s} ${6*s} 0Z`,c);}
+    if(o.bowl!==false)g+=Ell(fx1+44*s,y-10*s,26*s,12*s,'#C8B08A',{stroke:'#6A5030','stroke-width':3*s})+Ell(fx1+44*s,y-16*s,20*s,5*s,c)+L(fx1+30*s,y-14*s,fx1+64*s,y-50*s,'#5A7A2E',4*s)+Ell(fx1+66*s,y-54*s,12*s,8*s,'#6A8A3A');}
+  // jars and a basket by the door
+  if(!o.dim){g+=jar(x0+26*s,y,1.1*s,eg?'#D8A86A':'#C8703A')+jar(x0+60*s,y,.85*s)+P(`M${x0+W-70*s} ${y}l${-8*s} ${-40*s}h${66*s}l${-8*s} ${40*s}Z`,'#B8904A',{stroke:'#6A4A1E','stroke-width':3*s})+[0,1,2].map(k=>L(x0+W-74*s,y-12*s*k-8*s,x0+W-12*s,y-12*s*k-8*s,'#8A6A2A',2*s)).join('');}
+  // cooking fire and smoke
+  if(o.smoke){const fx=x0+W+40*s;g+=FX.flames(t,[[fx-14*s,y],[fx+14*s,y]],{H:28*s,seed:sd})+glow(fx,y-10*s,60*s,'#FF9A4C',.6);
+    for(let k=0;k<5;k++){const p=((t*.25+k/5)%1),px=fx+Math.sin(t+k)*10*s+p*40*s,py=y-30*s-p*260*s;g+=C(px,py,(14+p*30)*s,night?'#8A8AA0':'#C8C0B8',{opacity:(.5*(1-p)).toFixed(2)});}}
+  if(o.dim)g+=R(x0-20*s,top-80*s,W+40*s,Hh+80*s,0,'#05050C',{opacity:(.35*o.dim).toFixed(2)});
+  return g;
+}
+// The old name, used by a few scenes: the same house.
+const doorHouse=(x,y,s,o={})=>mudHouse(0,x,y,s,o);
+// Egyptian town: flat-roofed white houses, palms, a temple with columns and a sun disc, a pyramid far behind.
+// ---------- backdrop kit: skies with character, landmark silhouettes, a real mid-ground, foregrounds per setting ----------
+// User note: "background looks bland". Every scene now gets a banded sky in its plague's colour, layered silhouettes
+// (pyramids, obelisks, temple pylons, palm groves, the Nile with sails), a mid-ground (fields, granaries, stalls,
+// pens, walls) and a foreground that belongs to the place (papyrus, palace steps, barley, a village wall with jars).
+const SKY={
+  blood:['#2A0A1E','#8A1A2A','#FF7A4C'], nile:['#4A6AB0','#F0A0A0','#FFD8A0'], plague:['#2A3A1A','#6A7A2A','#D8C860'],
+  storm:['#140A24','#3A1A4A','#7A4A6A'], locust:['#3A2410','#8A5A20','#D8A050'], dark:['#020206','#06060E','#0E0E18'],
+  night:['#040A24','#0E1E4A','#2A3A6A'], dawn:['#3A4A8A','#E8909A','#FFD08A'], gold:['#6A4AA0','#F0A060','#FFE29A'],
+  day:['#5AA0E0','#A8D0F0','#F4E4C0'], dusk:['#2A1A4A','#C85A6A','#FFB070'],
+};
+function eSky(t,kind,o={}){
+  const c=SKY[kind]||SKY.day,hz=o.hz??760,id=S.nid(),nightish=['night','dark','storm','blood'].includes(kind);
+  let g=`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset=".62" stop-color="${c[1]}"/><stop offset="1" stop-color="${c[2]}"/></linearGradient><rect x="-200" y="-900" width="2400" height="${hz+920}" fill="url(#${id})"/>`;
+  // soft horizontal bands (paper strata)
+  for(let i=0;i<6;i++){const y=-700+i*(hz+700)/6+hash(i,7)*40;g+=R(-200,y,2400,30+hash(i,9)*50,0,i%2?'#FFFFFF':'#000000',{opacity:(.025+.02*hash(i,11)).toFixed(3)});}
+  if(nightish&&kind!=='storm'){for(let i=0;i<90;i++){const x=-150+hash(i,21)*2300,y=-860+hash(i,23)*(hz+600),tw=.4+.6*Math.abs(Math.sin(t*1.3+i));g+=C(x,y,1.5+hash(i,25)*2.5,'#FFF6DA',{opacity:(tw*(kind==='dark'?.35:.8)).toFixed(2)});}}
+  if(o.moon){const [mx,my]=o.moon;g+=glow(mx,my,260,'#CFE0FF',.35)+C(mx,my,150,'none',{stroke:'#CFE0FF','stroke-width':3,opacity:.25})+C(mx,my,48,kind==='blood'?'#FFB0A0':'#F4F0DC')+C(mx-12,my-8,10,'#D8D4C0',{opacity:.6})+C(mx+14,my+12,7,'#D8D4C0',{opacity:.5});}
+  if(o.sun){const [sx,sy,sc]=o.sun;g+=SC.sun(t,sx,sy,sc||80,{col:o.sunCol})+glow(sx,sy+120,700,o.sunCol||'#FFD08A',.25);}
+  if(o.clouds!==false)g+=SC.clouds(t,{seed:o.seed||3,n:o.n||6,y:o.cy??-640,h:o.ch??460,cols:o.cloudCols||[SC.mx(c[1],'#ffffff',.35),SC.mx(c[0],'#000000',.2),SC.mx(c[2],'#ffffff',.3)],storm:kind==='storm'?'#100818':undefined,drift:o.drift||8,op:o.cop??(kind==='dark'?.25:.8),sun:o.sun?{x:o.sun[0],y:o.sun[1]}:undefined});
+  // dusty haze low on the horizon
+  g+=SC.haze(hz-260,hz+20,c[2],0,kind==='dark'?.15:.45);
+  return g;
+}
+const pyramid=(x,y,s,c='#C8A060',lt=.25)=>P(`M${x-260*s} ${y}L${x} ${y-300*s}L${x+260*s} ${y}Z`,c)+P(`M${x} ${y-300*s}L${x+260*s} ${y}L${x+40*s} ${y}Z`,SC.mx(c,'#000000',.22))+
+  [...Array(6)].map((_,i)=>L(x-260*s*(1-i/6),y-50*s*i,x+40*s*(1-i/6)*.2,y-50*s*i,SC.mx(c,'#000000',.1),2*s,{opacity:.4})).join('')+P(`M${x-20*s} ${y-277*s}L${x} ${y-300*s}L${x+20*s} ${y-277*s}Z`,'#F0E0A0',{opacity:lt});
+const obelisk=(x,y,h,c='#C8A060')=>P(`M${x-22} ${y}L${x-16} ${y-h}L${x} ${y-h-34}L${x+16} ${y-h}L${x+22} ${y}Z`,c)+P(`M${x} ${y-h-34}L${x+16} ${y-h}L${x+22} ${y}L${x} ${y}Z`,SC.mx(c,'#000000',.2))+[...Array(5)].map((_,i)=>R(x-6,y-h+30+i*h/6,12,16,2,SC.mx(c,'#000000',.3),{opacity:.5})).join('');
+function pylon(x,y,s,c='#D8B888',o={}){const dk=SC.mx(c,'#000000',.3);let g='';
+  [-1,1].forEach(k=>{const cx=x+k*170*s;g+=P(`M${cx-120*s} ${y}L${cx-96*s} ${y-380*s}H${cx+96*s}L${cx+120*s} ${y}Z`,c,{stroke:dk,'stroke-width':4*s})+R(cx-100*s,y-392*s,200*s,18*s,3*s,SC.mx(c,'#ffffff',.2))+
+    [...Array(4)].map((_,i)=>R(cx-70*s,y-330*s+i*70*s,140*s,40*s,3*s,'none',{stroke:dk,'stroke-width':2*s,opacity:.5})).join('')+L(cx+(k<0?-60:60)*s,y-400*s,cx+(k<0?-60:60)*s,y-520*s,'#6A4422',4*s)+P(`M${cx+(k<0?-60:60)*s} ${y-520*s}h${(k<0?-1:1)*60*s}l${(k<0?1:-1)*10*s} ${20*s}l${(k<0?-1:1)*-10*s} ${20*s}h${(k<0?-1:1)*-60*s}Z`,o.flag||CORAL);});
+  g+=R(x-60*s,y-260*s,120*s,260*s,6*s,SC.mx(c,'#000000',.15),{stroke:dk,'stroke-width':4*s})+P(`M${x-40*s} ${y}V${y-180*s}Q${x} ${y-230*s} ${x+40*s} ${y-180*s}V${y}Z`,o.door||'#2A1C14')+(o.disc?sunDisc(x,y-235*s,22*s,o.disc):'');
+  return g;}
+function palms(t,x0,x1,y,s,col,seed=1){let g='';for(let i=0;i<Math.max(2,Math.round((x1-x0)/(150*s)));i++){const x=x0+hash(i,seed)*(x1-x0),ss=s*(.7+hash(i,seed+3)*.5);g+=SC.tree(t,x,y+hash(i,seed+5)*20,ss,{kind:'palm',col,col2:col?SC.mx(col,'#ffffff',.15):undefined});}return g;}
+function sailboat(t,x,y,s,c='#E8D8B0'){const b=Math.sin(t*1.2+x)*4;return G(`translate(${x} ${y+b})`,P(`M${-90*s} 0Q0 ${30*s} ${90*s} 0L${70*s} ${-14*s}H${-70*s}Z`,'#6A4422')+L(0,-14*s,0,-190*s,'#4A2E16',5*s)+P(`M${4*s} ${-180*s}Q${70*s} ${-110*s} ${8*s} ${-24*s}Z`,c)+L(-80*s,-150*s,60*s,-190*s,'#4A2E16',3*s));}
+function field(t,x0,x1,y0,y1,c1,c2,k=0){let g=R(x0,y0,x1-x0,y1-y0,0,c1);for(let r=0;r<8;r++){const yy=lerp(y0,y1,r/8);g+=L(x0,yy,x1,yy+6,c2,4,{opacity:.6});}
+  if(k>0)for(let i=0;i<40;i++){const x=x0+hash(i,71)*(x1-x0),yy=lerp(y0,y1,hash(i,73));g+=L(x,yy,x+Math.sin(t*2+i)*4,yy-24*k,c2,3);}return g;}
+const granary=(x,y,s,c='#C8A070')=>P(`M${x-60*s} ${y}V${y-80*s}Q${x} ${y-170*s} ${x+60*s} ${y-80*s}V${y}Z`,c,{stroke:SC.mx(c,'#000000',.35),'stroke-width':4*s})+C(x,y-120*s,10*s,SC.mx(c,'#000000',.4));
+function stall(x,y,s,c=CORAL){return L(x-80*s,y,x-80*s,y-150*s,'#6A4422',5*s)+L(x+80*s,y,x+80*s,y-150*s,'#6A4422',5*s)+P(`M${x-100*s} ${y-150*s}H${x+100*s}L${x+86*s} ${y-110*s}H${x-86*s}Z`,c)+[0,1,2,3].map(i=>P(`M${x-86*s+i*43*s} ${y-110*s}q${21*s} ${16*s} ${43*s} 0`,c)).join('')+R(x-80*s,y-60*s,160*s,60*s,4*s,'#8A5A30')+[0,1,2].map(i=>C(x-40*s+i*40*s,y-70*s,14*s,['#E8B53A','#C8483A','#7AB040'][i])).join('');}
+const pen=(x0,x1,y,c='#7A5432')=>{let g=L(x0,y-50,x1,y-50,c,6)+L(x0,y-25,x1,y-25,c,6);for(let x=x0;x<=x1;x+=70)g+=L(x,y,x,y-70,c,8);return g;};
+// atmosphere particles: dust, ash, embers, swarm specks
+function motes(t,kind,x0,y0,w,h,n=60){let g='';const col={dust:'#F0D8A0',ash:'#A8A0A0',ember:'#FFB04C',green:'#D8E880',spark:'#FFF6DA'}[kind]||'#FFF6DA';
+  for(let i=0;i<n;i++){const sp=.3+hash(i,81),x=x0+((hash(i,83)*w+t*30*sp*(kind==='ember'?.3:1))%w),y=kind==='ember'?y0+h-((t*60*sp+hash(i,85)*h)%h):y0+((hash(i,85)*h+t*12*sp)%h),r=1.5+hash(i,87)*3;
+    g+=(kind==='ember'?glow(x,y,r*4,col,.5):'')+C(x,y,r,col,{opacity:(.35+.4*Math.abs(Math.sin(t*2+i))).toFixed(2)});}return g;}
+
+// Egypt town at a mood: banded sky, pyramids, obelisk and pylon behind, houses, palms, a market stall; dark 0..1 blacks it out.
+function egyptTown(t,o={}){
+  const m=o.mood||'day',kind=o.sky||({day:'day',night:'night',dawn:'dawn',golden:'gold',dusk:'dusk'}[m]||'day'),gy=o.gy??880,night=m==='night'||kind==='night'||kind==='dark'||kind==='storm',dark=o.dark||0;
+  let g=eSky(t,kind,{hz:gy-60,seed:o.seed||5,sun:!night&&o.sun!==false?[o.sx??1500,o.sy??240,80]:null,moon:kind==='night'?[1460,140]:null});
+  const stone=night?'#3A3450':'#D8B070',stone2=night?'#2A2440':'#C8A060';
+  g+=pyramid(o.px??520,gy-40,1.25,stone)+pyramid((o.px??520)+420,gy-30,.8,stone2)+pyramid((o.px??520)-330,gy-20,.55,stone2);
+  g+=obelisk(1180,gy-10,300,night?'#3A3450':'#C8A060')+pylon(1560,gy,.75,night?'#4A4460':'#D8B888',{disc:night?0:1});
+  g+=palms(t,-100,2000,gy+6,.9,night?'#14202A':undefined,o.seed||5);
+  g+=R(-200,gy-10,2400,1000,0,night?'#2A2A3A':'#D8B878');
+  [[180,gy+16,.62,1,0],[470,gy+26,.72,0,1],[1380,gy+22,.7,1,-1],[1730,gy+14,.6,0,0]].forEach(([x,y,s,st,ld],i)=>g+=mudHouse(t,x,y,s,{egypt:i%2===0,storey:st?(i%3?1:-1):0,ladder:ld,night,lit:night?.8:.25,smoke:i===1,seed:i+3,cloth:!night}));
+  if(!night&&o.stall!==false)g+=stall(960,gy+40,.8,o.seed%2?CORAL:'#2E7AB8');
+  g+=SC.ground(t,o.seed||5,{y:gy+60,col:night?'#2A2A3A':'#D8B878',col2:night?'#141420':'#A8884A',stones:10,tufts:6});
+  if(o.motes)g+=motes(t,o.motes,-100,-200,2200,1200,70);
+  if(dark>0)g+=R(-200,-900,2400,2900,0,'#05040A',{opacity:(.86*dark).toFixed(2)});
+  return g;
+}
+// Palace hall: painted wall with a frieze and hieroglyph bands, columns with lotus capitals, statues, braziers with embers,
+// the big sun disc, the throne on steps. tint: a plague colour wash over the hall.
+function palace(t,o={}){
+  const wall=o.wall||'#7A3A2A';
+  let g=R(-200,-900,2400,2900,0,wall)+R(-200,-900,2400,700,0,SC.mx(wall,'#000000',.3),{opacity:.7});
+  // frieze bands and hieroglyph rows
+  [[-200,'#2A4AA8'],[-120,GOLD],[700,'#2A4AA8']].forEach(([y,c])=>g+=R(-200,y,2400,26,0,c,{opacity:.8}));
+  for(let i=0;i<40;i++){const x=-180+i*58,y=-80+(i%2)*14;g+=[C(x,y+30,8,GOLD),R(x-8,y+20,16,24,3,'#F0E0B0'),P(`M${x-10} ${y+44}l10 -22l10 22Z`,'#F0E0B0')][i%3];}
+  g+=sunDisc(960,o.discY??160,110,o.disc??1);
+  // statues in niches between the columns (carved figures of Egypt's gods: a falcon, a cow, a jackal shape, never the true God)
+  [[200,'#3A2A20'],[1720,'#3A2A20']].forEach(([x,c],i)=>{g+=R(x-90,FY-560,180,560,90,SC.mx(wall,'#000000',.35))+pedestal(x,FY+10,150,80,'#B89A6A')+
+    P(`M${x-40} ${FY-70}V${FY-330}Q${x} ${FY-400} ${x+40} ${FY-330}V${FY-70}Z`,'#C8A870',{stroke:'#6A5030','stroke-width':5})+(i?P(`M${x-30} ${FY-360}l30 -70l30 70Z`,'#C8A870',{stroke:'#6A5030','stroke-width':4}):P(`M${x+20} ${FY-380}q40 0 50 20l-40 6Z`,'#C8A870',{stroke:'#6A5030','stroke-width':4}));});
+  for(let i=0;i<7;i++){const x=40+i*307;g+=column(x,FY+30,980,110,'#E8D2A0')+[0,1].map(k=>R(x-55,FY-700+k*260,110,40,0,k?'#2A4AA8':CORAL,{opacity:.55})).join('');}
+  // braziers with embers
+  [[520,FY+20],[1400,FY+20]].forEach(([x,y])=>{g+=P(`M${x-50} ${y-90}h100l-20 40h-60Z`,'#6A5030')+L(x,y-50,x,y,'#4A3A20',10)+FX.flames(t,[[x-36,y-92],[x+36,y-92]],{H:60,seed:x|0})+glow(x,y-110,180,'#FF9A4C',.45)+motes(t,'ember',x-60,y-500,120,400,10);});
+  g+=R(-200,FY+20,2400,800,0,'#B88A5A')+[...Array(12)].map((_,i)=>L(-200+i*200,FY+20,-200+i*200-120,1800,'#9A6A3A',4,{opacity:.4})).join('');
+  if(o.throne!==false){const tx=o.tx??1280;g+=R(tx-260,FY-40,520,60,6,'#C8A060',{stroke:'#6A4A12','stroke-width':5})+R(tx-110,FY-360,220,330,20,GOLD,{stroke:'#6A4A12','stroke-width':6})+R(tx-90,FY-340,180,140,14,'#2A4AA8');}
+  if(o.tint)g+=R(-200,-900,2400,2900,0,o.tint,{opacity:.18});
+  return g;
+}
+// The Nile: banded sky, far bank with a temple pylon, pyramids and palms, sailing boats, reflections, papyrus on the banks.
+function nileScene(t,o={}){
+  const m=o.mood||'dawn',red=o.red||0,gy=o.gy??760,night=m==='night',kind=o.sky||(night?'blood':{dawn:'nile',day:'day',golden:'gold'}[m]||'nile');
+  let g=eSky(t,kind,{hz:gy,seed:o.seed||3,moon:night?[1460,160]:null,sun:night?null:[o.sx??1500,o.sy??280,80]});
+  const far=night?'#1A1A30':'#B89070';
+  g+=pyramid(360,gy-10,.9,night?'#2A2440':'#D8B070')+pyramid(620,gy,.55,night?'#221E36':'#C8A060')+pylon(1360,gy,.55,night?'#2A2840':'#D8B888',{disc:night?0:1});
+  g+=palms(t,-80,2000,gy+4,.75,night?'#101A20':undefined,(o.seed||3)+2);
+  const water=night?'#1A3A5A':NILE;
+  g+=R(-200,gy+10,2400,300,0,water);
+  if(red>0){const front=lerp(-300,2300,clamp(red));g+=P(`M-200 ${gy+10}H${front}Q${front+120} ${gy+150} ${front} ${gy+310}H-200Z`,BLOOD,{opacity:.95});}
+  // reflections of the sun/moon and the pyramids, ripples
+  g+=Ell(o.sx??1500,gy+90,60,14,night?(red>.6?'#FF8A7A':'#F4F0DC'):'#FFE9B0',{opacity:.5})+P(`M${360-200} ${gy+12}L360 ${gy+180}L${360+200} ${gy+12}Z`,'#000000',{opacity:.12});
+  for(let i=0;i<16;i++){const x=-80+i*150+Math.sin(t*.8+i)*20,y=gy+50+(i%4)*60;g+=P(`M${x} ${y}q30 -12 60 0t60 0`,'none',{stroke:'#FFFFFF',opacity:.25,'stroke-width':4});}
+  if(o.boats!==false)g+=sailboat(t,lerp(300,700,(t*.01)%1),gy+120,.8,red>.5?'#E8B0A0':'#F4EAD0')+sailboat(t,1100,gy+180,.6);
+  g+=SC.reeds(t,100,gy+60,1.4,{})+SC.reeds(t,1820,gy+50,1.3,{});
+  g+=R(-200,gy+310,2400,900,0,night?'#2A3A2A':'#A89A60')+SC.ground(t,o.seed||3,{y:gy+310,col:night?'#2A3A2A':'#A89A60',col2:night?'#141C14':'#6A6A3A',stones:6,tufts:10});
+  return g;
+}
+// ---------- foregrounds that belong to the place ----------
+// papyrus by the river: tall stems with umbrella heads at both frame edges, reeds and a strip of water
+function forePapyrus(t,cx,z,o={}){const [xl,xr]=EDG(cx,z),c=o.cols||['#1E3A1A','#3A6A2A','#7AA050'];let g=R(cx-800,1080,1600,900,0,o.water||'#1E4A6A')+R(cx-800,1080,1600,40,0,'#FFFFFF',{opacity:.12});
+  [[xl-60,1],[xr+60,-1]].forEach(([x,k])=>{for(let i=0;i<7;i++){const bx=x+k*(i*40-60),top=1080-220-hash(i,91)*260,sw=Math.sin(t*1.2+i)*12;
+    g+=P(`M${bx} 1900Q${bx+sw*.5} ${(1900+top)/2} ${bx+sw} ${top}`,'none',{stroke:c[i%2+1],'stroke-width':10});
+    for(let j=0;j<11;j++){const a=-Math.PI*.95+j/10*Math.PI*.9;g+=L(bx+sw,top,bx+sw+Math.cos(a)*70,top+Math.sin(a)*70,c[2],3);}g+=C(bx+sw,top,9,c[1]);}});
+  return g+SC.fore(t,{y:1150,edges:[xl,xr],cols:c,reeds:true,rocks:0,density:.4,seed:o.seed||11,over:o.over||''});}
+// palace: stone steps across the frame and the bases of two big columns at the edges
+function foreSteps(t,cx,z,o={}){const [xl,xr]=EDG(cx,z),c=o.col||'#D8C090';let g='';
+  // floor tiles below the steps
+  for(let r=0;r<6;r++)for(let k=0;k<10;k++)g+=R(cx-800+k*170+(r%2)*85,1370+r*90,166,86,4,(r+k)%2?'#C8A878':'#B89060',{stroke:'#8A6A3A','stroke-width':3});
+  g+=R(cx-260,1400,520,520,10,'#8A2A2A',{stroke:GOLD,'stroke-width':10,opacity:.9})+R(cx-220,1440,440,440,6,'none',{stroke:'#2A4AA8','stroke-width':8,opacity:.8});
+  for(let i=0;i<5;i++)g+=R(cx-800,1070+i*60,1600,62,4,SC.mx(c,'#000000',i*.06),{stroke:SC.mx(c,'#000000',.35),'stroke-width':4});
+  [xl-80,xr+80].forEach(x=>{g+=R(x-130,1000,260,900,8,'#E8D2A0',{stroke:'#8A6A3A','stroke-width':6})+R(x-160,1240,320,80,6,'#C8A870',{stroke:'#8A6A3A','stroke-width':6})+[0,1,2].map(k=>L(x-120,1060+k*60,x+120,1060+k*60,'#B88A4A',5,{opacity:.6})).join('');});
+  if(o.jar!==false)g+=jar(cx+260,1300,2.4,'#C8703A')+jar(cx-300,1360,2.0,'#2E7AB8');
+  return g;}
+// fields: barley stalks with heads close to the camera, swaying
+function foreBarley(t,cx,z,o={}){const [xl,xr]=EDG(cx,z),c=o.cols||['#8A6A20','#C8A040','#F0D070'],bare=o.bare||0;let g=R(cx-800,1080,1600,900,0,o.soil||'#6A4A20');
+  for(let i=0;i<70;i++){const x=cx-760+hash(i,95)*1520,edge=Math.min(Math.abs(x-xl),Math.abs(x-xr))<220||hash(i,97)>.7,h=(edge?420:220)*(1-bare*.85)*(.7+hash(i,99)*.5),sw=Math.sin(t*1.6+i*.7)*14,y=1180+hash(i,101)*600;
+    g+=P(`M${x} ${y}Q${x+sw*.4} ${y-h/2} ${x+sw} ${y-h}`,'none',{stroke:c[i%3],'stroke-width':6});
+    if(bare<.6)for(let k=0;k<5;k++)g+=Ell(x+sw+k*2,y-h+k*14,7,12,c[2]);}
+  return g+(o.over||'');}
+// village: a low mud-brick wall across the bottom with jars, a basket, a sleeping dog shape, and a lamp
+function foreWall(t,cx,z,o={}){const [xl,xr]=EDG(cx,z),night=!!o.night,c=night?'#4A3A3A':'#B8865A',dk=SC.mx(c,'#000000',.4);
+  let g=R(cx-800,1120,1600,900,0,night?'#1A1620':'#8A6A40')+R(cx-800,1180,1600,160,8,c,{stroke:dk,'stroke-width':6});
+  // packed-earth lane below the wall: cobbles, a worn path, straw and pebbles
+  {const lc=night?'#2A2430':'#A8845A';for(let r=0;r<9;r++)for(let k=0;k<12;k++){const x=cx-800+k*140+(r%2)*70+hash(r*12+k,111)*30,y=1370+r*62;g+=Ell(x,y,52+hash(r*12+k,113)*14,20,SC.mx(lc,r%2?'#ffffff':'#000000',.06+hash(k,r)*.08),{stroke:SC.mx(lc,'#000000',.3),'stroke-width':2,opacity:.9});}
+   for(let i=0;i<30;i++){const x=cx-780+hash(i,117)*1560,y=1360+hash(i,119)*560;g+=L(x,y,x+20+hash(i,121)*20,y-6,night?'#5A5048':'#E0C080',3,{opacity:.6});}}
+  for(let r=0;r<3;r++)for(let x=cx-800+(r%2)*50;x<cx+800;x+=100)g+=R(x+4,1186+r*52,92,46,4,SC.mx(c,r%2?'#ffffff':'#000000',.08),{stroke:dk,'stroke-width':2,opacity:.8});
+  g+=jar(xl+40,1190,2.6,night?'#7A4A3A':'#C8703A')+jar(xl+150,1190,2.0)+jar(xr-60,1190,2.8,night?'#3A4A6A':'#2E7AB8')+P(`M${xr-260} 1190l-14 -80h120l-14 80Z`,'#B8904A',{stroke:'#6A4A1E','stroke-width':4});
+  if(night||o.lamp){g+=glow(xr-180,1060,160,'#FFC86A',.7)+Ell(xr-180,1110,30,12,'#C8A070')+P(`M${xr-180} 1100q-8 -26 0 -44q10 22 0 44Z`,'#FFD27A')+motes(t,'ember',xr-260,800,160,320,8);}
+  return g;}
+const foreReeds=(t,cx,z,o={})=>forePapyrus(t,cx,z,o);
+const foreSand=(t,cx,z,o={})=>o.kind==='barley'?foreBarley(t,cx,z,o):foreWall(t,cx,z,o);
+const foreNight=(t,cx,z,o={})=>foreWall(t,cx,z,Object.assign({night:true},o));
+const floorFore=(t,cx,z,c)=>foreSteps(t,cx,z,{});
+
+// ================= Red Sea kit: the sea, the beach, the pillar, horses and chariots, wind, walls of water =================
+// The sea from y0 (horizon) down to the shore line y1, with drifting wave strokes and a moving foam line.
+function seaBand(t,y0,y1,o={}){
+  const c=o.col||'#0E3A6A',c2=o.col2||'#2E7AB8',id=S.nid(),rough=o.rough??1;
+  let g=`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c2}"/></linearGradient><rect x="-200" y="${y0}" width="2400" height="${y1-y0+4}" fill="url(#${id})"/>`;
+  for(let i=0;i<34;i++){const u=hash(i,5),yy=y0+12+u*(y1-y0-24),x=((hash(i,7)*2400+t*(16+hash(i,9)*26)*rough)%2400)-200,w=(50+hash(i,11)*120)*(.4+u);
+    g+=P(`M${x.toFixed(0)} ${yy.toFixed(0)}q${(w/4).toFixed(0)} ${(-9*rough).toFixed(0)} ${(w/2).toFixed(0)} 0t${(w/2).toFixed(0)} 0`,'none',{stroke:o.foam||'#BFE8FF','stroke-width':(2+4*u).toFixed(1),opacity:.32});}
+  if(o.glint){const [gx,gc]=o.glint;for(let i=0;i<9;i++){const yy=y0+20+i*(y1-y0)/10,w=30+i*14;g+=L(gx-w,yy,gx+w,yy,gc,4,{opacity:(.25+.3*Math.abs(Math.sin(t*2+i))).toFixed(2)});}}
+  if(o.shore!==false){let d=`M-200 ${y1+40}`;for(let x=-200;x<=2200;x+=80)d+=`L${x} ${(y1+Math.sin(t*1.4+x*.012)*10).toFixed(0)}`;d+=`L2200 ${y1+40}Z`;g+=P(d,'#EAF8FF',{opacity:.55});}
+  return g;
+}
+// Sand from y down, with stones and tufts.
+const sand=(t,y,seed,night,col)=>R(-200,y,2400,1900,0,col||(night?'#3A3448':'#D8B878'))+SC.ground(t,seed,{y:y+10,col:col||(night?'#3A3448':'#D8B878'),col2:night?'#1E1A2A':'#A8884A',stones:9,tufts:5});
+// A beach by the sea: sky, a far headland, the sea filling the upper frame, sand to the bottom.
+function beach(t,o={}){
+  const night=o.mood==='night',hz=o.hz??180,sh=o.shore??760,kind=o.sky||(night?'night':o.mood==='haze'?'locust':'day');
+  let g=eSky(t,kind,{hz,seed:o.seed||3,moon:night&&o.moon!==false?[o.mx??1480,o.my??-200]:null,sun:!night&&o.sun!==false?[o.sx??1500,o.sy??-260,80]:null,cy:-700,ch:420});
+  g+=P(`M-200 ${hz}L120 ${hz-70}L420 ${hz-30}L700 ${hz-90}L900 ${hz}Z`,night?'#141A30':'#7A6A80',{opacity:.9})+P(`M1300 ${hz}L1560 ${hz-110}L1800 ${hz-60}L2100 ${hz-120}L2200 ${hz}Z`,night?'#101628':'#6A5A72',{opacity:.9});
+  g+=seaBand(t,hz,sh,{col:night?'#061A3A':'#1A5A9A',col2:night?'#0E3A6A':'#3A8AC8',glint:night?[o.mx??1480,'#DDE6FF']:null});
+  g+=sand(t,sh+10,o.seed||3,night,o.sand);
+  return g;
+}
+// The tents of the camp, small, on the sand.
+const tent=(x,y,s,c)=>P(`M${x-80*s} ${y}L${x} ${y-110*s}L${x+80*s} ${y}Z`,c,{stroke:SC.mx(c,'#000000',.4),'stroke-width':3*s})+P(`M${x} ${y-110*s}L${x-14*s} ${y}L${x+14*s} ${y}Z`,'#2A1A10')+L(x,y-110*s,x,y-130*s,'#5A3A1E',4*s);
+const TENTC=['#8A5A3A','#A86A3E','#7A4A2E','#9A6034','#B87A4A','#6A4A3A'];
+// A crowd: n people between x0 and x1, rows going back (smaller, higher). o: face, expr, look, walk, s, rows, kids.
+function crowd(t,x0,x1,y,n,o={}){
+  const rows=o.rows||3,list=[];
+  for(let i=0;i<n;i++){const row=i%rows,u=hash(i,o.seed||17),x=lerp(x0,x1,u),yy=y-row*(o.dy??46),s=(o.s||1)*(1-row*.12);
+    const q={face:o.face??(hash(i,19)>.5?1:-1),expr:typeof o.expr==='function'?o.expr(i):(o.expr||'calm'),look:o.look,kid:o.kids&&i%5===3,op:o.op};
+    if(o.walk)q.walk=t*7+i;if(o.near)q.near=typeof o.near==='function'?o.near(i,x,yy,s):o.near;if(o.far)q.far=o.far;
+    list.push([yy,()=>folk(i,x,yy,q.kid?s*.65:s,q)]);}
+  return list.sort((a,b)=>a[0]-b[0]).map(e=>e[1]()).join('');
+}
+// The pillar of cloud: a tall slow-turning column of white cloud, lit from inside (never a figure).
+function cloudPillar(t,x,yb,h,k=1,o={}){
+  if(k<=0)return '';const w0=o.w||1,lit=o.lit??0,id=S.nid(),c1=mix('#DCE4EE','#FFE9B8',lit),c2=mix('#B8C4D4','#F0C878',lit);
+  let g=glow(x,yb-h*.5,h*.55,lit?'#FFF2C8':'#FFFFFF',(.3+.3*lit)*k);
+  // body: a column that widens toward the top, its sides gently waving
+  let L1='',R1='';for(let i=0;i<=20;i++){const u=i/20,yy=yb-u*h,w=(70+70*u)*w0+Math.sin(t*.9+u*9)*14*w0;L1+=(i?'L':'M')+(x-w).toFixed(0)+' '+yy.toFixed(0);R1=`L${(x+w+Math.sin(t*.8+u*7+2)*10*w0).toFixed(0)} ${yy.toFixed(0)}`+R1;}
+  g+=`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${c2}"/><stop offset=".45" stop-color="#FFFFFF"/><stop offset="1" stop-color="${c2}"/></linearGradient>`;
+  g+=P(L1+R1+'Z',`url(#${id})`,{opacity:(.92*k).toFixed(2)});
+  // billows rolling up the sides
+  for(let i=0;i<18;i++){const u=((i/18)+t*.03)%1,yy=yb-u*h,side=i%2?1:-1,w=(70+70*u)*w0,r=(40+30*u)*w0*(.8+.4*hash(i,3));
+    g+=C(x+side*w*.8,yy,r,c1,{opacity:(.85*k*Math.min(1,u*6,(1-u)*6+.3)).toFixed(2)})+C(x+side*w*.6-side*r*.3,yy-r*.3,r*.55,'#FFFFFF',{opacity:(.5*k).toFixed(2)});}
+  // a broad crown of cloud on top
+  for(let i=0;i<7;i++){const a=i/6,cx=x+(a-.5)*300*w0,cy=yb-h-20*w0+Math.abs(a-.5)*60*w0;g+=C(cx,cy,(70+30*hash(i,9))*w0,i%2?c1:'#F4F8FC',{opacity:(.9*k).toFixed(2)});}
+  return g;
+}
+// The pillar of fire: a standing column of flame with a hot white core.
+function firePillar(t,x,yb,h,k=1){
+  if(k<=0)return '';let g=glow(x,yb-h*.5,h*.8,'#FF8A3C',.45*k)+glow(x,yb-h*.5,h*.35,'#FFE29A',.55*k);
+  const side=(f,w,ph)=>{let d='';for(let i=0;i<=20;i++){const u=i/20,yy=yb-u*h,ww=w*(1-u*.25)+Math.sin(t*5+u*12+ph)*w*.18;d+=(i?'L':'M')+(x+f*ww).toFixed(0)+' '+yy.toFixed(0);}return d;};
+  const body=(w,c,op,ph)=>{const a=side(-1,w,ph),b=side(1,w,ph+1.3).replace('M','L').split('L').filter(Boolean).reverse().map(q=>'L'+q).join('');return P(a+`Q${x} ${yb-h-70} `+b.slice(1)+'Z',c,{opacity:(op*k).toFixed(2)});};
+  g+=body(100,'#E8401A',.9,0)+body(70,'#FF8A2A',.95,2)+body(36,'#FFE29A',.95,4);
+  g+=FX.flames(t,[[x-80,yb-h+40],[x,yb-h],[x+80,yb-h+40]],{H:h/4,seed:3,k})+FX.flames(t,[[x-110,yb],[x,yb-10],[x+110,yb]],{H:h/6,seed:5,k});
+  return g;
+}
+// A horse in profile (feet at x,y, facing +x for face 1). run 0..1 gallops; balk 0..1 rears back and lifts the head.
+function horse(t,x,y,s,o={}){
+  const f=o.face||1,c=o.col||'#6A4A34',dk=SC.mx(c,'#000000',.45),run=o.run||0,ph=t*10+(o.phase||0),bk=o.balk||0;
+  let g='';
+  [[-62,0,dk],[-40,1.7,c],[52,3.1,dk],[74,4.6,c]].forEach(([lx,p,cc])=>{const sw=run*Math.sin(ph+p)*30,kx=lx+sw,ky=-(run*Math.max(0,Math.sin(ph+p+1.2))*16);
+    g+=L(lx,-84,(lx+kx)/2,-44+ky*.5,cc,15)+L((lx+kx)/2,-44+ky*.5,kx,-6+ky,cc,13)+Ell(kx,-4+ky,10,6,'#2A1A10');});
+  g+=P('M-86 -112Q-130 -96 -122 -40Q-110 -70 -88 -92Z',dk);
+  g+=Ell(0,-104,96,42,c,{stroke:dk,'stroke-width':4})+Ell(-20,-118,60,16,SC.mx(c,'#FFFFFF',.2),{opacity:.4});
+  const hy=-bk*26;
+  g+=P(`M56 -124Q92 ${-176+hy} 112 ${-206+hy}L146 ${-192+hy}Q126 ${-150+hy} 92 -92Z`,c,{stroke:dk,'stroke-width':4});
+  g+=P(`M108 ${-214+hy}Q150 ${-224+hy} 176 ${-192+hy}Q180 ${-176+hy} 164 ${-172+hy}L134 ${-178+hy}Z`,c,{stroke:dk,'stroke-width':4})+C(176,-184+hy,4,dk);
+  g+=P(`M116 ${-212+hy}l8 -28l10 24Z`,c,{stroke:dk,'stroke-width':3})+C(134,-200+hy,5.5,'#111');
+  g+=P(`M60 -128Q90 ${-180+hy} 108 ${-214+hy}L98 ${-196+hy}Q80 -160 52 -120Z`,'#2A1A10');
+  if(o.harness!==false)g+=L(40,-120,150,-188+hy,GOLD,4)+L(-40,-130,-40,-74,GOLD,5);
+  return G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(s*f).toFixed(3)} ${s.toFixed(3)}) rotate(${(-bk*10).toFixed(1)} -60 -10)`,g);
+}
+// A wheel (centre cx,cy, radius r) with spokes turned by angle a.
+const wheel=(cx,cy,r,a,c='#8A5A2E')=>C(cx,cy,r,'none',{stroke:c,'stroke-width':r*.18})+C(cx,cy,r*.82,'none',{stroke:SC.mx(c,'#FFFFFF',.25),'stroke-width':r*.05,opacity:.6})+
+  [0,1,2,3,4,5].map(i=>{const b=a+i*Math.PI/3;return L(cx,cy,cx+Math.cos(b)*r*.9,cy+Math.sin(b)*r*.9,c,r*.09);}).join('')+C(cx,cy,r*.18,SC.mx(c,'#000000',.3));
+// A war chariot pulled by a horse (horse's feet at x,y, facing +x for face 1). o: run, sink 0..1 (wheel bogged in mud),
+// driver (true: a small charioteer, back to us), col, torch.
+function chariot(t,x,y,s,o={}){
+  const f=o.face||1,run=o.run||0,sink=o.sink||0,a=-t*run*6;
+  let g=horse(t,0,0,1,{run,balk:o.balk||0,col:o.hcol,phase:o.phase||0});
+  const wy=-58+sink*30,cx=-250;
+  g+=L(-70,-90,cx+40,-96+sink*10,'#5A3A1E',9);
+  if(o.driver!==false)g+=PPL.fig(Object.assign(pplOpts(0,cx-10,-100+sink*24,.62,{face:1,expr:o.expr||'calm',look:{x:200,y:-200}}),{tunic:'#3A2E44',tunic2:'#1E1828',hair:'#1A1A2A',skin:'#B87444',shade:'#8A5230',near:{x:-40,y:-150}}));
+  g+=P(`M${cx-70} ${-60+sink*24}L${cx-60} ${-170+sink*24}Q${cx+10} ${-190+sink*24} ${cx+60} ${-150+sink*24}L${cx+60} ${-60+sink*24}Z`,o.col||'#B8862E',{stroke:'#5A3A12','stroke-width':5})+
+    P(`M${cx-56} ${-150+sink*24}Q${cx} ${-170+sink*24} ${cx+48} ${-140+sink*24}`,'none',{stroke:'#F0D070','stroke-width':6})+C(cx,-110+sink*24,16,'#2A4AA8',{stroke:'#F0D070','stroke-width':4});
+  g+=wheel(cx,wy,60,a,'#7A4A22');
+  if(sink>0)g+=Ell(cx,-6,110*sink+30,26,'#4A3A2A',{opacity:.9})+[0,1,2].map(i=>C(cx-60+i*60,-14-sink*10,10+sink*8,'#5A4A36')).join('');
+  if(o.torch)g+=L(cx+40,-150,cx+60,-230,'#4A2E16',5)+FX.flames(t,[[cx+54,-232],[cx+66,-232]],{H:40,seed:x|0})+glow(cx+60,-240,90,'#FF9A4C',.7);
+  return G(`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(s*f).toFixed(3)} ${s.toFixed(3)})`,g);
+}
+// Dust thrown up behind a moving army.
+function dust(t,x0,x1,y,h,k=1,col='#D8B888'){let g='';for(let i=0;i<22;i++){const u=hash(i,31),x=lerp(x0,x1,u)+Math.sin(t*.7+i)*30,yy=y-hash(i,33)*h-((t*20+i*13)%60),r=60+hash(i,35)*120;g+=C(x,yy,r,col,{opacity:(.28*k).toFixed(2)});}return g;}
+// Wind: pale streaks blowing from right to left (an east wind seen from the south), with sand.
+function wind(t,k=1,o={}){if(k<=0)return '';let g='';const y0=o.y0??-600,y1=o.y1??1700;
+  for(let i=0;i<26;i++){const y=lerp(y0,y1,hash(i,41)),sp=1400+hash(i,43)*900,x=2300-((t*sp+hash(i,45)*2600)%2600),w=200+hash(i,47)*300;
+    g+=P(`M${x.toFixed(0)} ${y.toFixed(0)}q${-w/3} ${-18} ${(-w*2/3).toFixed(0)} 0t${(-w/3).toFixed(0)} 4`,'none',{stroke:o.col||'#DDEBFF','stroke-width':3+hash(i,49)*4,opacity:(.35*k).toFixed(2),'stroke-linecap':'round'});}
+  if(o.sand)g+=motes(t,'dust',-100,y0,2200,y1-y0,40);
+  return g;}
+// A wall of water standing up from the sea floor: x edge, top y, dir -1 (left wall) / 1 (right wall).
+function waterWall(t,xe,yTop,yBot,dir,o={}){
+  let d=`M${xe} ${yBot}`;for(let y=yBot;y>=yTop;y-=40)d+=`L${(xe+Math.sin(t*2+y*.02+dir)*12).toFixed(0)} ${y}`;
+  const out=dir<0?-260:2180;
+  let g=P(d+`L${out} ${yTop}L${out} ${yBot}Z`,o.col||SEA);
+  for(let i=0;i<10;i++){const y=lerp(yTop+60,yBot-40,hash(i,61)),x=xe+dir*(60+hash(i,63)*500)+Math.sin(t*.8+i)*30;g+=G(`translate(${x.toFixed(0)} ${y.toFixed(0)}) scale(${-dir} 1)`,Ell(0,0,40,15,'#2A7AD0')+P('M34 0l26 -15v30z','#2A7AD0'),.7);}
+  for(let k=0;k<12;k++){const x=xe+dir*(30+hash(k,65)*400),y=yBot-((t*80+hash(k,64)*(yBot-yTop))%(yBot-yTop));g+=C(x,y,5+hash(k,66)*7,'none',{stroke:'#9AE8FF','stroke-width':3,opacity:.55});}
+  g+=P(d,'none',{stroke:NEON,'stroke-width':9})+glow(xe,(yTop+yBot)/2,220,NEON,.18);
+  // spray at the top
+  for(let i=0;i<8;i++){const x=xe+dir*(i*40)+Math.sin(t*3+i)*8;g+=C(x,yTop-8-Math.abs(Math.sin(t*4+i))*16,10+i%3*5,'#EAF8FF',{opacity:.7});}
+  return g;
+}
+// A row of torches far away on a ridge (the army at night).
+function torchRow(t,x0,x1,y,n,k=1){let g='';for(let i=0;i<n;i++){const x=lerp(x0,x1,i/(n-1))+hash(i,51)*20,yy=y+hash(i,53)*14,fl=.7+.3*Math.sin(t*9+i*2);g+=glow(x,yy,40,'#FF9A4C',.7*k*fl)+C(x,yy,5,'#FFE29A',{opacity:k});}return g;}
+
+// ================= 0. Cold open: trapped =================
+function trapped(t,lt){
+  let g=beach(t,{mood:'night',hz:60,shore:820,seed:3,mx:1200,my:-320});
+  for(let i=0;i<6;i++)g+=tent(260+i*290,860+(i%2)*30,.9,TENTC[i]);
+  g+=crowd(t,460,1460,1030,12,{rows:3,s:1.6,face:-1,look:{x:960,y:200},expr:'fear',seed:21,kids:true});
+  return g;
+}
+function ridgeArmy(t,lt){
+  let g=eSky(t,'night',{hz:820,seed:9,moon:[600,-200]});
+  g+=P('M-200 820L200 700L700 760L1200 660L1700 740L2200 700V1900H-200Z','#1E1A2E')+P('M-200 900L400 860L900 900L1500 850L2200 890V1900H-200Z','#2A2438');
+  const k=ease.out(prog(t,AT.behind,AT.behind+1));
+  g+=torchRow(t,-100,2100,690,22,k);
+  for(let i=0;i<7;i++){const x=180+i*270,y=860+(i%2)*20;g+=chariot(t,x,y,.95,{face:-1,run:0,torch:i%2===0,hcol:'#3A2A2A',col:'#7A5A2A',phase:i});}
+  g+=SC.ground(t,9,{y:940,col:'#2A2438',col2:'#141020',stones:8,tufts:4});
+  return g;
+}
+function nowhere(t,lt){
+  let g=beach(t,{mood:'night',hz:120,shore:700,seed:5,mx:1500,my:-260});
+  g+=torchRow(t,-200,2200,-40,0);
+  const mum=who('mum',860,FY,2.2,{face:1,expr:'fear',look:{x:1300,y:500}}),kid=who('girl',1010,FY+6,1.4,{face:-1,expr:'fear',look:{x:860,y:600}});
+  const k=ease.out(prog(t,AT.nowhere,AT.nowhere+.6));
+  g+=PPL.hug(mum,kid,{k}).svg;
+  g+=fig('dad',600,FY,2.3,{face:1,expr:'fear',look:{x:1600,y:300},near:PPL.handOn(who('dad',600,FY,2.3,{face:1}),mum,'shoulder')});
+  return g+sandFore(t,960,1.0,true);
+}
+// Foreground sand with shells, stones and a rope, in front of the people (below sheet y 1080).
+function sandFore(t,cx,z,night){const [xl,xr]=EDG(cx,z),c=night?'#2A2638':'#C8A868';let g=R(cx-800,1090,1600,900,0,c);
+  for(let i=0;i<26;i++){const x=cx-760+hash(i,71)*1520,y=1120+hash(i,73)*700;g+=Ell(x,y,18+hash(i,75)*40,8+hash(i,77)*14,SC.mx(c,i%2?'#FFFFFF':'#000000',.12),{opacity:.8});}
+  g+=SC.fore(t,{y:1150,edges:[xl,xr],cols:night?['#141220','#24203A','#4A4468']:['#6A5A2A','#9A8A4A','#C8B870'],rocks:3,density:.35,seed:79});
+  return g;}
+// "Like a hero in a film": a torn movie-poster collage of Moses with his staff up, in spotlights.
+function heroPoster(t,lt){
+  let g=R(-200,-900,2400,2900,0,'#1A1424');
+  const k=ease.out(prog(t,AT.most+.2,AT.most+1));
+  g+=strip(560,80,800,1060,7,'#2A2440',{ax:6,ay:4})+tape(960,80,140,-3);
+  for(let i=0;i<3;i++){const a=-Math.PI/2+(i-1)*.35;g+=P(`M960 1140L${960+Math.cos(a-.08)*1100} ${1140+Math.sin(a-.08)*1100}L${960+Math.cos(a+.08)*1100} ${1140+Math.sin(a+.08)*1100}Z`,'#FFF6DA',{opacity:(.18*k).toFixed(2)});}
+  g+=seaBand(t,360,620,{col:'#1A5A9A',col2:'#3A8AC8',shore:false})+waterWall(t,700,200,640,-1,{})+waterWall(t,1220,200,640,1,{});
+  g+=R(560,620,800,520,0,'#C8A060');
+  g+=moses(960,1000,2.0,{raise:1,expr:'joy',look:'up'});
+  // film-strip holes down both sides of the poster
+  for(let i=0;i<12;i++){g+=R(575,110+i*86,26,40,6,'#08060C')+R(1319,110+i*86,26,40,6,'#08060C');}
+  return g;
+}
+function notHero(t,lt){
+  let g=heroPoster(t,lt);
+  g+=mark(`M600 180L1320 1080`,ease.out(prog(t,AT.read+.6,AT.read+1.1)),CORAL,16)+mark(`M1320 180L600 1080`,ease.out(prog(t,AT.read+1.0,AT.read+1.5)),CORAL,16);
+  return g;
+}
+function neither(t,lt){
+  let g=beach(t,{mood:'night',hz:80,shore:760,seed:7,mx:600,my:-300});
+  g+=crowd(t,360,1560,1000,12,{rows:2,s:1.5,face:-1,expr:'sad',look:'down',seed:23,near:'chest'});
+  return g+sandFore(t,960,1.0,true);
+}
+
+// ================= 1. The long way round =================
+function leaving(t,lt){
+  let g=eSky(t,'gold',{hz:800,seed:75,sun:[1650,520,100]})+pyramid(1500,800,.9,'#C8905A')+pyramid(1780,810,.55,'#B8804A')+palms(t,-100,500,810,.9,undefined,75);
+  g+=R(-200,800,2400,1100,0,'#E0B070')+SC.ground(t,75,{y:830,col:'#E0B070',col2:'#A8784A',stones:10,tufts:8})+motes(t,'dust',-100,0,2200,1000,40);
+  for(let i=0;i<9;i++){const p=(t*.035+i/9)%1,x=lerp(1700,300,p),y=lerp(840,1000,p),s=lerp(.7,1.6,p);g+=folk(i,x,y,s,{walk:t*6+i,face:-1,expr:'joy',op:Math.min(1,p*5,(1-p)*5)});}
+  // Joseph's bones carried in a chest on poles
+  const bx=lerp(1300,900,(t*.035)%1);
+  g+=R(bx-70,880,140,60,6,'#8A5A2E',{stroke:'#4A2E14','stroke-width':4})+L(bx-160,930,bx+160,930,'#5A3A1E',8)+folk(2,bx-150,1000,1.1,{walk:t*6,face:-1,near:{x:bx-150,y:930}})+folk(4,bx+150,1000,1.1,{walk:t*6+1,face:-1,near:{x:bx+150,y:930}});
+  g+=SC.pair(t,'goat',1100,1040,1.0,{walk:t*5,face:-1})+SC.pair(t,'donkey',700,1060,.9,{walk:t*5,face:-1});
+  return g+foreBarley(t,960,1.0,{bare:.8,soil:'#A87A4A'});
+}
+// A paper map: Egypt, the coast road (short, to the Philistines), the long wilderness road down to the sea.
+function mapRoads(t,lt,o={}){
+  let g=R(-200,-900,2400,2900,0,'#3A2A1E')+strip(420,-40,1080,1260,9,'#EADCB8',{ax:6,ay:4})+tape(960,-40,160,2);
+  g+=P('M420 -40L1500 -40L1500 140Q1200 180 900 120Q640 80 420 160Z','#7AB8E0',{opacity:.85})+T(980,40,'THE GREAT SEA',{size:30,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#2A5A8A'});
+  g+=P('M1180 560Q1260 820 1220 1220L1360 1220Q1380 820 1300 560Z','#5AA0D0',{opacity:.85})+T(1300,1180,'THE SEA',{size:28,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#1A4A7A'});
+  g+=pyramid(620,520,.35,'#C8905A')+T(620,580,'EGYPT',{size:34,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#6A3A1A'});
+  g+=R(1300,220,120,70,6,'#8A6A4A',{stroke:'#4A2E14','stroke-width':4})+[0,1,2,3].map(i=>L(1310+i*32,220,1310+i*32,170,'#4A2E14',4)).join('')+T(1360,330,'PHILISTINES',{size:28,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#6A2A1A'});
+  const pS=ease.inOut(prog(t,AT.coast,AT.coast+1.6)),pL=ease.inOut(prog(t,o.longAt??AT.longWay,(o.longAt??AT.longWay)+2.2));
+  g+=mark('M680 480Q900 300 1290 270',pS,'#6A5A4A',12,{'stroke-dasharray':'20 14'});
+  g+=mark('M680 500Q820 760 1000 820Q1120 860 1180 760',pL,CORAL,14);
+  if(o.cross)g+=mark('M1080 230L1200 330',ease.out(prog(t,o.cross,o.cross+.4)),CORAL,12)+mark('M1200 230L1080 330',ease.out(prog(t,o.cross+.3,o.cross+.7)),CORAL,12);
+  return g;
+}
+function longRoad(t,lt){
+  let g=eSky(t,'day',{hz:700,seed:41,sun:[600,-200,70]});
+  g+=SC.hills(41,{y:700,amp:40,wave:400,col:'#C8A070',trees:0})+R(-200,720,2400,1200,0,'#E0C080');
+  // the road forks: one way straight on to the coast (left), the long way curving off into the wilderness (right)
+  g+=P('M700 1900Q760 1200 300 720L360 720Q860 1200 900 1900Z','#F0D8A0',{opacity:.8})+P('M900 1900Q980 1200 1500 760L1560 780Q1100 1200 1100 1900Z','#F0D8A0',{opacity:.8});
+  g+=R(220,600,140,90,6,'#8A6A4A',{stroke:'#4A2E14','stroke-width':4})+[0,1,2,3].map(i=>L(232+i*36,600,232+i*36,540,'#4A2E14',4)).join('');
+  for(let i=0;i<8;i++){const p=(t*.04+i/8)%1,x=lerp(980,1500,p),y=lerp(1060,780,p),s=lerp(1.4,.5,p);g+=folk(i,x,y,s,{walk:t*6+i,face:1,op:Math.min(1,(1-p)*5)});}
+  return g+foreBarley(t,960,1.0,{bare:.9,soil:'#C8A060'});
+}
+function fortSpears(t,lt){
+  let g=eSky(t,'dusk',{hz:820,seed:43,sun:[1500,600,60]});
+  g+=R(-200,820,2400,1100,0,'#A8784A')+SC.ground(t,43,{y:840,col:'#A8784A',col2:'#6A4A2A',stones:8,tufts:4});
+  // a walled town on the coast road: battlements, gate, a row of spears and shields along the wall
+  g+=R(420,520,1080,320,6,'#8A5A3A',{stroke:'#4A2E14','stroke-width':6});
+  for(let i=0;i<12;i++)g+=R(420+i*92,480,60,50,4,'#8A5A3A',{stroke:'#4A2E14','stroke-width':5});
+  g+=P('M880 840V700Q960 630 1040 700V840Z','#2A1A10');
+  const up=ease.out(prog(t,AT.soldiers+.2,AT.soldiers+1));
+  for(let i=0;i<14;i++){const x=450+i*75;g+=L(x,520,x,520-120*up,'#5A3A1E',6)+P(`M${x-8} ${520-120*up}l8 -26l8 26Z`,'#C8D0D8')+C(x,500,22,i%2?'#B8382A':'#C8A060',{stroke:'#4A2E14','stroke-width':3,opacity:up});}
+  g+=glow(960,560,600,'#FF5A48',.15*up);
+  return g+foreBarley(t,960,1.0,{bare:.9,soil:'#8A6A3A'});
+}
+function lookBack(t,lt){
+  let g=eSky(t,'gold',{hz:780,seed:47,sun:[400,560,70]})+pyramid(420,780,.5,'#C8905A')+pyramid(560,786,.32,'#B8804A');
+  g+=R(-200,780,2400,1100,0,'#D8A868')+SC.ground(t,47,{y:800,col:'#D8A868',col2:'#A8784A',stones:6,tufts:6});
+  const turn=ease.inOut(prog(t,AT.oneBattle,AT.oneBattle+.8));
+  g+=folk(0,820,FY,2.0,{face:turn>.5?-1:1,expr:['calm','sad',turn],look:turn>.5?{x:400,y:700}:{x:1500,y:700}});
+  g+=fig('mum',1120,FY,2.0,{face:1,expr:'tender',look:{x:820,y:600},near:{x:1000,y:FY-260}})+fig('boy',1280,FY+6,1.3,{face:-1,expr:'calm',look:{x:1100,y:600}});
+  return g+foreBarley(t,960,1.0,{bare:.8,soil:'#A87A4A'});
+}
+
+// ================= 2. Cloud and fire =================
+function cloudDay(t,lt){
+  let g=eSky(t,'day',{hz:760,seed:51,sun:[1700,-300,70]});
+  g+=SC.hills(51,{y:760,amp:50,wave:420,col:'#D0A870',trees:0})+R(-200,780,2400,1100,0,'#E8C890')+SC.ground(t,51,{y:800,col:'#E8C890',col2:'#B88A50',stones:8,tufts:4});
+  const k=ease.out(prog(t,AT.alone,AT.alone+1.2));
+  g+=cloudPillar(t,1040,760,1300,k);
+  g+=P('M600 1900L860 780H1220L1500 1900Z','#000000',{opacity:(.12*k).toFixed(2)});
+  g+=crowd(t,560,1360,1020,14,{rows:3,s:1.25,face:1,walk:true,look:{x:1040,y:0},expr:'awe',seed:27});
+  return g+foreBarley(t,960,1.0,{bare:.9,soil:'#C8A060'});
+}
+function fireNight(t,lt){
+  let g=eSky(t,'night',{hz:760,seed:53});
+  g+=SC.hills(53,{y:760,amp:50,wave:420,col:'#2A2440',trees:0})+R(-200,780,2400,1100,0,'#3A3048')+SC.ground(t,53,{y:800,col:'#3A3048',col2:'#1E1828',stones:8,tufts:4});
+  g+=firePillar(t,1100,780,1100,1);
+  [[460,900],[700,880],[1500,890],[1700,910]].forEach(([x,y],i)=>g+=tent(x,y,1,TENTC[i])+P(`M${x} ${y-110}L${x+80} ${y}`,'none',{stroke:'#FFB04C','stroke-width':6,opacity:.5}));
+  g+=fig('dad',760,FY,1.9,{face:1,expr:'awe',look:{x:1100,y:200}})+fig('girl',920,FY+6,1.3,{face:1,expr:'joy',look:{x:1100,y:200},near:'up'})+glow(1000,FY-300,400,'#FF9A4C',.25);
+  return g+sandFore(t,960,1.0,true);
+}
+function turnBack(t,lt){
+  let g=beach(t,{mood:'day',hz:300,shore:780,seed:11,sx:1600,sy:-200});
+  [[300,860],[520,880],[1460,870],[1680,860]].forEach(([x,y],i)=>g+=tent(x,y,1.1,TENTC[i+1]));
+  const pt=ease.out(prog(t,AT.turnBack,AT.turnBack+.6));
+  g+=moses(780,FY,2.1,{face:1,expr:'calm',look:{x:1300,y:500}});
+  g+=crowd(t,1040,1500,FY,5,{rows:2,s:1.6,face:-1,look:{x:780,y:600},expr:'surprised',seed:29});
+  g+=mark('M900 640Q1100 520 1300 600',pt,CORAL,10)+mark('M1270 560L1310 604L1252 624',pt,CORAL,10);
+  return g+sandFore(t,960,1.0,false);
+}
+
+// ================= 3. Pharaoh changes his mind =================
+function palaceWindow(t,lt){
+  let g=palace(t,{throne:false,wall:'#5A2A2A'});
+  g+=R(1100,300,520,520,20,'#E8A860',{stroke:'#6A4A12','stroke-width':10})+R(1110,560,500,250,0,'#C88A4A');
+  // through the window: empty brick fields and cold kilns
+  for(let i=0;i<5;i++)g+=R(1140+i*90,620+(i%2)*30,70,40,4,'#A8603A');
+  g+=P('M1480 560L1520 460L1560 560Z','#6A4A3A');
+  const turn=ease.inOut(prog(t,AT.changed+.6,AT.changed+1.4));
+  g+=pharaoh(820,FY,2.3,{face:turn>.5?-1:1,expr:['calm','sad',turn],look:turn>.5?{x:300,y:600}:{x:1400,y:600}});
+  return g+foreSteps(t,960,1.0,{jar:false});
+}
+function emptyFields(t,lt){
+  let g=eSky(t,'dusk',{hz:760,seed:61,sun:[1500,520,70]})+pyramid(380,760,.8,'#8A5A4A')+obelisk(1600,760,280,'#8A5A4A');
+  g+=R(-200,760,2400,1100,0,'#B8704A')+SC.ground(t,61,{y:780,col:'#B8704A',col2:'#7A4A2A',stones:6,tufts:2});
+  for(let r=0;r<4;r++)for(let i=0;i<9;i++)g+=R(240+i*170+(r%2)*60,860+r*70,120,44,4,SC.mx('#C8703A','#000000',r*.06),{stroke:'#6A3A1A','stroke-width':3});
+  g+=P('M1300 860L1360 640L1500 640L1560 860Z','#7A4A3A',{stroke:'#3A2010','stroke-width':5})+R(1390,780,80,80,30,'#1A0E08');
+  g+=R(500,1000,120,60,4,'none',{stroke:'#5A3418','stroke-width':8})+L(480,1060,640,1060,'#5A3418',6);
+  g+=motes(t,'dust',-100,300,2200,800,30);
+  return g+foreBarley(t,960,1.0,{bare:1,soil:'#8A5A3A'});
+}
+function officials(t,lt){
+  let g=palace(t,{wall:'#7A3A2A',tx:1300});
+  g+=pharaoh(1300,FY-40,2.0,{face:-1,expr:'sad',look:{x:700,y:600}});
+  g+=fig('mag1',560,FY,1.9,{face:1,expr:'surprised',look:{x:1300,y:500},near:{x:760,y:FY-330},talk:true})+fig('mag2',820,FY,1.9,{face:1,expr:'sad',look:{x:1300,y:500},near:'open'});
+  return g+foreSteps(t,960,1.0,{});
+}
+function chariotYard(t,lt){
+  let g=egyptTown(t,{mood:'golden',sky:'gold',seed:63,sx:1600,sy:300,stall:false});
+  const k=ease.out(prog(t,AT.took,AT.took+1.5));
+  for(let r=0;r<3;r++)for(let i=0;i<5;i++){const x=200+i*380+r*120,y=880+r*90;g+=chariot(t,x,y,.75+r*.12,{face:1,run:0,phase:i+r,hcol:['#6A4A34','#3A2A22','#8A6A4A'][(i+r)%3],col:r===2?'#C8963A':'#A8782A',driver:k>(i+r)/8});}
+  g+=pharaoh(1250,FY+120,2.0,{face:-1,expr:'sad',near:{x:1500-120,y:FY-220},look:{x:900,y:800}});
+  return g;
+}
+function chariotsRace(t,lt){
+  let g=eSky(t,'locust',{hz:780,seed:65,sun:[1700,300,60]})+pyramid(200,780,.7,'#A8784A');
+  g+=R(-200,780,2400,1100,0,'#C8985A')+SC.ground(t,65,{y:800,col:'#C8985A',col2:'#8A6A3A',stones:10,tufts:3});
+  const go=t-AT.wentAfter+.8;
+  g+=dust(t,-200,1400,980,400,1,'#E0C090');
+  for(let i=0;i<6;i++){const x=-300+go*260+i*300-(i%2)*120,y=900+(i%3)*70;g+=chariot(t,x,y,.95+(i%3)*.12,{face:1,run:1,phase:i*1.3,hcol:['#6A4A34','#3A2A22','#8A6A4A'][i%3]});}
+  return g+foreBarley(t,960,1.0,{bare:.9,soil:'#A87A4A'});
+}
+
+// ================= 4. Fear =================
+function armyComing(t,lt){
+  let g=beach(t,{mood:'haze',hz:160,shore:620,seed:13,sx:1300,sy:-200});
+  // the army's dust on the ridge behind them (the bottom-left: they look back over their shoulders)
+  const k=ease.out(prog(t,AT.lookedUp,AT.lookedUp+1.5));
+  g+=P('M-200 760L300 700L700 740L1100 690L1500 730L2200 700V1900H-200Z','#C8986A')+dust(t,-200,2200,760,240,k,'#E8C090');
+  g+=torchRow(t,-100,2000,720,0);
+  for(let i=0;i<8;i++)g+=chariot(t,40+i*260,740,.45,{face:1,run:.3,driver:false,phase:i});
+  g+=crowd(t,440,1480,FY+40,10,{rows:2,s:1.7,face:-1,look:{x:600,y:600},expr:i=>i%3?'fear':'surprised',seed:31});
+  return g+sandFore(t,960,1.0,false);
+}
+function terrified(t,lt){
+  let g=beach(t,{mood:'haze',hz:100,shore:640,seed:15,sx:1300,sy:-260});
+  g+=dust(t,-200,2200,700,260,1,'#E8C090');
+  const drop=ease.out(prog(t,AT.terrified,AT.terrified+.6));
+  g+=folk(0,760,FY,2.4,{face:1,expr:'fear',look:{x:1500,y:400},near:'cover'})+Ell(900,lerp(FY-200,FY-30,drop),60,44,'#8A6A4A',{stroke:'#4A2E14','stroke-width':4});
+  g+=fig('mum',1180,FY,2.2,{face:-1,expr:'fear',look:{x:700,y:500},near:'chest',far:'chest'});
+  return g+sandFore(t,960,1.0,false);
+}
+function turnedOn(t,lt){
+  let g=beach(t,{mood:'haze',hz:140,shore:680,seed:17,sx:1500,sy:-240});
+  g+=moses(1340,FY,1.9,{face:-1,expr:'calm',look:{x:900,y:600}});
+  g+=crowd(t,420,1080,FY,8,{rows:2,s:1.6,face:1,look:{x:1340,y:500},expr:'fear',seed:33,near:(i,x,y,s)=>i%2?{x:x+200,y:y-260*s}:null});
+  return g+sandFore(t,960,1.0,false);
+}
+
+// ================= 5. Stand still =================
+function onTheRock(t,lt){
+  let g=beach(t,{mood:'day',hz:220,shore:700,seed:19,sx:600,sy:-200});
+  g+=P('M760 1000Q800 820 960 800Q1120 820 1160 1000Z','#8A7A6A',{stroke:'#4A3A2A','stroke-width':6});
+  g+=moses(960,820,1.8,{face:1,expr:'calm',look:{x:1300,y:900},near:{x:1100,y:700}});
+  g+=crowd(t,320,1600,FY+80,10,{rows:2,s:1.5,face:1,look:{x:960,y:500},expr:'surprised',seed:35});
+  return g+sandFore(t,960,1.0,false);
+}
+function stillWide(t,lt){
+  let g=beach(t,{mood:'day',hz:260,shore:760,seed:21,sx:1500,sy:-200});
+  g+=P('M-200 1000L2200 1000','none');
+  g+=crowd(t,300,1620,FY,22,{rows:3,s:1.1,face:-1,look:{x:960,y:200},expr:'calm',seed:37,kids:true});
+  return g+sandFore(t,960,.9,false);
+}
+function fightForYou(t,lt){
+  let g=beach(t,{mood:'night',hz:200,shore:720,seed:23,mx:600,my:-300});
+  const k=ease.out(prog(t,AT.v1414,AT.v1414+1.4));
+  g+=cloudPillar(t,960,760,1400,k,{lit:.6,w:1.1});
+  g+=SC.godRays(t,960,200,{n:9,a0:Math.PI*.15,a1:Math.PI*.85,len:1300,op:.22*k});
+  g+=crowd(t,360,1560,FY,12,{rows:2,s:1.5,face:1,look:{x:960,y:200},expr:'awe',seed:39,kids:true});
+  return g+sandFore(t,960,1.0,true);
+}
+function trustHands(t,lt){
+  let g=beach(t,{mood:'night',hz:140,shore:700,seed:25,mx:1500,my:-280});
+  const A=who('dad',820,FY,2.2,{face:1,expr:'tender',look:{x:1100,y:FY-400}}),B=who('mum',1100,FY,2.1,{face:-1,expr:'calm',look:{x:820,y:FY-400}});
+  g+=PPL.holdHands(A,B).svg+fig('boy',1300,FY+6,1.3,{face:-1,expr:'calm',look:{x:1100,y:FY-300}});
+  return g+sandFore(t,960,1.0,true);
+}
+function goForward(t,lt){
+  let g=beach(t,{mood:'night',hz:60,shore:820,seed:27,mx:1300,my:-320});
+  const r=ease.inOut(prog(t,AT.forward+.4,AT.forward+1.6));
+  g+=moses(820,FY,2.2,{face:1,raise:r,expr:'calm',look:{x:1400,y:300}});
+  g+=crowd(t,1100,1600,FY,6,{rows:2,s:1.5,face:1,look:{x:1300,y:300},expr:'surprised',seed:41});
+  return g+sandFore(t,960,1.0,true);
+}
+
+// ================= 6. The wind all night =================
+function cloudMoves(t,lt){
+  let g=beach(t,{mood:'night',hz:100,shore:640,seed:29,mx:1600,my:-300});
+  const p=ease.inOut(prog(t,AT.cloudMoved,AT.wentBehind+.4)),x=lerp(1400,500,p);
+  g+=crowd(t,700,1500,FY-20,16,{rows:3,s:1.0,face:-1,look:{x,y:200},expr:'awe',seed:43});
+  g+=cloudPillar(t,x,FY-60,1200,1,{lit:.4,w:.9});
+  return g+sandFore(t,960,.9,true);
+}
+function between(t,lt){
+  let g=R(-200,-900,2400,2900,0,'#05040A');
+  // left: Egypt's camp in darkness, torches barely visible; right: Israel's camp, lit; the pillar stands between
+  const k=ease.out(prog(t,AT.darkSide,AT.darkSide+1));
+  g+=R(960,-900,1240,2900,0,mix('#0A1230','#2A3A6A',k))+glow(1500,600,800,'#FFE9B8',.25*k);
+  g+=R(-200,860,1160,1000,0,'#0A0810')+R(960,860,1240,1000,0,mix('#2A2438','#6A5A6A',k));
+  g+=torchRow(t,-100,800,840,8,.4);
+  for(let i=0;i<3;i++)g+=chariot(t,120+i*260,900,.55,{face:1,driver:false,hcol:'#1A1418',col:'#2A2018'});
+  [[1240,920],[1480,900],[1720,930]].forEach(([x,y],i)=>g+=tent(x,y,1,TENTC[i])+glow(x,y-40,90,'#FFC86A',.5*k));
+  g+=cloudPillar(t,960,1000,1500,1,{lit:k*.7,w:1.0});
+  g+=P('M960 -900L960 1900','none');
+  return g;
+}
+function stretchSea(t,lt){
+  let g=beach(t,{mood:'night',hz:40,shore:760,seed:31,mx:1400,my:-300});
+  g+=wind(t,1,{sand:true});
+  const r=ease.inOut(prog(t,AT.v1421,AT.v1421+1.4));
+  g+=moses(700,FY,2.3,{face:1,raise:r,expr:'calm',look:{x:1400,y:400}});
+  for(let i=0;i<3;i++)g+=SC.tree(t,1500+i*160,FY+20,1.2,{kind:'palm',col:'#14202A',col2:'#22303A'});
+  return g+sandFore(t,960,1.0,true);
+}
+function seaOpens(t,lt){
+  let g=eSky(t,'night',{hz:-300,seed:33,moon:[1500,-500]});
+  const o=ease.inOut(prog(t,AT.eastWind,AT.divided+1.5)),lw=lerp(960,740,o),rw=lerp(960,1180,o);
+  g+=R(-200,-300,2400,2200,0,'#0E3A6A');
+  if(o>.02)g+=P(`M${lw} 1900L${rw} 1900L${lerp(960,1000,o)} -300L${lerp(960,920,o)} -300Z`,'#C9A060');
+  g+=waterWall(t,lw,-300+(1-o)*600,1900,-1,{})+waterWall(t,rw,-300+(1-o)*600,1900,1,{});
+  g+=wind(t,1,{y0:-600,y1:1200});
+  return g;
+}
+
+// ================= 7. Walls of water =================
+function seaPath(t,lt){
+  let g=eSky(t,'dawn',{hz:-500,seed:35});
+  const edge=(dir,k)=>{let d='';for(let y=1900;y>=-700;y-=40){const x=960+dir*lerp(260,60,(1900-y)/2600)+Math.sin(t*2+y*.02+k)*12;d+=(d?'L':'M')+x.toFixed(0)+' '+y;}return d;};
+  g+=P('M700 1900L1220 1900L1020 -700L900 -700Z','#D9B878')+P('M920 1900L1000 1900L968 -700L956 -700Z','#E8CC90',{opacity:.6});
+  for(let i=0;i<14;i++){const y=1800-i*190,w=lerp(240,40,i/14);g+=L(960-w,y,960-w+30,y+20,'#B8985A',4,{opacity:.5})+L(960+w-40,y+40,960+w,y+30,'#B8985A',4,{opacity:.5});}
+  g+=P(edge(-1,0)+'L-200 -700L-200 1900Z',SEA)+P(edge(1,2)+'L2200 -700L2200 1900Z',SEA);
+  for(let i=0;i<16;i++){const side=i%2?1:-1,x=960+side*(320+hash(i,55)*500)+Math.sin(t*.8+i)*40,y=-600+hash(i,57)*2400;g+=G(`translate(${x.toFixed(0)} ${y.toFixed(0)}) scale(${side} 1)`,Ell(0,0,46,18,'#2A7AD0')+P('M40 0l30 -18v36z','#2A7AD0'),.7);}
+  g+=P(edge(-1,0),'none',{stroke:NEON,'stroke-width':10})+P(edge(1,2),'none',{stroke:NEON,'stroke-width':10});
+  const ps=[];for(let i=0;i<9;i++){const y=1500-i*200-lt*90;ps.push([i,y]);}
+  ps.sort((a,b)=>a[1]-b[1]).forEach(([i,y])=>{const s=lerp(.4,1.3,clamp((y+400)/2000)),x=960+(i%2?-1:1)*lerp(30,110,clamp((y+400)/2000));
+    g+=folk(i,x,y,s,{walk:t*7+i,face:i%2?1:-1,expr:'awe',look:'up'});});
+  return g;
+}
+function wallSide(t,lt){
+  let g=eSky(t,'dawn',{hz:-600,seed:37});
+  g+=R(600,-700,720,2600,0,'#C9A060')+R(600,-700,720,2600,0,'#2A5A8A',{opacity:.12});
+  for(let i=0;i<34;i++){const x=620+hash(i,81)*660,y=-400+hash(i,83)*2200;g+=P(`M${x} ${y}l${20+hash(i,85)*30} ${-6}`,'none',{stroke:'#A8884A','stroke-width':4,opacity:.7})+(i%4?'':Ell(x+40,y+30,26,10,'#B8985A',{opacity:.7}));}
+  g+=waterWall(t,600,-700,1900,-1,{})+waterWall(t,1320,-700,1900,1,{});
+  const go=(t-AT.v1422)*30;
+  g+=folk(2,700+go,FY+40,1.4,{walk:t*6,face:1,expr:'awe',look:'up'});
+  g+=PPL.carry(who('dad',900+go,FY+40,1.7,{face:1,walk:t*6+1,expr:'awe',look:'up'}),who('boy',0,0,1.0,{expr:'joy',look:'up'}),{out:true}).svg;
+  g+=folk(5,1100+go,FY+40,1.1,{f:true,kid:true,walk:t*6+2,expr:'joy',near:{x:1170+go,y:FY-30}})+SC.animal(t,'goat',1210+go,FY+40,1.0,{walk:t*5});
+  return g;
+}
+function crossNight(t,lt){
+  let g=eSky(t,'night',{hz:-600,seed:39,moon:[1500,-500]});
+  g+=waterWall(t,640,-700,1900,-1,{col:'#082A5A'})+waterWall(t,1280,-700,1900,1,{col:'#082A5A'});
+  g+=R(640,-700,640,2600,0,'#8A7A5A');
+  const ps=[];for(let i=0;i<14;i++){const y=1700-i*170-lt*60;ps.push([i,y]);}
+  ps.sort((a,b)=>a[1]-b[1]).forEach(([i,y])=>{const s=lerp(.35,1.15,clamp((y+500)/2200)),x=960+(hash(i,91)-.5)*lerp(80,420,clamp((y+500)/2200));
+    g+=folk(i,x,y,s,{walk:t*7+i,face:-1,expr:'calm'});if(i%4===1)g+=glow(x+40*s,y-170*s,60*s,'#FFD27A',.9)+C(x+40*s,y-176*s,9*s,'#FFE9A8');});
+  return g;
+}
+
+// ================= 8. The sea returns =================
+function armyFollows(t,lt){
+  let g=eSky(t,'night',{hz:-600,seed:41,moon:[600,-500]});
+  g+=waterWall(t,600,-700,1900,-1,{col:'#082A5A'})+waterWall(t,1320,-700,1900,1,{col:'#082A5A'})+R(600,-700,720,2600,0,'#6A5A44');
+  const go=t-AT.followed;
+  for(let i=0;i<5;i++){const y=1500-i*300-go*70,s=lerp(.4,1.1,clamp((y+400)/1900));if(y<-600)continue;
+    g+=chariot(t,960-130*s+(i%2?-60:60)*s,y,s,{face:-1,run:1,phase:i,hcol:'#2A2028',col:'#5A4A2A',driver:true,torch:i%2===0});}
+  return g;
+}
+function wheelStuck(t,lt){
+  let g=eSky(t,'night',{hz:-600,seed:43});
+  g+=waterWall(t,200,-700,1060,-1,{col:'#082A5A'})+waterWall(t,1720,-700,1060,1,{col:'#082A5A'})+R(200,-700,1520,1760,0,'#1A2A4A',{opacity:.3});
+  g+=R(-200,1000,2400,900,0,'#5A4A36')+[...Array(12)].map((_,i)=>Ell(-100+i*200+hash(i,3)*60,1060+hash(i,5)*300,90,24,'#4A3A2A',{opacity:.8})).join('');
+  const sk=ease.out(prog(t,AT.stick,AT.stick+1.6));
+  g+=chariot(t,1180,FY,1.9,{face:1,run:.25*(1-sk),sink:sk,balk:sk,hcol:'#4A3A34',col:'#7A5A2A',driver:false});
+  return g;
+}
+function turnBackArmy(t,lt){
+  let g=eSky(t,'night',{hz:-600,seed:45});
+  g+=waterWall(t,520,-700,1900,-1,{col:'#082A5A'})+waterWall(t,1400,-700,1900,1,{col:'#082A5A'})+R(520,-700,880,2600,0,'#6A5A44');
+  for(let i=0;i<3;i++){const y=980+(i%2)*170,x=780+i*230;g+=chariot(t,x,y,1.0,{face:i%2?1:-1,run:.4,balk:.6,sink:.4,phase:i,driver:true,expr:'fear',hcol:'#2A2028',col:'#5A4A2A'});}
+  return g;
+}
+function morningShore(t,lt){
+  let g=beach(t,{mood:'day',sky:'dawn',hz:200,shore:700,seed:47,sx:1500,sy:120});
+  // the parted sea seen from the far shore: the two walls and the path, far off
+  g+=R(860,200,200,500,0,'#C9A060')+waterWall(t,860,200,700,-1,{})+waterWall(t,1060,200,700,1,{});
+  const r=ease.inOut(prog(t,AT.stretched2,AT.stretched2+1.2));
+  g+=moses(600,FY,2.2,{face:1,raise:r,expr:'calm',look:{x:1000,y:400}});
+  g+=crowd(t,1200,1640,FY,5,{rows:2,s:1.5,face:-1,look:{x:960,y:400},expr:'awe',seed:47});
+  return g+sandFore(t,960,1.0,false);
+}
+function seaCloses(t,lt){
+  let g=eSky(t,'dawn',{hz:-200,seed:49,sun:[1500,-500,80]});
+  const c=ease.inOut(prog(t,AT.cameBack-.3,AT.cameBack+1.4)),lw=lerp(780,960,c),rw=lerp(1140,960,c);
+  g+=R(-200,-200,2400,2200,0,'#1A5A9A');
+  if(c<.98)g+=R(lw,-200,rw-lw,2200,0,'#C9A060');
+  g+=waterWall(t,lw,-200+c*400,1900,-1,{})+waterWall(t,rw,-200+c*400,1900,1,{});
+  const cr=prog(t,AT.cameBack+.4,AT.cameBack+3);
+  if(cr>0&&cr<1)for(let k=0;k<30;k++){const a=hash(k,7)*6.283,rr=cr*(160+hash(k,8)*400);g+=C(960+Math.cos(a)*rr,500+Math.sin(a)*rr*.6-cr*120,12+hash(k,9)*26,'#EAF8FF',{opacity:(1-cr).toFixed(2)});}
+  if(cr>0){const wx=960+cr*220,wy=420+cr*300;g+=G(`translate(${wx.toFixed(0)} ${wy.toFixed(0)}) rotate(${(cr*300).toFixed(0)})`,wheel(0,0,50,0,'#5A3A1E'),1-prog(cr,.5,1));}
+  g+=SC.godRays(t,960,-200,{n:7,a0:Math.PI*.2,a1:Math.PI*.8,len:1200,op:.15*c});
+  return g;
+}
+function calmSea(t,lt){
+  let g=beach(t,{mood:'day',sky:'dawn',hz:240,shore:820,seed:51,sx:960,sy:160});
+  g+=SC.godRays(t,960,160,{n:9,a0:-Math.PI*.95,a1:-Math.PI*.05,len:1400,op:.2});
+  g+=G('translate(1220 760) rotate(-20)',wheel(0,0,40,0,'#5A3A1E'),.8);
+  g+=crowd(t,300,1620,FY+40,10,{rows:2,s:1.3,face:1,look:{x:960,y:400},expr:'awe',seed:51});
+  return g+sandFore(t,960,1.0,false);
+}
+
+// ================= 9. Miriam's song =================
+const tambourine=(t,x,y,s=1)=>G(`rotate(${(Math.sin(t*14)*15).toFixed(1)} ${x} ${y})`,C(x,y,30*s,'#E8C870',{stroke:'#8A5A2E','stroke-width':6*s})+[0,1,2,3,4].map(i=>C(x+Math.cos(i*1.26)*30*s,y+Math.sin(i*1.26)*30*s,6*s,GOLD)).join(''));
+function miriam(t,lt,wide){
+  let g=beach(t,{mood:'day',sky:'gold',hz:200,shore:700,seed:53,sx:1500,sy:60});
+  const jb=E.held(t,10),n=wide?8:3;
+  const mq=who('mum',960,FY,wide?1.6:2.3,{face:1,f:true,hair:'#ECE8DE',tunic:'#C8483A',tunic2:'#7A1E2A',expr:'joy',look:'up',near:'up',jump:Math.abs(Math.sin(jb*7))*30});
+  const r=PPL.rig(mq),h=r.hand('near');
+  g+=r.draw('back')+r.draw('body')+r.draw('head')+tambourine(t,h[0],h[1]-20,wide?.9:1.2)+r.draw('front');
+  for(let i=0;i<n;i++){const a=t*.6+i/n*6.283,x=960+Math.cos(a)*(wide?560:440),y=FY+40+Math.sin(a)*60,s=(wide?1.25:1.7)*(1+Math.sin(a)*.08);
+    if(!wide&&Math.abs(x-960)<220)continue;
+    g+=folk(i+1,x,y,s,{f:true,face:Math.sin(a)>0?-1:1,expr:'joy',near:'up',far:i%2?'up':null,jump:Math.abs(Math.sin(jb*7+i))*24});}
+  if(wide)g+=crowd(t,300,1620,FY-120,10,{rows:2,s:.9,face:1,expr:'joy',look:{x:960,y:300},seed:55,near:'up'});
+  return g+sandFore(t,960,1.0,false);
+}
+const miriamClose=(t,lt)=>miriam(t,lt,false), miriamWide=(t,lt)=>miriam(t,lt,true);
+function notMoses(t,lt){
+  let g=beach(t,{mood:'day',sky:'gold',hz:200,shore:720,seed:57,sx:960,sy:-200});
+  const k=ease.out(prog(t,AT.theLord,AT.theLord+1.2));
+  g+=moses(700,FY,1.8,{face:1,expr:'joy',look:'up'})+crowd(t,1000,1600,FY,6,{rows:2,s:1.4,face:-1,expr:'joy',look:'up',seed:57});
+  g+=mark(`M560 ${FY-440}L840 ${FY-60}`,ease.out(prog(t,AT.notMoses,AT.notMoses+.4)),CORAL,12)+mark(`M840 ${FY-440}L560 ${FY-60}`,ease.out(prog(t,AT.notMoses+.2,AT.notMoses+.6)),CORAL,12);
+  g+=presence(t,960,200,170,k)+SC.godRays(t,960,200,{n:9,a0:Math.PI*.1,a1:Math.PI*.9,len:1300,op:.2*k});
+  return g+sandFore(t,960,1.0,false);
+}
+
+// ================= 10. What comes next =================
+function verseStrip(t,lt){
+  let g=R(-200,-900,2400,2900,0,'#1E1828')+strip(500,380,920,360,19,'#F6EFDC',{ax:6,ay:4})+tape(960,380,140,-3);
+  g+=T(960,520,'The LORD will fight for you,',{size:52,font:'Georgia',weight:700,anchor:'middle',fill:INK})+T(960,600,'and you have only to be silent.',{size:40,font:'Georgia',anchor:'middle',fill:INK});
+  g+=T(960,680,'EXODUS 14:14 ESV',{size:26,font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#6A5A4A'});
+  g+=mark('M600 540L1320 540',ease.inOut(prog(t,AT.fight2,AT.fight2+1.2)),CORAL,10);
+  return g;
+}
+function intoDesert(t,lt){
+  let g=eSky(t,'day',{hz:760,seed:61,sun:[500,-200,70]});
+  g+=SC.hills(61,{y:760,amp:50,wave:420,col:'#D0A870',trees:0})+R(-200,780,2400,1100,0,'#E8C890')+SC.ground(t,61,{y:800,col:'#E8C890',col2:'#B88A50',stones:8,tufts:3});
+  g+=cloudPillar(t,1300,780,900,1,{w:.7});
+  for(let i=0;i<10;i++){const p=(t*.03+i/10)%1,x=lerp(600,1250,p),y=lerp(1060,800,p),s=lerp(1.4,.5,p);g+=folk(i,x,y,s,{walk:t*6+i,face:1,op:Math.min(1,(1-p)*5)});}
+  return g+foreBarley(t,960,1.0,{bare:1,soil:'#C8A060'});
+}
+function noBread(t,lt){
+  let g=eSky(t,'locust',{hz:760,seed:63,sun:[1500,200,90]});
+  g+=R(-200,760,2400,1100,0,'#D8A860')+SC.ground(t,63,{y:780,col:'#D8A860',col2:'#A8783A',stones:12,tufts:1})+motes(t,'dust',-100,200,2200,900,30);
+  g+=P('M700 1000L740 900H1180L1220 1000Z','#8A6A4A',{stroke:'#4A2E14','stroke-width':6})+Ell(960,900,220,40,'#2A1A10')+Ell(960,904,180,26,'#4A3A2A');
+  g+=P('M500 1060l-16 -90h150l-16 90Z','#B8904A',{stroke:'#6A4A1E','stroke-width':4})+jar(1420,1060,2.2,'#C8703A')+G('rotate(80 1420 1060)','',1);
+  g+=folk(3,1260,FY+40,1.8,{face:-1,expr:'sad',look:{x:960,y:900},near:{x:1100,y:FY-100}});
+  return g;
+}
+function mountainAhead(t,lt){
+  let g=eSky(t,'dusk',{hz:840,seed:65,sun:[400,700,60]});
+  const pts=FX.peak(65,1100,260,{halfW:820,rough:14});g+=P(SC.fill(pts,1900),'#3A2A3A');
+  const k=ease.out(prog(t,AT.mountain,AT.mountain+1.2));
+  g+=SC.clouds(t,{seed:67,n:4,y:60,h:260,x0:600,x1:1600,cols:['#2A2030','#141018','#5A4A6A'],storm:'#1A1420',op:.9*k,drift:3})+glow(1100,300,300,'#FFE9A8',.35*k);
+  for(let i=0;i<6;i++){const x=600+i*110;g+=folk(i,x,FY+40+i%2*12,1.1,{walk:t*6+i,face:1,expr:'awe',look:{x:1100,y:300}});}
+  return g+foreBarley(t,960,1.0,{bare:.9,soil:'#8A6A4A'});
+}
+function nextStory(t,lt){
+  let g=eSky(t,'dusk',{hz:840,seed:89,sun:[1500,700,60]});
+  const pts=FX.peak(89,960,300,{halfW:900,rough:16});g+=P(SC.fill(pts,1800),'#2A1E2A');
+  const k=ease.out(prog(t,AT.next,AT.next+1.2));
+  g+=G('',P('M760 760V440Q760 360 860 360Q950 360 950 440V760Z','#9C988C',{stroke:'#5E5A52','stroke-width':5})+P('M970 760V440Q970 360 1060 360Q1160 360 1160 440V760Z','#9C988C',{stroke:'#5E5A52','stroke-width':5})+glow(960,560,400,'#FFD86B',.4),k);
+  return g+SC.fore(t,{y:1080,edges:EDG(960,1.0),cols:['#140A14','#2A1A2A','#5A3A4A'],rocks:0,density:.4,seed:91});
+}
+
+// ---------- frame-space overlays: verse cards, the one label, the end card ----------
+// ESV text, as filled in scripts/13-the-red-sea.esv.md (trimmed to the parts the narration reads).
+const VTXT={
+  e1317:['Lest the people change their minds when they','see war and return to Egypt.'],
+  e1321:['And the LORD went before them by day in a pillar of','cloud to lead them along the way, and by night in','a pillar of fire to give them light, that they might','travel by day and by night.'],
+  e145:['What is this we have done, that we have let','Israel go from serving us?'],
+  e1411:['Is it because there are no graves in Egypt that you','have taken us away to die in the wilderness?'],
+  e1413:['Fear not, stand firm, and see the salvation of the','LORD, which he will work for you today.'],
+  e1414:['The LORD will fight for you,','and you have only to be silent.'],
+  e1421:['Then Moses stretched out his hand over the sea, and','the LORD drove the sea back by a strong east wind all','night and made the sea dry land, and the waters','were divided.'],
+  e1422:['And the people of Israel went into the midst of the','sea on dry ground, the waters being a wall to them','on their right hand and on their left.'],
+  e1425:['Let us flee from before Israel, for the LORD','fights for them against the Egyptians.'],
+  e1521:['Sing to the LORD, for he has triumphed gloriously;','the horse and his rider he has thrown into the sea.'],
+};
+const VERSES=[
+  [AT.v1317-.15,300,40,VTXT.e1317,'EXODUS 13:17 ESV',{size:42,seed:3,id:1,hl:'return to Egypt.',hlAt:end('see war')+.2,hlDur:.8,end:AT.alone-.2}],
+  [AT.v1321-.15,300,40,VTXT.e1321,'EXODUS 13:21 ESV',{size:38,seed:5,id:2,hl:'a pillar of fire',hlAt:cue('pillar of fire'),hlDur:.8,end:AT.strange-.2}],
+  [AT.v145-.15,300,40,VTXT.e145,'EXODUS 14:5 ESV',{size:42,seed:7,id:3,hl:'What is this we have done,',hlAt:AT.v145,hlDur:1,end:AT.took-.2}],
+  [AT.v1411-.15,300,40,VTXT.e1411,'EXODUS 14:11 ESV',{size:40,seed:9,id:4,hl:'to die in the wilderness?',hlAt:cue('to die in'),hlDur:1,end:AT.answered-.2}],
+  [AT.v1413-.15,300,40,VTXT.e1413,'EXODUS 14:13 ESV',{size:40,seed:11,id:5,hl:'Fear not, stand firm,',hlAt:AT.v1413,hlDur:1,end:AT.v1414-.2}],
+  [AT.v1414-.15,300,40,VTXT.e1414,'EXODUS 14:14 ESV',{size:50,seed:13,id:6,hl:'The LORD will fight for you,',hlAt:AT.v1414,hlDur:1.2,end:AT.trust-.2}],
+  [AT.v1421-.15,300,40,VTXT.e1421,'EXODUS 14:21 ESV',{size:38,seed:15,id:7,hl:'a strong east wind',hlAt:AT.eastWind,hlDur:.9,end:AT.walkedIn-.2}],
+  [AT.v1422-.15,300,40,VTXT.e1422,'EXODUS 14:22 ESV',{size:40,seed:17,id:8,hl:'on dry ground,',hlAt:cue('on dry ground'),hlDur:.8,end:AT.crossed-.2}],
+  [AT.v1425-.15,300,40,VTXT.e1425,'EXODUS 14:25 ESV',{size:42,seed:19,id:9,hl:'for the LORD',hlAt:cue('for the LORD fights'),hlDur:.7,end:AT.morning-.2}],
+  [AT.v1521-.15,300,40,VTXT.e1521,'EXODUS 15:21 ESV',{size:40,seed:21,id:10,hl:'he has triumphed gloriously;',hlAt:cue('he has triumphed'),hlDur:1,end:AT.notice-.2}],
+];
+// One label at a time, frame coordinates (vertical line y 1430, clear of the caption band 1220-1340).
+const TAGS=[
+  [AT.sea0+.3,AT.most-.4,'TRAPPED',{bg:CORAL,rot:-2,size:hv(48,56)}],
+  [AT.most+.4,AT.read-.3,'A HERO?',{bg:CORAL}],
+  [AT.longWay,AT.soldiers-.3,'THE LONG WAY',{}],
+  [AT.soldiers+.3,AT.knew-.3,'PHILISTINES',{bg:CORAL}],
+  [AT.took+.3,AT.wentAfter+1.2,'600 CHARIOTS',{bg:CORAL,size:hv(48,56)}],
+  [AT.v1414+.4,AT.trust-.3,'BE SILENT',{size:hv(48,56)}],
+  [AT.eastWind,AT.walkedIn-.3,'EAST WIND',{}],
+  [AT.shore+.5,AT.v1521-.3,'MIRIAM',{bg:GOLD}],
+  [AT.theLord+.3,AT.remember-.4,'THE LORD',{bg:CORAL,rot:-2,size:hv(48,56)}],
+];
+const ftag=(t,[a,b,s,o],k)=>{if(t<a||t>b+.4)return '';const size=o.size||hv(40,46),x=hv(960,540),y=o.y||hv(90,1430);
+  return E.fade(t,b,piece(t,a,x,y+size*.8,label(x,y,s,{size,anchor:'middle',bg:o.bg||'#101014',rot:o.rot||0}),40+k,1.3));};
+function endCard(t){
+  const ec=prog(t,AT.last1+.6,AT.last1+1.2);if(ec<=0)return '';
+  const W=E.W,x=W/2,fy=f=>hv(f[0],f[1]);
+  let g=G('',R(0,0,W,E.H,0,'#08060F',{opacity:.86})+
+    T(x,fy([380,700]),'THE RED SEA',{size:hv(44,46),font:'Segoe UI Black',weight:900,anchor:'middle',fill:'#FFE9A8'})+
+    T(x,fy([470,810]),'THE LORD WILL FIGHT FOR YOU',{size:hv(68,52),font:'Georgia',weight:700,anchor:'middle',fill:'#ffffff'}),ec);
+  const ty=fy([600,940]);g+=piece(t,AT.last1+1.6,x,ty,label(x,ty-42*.81,'NEXT: THE TEN COMMANDMENTS',{size:hv(42,40),anchor:'middle',bg:CORAL}),55,1.3);
+  if(t>AT.last1+2.4)['Scripture quotations are from the ESV® Bible (The Holy Bible,','English Standard Version®), © 2001 by Crossway, a publishing ministry','of Good News Publishers. Used by permission. All rights reserved.']
+    .forEach((ln,i)=>{g+=T(x,fy([800,1180])+i*hv(34,36),ln,{size:hv(24,26),font:'Segoe UI',anchor:'middle',fill:'#CFC6B0'});});
+  return g;
+}
+const hud=t=>{let g='';VERSES.forEach(v=>g+=verse(t,v[0],v[1],v[2],v[3],v[4],v[5]));TAGS.forEach((x,k)=>g+=ftag(t,x,k));return g+endCard(t);};
+
+// ---------- the sheet list: one setting per beat, a cut between, one camera move or a hold each ----------
+const SH=[];
+const sh=(name,at,draw,bg,cam,o={})=>SH.push(Object.assign({name,at,draw,bg,camF:cam,stars:false,vIn:'cut'},o));
+const NIGHT=['#0A1230','#05081A'], DAY=['#9AD0F0','#E8C890'], GOLDBG=['#FFB46A','#E8A84C'], PAL=['#7A3A2A','#3A1A10'], SEABG=['#062A5A','#021028'];
+// 0. cold open
+sh('trapped',0,trapped,NIGHT,(a,b)=>[[0,960,700,.9],[b,960,780,1.04]]);
+sh('the army on the ridge',AT.behind-.12,ridgeArmy,['#140A24','#05040A'],M(900,FY,.92,1000,FY,1.02,1190));
+sh('nowhere to run',AT.nowhere-.12,nowhere,NIGHT,H(880,FY,1.0,1190));
+sh('a hero in a film',AT.most-.12,heroPoster,['#1A1424','#08060C'],(a,b)=>[[a,960,700,.88],[b,960,720,.96]]);
+sh('not the hero',AT.read-.12,notHero,['#1A1424','#08060C'],H(960,720,.96,1010));
+sh('neither is israel',AT.neither-.12,neither,NIGHT,M(960,FY,1.0,960,FY,1.08,1190));
+// 1. the long way round
+sh('leaving egypt',AT.finally-.12,leaving,GOLDBG,M(1000,FY,.96,980,FY,1.04,1190));
+sh('two roads',AT.coast-.12,mapRoads,['#3A2A1E','#1E140C'],(a,b)=>[[a,960,620,.9],[b,960,620,.98]]);
+sh('the long way',AT.longWay-.12,longRoad,DAY,M(1000,FY,.96,1100,FY,1.04,1190));
+sh('soldiers on the short road',AT.soldiers-.12,fortSpears,['#2A1A4A','#A8784A'],H(960,FY,1.0,1190));
+sh('the map, crossed',AT.knew-.12,(t,lt)=>mapRoads(t,lt,{longAt:AT.knew-2.4,cross:AT.knew+.3}),['#3A2A1E','#1E140C'],(a,b)=>[[a,960,620,.94],[b,960,620,1.0]]);
+sh('looking back',AT.oneBattle-.12,lookBack,GOLDBG,M(980,FY,1.0,980,FY,1.08,1190));
+// 2. cloud and fire
+sh('the pillar of cloud',AT.alone-.12,cloudDay,DAY,M(1000,FY,.9,1020,FY,.98,1190));
+sh('the pillar of fire',AT.byNight-.3,fireNight,NIGHT,H(980,FY,.96,1190));
+sh('turn back to the sea',AT.strange-.12,turnBack,DAY,M(960,FY,1.0,1020,FY,1.04,1190));
+// 3. pharaoh changes his mind
+sh('pharaoh at the window',AT.changed-.12,palaceWindow,PAL,H(960,FY,1.0,1190));
+sh('empty brick fields',AT.slaves-.12,emptyFields,['#2A1A4A','#B8704A'],M(900,FY,.96,1000,FY,1.02,1190));
+sh('the officials',AT.officials-.12,officials,PAL,M(900,FY,1.0,960,FY,1.04,1190));
+sh('the chariots',AT.took-.12,chariotYard,GOLDBG,M(900,FY,.92,1000,FY,.98,1190));
+sh('the chariots race out',AT.wentAfter-.12,chariotsRace,['#3A2410','#C8985A'],H(960,FY,.96,1190));
+// 4. fear
+sh('the army coming',AT.lookedUp-.12,armyComing,['#3A2410','#C8986A'],H(960,FY,.96,1190));
+sh('terrified',AT.terrified-.12,terrified,['#3A2410','#C8986A'],H(980,FY,1.04,1190));
+sh('they turn on moses',AT.turned-.12,turnedOn,['#3A2410','#C8986A'],M(900,FY,.98,980,FY,1.04,1190));
+// 5. stand still
+sh('moses on the rock',AT.answered-.12,onTheRock,DAY,M(960,FY,1.0,960,FY,1.08,1190));
+sh('standing still',AT.v1413-.3,stillWide,DAY,(a,b)=>[[a,960,820,.86],[b,960,800,.94]]);
+sh('the LORD will fight',AT.v1414-.3,fightForYou,NIGHT,H(960,FY,.96,1190));
+sh('only trust',AT.trust-.12,trustHands,NIGHT,M(980,FY,1.0,1000,FY,1.06,1190));
+sh('go forward',AT.forward-.12,goForward,NIGHT,M(960,FY,1.0,1060,FY,1.04,1190));
+// 6. the wind all night
+sh('the cloud moves',AT.cloudMoved-.12,cloudMoves,NIGHT,(a,b)=>[[a,1060,FY-170,.92],[b,860,FY-170,.92]]);
+sh('darkness and light',AT.darkSide-.12,between,['#05040A','#0A1230'],H(960,FY,.9,1190));
+sh('moses stretches out his hand',AT.v1421-.3,stretchSea,NIGHT,M(900,FY,1.0,1000,FY,1.04,1190));
+sh('the sea opens',AT.eastWind-.12,seaOpens,SEABG,(a,b)=>[[a,960,700,.9],[b,960,700,1.0]]);
+// 7. walls of water
+sh('the people walk in',AT.walkedIn-.12,seaPath,SEABG,(a,b)=>[[a,960,820,.86],[b,960,760,.98]]);
+sh('a wall on each side',AT.v1422-.3,wallSide,SEABG,M(940,FY,.96,1000,FY,1.0,1190));
+sh('through the night',AT.crossed-.12,crossNight,SEABG,(a,b)=>[[a,960,700,.9],[b,960,640,1.0]]);
+// 8. the sea returns
+sh('the army follows',AT.followed-.12,armyFollows,SEABG,(a,b)=>[[a,960,700,.9],[b,960,660,.98]]);
+sh('the wheels stick',AT.stick-.12,wheelStuck,SEABG,H(1060,FY,1.0,1190));
+sh('the egyptians knew',AT.egKnew-.12,turnBackArmy,SEABG,M(960,FY,1.0,960,FY,1.06,1190));
+sh('morning on the far shore',AT.morning-.12,morningShore,['#3A4A8A','#FFD08A'],M(900,FY,.96,960,FY,1.0,1190));
+sh('the sea comes back',AT.cameBack-.3,seaCloses,SEABG,H(960,700,.9,1010));
+sh('a calm sea',AT.sunrise-.12,calmSea,['#3A4A8A','#FFD08A'],M(960,FY,.92,960,FY,1.0,1190));
+// 9. miriam's song
+sh('miriam',AT.shore-.12,miriamClose,GOLDBG,H(960,FY,1.0,1190));
+sh('the women dance',AT.v1521-.3,miriamWide,GOLDBG,(a,b)=>[[a,960,FY-170,.86],[b,960,FY-170,.94]]);
+sh('not moses',AT.notice-.12,notMoses,GOLDBG,M(960,FY,.96,960,FY,1.02,1190));
+// 10. what comes next
+sh('remember the line',AT.remember-.12,verseStrip,['#1E1828','#0A0810'],(a,b)=>[[a,960,560,1.04],[b,960,560,1.12]]);
+sh('into the desert',AT.need-.12,intoDesert,DAY,M(960,FY,.96,1040,FY,1.02,1190));
+sh('no bread, no water',AT.ahead-.12,noBread,['#3A2410','#D8A860'],H(980,FY,1.0,1190));
+sh('a mountain',AT.mountain-.12,mountainAhead,['#2A1A4A','#3A2A3A'],M(960,FY,.92,1040,FY,1.0,1190));
+sh('the next story',AT.next-.12,nextStory,['#3A2A4A','#140A14'],M(960,FY,.96,960,FY,1.06,1190));
+const ENDT=AT.last1+7;
+SH.forEach((s,i)=>{const nx=i+1<SH.length?SH[i+1].at:ENDT;s.cam=s.camF(i===0?0:s.at+.1,nx-.1);delete s.camF;});
+delete SH[0].at;delete SH[0].vIn;
+
+E.start({
+  cast:{},
+  gentleZoom:true,
+  hud,
+  sheets:SH,
+  talk:[],
+  // three big moments only: "The LORD will fight for you", the people walk in, the sea comes back
+  focus:[[AT.v1414+.2,1.0],[AT.walkedIn,.9],[AT.cameBack,1.1]],
+  flashes:[[AT.most-.12,.6,'#FFFBEC'],[AT.alone-.12,.6,'#FFFBEC'],[AT.v1414-.3,.8,'#FFF6DA'],[AT.eastWind-.12,.6,'#E8F0FF'],[AT.cameBack-.3,.7,'#EAF8FF'],[AT.shore-.12,.7,'#FFF6DA']],
+  tail:7,
+  fadeOut:1.2,
+});
+</script>

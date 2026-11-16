@@ -1,0 +1,499 @@
+{
+ "s00-01-pivot-2e9082.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "It's one of the shortest commandments in the whole Bible.",
+  "seed": 1,
+  "words_per_second": 3.24,
+  "in_range": true
+ },
+ "s00-02-story-0fc5a4.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "In English, it's just four words.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true
+ },
+ "s00-03-grave-938fca.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "You shall not steal.",
+  "seed": 3,
+  "words_per_second": 2.38,
+  "in_range": true
+ },
+ "s00-04-talk-33280b.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most of us read that and relax.",
+  "seed": 2,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s00-05-story-af9038.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "We've never robbed a bank.",
+  "seed": 1,
+  "words_per_second": 3.18,
+  "in_range": true
+ },
+ "s00-06-talk-f17671.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "So this one feels easy.",
+  "seed": 1,
+  "words_per_second": 3.73,
+  "in_range": true
+ },
+ "s00-07-pivot-7710f2.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But the Bible asks a much bigger question.",
+  "seed": 1,
+  "words_per_second": 3.32,
+  "in_range": true
+ },
+ "s00-08-story-dae712.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Not only what did you take? But what are your hands for?",
+  "seed": 1,
+  "words_per_second": 3.09,
+  "in_range": true
+ },
+ "s01-01-story-8b1514.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "When Israel heard these words at Sinai, they were a nation of freed slaves.",
+  "seed": 1,
+  "words_per_second": 2.97,
+  "in_range": true
+ },
+ "s01-02-story-29edfc.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "They owned almost nothing.",
+  "seed": 1,
+  "words_per_second": 2.27,
+  "in_range": false
+ },
+ "s01-03-story-2e1712.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "But God was bringing them to a land.",
+  "seed": 1,
+  "words_per_second": 3.52,
+  "in_range": true
+ },
+ "s01-04-story-a17c6e.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And every family would get a share of it. A field.",
+  "seed": 1,
+  "words_per_second": 2.93,
+  "in_range": true
+ },
+ "s01-05-story-0fdda2.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "A vineyard. A flock.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true
+ },
+ "s01-06-talk-5427ba.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "So when God says do not steal, he is guarding what he gave to your neighbor.",
+  "seed": 2,
+  "words_per_second": 4.12,
+  "in_range": false
+ },
+ "s01-07-talk-0b40dd.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Stealing grabs what God handed to someone else.",
+  "seed": 1,
+  "words_per_second": 3.2,
+  "in_range": true
+ },
+ "s02-01-pivot-71871c.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "And the first time Israel entered that land, someone broke it.",
+  "seed": 1,
+  "words_per_second": 3.13,
+  "in_range": true
+ },
+ "s02-02-story-ae066e.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "At Jericho, God told them that everything in the city was devoted to him.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s02-03-story-a72f74.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Nobody was to keep any of it.",
+  "seed": 2,
+  "words_per_second": 3.35,
+  "in_range": true
+ },
+ "s02-04-story-3e6866.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "But a man named Achan saw a beautiful cloak, and some silver, and a bar of gold.",
+  "seed": 1,
+  "words_per_second": 3.39,
+  "in_range": true
+ },
+ "s02-05-story-7f6c09.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Later, he confessed.",
+  "seed": 3,
+  "words_per_second": 2.05,
+  "in_range": false
+ },
+ "s02-06-grave-77abfd.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "I coveted them and took them.",
+  "seed": 3,
+  "words_per_second": 2.83,
+  "in_range": true
+ },
+ "s02-07-grave-1a1a8c.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "And see, they are hidden in the earth inside my tent, with the silver underneath.",
+  "seed": 2,
+  "words_per_second": 2.78,
+  "in_range": true
+ },
+ "s02-08-talk-0a8b82.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "Listen to the order.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true
+ },
+ "s02-09-story-9e8ca4.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "He saw. He wanted. He took. He hid.",
+  "seed": 1,
+  "words_per_second": 2.07,
+  "in_range": false
+ },
+ "s02-10-talk-cf1534.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "The theft happened with his hands.",
+  "seed": 1,
+  "words_per_second": 3.35,
+  "in_range": true
+ },
+ "s02-11-story-de180d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "But it started in his heart.",
+  "seed": 2,
+  "words_per_second": 3.19,
+  "in_range": true
+ },
+ "s03-01-talk-e4e654.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Most stealing doesn't look like a robbery.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true
+ },
+ "s03-02-story-ee7100.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "It looks like Achan's tent: small, hidden, and easy to explain.",
+  "seed": 1,
+  "words_per_second": 2.49,
+  "in_range": true
+ },
+ "s03-03-story-a6b198.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Copying someone's homework. Keeping the extra change.",
+  "seed": 1,
+  "words_per_second": 1.81,
+  "in_range": false
+ },
+ "s03-04-story-9b991f.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Taking credit you didn't earn.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true
+ },
+ "s03-05-talk-1e3ba3.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Nobody sees it, but it's still stealing.",
+  "seed": 2,
+  "words_per_second": 3.43,
+  "in_range": true
+ },
+ "s04-01-pivot-6e1839.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "But here's the surprising part.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": true
+ },
+ "s04-02-story-d57f28.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "God's law doesn't stop at don't take.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true
+ },
+ "s04-03-story-178c35.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Farmers in Israel weren't allowed to harvest right up to the edges of their fields,",
+  "seed": 1,
+  "words_per_second": 3.43,
+  "in_range": true
+ },
+ "s04-04-story-bb9513.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "or pick up every fallen grape.",
+  "seed": 1,
+  "words_per_second": 2.9,
+  "in_range": true
+ },
+ "s04-05-grave-2f0eb8.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "You shall leave them for the poor and for the sojourner: I am the LORD your God.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true
+ },
+ "s04-06-talk-18ba3c.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Christians have long read this as the other side of the eighth commandment.",
+  "seed": 1,
+  "words_per_second": 3.85,
+  "in_range": true
+ },
+ "s04-07-story-2d9681.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Holding on too tightly can be a kind of taking too.",
+  "seed": 1,
+  "words_per_second": 3.51,
+  "in_range": true
+ },
+ "s05-01-pivot-d4796d.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "Centuries later, Jesus walked into Jericho.",
+  "seed": 3,
+  "words_per_second": 2.01,
+  "in_range": true
+ },
+ "s05-02-story-98b123.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "The same city where Achan stole.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true
+ },
+ "s05-03-story-38d52d.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "A tax collector lived there named Zacchaeus.",
+  "seed": 2,
+  "words_per_second": 2.5,
+  "in_range": true
+ },
+ "s05-04-story-de0c75.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "He was rich, and everyone knew how he got that way.",
+  "seed": 1,
+  "words_per_second": 3.37,
+  "in_range": true
+ },
+ "s05-05-story-7dff2a.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "He climbed a tree just to see Jesus.",
+  "seed": 1,
+  "words_per_second": 2.41,
+  "in_range": true
+ },
+ "s05-06-story-e72de8.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Jesus said he was coming to his house.",
+  "seed": 1,
+  "words_per_second": 3.11,
+  "in_range": true
+ },
+ "s05-07-story-f95816.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And Zacchaeus stood up and said this.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s05-08-grave-7b18f5.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Behold, Lord, the half of my goods I give to the poor.",
+  "seed": 3,
+  "words_per_second": 2.92,
+  "in_range": false
+ },
+ "s05-09-grave-d9f889.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "And if I have defrauded anyone of anything, I restore it fourfold.",
+  "seed": 1,
+  "words_per_second": 2.63,
+  "in_range": true
+ },
+ "s05-10-talk-a8cf8b.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Achan took and hid.",
+  "seed": 2,
+  "words_per_second": 2.74,
+  "in_range": true
+ },
+ "s05-11-story-c02a08.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Zacchaeus gave back four times over.",
+  "seed": 3,
+  "words_per_second": 2.5,
+  "in_range": true
+ },
+ "s05-12-grave-52e871.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Same city, but opposite hands.",
+  "seed": 1,
+  "words_per_second": 1.91,
+  "in_range": true
+ },
+ "s06-01-talk-4f3301.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "The apostle Paul put it this way, writing to Christians in Ephesus.",
+  "seed": 2,
+  "words_per_second": 3.74,
+  "in_range": true
+ },
+ "s06-02-grave-ff5e08.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Let the thief no longer steal, but rather let him labor, doing honest work with his own hands,",
+  "seed": 1,
+  "words_per_second": 2.8,
+  "in_range": true
+ },
+ "s06-03-grave-3a8ab7.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "so that he may have something to share with anyone in need.",
+  "seed": 1,
+  "words_per_second": 3.65,
+  "in_range": false
+ },
+ "s06-04-talk-dd4d3a.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Notice where that sentence ends.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true
+ },
+ "s06-05-story-d53acc.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Not with stop taking, but with share.",
+  "seed": 1,
+  "words_per_second": 2.68,
+  "in_range": true
+ },
+ "s06-06-grave-f3c585.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "The opposite of stealing isn't just keeping your hands to yourself.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": false
+ },
+ "s06-07-story-b3d714.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "It's opening them.",
+  "seed": 4,
+  "words_per_second": 2.46,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s07-01-story-b4798f.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "The God who gave every family its field is a giving God.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true
+ },
+ "s07-02-talk-422b1c.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "So the real question isn't only have I ever stolen?",
+  "seed": 1,
+  "words_per_second": 3.77,
+  "in_range": true
+ },
+ "s07-03-story-79d2e9.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "It's what are my hands for?",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true
+ },
+ "s07-04-grave-b4af33.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "Hands that once took can learn to give.",
+  "seed": 2,
+  "words_per_second": 2.59,
+  "in_range": true
+ },
+ "s07-05-talk-212276.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Next time, the ninth commandment: what happens when we steal someone's good name.",
+  "seed": 1,
+  "words_per_second": 2.95,
+  "in_range": true
+ }
+}

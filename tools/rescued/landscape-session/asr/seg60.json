@@ -1,0 +1,47 @@
+{
+ "text": " Holy. Genesis then moves in closer.",
+ "chunks": [
+  {
+   "text": " Holy.",
+   "timestamp": [
+    0.0,
+    1.54
+   ]
+  },
+  {
+   "text": " Genesis",
+   "timestamp": [
+    1.54,
+    2.0
+   ]
+  },
+  {
+   "text": " then",
+   "timestamp": [
+    2.0,
+    2.42
+   ]
+  },
+  {
+   "text": " moves",
+   "timestamp": [
+    2.42,
+    2.66
+   ]
+  },
+  {
+   "text": " in",
+   "timestamp": [
+    2.66,
+    2.92
+   ]
+  },
+  {
+   "text": " closer.",
+   "timestamp": [
+    2.92,
+    14.44
+   ]
+  }
+ ]
+}

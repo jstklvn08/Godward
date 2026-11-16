@@ -1,0 +1,395 @@
+{
+ "s00-01-story-845569.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Nine of the Ten Commandments are about what you do.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true
+ },
+ "s00-02-pivot-5781a8.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "The last one is about what you want.",
+  "seed": 1,
+  "words_per_second": 3.46,
+  "in_range": true
+ },
+ "s00-03-talk-75e3cb.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "You can break it without moving a muscle, and nobody would know.",
+  "seed": 1,
+  "words_per_second": 3.8,
+  "in_range": true
+ },
+ "s00-04-talk-09b417.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "So why would God end with that one?",
+  "seed": 2,
+  "words_per_second": 3.96,
+  "in_range": false
+ },
+ "s01-01-story-8b64e8.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "From the fire on Sinai, the last word comes.",
+  "seed": 1,
+  "words_per_second": 3.1,
+  "in_range": true
+ },
+ "s01-02-grave-a9782f.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "You shall not covet your neighbor's house; you shall not covet your neighbor's wife, or his male servant,",
+  "seed": 2,
+  "words_per_second": 2.69,
+  "in_range": true
+ },
+ "s01-03-grave-e052f1.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "or his female servant, or his ox, or his donkey, or anything that is your neighbor's.",
+  "seed": 5,
+  "words_per_second": 2.55,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s01-04-talk-cf7da0.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "To covet is more than liking something.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true
+ },
+ "s01-05-story-0899aa.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "It is wanting what belongs to someone else, for yourself.",
+  "seed": 1,
+  "words_per_second": 2.52,
+  "in_range": true
+ },
+ "s02-01-pivot-23feb9.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "Here's the strange thing about it.",
+  "seed": 2,
+  "words_per_second": 2.71,
+  "in_range": true
+ },
+ "s02-02-talk-73eb39.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "No judge could ever catch you.",
+  "seed": 1,
+  "words_per_second": 3.8,
+  "in_range": true
+ },
+ "s02-03-story-4ccf5e.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "There is no witness to a wish, and no evidence for a longing.",
+  "seed": 2,
+  "words_per_second": 3.49,
+  "in_range": true
+ },
+ "s02-04-talk-eaaf40.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "Many readers have noticed that the tenth commandment is the only one that lives entirely in the heart.",
+  "seed": 3,
+  "words_per_second": 3.8,
+  "in_range": true
+ },
+ "s02-05-story-aecb00.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The law was never just about hands.",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": true
+ },
+ "s02-06-story-7e0b3d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "It was always about hearts.",
+  "seed": 2,
+  "words_per_second": 2.43,
+  "in_range": true
+ },
+ "s03-01-talk-2ec1db.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "And it's where the very first sin began.",
+  "seed": 1,
+  "words_per_second": 3.88,
+  "in_range": true
+ },
+ "s03-02-story-57ef71.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Not with a hand, but with a look.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true
+ },
+ "s03-03-grave-5ccc6e.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "So when the woman saw that the tree was good for food, and that it was a delight to the eyes,",
+  "seed": 2,
+  "words_per_second": 3.44,
+  "in_range": false
+ },
+ "s03-04-grave-955988.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "and that the tree was to be desired to make one wise, she took of its fruit and ate.",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": false
+ },
+ "s03-05-talk-d36a47.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "She saw it, she wanted it, and then she took it.",
+  "seed": 2,
+  "words_per_second": 3.64,
+  "in_range": true
+ },
+ "s03-06-story-778d9c.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Coveting is the seed. The other sins are what grows from it.",
+  "seed": 1,
+  "words_per_second": 2.96,
+  "in_range": true
+ },
+ "s04-01-story-cb17b7.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Centuries later, King Ahab had a palace and a kingdom.",
+  "seed": 2,
+  "words_per_second": 2.45,
+  "in_range": true
+ },
+ "s04-02-story-6641fb.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "But his neighbour Naboth had a vineyard, and Ahab wanted it.",
+  "seed": 1,
+  "words_per_second": 2.69,
+  "in_range": true
+ },
+ "s04-03-story-75c0a5.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Naboth wouldn't sell, so the king went home and sulked on his bed.",
+  "seed": 1,
+  "words_per_second": 3.25,
+  "in_range": true
+ },
+ "s04-04-grave-968803.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "His wife arranged false witnesses, and Naboth was put to death.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true
+ },
+ "s04-05-story-5d57e3.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "And the king took the vineyard.",
+  "seed": 1,
+  "words_per_second": 3.3,
+  "in_range": true
+ },
+ "s04-06-talk-cc5cd8.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "False witness, murder and stealing, and it all started with wanting.",
+  "seed": 3,
+  "words_per_second": 2.85,
+  "in_range": true
+ },
+ "s05-01-pivot-9c6364.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "And this commandment undid a Pharisee.",
+  "seed": 1,
+  "words_per_second": 2.63,
+  "in_range": true
+ },
+ "s05-02-talk-6c8f19.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "The apostle Paul had kept the rules with great care, and looked blameless.",
+  "seed": 1,
+  "words_per_second": 3.65,
+  "in_range": true
+ },
+ "s05-03-talk-a76ef9.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "But one command went straight past his hands.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s05-04-grave-018dee.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "For I would not have known what it is to covet if the law had not said, You shall not covet.",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": false
+ },
+ "s05-05-talk-ed0e1f.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "The tenth commandment works like a mirror.",
+  "seed": 2,
+  "words_per_second": 3.26,
+  "in_range": true
+ },
+ "s05-06-story-e07727.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "It doesn't make us good. It shows us we need help.",
+  "seed": 1,
+  "words_per_second": 2.96,
+  "in_range": true
+ },
+ "s06-01-story-e793c4.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "So what's the cure? The Bible's answer is contentment.",
+  "seed": 2,
+  "words_per_second": 2.14,
+  "in_range": false
+ },
+ "s06-02-story-9aeb44.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Paul learned it later, writing from prison.",
+  "seed": 1,
+  "words_per_second": 2.41,
+  "in_range": true
+ },
+ "s06-03-grave-543a84.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "I have learned, in whatever situation I am, to be content.",
+  "seed": 2,
+  "words_per_second": 2.52,
+  "in_range": true
+ },
+ "s06-04-talk-6df0fa.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "And Hebrews gives the reason.",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true
+ },
+ "s06-05-grave-644a6a.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Keep your life free from love of money, and be content with what you have, for he has said,",
+  "seed": 2,
+  "words_per_second": 2.91,
+  "in_range": false
+ },
+ "s06-06-grave-d770ea.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "I will never leave you nor forsake you.",
+  "seed": 2,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s06-07-talk-cb4179.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "You can stop grasping when you know you are already held.",
+  "seed": 3,
+  "words_per_second": 3.33,
+  "in_range": true
+ },
+ "s07-01-pivot-b7b663.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "And here is the end of the whole series.",
+  "seed": 1,
+  "words_per_second": 3.46,
+  "in_range": true
+ },
+ "s07-02-talk-e1e60f.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Christians have long read the first tablet as love for God, and the second as love for our neighbour.",
+  "seed": 2,
+  "words_per_second": 3.63,
+  "in_range": true
+ },
+ "s07-03-grave-920fe3.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "For the commandments, You shall not commit adultery, You shall not murder, You shall not steal,",
+  "seed": 1,
+  "words_per_second": 2.5,
+  "in_range": true
+ },
+ "s07-04-grave-2fa52c.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "You shall not covet, and any other commandment, are summed up in this word:",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s07-05-grave-b8eaba.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "You shall love your neighbor as yourself.",
+  "seed": 2,
+  "words_per_second": 2.23,
+  "in_range": true
+ },
+ "s07-06-grave-fcadb1.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "Love does no wrong to a neighbor; therefore love is the fulfilling of the law.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true
+ },
+ "s07-07-talk-8a759f.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Ten commandments, and one word underneath them all.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s07-08-grave-dfd88b.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "The God who rescued you doesn't just want your obedience.",
+  "seed": 3,
+  "words_per_second": 2.82,
+  "in_range": true
+ },
+ "s07-09-story-1494ea.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "He wants your whole heart, for him and for your neighbour.",
+  "seed": 1,
+  "words_per_second": 2.94,
+  "in_range": true
+ }
+}

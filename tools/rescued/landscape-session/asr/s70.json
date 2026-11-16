@@ -1,0 +1,131 @@
+{
+ "text": " of life. He placed him in a garden in Eden to work it and take care of it.",
+ "chunks": [
+  {
+   "text": " of",
+   "timestamp": [
+    0.0,
+    0.14
+   ]
+  },
+  {
+   "text": " life.",
+   "timestamp": [
+    0.14,
+    1.28
+   ]
+  },
+  {
+   "text": " He",
+   "timestamp": [
+    1.28,
+    1.36
+   ]
+  },
+  {
+   "text": " placed",
+   "timestamp": [
+    1.36,
+    1.7
+   ]
+  },
+  {
+   "text": " him",
+   "timestamp": [
+    1.7,
+    1.98
+   ]
+  },
+  {
+   "text": " in",
+   "timestamp": [
+    1.98,
+    2.2
+   ]
+  },
+  {
+   "text": " a",
+   "timestamp": [
+    2.2,
+    2.32
+   ]
+  },
+  {
+   "text": " garden",
+   "timestamp": [
+    2.32,
+    2.72
+   ]
+  },
+  {
+   "text": " in",
+   "timestamp": [
+    2.72,
+    3.04
+   ]
+  },
+  {
+   "text": " Eden",
+   "timestamp": [
+    3.04,
+    3.42
+   ]
+  },
+  {
+   "text": " to",
+   "timestamp": [
+    3.42,
+    3.92
+   ]
+  },
+  {
+   "text": " work",
+   "timestamp": [
+    3.92,
+    4.22
+   ]
+  },
+  {
+   "text": " it",
+   "timestamp": [
+    4.22,
+    4.44
+   ]
+  },
+  {
+   "text": " and",
+   "timestamp": [
+    4.44,
+    4.74
+   ]
+  },
+  {
+   "text": " take",
+   "timestamp": [
+    4.74,
+    4.96
+   ]
+  },
+  {
+   "text": " care",
+   "timestamp": [
+    4.96,
+    5.28
+   ]
+  },
+  {
+   "text": " of",
+   "timestamp": [
+    5.28,
+    5.46
+   ]
+  },
+  {
+   "text": " it.",
+   "timestamp": [
+    5.46,
+    7.44
+   ]
+  }
+ ]
+}

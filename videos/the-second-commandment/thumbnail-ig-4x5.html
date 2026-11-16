@@ -1,0 +1,62 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The Second Commandment: Instagram Thumbnail</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:1080px;height:1350px}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script>
+// Instagram feed post, 4:5 (1080x1350). Key content inside the centre 1012 px (profile-grid crop).
+const {G,R,C,E,L,P,T,mix,rng}=K;
+const {tw,glow,ridge,strip,tape,label,mark,scribble,paperDefs}=S;
+const INK='#141416',YEL='#FFE100',CORAL='#FF5A48',GOLD='#E8B53A',W=1080,H=1350,t=5.3;
+const defs=`<defs>
+  <filter id="tex2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".62 .48" numOctaves="4" seed="11"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .9 .9 .9 0 -.98"/></filter>
+  <filter id="texL2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".05 .62" numOctaves="4" seed="23"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.2 1.2 0 0 -1.12"/></filter>
+  <filter id="grain2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="2" seed="38"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="2.6" intercept="-.8"/><feFuncG type="linear" slope="2.6" intercept="-.8"/><feFuncB type="linear" slope="2.6" intercept="-.8"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>
+  <linearGradient id="bg" x1="0" y1="0" x2=".5" y2="1"><stop offset="0" stop-color="#5A3A22"/><stop offset=".6" stop-color="#3A2616"/><stop offset="1" stop-color="#2A1A10"/></linearGradient>
+  <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B0"/><stop offset=".4" stop-color="${GOLD}"/><stop offset="1" stop-color="#8A5A12"/></linearGradient>
+  <radialGradient id="vig" cx="50%" cy="50%" r="72%"><stop offset=".55" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".55"/></radialGradient>
+</defs>`;
+function idol(x,y,h){
+  const k=h/240,fill='#9A6A3C',st='#5A3A1C';
+  let g=R(x-62*k,y-30*k,124*k,30*k,4,'#5A3A1C')+P(`M${x-52*k} ${y-30*k}L${x-40*k} ${y-150*k}Q${x} ${y-172*k} ${x+40*k} ${y-150*k}L${x+52*k} ${y-30*k}Z`,fill,{stroke:st,'stroke-width':3});
+  for(let i=0;i<4;i++)g+=P(`M${x-30*k+i*20*k} ${y-140*k}Q${x-24*k+i*20*k} ${y-90*k} ${x-32*k+i*20*k} ${y-40*k}`,'none',{stroke:'#6A4422','stroke-width':3,opacity:.6});
+  g+=P(`M${x-40*k} ${y-110*k}Q${x} ${y-80*k} ${x+40*k} ${y-110*k}`,'none',{stroke:st,'stroke-width':6});
+  g+=C(x,y-200*k,46*k,fill,{stroke:st,'stroke-width':3})+P(`M${x-40*k} ${y-222*k}L${x-28*k} ${y-262*k}L${x-10*k} ${y-236*k}L${x} ${y-270*k}L${x+10*k} ${y-236*k}L${x+28*k} ${y-262*k}L${x+40*k} ${y-222*k}Z`,fill,{stroke:st,'stroke-width':3});
+  return g+E(x-16*k,y-204*k,7*k,4*k,'#2A1A0A')+E(x+16*k,y-204*k,7*k,4*k,'#2A1A0A')+L(x-14*k,y-180*k,x+14*k,y-180*k,'#2A1A0A',4);
+}
+function fire(x,y,s){let g=glow(x,y-60*s,240*s,'#FF8A3C',.6);
+  for(let i=0;i<7;i++){const f=Math.sin(i*1.7),xx=x+(i-3)*13*s,hh=(140+20*f)*s;
+    g+=P(`M${xx-16*s} ${y}Q${xx-24*s+f*8*s} ${y-hh*.55} ${xx+f*10*s} ${y-hh}Q${xx+22*s} ${y-hh*.5} ${xx+16*s} ${y}Z`,['#FF5A2C','#FFB04C','#FFE36B'][i%3]);}
+  return g;}
+function scene(){
+  let g=R(0,0,W,H,0,'url(#bg)');
+  for(let i=0;i<9;i++)g+=R(-40+i*130,0,124,H,4,i%2?'#4E3220':'#563823',{opacity:.9});
+  g+=glow(540,900,700,'#FFB04C',.25);
+  g+=`<path d="${ridge(71,1150,8,200,-60,W+60,H+60)}" fill="#6A4426"/>`;
+  // half a log in the fire, the other half carved into a god
+  g+=R(130,1100,170,50,25,'#3A2414')+fire(215,1120,1.3);
+  g+=glow(720,950,300,'#E8B53A',.12)+idol(720,1150,470);
+  g+=mark(scribble(720,930,190,250,7),1,CORAL,10);
+  g+=S.arrow(230,900,420,640,560,820,1,CORAL,10);
+  g+=label(330,1200,'SAME TREE',{size:40,bg:CORAL,rot:-3});
+  return g;
+}
+function title(){
+  let g='';
+  const s1="What's wrong with",s2='a statue of God?',a=70,b=96;
+  const w1=tw(s1,a,'Georgia',700)+90,w2=tw(s2,b,'Georgia',700)+100;
+  g+=`<g transform="rotate(-2.5 ${W/2} 120)">${strip(70,58,w1,122,3,'#F6EFDC',{ax:12,ay:4})}${T(115,146,s1,{size:a,font:'Georgia',weight:700,fill:INK})}${tape(70+w1-30,60,130,9)}</g>`;
+  g+=`<g transform="rotate(1.5 ${W/2} 260)">${strip(50,196,w2,166,5,'#F6EFDC',{ax:14,ay:5})}${S.highlight(98,216,tw(s2,b,'Georgia',700)+8,130,1,YEL)}${T(100,320,s2,{size:b,font:'Georgia',weight:700,fill:INK})}${tape(80,196,140,-10)}</g>`;
+  g+=label(80,410,'THE TEN COMMANDMENTS · PART 2',{size:30,rot:-2});
+  g+=label(80,468,'EXODUS 20:4',{size:26,rot:-2,bg:'#14141A'});
+  return g;
+}
+document.querySelector('svg').innerHTML=paperDefs(t)+defs+scene()+title()+
+  R(0,0,W,H,0,'url(#vig)')+
+  `<rect width="${W}" height="${H}" filter="url(#tex2)" opacity=".2" style="mix-blend-mode:multiply"/>`+
+  `<rect width="${W}" height="${H}" filter="url(#texL2)" opacity=".28" style="mix-blend-mode:screen"/>`+
+  `<rect width="${W}" height="${H}" filter="url(#grain2)" opacity=".26" style="mix-blend-mode:overlay"/>`;
+window.ready=true;
+</script>

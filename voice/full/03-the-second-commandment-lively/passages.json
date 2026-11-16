@@ -1,0 +1,474 @@
+{
+ "s00-01-story-5cfae5.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "A man cuts down a tree and splits the log in half.",
+  "seed": 1,
+  "words_per_second": 3.72,
+  "in_range": false
+ },
+ "s00-02-story-883f4f.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Half of it, he burns to cook his dinner.",
+  "seed": 2,
+  "words_per_second": 3.81,
+  "in_range": false
+ },
+ "s00-03-story-5d6406.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "The other half, he carves into a statue, and kneels down in front of it.",
+  "seed": 1,
+  "words_per_second": 3.38,
+  "in_range": true
+ },
+ "s00-04-grave-8b82ac.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "He prays to it and says, Deliver me, for you are my god!",
+  "seed": 1,
+  "words_per_second": 2.33,
+  "in_range": true
+ },
+ "s00-05-pivot-5d4d22.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "Same tree, same afternoon.",
+  "seed": 3,
+  "words_per_second": 2.52,
+  "in_range": true
+ },
+ "s00-06-story-76c58a.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "One half is firewood, and the other half is his god.",
+  "seed": 1,
+  "words_per_second": 3.12,
+  "in_range": true
+ },
+ "s00-07-talk-5ad022.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "The prophet Isaiah tells it as a joke.",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true
+ },
+ "s00-08-story-2f5b6c.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "But behind it is a real question.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true
+ },
+ "s00-09-pivot-35dd68.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "What's actually wrong with a statue of God?",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true
+ },
+ "s01-01-talk-798f22.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Right after no other gods comes the second commandment.",
+  "seed": 1,
+  "words_per_second": 2.36,
+  "in_range": false
+ },
+ "s01-02-grave-0f4e90.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "You shall not make for yourself a carved image, or any likeness of anything that is in heaven above,",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s01-03-grave-2b7071.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "or that is in the earth beneath, or that is in the water under the earth.",
+  "seed": 3,
+  "words_per_second": 2.64,
+  "in_range": true
+ },
+ "s01-04-grave-31a898.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "You shall not bow down to them or serve them.",
+  "seed": 3,
+  "words_per_second": 3.36,
+  "in_range": false
+ },
+ "s01-05-talk-bdce93.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "It's not mainly about other religions' idols.",
+  "seed": 1,
+  "words_per_second": 2.41,
+  "in_range": false
+ },
+ "s01-06-story-b8909e.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "That was the first commandment's job.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s01-07-pivot-a6bd6a.wav": {
+  "section": 1,
+  "mode": "pivot",
+  "text": "The first is about which God you worship.",
+  "seed": 1,
+  "words_per_second": 3.19,
+  "in_range": true
+ },
+ "s01-08-story-9484d6.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "The second is about how.",
+  "seed": 1,
+  "words_per_second": 2.44,
+  "in_range": true
+ },
+ "s01-09-talk-4620d3.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Even the right God can be worshipped the wrong way.",
+  "seed": 1,
+  "words_per_second": 3.08,
+  "in_range": true
+ },
+ "s02-01-talk-fd103d.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "Notice the list: sky, land and sea.",
+  "seed": 1,
+  "words_per_second": 2.02,
+  "in_range": false
+ },
+ "s02-02-story-0b44ee.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "That's the whole creation.",
+  "seed": 2,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s02-03-story-a28e47.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Nothing God made can stand in for the God who made it.",
+  "seed": 1,
+  "words_per_second": 3.49,
+  "in_range": true
+ },
+ "s03-01-story-b7c8e7.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Why be so strict about it? Go back to the mountain.",
+  "seed": 1,
+  "words_per_second": 3.32,
+  "in_range": true
+ },
+ "s03-02-talk-6c90b5.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Moses later reminds Israel what they saw there.",
+  "seed": 1,
+  "words_per_second": 2.48,
+  "in_range": false
+ },
+ "s03-03-grave-c6f0b2.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "Then the LORD spoke to you out of the midst of the fire.",
+  "seed": 1,
+  "words_per_second": 3.52,
+  "in_range": false
+ },
+ "s03-04-grave-648807.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "You heard the sound of words, but saw no form; there was only a voice.",
+  "seed": 3,
+  "words_per_second": 3.09,
+  "in_range": false
+ },
+ "s03-05-talk-3ec046.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Their biggest meeting with God, and nobody saw a shape.",
+  "seed": 1,
+  "words_per_second": 2.81,
+  "in_range": true
+ },
+ "s03-06-story-3a2667.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Just fire, and words.",
+  "seed": 1,
+  "words_per_second": 1.83,
+  "in_range": false
+ },
+ "s03-07-story-13b109.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "God didn't give them something to look at.",
+  "seed": 1,
+  "words_per_second": 3.49,
+  "in_range": true
+ },
+ "s03-08-story-b75826.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He gave them someone to listen to.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true
+ },
+ "s04-01-pivot-f47d65.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "So here's the problem with a statue.",
+  "seed": 1,
+  "words_per_second": 3.5,
+  "in_range": true
+ },
+ "s04-02-talk-54a251.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "It makes God smaller, because anything you carve is less than the one who made you.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s04-03-talk-12fbc3.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "And it makes God quieter, because a statue only says what you put into it.",
+  "seed": 1,
+  "words_per_second": 2.85,
+  "in_range": true
+ },
+ "s04-04-talk-a77729.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Remember the golden calf?",
+  "seed": 2,
+  "words_per_second": 1.98,
+  "in_range": false
+ },
+ "s04-05-story-334760.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "They called it a feast to the LORD.",
+  "seed": 1,
+  "words_per_second": 3.54,
+  "in_range": true
+ },
+ "s04-06-story-845966.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "They weren't replacing God. They were trying to hold him.",
+  "seed": 1,
+  "words_per_second": 3.56,
+  "in_range": true
+ },
+ "s04-07-grave-572b01.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "A god you can hold is a god you can control.",
+  "seed": 2,
+  "words_per_second": 2.91,
+  "in_range": false
+ },
+ "s04-08-story-812af9.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "The God of Sinai speaks.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true
+ },
+ "s04-09-story-a97d36.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "And a God who speaks can tell you things you'd rather not hear.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true
+ },
+ "s05-01-pivot-8cd775.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "But here's the surprise.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true
+ },
+ "s05-02-story-c6614b.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "God already has an image on earth.",
+  "seed": 1,
+  "words_per_second": 2.41,
+  "in_range": true
+ },
+ "s05-03-grave-ca5394.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "So God created man in his own image, in the image of God he created him; male and female he created them.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s05-04-talk-160b7b.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "The image of God isn't gold or wood, it's people.",
+  "seed": 3,
+  "words_per_second": 2.77,
+  "in_range": true
+ },
+ "s05-05-talk-90b34d.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Christians have long read it this way: you don't carve God's image.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": true
+ },
+ "s05-06-story-02863d.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "You meet it, in the person next to you.",
+  "seed": 3,
+  "words_per_second": 3.35,
+  "in_range": true
+ },
+ "s06-01-talk-7761f2.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "We may never kneel to a statue.",
+  "seed": 2,
+  "words_per_second": 3.37,
+  "in_range": true
+ },
+ "s06-02-story-89fda7.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "But we still carve, just not with wood.",
+  "seed": 1,
+  "words_per_second": 3.1,
+  "in_range": true
+ },
+ "s06-03-story-2e7d68.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "We carve a God who always agrees with us.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true
+ },
+ "s06-04-story-2efd4c.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "A God who never says what we don't want to hear.",
+  "seed": 1,
+  "words_per_second": 3.38,
+  "in_range": true
+ },
+ "s06-05-talk-7ab17b.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Those gods are easy to live with, and much too small.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s07-01-story-f13c87.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "The commandment ends with a warning.",
+  "seed": 2,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s07-02-story-da3fca.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Turning away echoes to the third and fourth generation.",
+  "seed": 1,
+  "words_per_second": 2.46,
+  "in_range": true
+ },
+ "s07-03-talk-72d362.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "But then comes a promise:",
+  "seed": 3,
+  "words_per_second": 2.79,
+  "in_range": true
+ },
+ "s07-04-grave-018500.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "but showing steadfast love to thousands of those who love me and keep my commandments.",
+  "seed": 1,
+  "words_per_second": 2.51,
+  "in_range": true
+ },
+ "s07-05-talk-a79374.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Four generations, against thousands.",
+  "seed": 3,
+  "words_per_second": 1.37,
+  "in_range": false
+ },
+ "s07-06-story-301446.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "The warning is heavy. The mercy is heavier.",
+  "seed": 1,
+  "words_per_second": 3.32,
+  "in_range": true
+ },
+ "s07-07-grave-3a3034.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "So put down the carving knife.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true
+ },
+ "s07-08-story-ccfb19.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "The real God isn't waiting to be made.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s07-09-story-a731ca.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "He's waiting to be heard.",
+  "seed": 1,
+  "words_per_second": 3.09,
+  "in_range": true
+ },
+ "s07-10-story-d8c6d9.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "And next time, we'll hear what he says about his name.",
+  "seed": 3,
+  "words_per_second": 2.78,
+  "in_range": true
+ }
+}

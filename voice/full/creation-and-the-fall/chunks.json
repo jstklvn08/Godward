@@ -1,0 +1,50 @@
+{
+ "s01-01-bd37d0.wav": {
+  "text": "A sword made of fire, turning every way. Behind it, a garden that no human being can enter. So how did the best place on earth end up with a guard at the gate? To find out, we have to go back.",
+  "seed": 1,
+  "words_per_second": 4.24,
+  "in_range": true
+ },
+ "s01-02-4b17a8.wav": {
+  "text": "Before there was a gate. Before there was a garden. Before there was anything at all.",
+  "seed": 1,
+  "words_per_second": 3.72,
+  "in_range": true
+ },
+ "s01-01-1ef0ed.wav": {
+  "text": "A sword made of fire, turning every way. Behind it, a garden that no human being can enter.",
+  "seed": 1,
+  "words_per_second": 3.46,
+  "in_range": true
+ },
+ "s01-02-8dbc9c.wav": {
+  "text": "So how did the best place on earth end up with a guard at the gate? To find out, we have to go back.",
+  "seed": 3,
+  "words_per_second": 4.4,
+  "in_range": false
+ },
+ "s01-03-4b17a8.wav": {
+  "text": "Before there was a gate. Before there was a garden. Before there was anything at all.",
+  "seed": 1,
+  "words_per_second": 3.72,
+  "in_range": true
+ },
+ "s01-01-eb4f24.wav": {
+  "text": "A sword made of fire, turning every way.",
+  "seed": 1,
+  "words_per_second": 3.52,
+  "in_range": true
+ },
+ "s01-02-7bc7d5.wav": {
+  "text": "Behind it, a garden that no human being can enter.",
+  "seed": 1,
+  "words_per_second": 3.48,
+  "in_range": true
+ },
+ "s01-03-fbde56.wav": {
+  "text": "So how did the best place on earth end up with a guard at the gate?",
+  "seed": 1,
+  "words_per_second": 4.57,
+  "in_range": false
+ }
+}

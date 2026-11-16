@@ -1,0 +1,154 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>No Other Gods: Cold Open</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="../creation-and-the-fall/shared.js"></script>
+<script src="../creation-and-the-fall/style-kit.js"></script>
+<script src="1-cold-open-words.js"></script>
+<script>
+// Part 1 cold open, timed to the narration in 1-cold-open.wav.
+// WORDS ([text, start, end]) comes from a word-level transcript of that file, so every cue
+// below is tied to a spoken word rather than a typed-in second.
+const {G,R,C,E,L,P,T,prog,ease,lerp,mix,sc,rng,clamp}=K;
+const {tw,hash,jit,piece,glow,torn,ridge,strip,tape,label,mark,scribble,arrow,paperDefs,paperOver,vignette}=S;
+const INK='#141416',CORAL='#FF5A48',GOLD='#E8B53A';
+const TAIL=1.6,DUR=WORDS[WORDS.length-1][2]+TAIL;
+const norm=s=>s.toLowerCase().replace(/’/g,"'").replace(/[^a-z0-9']/g,'');
+// Start time of the nth spoken occurrence of a word.
+const cue=(w,n=1)=>{let k=0;for(const x of WORDS)if(norm(x[0])===norm(w)&&++k===n)return x[1];throw new Error('no cue '+w);};
+const end=(w,n=1)=>{let k=0;for(const x of WORDS)if(norm(x[0])===norm(w)&&++k===n)return x[2];throw new Error('no cue '+w);};
+const r0=rng(77);
+const dust=[...Array(60)].map(()=>[r0()*1920,r0()*1080,1+r0()*2.6,r0()*6.28]);
+
+// ---------- pieces ----------
+// A stone tablet outline: rounded top, straight sides.
+const slab=(w,h)=>`M${-w/2} ${h/2}V${-h/2+w*.32}Q${-w/2} ${-h/2} 0 ${-h/2}Q${w/2} ${-h/2} ${w/2} ${-h/2+w*.32}V${h/2}Z`;
+// Illegible carved lines, so the text never reads as a real quotation.
+const carving=(w,h,seed,glowP)=>{const r=rng(seed);let g='';for(let i=0;i<5;i++){const y=-h/2+w*.42+i*h*.13,x0=-w/2+26+r()*10,x1=w/2-26-r()*30;
+  let d=`M${x0} ${y}`;for(let x=x0;x<x1;x+=18)d+=`L${x+9} ${y+(r()-.5)*5}L${x+18} ${y}`;
+  g+=P(d,'none',{stroke:'#4A4740','stroke-width':5,opacity:.8})+P(d,'none',{stroke:'#FFE9A8','stroke-width':3,opacity:(.25+.75*glowP).toFixed(3)});}
+  return g;};
+// One broken tablet: the shape split along a jagged crack into pieces that drift apart.
+function brokenTablet(t,x,y,rot,seed,apart,glowP){
+  const w=300,h=420,r=rng(seed),crack=[];
+  for(let i=0;i<=8;i++)crack.push([-w/2-20+i*(w+40)/8,(r()-.5)*90+(i%2?30:-30)]);
+  const cd='M'+crack.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L');
+  const top=`${cd}L${w/2+40} ${-h}L${-w/2-40} ${-h}Z`,bot=`${cd}L${w/2+40} ${h}L${-w/2-40} ${h}Z`;
+  const id='tb'+seed;
+  const face=k=>`<clipPath id="${id}${k}"><path d="${k?bot:top}"/></clipPath><g clip-path="url(#${id}${k})">`+
+    P(slab(w,h),'#8E8A80')+P(slab(w-26,h-26),'#A39F94')+carving(w,h,seed,glowP)+`</g>`;
+  const crackGlow=P(cd,'none',{stroke:'#FFD86B','stroke-width':10+8*glowP,opacity:(.35+.65*glowP).toFixed(3),filter:'url(#sd)'});
+  const a=apart;
+  return G(`translate(${x} ${y}) rotate(${rot})`,
+    glow(0,0,330,'#FFD86B',.22*glowP)+
+    G(`translate(${(-14*a).toFixed(1)} ${(-34*a).toFixed(1)}) rotate(${(-6*a).toFixed(2)})`,face(0))+
+    G(`translate(${(16*a).toFixed(1)} ${(26*a).toFixed(1)}) rotate(${(5*a).toFixed(2)})`,face(1))+
+    crackGlow);
+}
+// A paper-cut mountain: one jagged peak whose slopes run off both sides of the sheet.
+function mountain(seed,px,py,fill,steep){
+  const r=rng(seed*91+7),pts=[];
+  for(let x=-140;x<=2060;x+=22){const d=Math.abs(x-px)/(900*steep);pts.push([x,py+Math.pow(d,1.25)*560+(r()-.5)*16]);}
+  return P('M'+pts.map(p=>p[0].toFixed(0)+' '+Math.min(p[1],1200).toFixed(0)).join('L')+'L2060 1200L-140 1200Z',fill);
+}
+// The calf: hard gold foil with a shine but no glow of its own. Stocky body, crescent horns.
+function calf(t,x,y,s){
+  const sh=.5+.5*Math.sin(t*1.7);
+  const body=`<linearGradient id="foil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B0"/><stop offset="${(.3+.2*sh).toFixed(2)}" stop-color="${GOLD}"/><stop offset="1" stop-color="#8A5A12"/></linearGradient>`+
+    R(-120,64,250,22,4,'#5A4A3A')+R(-138,84,286,22,4,'#4A3C30')+
+    // tail with a tuft
+    P('M-92 -18Q-124 0 -116 44','none',{stroke:GOLD,'stroke-width':7})+E(-116,50,9,14,'#C08A22')+
+    // thick legs with dark hooves (far pair darker, behind the body)
+    R(-74,6,24,54,6,'#B07E1E')+R(52,6,24,54,6,'#B07E1E')+
+    R(-96,6,28,56,6,'url(#foil)')+R(26,6,28,56,6,'url(#foil)')+
+    R(-96,56,28,8,2,'#5A3A0A')+R(26,56,28,8,2,'#5A3A0A')+R(-74,56,24,8,2,'#4A300A')+R(52,56,24,8,2,'#4A300A')+
+    // barrel body with a big shoulder hump, heavier at the front
+    P('M-98 -4Q-104 -50 -60 -56Q-10 -60 30 -76Q66 -92 92 -70Q110 -54 108 -20Q106 18 80 22H-80Q-98 18 -98 -4Z','url(#foil)',{stroke:'#FFF6D0','stroke-width':3})+
+    // dewlap under the neck
+    P('M84 4Q100 34 120 18L112 -6Z','#C08A22')+
+    // massive head, lowered, with a broad square snout
+    P('M92 -62Q128 -78 150 -50Q162 -30 160 -6Q158 14 140 16Q120 18 110 2Q94 -20 92 -62Z','url(#foil)',{stroke:'#FFF6D0','stroke-width':3})+
+    E(150,4,16,12,'#D9A43A')+C(146,4,2.6,'#5A3A0A')+C(156,4,2.6,'#5A3A0A')+
+    // wide horns: out to the sides, then up and in
+    P('M110 -62Q76 -66 66 -96Q84 -82 112 -74Z','#FFF1B0',{stroke:'#E8D58A','stroke-width':2})+
+    P('M140 -66Q174 -72 182 -104Q166 -84 138 -76Z','#FFF1B0',{stroke:'#E8D58A','stroke-width':2})+
+    // ear and a hard-set eye
+    P('M104 -54Q88 -48 92 -40Q102 -42 108 -50Z','#C08A22')+P('M128 -40L138 -36','none',{stroke:'#3A2A10','stroke-width':4});
+  return G(`translate(${x} ${y}) scale(${s})`,body);
+}
+
+// ---------- sheets ----------
+function sandSheet(t){
+  let g=`<linearGradient id="sand" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#E2C48A"/><stop offset="1" stop-color="#A9783E"/></linearGradient>`;
+  g+=`<path d="${torn(-44,-60,2008,1200,11,18,0,18)}" fill="#F5F0E2"/>`+`<path d="${torn(-34,-60,1988,1200,14,18,0,18)}" fill="url(#sand)"/>`;
+  // The mountain: charcoal paper layers with a dim cloud glow on the summit.
+  const lift=ease.inOut(prog(t,cue('carried'),cue('mountain')+.6));
+  g+=glow(1180,170,360,'#FFF2C8',.18+.22*lift);
+  g+=mountain(7,1180,150,'#3A3540',1)+mountain(8,1420,330,'#2A2630',.8)+P(ridge(9,700,26,140,-120,2040,1200),'#C99C5E');
+  for(let i=0;i<4;i++){const cx=1050+i*90+Math.sin(t*.3+i)*20;g+=E(cx,200+i*8,170,46,'#F3EBDD',{opacity:(.12+.1*lift).toFixed(3)});}
+  // The calf, far back on a pedestal.
+  const calfIn=cue('idol')-1.2;
+  g+=calf(t,1560,590,.9);
+  // Dust drifting in the low light.
+  dust.forEach(d=>{const yy=(d[1]-t*14)%1080;g+=C(d[0]+Math.sin(t+d[3])*8,yy<0?yy+1080:yy,d[2],'#FFF3D6',{opacity:.28});});
+  // The broken tablets in the foreground.
+  const smash=cue('smashed'),glowP=1-ease.out(prog(t,smash,smash+.8))*.55,apart=ease.back(prog(t,smash,smash+.5));
+  const pulse=t<cue('or')?ease.out(prog(t,cue('ten'),cue('ten')+.8)):glowP*(.85+.15*Math.sin(t*3));
+  g+=piece(t,0.05,620,640,G('translate(560 650) scale(.86) translate(-560 -650)',brokenTablet(t,560,650,-14,21,.35+.65*apart,pulse)),4,1.4);
+  g+=piece(t,0.25,860,690,G('translate(870 690) scale(.86) translate(-870 -690)',brokenTablet(t,870,690,11,33,.35+.65*apart,pulse)),5,1.4);
+  // "Moses broke them himself": coral scribble around the pieces.
+  const sp=ease.inOut(prog(t,cue('moses'),cue('moses')+.9));
+  if(sp>0)g+=mark(scribble(715,665,290,230,6),sp,CORAL,9);
+  // Forty days, counted in a coral note.
+  if(t>=cue('forty'))g+=piece(t,cue('forty'),1210,880,label(1100,860,'40 DAYS',{size:34,bg:CORAL,rot:-4}),8);
+  // The idea people expect, circled and questioned.
+  const ip=ease.inOut(prog(t,calfIn,calfIn+.8));
+  if(ip>0){g+=mark(scribble(1560,560,150,120,9),ip,CORAL,8);}
+  if(t>=cue('idol'))g+=piece(t,cue('idol'),1560,420,label(1560,392,'AN IDOL SWAP?',{size:30,anchor:'middle'}),9);
+  const xP=ease.inOut(prog(t,cue('quieter'),cue('quieter')+.5));
+  if(xP>0)g+=mark('M1430 428L1690 400',xP,CORAL,9);
+  return g;
+}
+function seaSheet(t){
+  return `<linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E2A5C"/><stop offset="1" stop-color="#06122E"/></linearGradient>`+
+    `<path d="${torn(-44,-60,2008,1200,31,18,0,18)}" fill="#F5F0E2"/><path d="${torn(-34,-60,1988,1200,34,18,0,18)}" fill="url(#sea)"/>`+
+    P('M700 1100Q760 600 820 120L900 120Q860 600 880 1100Z','#2BD3FF',{opacity:.55})+P('M1220 1100Q1160 600 1100 120L1020 120Q1060 600 1040 1100Z','#2BD3FF',{opacity:.55})+
+    R(880,120,160,980,0,'#E9C98C',{opacity:.9});
+}
+
+// ---------- subtitles ----------
+function subtitles(t){
+  // Show the sentence being spoken, up to about eight words at a time.
+  const i=WORDS.findIndex(w=>t<w[2]+.25);if(i<0)return '';
+  let a=i;while(a>0&&!/[.?!]$/.test(WORDS[a-1][0])&&i-a<7)a--;
+  let b=a;while(b<WORDS.length-1&&!/[.?!,]$/.test(WORDS[b][0])&&b-a<7)b++;
+  if(t<WORDS[a][1]-.2)return '';
+  const line=WORDS.slice(a,b+1).map(w=>w[0]).join(' ');
+  const w=tw(line,40,'Segoe UI',600)+60;
+  return R(960-w/2,958,w,62,8,'#000',{opacity:.62})+T(960,1001,line,{size:40,fill:'#fff',font:'Segoe UI',weight:600,anchor:'middle'});
+}
+
+// ---------- frame ----------
+function frame(t){
+  // A slow push in on the tablets, a jolt on "smashed", then a whip left to the sea at the end.
+  const smash=cue('smashed'),shake=t>smash&&t<smash+.4?Math.sin(t*90)*14*(1-prog(t,smash,smash+.4)):0;
+  const z=1+.08*ease.inOut(prog(t,0,cue('forty'))),whip=ease.inOut(prog(t,DUR-1.1,DUR-.35));
+  let g=paperDefs(t)+R(0,0,1920,1080,0,'#07071A');
+  const cam=`translate(${(960-whip*2100+shake).toFixed(1)} 540) scale(${z.toFixed(4)}) translate(-960 -540)`;
+  g+=G(cam,sandSheet(t)+G('translate(2100 0)',seaSheet(t)));
+  // The question label stays fixed to the frame, not the camera, and leaves before the whip.
+  if(t>=cue('reason'))g+=G('',piece(t,cue('reason'),960,110,label(960,70,'WHY DID MOSES BREAK THE TEN COMMANDMENTS?',{size:44,anchor:'middle'}),2,1.6),1-prog(t,DUR-1.4,DUR-1.0));
+  g+=vignette(.42)+paperOver({tex:.2,grain:.32,blot:.12,texL:.3});
+  g+=subtitles(t);
+  const fi=1-prog(t,0,.5);if(fi>0)g+=R(0,0,1920,1080,0,'#000',{opacity:fi});
+  return g;
+}
+(function(){
+  const svg=document.querySelector('svg');
+  window.DUR=DUR;
+  window.seek=t=>{svg.innerHTML=frame(Math.max(0,Math.min(t,DUR-.001)));};
+  seek(0);
+  if(!location.search.includes('render')){const st=performance.now();const loop=n=>{seek(((n-st)/1000)%DUR);requestAnimationFrame(loop);};requestAnimationFrame(loop);}
+})();
+</script>

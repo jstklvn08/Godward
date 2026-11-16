@@ -1,0 +1,89 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The Tenth Commandment: Thumbnail</title>
+<style>html,body{margin:0;background:#000}svg{display:block}</style>
+<svg xmlns="http://www.w3.org/2000/svg"></svg>
+<script>const WORDS=[["x",0,1]];</script>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="../_kit/episode-engine.js"></script>
+<script src="../_kit/people.js"></script>
+<script src="../_kit/fire.js"></script>
+<script src="../_kit/scenery.js"></script>
+<script>
+// Thumbnail for part 10, in the poster style of part 1's approved thumbnail: a big dramatic night sky where the two
+// tablets hang glowing, lines I-IX gold and line X burning red; below, a dark sleeping village where one house blazes
+// gold; in the foreground a small dark figure stands at his fence (arms at his sides), a red glow in his chest,
+// looking at it.
+//   thumbnail.html      Instagram feed 4:5 (1080x1350), key content inside the centre 1012 px
+//   1080x1920 viewport  9:16 cover for TikTok / Reels / Shorts
+const V=window.innerHeight>1500;
+const W=1080,H=V?1920:1350,t=3.6;
+const {G,R,C,L,P,T,mix,rng}=K;
+const {tw,glow,strip,tape,label,paperDefs,hash}=S;
+const INK='#141416',YEL='#FFE100',CORAL='#FF5A48';
+const svg=document.querySelector('svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.width=W+'px';svg.style.height=H+'px';
+const k=V?1.35:1;                      // vertical scale-up of the scene
+const TY=V?860:585, TS=V?1.3:1.0;      // tablets centre y and scale
+const VY=V?1430:1075;                  // village ground line
+const defs=`<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070A22"/><stop offset=".55" stop-color="#16184A"/><stop offset="1" stop-color="#3A2448"/></linearGradient>
+  <radialGradient id="vig" cx="50%" cy="48%" r="75%"><stop offset=".55" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".6"/></radialGradient>
+  <filter id="grain2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="2" seed="38"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="2.6" intercept="-.8"/><feFuncG type="linear" slope="2.6" intercept="-.8"/><feFuncB type="linear" slope="2.6" intercept="-.8"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter></defs>`;
+const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+function tablets(cx,cy,s){
+  let g=glow(cx,cy,520*s,'#FFD86B',.28)+glow(cx+110*s,cy+120*s,260*s,'#FF4A3A',.35);
+  for(let i=0;i<14;i++){const a=i/14*6.283+.1;g+=P(`M${cx} ${cy}L${cx+Math.cos(a-.05)*900*s} ${cy+Math.sin(a-.05)*900*s}L${cx+Math.cos(a+.05)*900*s} ${cy+Math.sin(a+.05)*900*s}Z`,'#FFE9A8',{opacity:.06});}
+  [[-1,0],[1,5]].forEach(([side,first])=>{const x=cx+side*118*s,w=210*s,h=300*s,top=cy-h/2;
+    g+=P(`M${x-w/2} ${cy+h/2}V${top+w*.3}Q${x-w/2} ${top} ${x} ${top}Q${x+w/2} ${top} ${x+w/2} ${top+w*.3}V${cy+h/2}Z`,'#9C988C',{stroke:'#5A564E','stroke-width':6*s})+
+      P(`M${x-w/2+12*s} ${cy+h/2-12*s}V${top+w*.32}Q${x-w/2+12*s} ${top+12*s} ${x} ${top+12*s}`,'none',{stroke:'#C8C4B8','stroke-width':4*s,opacity:.6});
+    for(let i=0;i<5;i++){const n=first+i,ly=top+w*.5+i*(h-w*.55)/5,last=n===9;
+      g+=T(x-w/2+30*s,ly+9*s,NUM[n],{size:22*s,font:'Georgia',weight:700,anchor:'middle',fill:last?'#FFE0D8':'#5A564E'});
+      if(last)g+=glow(x+10*s,ly,140*s,'#FF3A2A',.9)+L(x-w/2+56*s,ly,x+w/2-18*s,ly,'#FF5A48',9*s)+L(x-w/2+56*s,ly,x+w/2-18*s,ly,'#FFE0C8',3*s);
+      else g+=L(x-w/2+56*s,ly,x+w/2-18*s,ly,'#E8C870',4*s,{opacity:.9})+glow(x+10*s,ly,60*s,'#FFD86B',.25);}
+  });
+  return g;
+}
+function scene(){
+  let g=R(0,0,W,H,0,'url(#sky)');
+  const r=rng(31);for(let i=0;i<120;i++)g+=C(r()*W,r()*VY*.8,.8+r()*2.4,'#fff',{opacity:.2+.6*r()});
+  g+=tablets(540,TY,TS);
+  g+=P(`M-40 ${VY-160*k}Q200 ${VY-230*k} 460 ${VY-170*k}T1120 ${VY-200*k}V${H}H-40Z`,'#1E1A3A');
+  // the sleeping village: dark houses
+  [[60,VY-60*k,1.1],[200,VY-80*k,.9],[330,VY-50*k,1.2],[880,VY-70*k,1.0],[1010,VY-50*k,1.15],[470,VY-95*k,.8]].forEach(([x,y,s],i)=>{
+    g+=SC.house(x,y,s*k,{col:'#2A2440',roof:'#342E4E',door:'#120E1E'});if(i%3===0)g+=R(x+s*k*30,y-s*k*80,10*k,9*k,2,'#7A6A5A');});
+  // the one house that blazes gold
+  const hx=V?700:690,hy=VY-10*k,hs=1.75*k;
+  g+=glow(hx,hy-90*hs,420*k,'#FFC060',.65)+glow(hx,hy-60*hs,200*k,'#FFE6A8',.5);
+  g+=SC.tree(t,hx+175*hs,hy+4,.95*k,{kind:'olive',col:'#3A6A3A',col2:'#2E5A30'});
+  g+=SC.house(hx,hy,hs,{col:'#F0C27A',roof:'#FFE0A0',door:'#FFD27A'});
+  [-1,1].forEach(d=>g+=R(hx+d*44*hs-12*hs,hy-82*hs,24*hs,22*hs,3,'#FFF2B8')+glow(hx+d*44*hs,hy-70*hs,50*hs,'#FFE9A8',.8));
+  // ground
+  g+=R(-40,VY-30*k,W+80,H,0,'#141024');
+  g+=P(`M-40 ${VY+20*k}Q400 ${VY-10*k} 1120 ${VY+30*k}V${H}H-40Z`,'#0E0B1C');
+  // the man: a small dark figure standing behind his low fence, arms at his sides, a red glow in his chest
+  const mx=V?250:240,my=VY+150*k,ms=.95*k;
+  g+=glow(mx+10*ms,my-90*ms,120*ms,'#FF3A4A',.55);
+  g+=PPL.fig({x:mx,y:my,s:ms,face:1,tunic:'#2A2E58',tunic2:'#1A1C3A',skin:'#4A3A48',shade:'#3A2C3A',hair:'#0E0A16',expr:'sad',look:{x:hx,y:hy-80*hs},filter:'',blush:false});
+  const hs2=12*ms,cx=mx+6*ms,cy=my-84*ms;
+  g+=P(`M${cx} ${cy+hs2*.9}C${cx-hs2*1.7} ${cy-hs2*.1} ${cx-hs2*.95} ${cy-hs2*1.35} ${cx} ${cy-hs2*.42}C${cx+hs2*.95} ${cy-hs2*1.35} ${cx+hs2*1.7} ${cy-hs2*.1} ${cx} ${cy+hs2*.9}Z`,'#FF4A5C');
+  // a low fence in front of his legs only (below the waist)
+  let f='';for(let x=mx-120*ms;x<mx+340*ms;x+=46*ms)f+=R(x-5*ms,my-62*ms,10*ms,66*ms,3,'#1E1626');
+  [48,22].forEach(h=>f+=R(mx-130*ms,my-h*ms,480*ms,9*ms,3,'#2A1E30'));
+  g+=f;
+  return g;
+}
+function title(){
+  const x0=V?80:70,y0=V?140:52,s1='Wanting',s2="what's theirs",a=V?84:70,b=V?128:106;
+  const w1=tw(s1,a,'Georgia',700)+90,w2=tw(s2,b,'Georgia',700)+96;
+  let g=`<g transform="rotate(-2.5 ${W/2} ${y0+60})">${strip(x0,y0,w1,a*1.55,3,'#F6EFDC',{ax:12,ay:4})}${T(x0+45,y0+a*1.12,s1,{size:a,font:'Georgia',weight:700,fill:INK})}${tape(x0+w1-30,y0+2,130,9)}</g>`;
+  const y1=y0+a*1.55+14;
+  g+=`<g transform="rotate(1.5 ${W/2} ${y1+80})">${strip(x0-20,y1,w2,b*1.32,5,'#F6EFDC',{ax:14,ay:5})}${S.highlight(x0+28,y1+20,tw(s2,b,'Georgia',700)+8,b*1.03,1,YEL)}${T(x0+30,y1+b*1.0,s2,{size:b,font:'Georgia',weight:700,fill:INK})}${tape(x0+10,y1,140,-10)}</g>`;
+  g+=label(V?560:600,y1+b*1.32+30,'PART 10 · FINALE',{size:V?32:28,rot:2});
+  g+=label(V?250:270,V?1700:1268,'YOU SHALL NOT COVET',{size:V?48:40,bg:CORAL,rot:-3});
+  return g;
+}
+svg.innerHTML=paperDefs(t)+defs+scene()+title()+R(0,0,W,H,0,'url(#vig)')+
+  `<rect width="${W}" height="${H}" filter="url(#grain2)" opacity=".2" style="mix-blend-mode:overlay"/>`;
+window.ready=true;
+</script>

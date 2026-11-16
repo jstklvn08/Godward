@@ -1,0 +1,482 @@
+{
+ "s00-01-story-9f1797.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Two cords, tied together in one knot.",
+  "seed": 1,
+  "words_per_second": 2.61,
+  "in_range": true
+ },
+ "s00-02-story-5a2520.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Pull on it, and it only holds tighter.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s00-03-talk-fb96ec.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "That's a picture of a promise.",
+  "seed": 3,
+  "words_per_second": 3.8,
+  "in_range": true
+ },
+ "s00-04-story-3232c4.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And the seventh commandment is all about keeping one.",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": true
+ },
+ "s00-05-grave-f5a970.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "You shall not commit adultery.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s00-06-talk-f31b5e.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Adultery means breaking the promise of marriage.",
+  "seed": 2,
+  "words_per_second": 2.83,
+  "in_range": true
+ },
+ "s00-07-talk-8aa964.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "A lot of people think this is just a rule for grown-ups.",
+  "seed": 2,
+  "words_per_second": 3.85,
+  "in_range": true
+ },
+ "s00-08-story-3b9b2f.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Something about one wrong thing you shouldn't do.",
+  "seed": 1,
+  "words_per_second": 2.8,
+  "in_range": true
+ },
+ "s00-09-pivot-30379b.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But it's really about faithfulness.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true
+ },
+ "s00-10-story-821935.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And it starts with God.",
+  "seed": 1,
+  "words_per_second": 3.42,
+  "in_range": true
+ },
+ "s01-01-story-c2f468.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "To understand it, you have to go back to the very beginning.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s01-02-story-170368.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "In the garden, God brings the first man and the first woman together.",
+  "seed": 1,
+  "words_per_second": 2.98,
+  "in_range": true
+ },
+ "s01-03-grave-eb195e.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Therefore a man shall leave his father and his mother and hold fast to his wife.",
+  "seed": 1,
+  "words_per_second": 2.92,
+  "in_range": false
+ },
+ "s01-04-talk-a199c9.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Hold fast, like two cords tied in one knot.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true
+ },
+ "s01-05-talk-d4d14f.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Marriage isn't a feeling that comes and goes.",
+  "seed": 1,
+  "words_per_second": 3.46,
+  "in_range": true
+ },
+ "s01-06-story-1ee87a.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "It's a promise to stay.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true
+ },
+ "s02-01-talk-2ca69a.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "So the seventh commandment protects that promise.",
+  "seed": 1,
+  "words_per_second": 3.17,
+  "in_range": true
+ },
+ "s02-02-story-629386.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "It's like a wall around a home. Think of a family.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true
+ },
+ "s02-03-story-b81b42.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "A mom and a dad who promised to stay.",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": true
+ },
+ "s02-04-story-3abc4f.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Children who sleep safe, because the promise holds.",
+  "seed": 2,
+  "words_per_second": 2.39,
+  "in_range": false
+ },
+ "s02-05-talk-af7413.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "When a promise like that breaks, everyone in the house feels it.",
+  "seed": 1,
+  "words_per_second": 3.46,
+  "in_range": true
+ },
+ "s02-06-pivot-03101a.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "But here's the bigger picture.",
+  "seed": 1,
+  "words_per_second": 3.12,
+  "in_range": true
+ },
+ "s03-01-talk-223b73.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "God didn't just give this rule.",
+  "seed": 1,
+  "words_per_second": 3.45,
+  "in_range": true
+ },
+ "s03-02-story-8913bc.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He lives it.",
+  "seed": 2,
+  "words_per_second": 2.5,
+  "in_range": true
+ },
+ "s03-03-story-87dc68.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "All through the Bible, God makes promises to his people, and he keeps every one.",
+  "seed": 3,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s03-04-grave-94d5e6.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "Know therefore that the LORD your God is God, the faithful God who keeps covenant and steadfast love.",
+  "seed": 1,
+  "words_per_second": 2.71,
+  "in_range": true
+ },
+ "s03-05-talk-8478b0.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Faithful means he stays.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": false
+ },
+ "s03-06-story-e3f9ce.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Even when his people don't.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true
+ },
+ "s04-01-pivot-248d15.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "And his people didn't.",
+  "seed": 1,
+  "words_per_second": 1.97,
+  "in_range": false
+ },
+ "s04-02-story-79e4af.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Israel kept running after idols.",
+  "seed": 2,
+  "words_per_second": 2.2,
+  "in_range": false
+ },
+ "s04-03-story-d14694.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "So the prophets used a surprising picture.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true
+ },
+ "s04-04-story-e468f4.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "They said Israel was like a wife who broke her promise.",
+  "seed": 1,
+  "words_per_second": 3.47,
+  "in_range": true
+ },
+ "s04-05-story-76c057.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "God even asked the prophet Hosea to live out that picture.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true
+ },
+ "s04-06-story-33d241.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "His wife left him, and God told him to go and bring her home.",
+  "seed": 3,
+  "words_per_second": 3.39,
+  "in_range": true
+ },
+ "s04-07-talk-d098d8.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Christians have long read this as the heart of the story.",
+  "seed": 1,
+  "words_per_second": 4.31,
+  "in_range": false
+ },
+ "s04-08-story-1a2fe7.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Our unfaithfulness doesn't cancel God's faithfulness.",
+  "seed": 3,
+  "words_per_second": 1.82,
+  "in_range": false
+ },
+ "s04-09-grave-78d7e9.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "I will betroth you to me in faithfulness.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s04-10-grave-4cda57.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "And you shall know the LORD.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true
+ },
+ "s05-01-story-e39572.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Centuries later, Jesus talked about this commandment.",
+  "seed": 3,
+  "words_per_second": 2.02,
+  "in_range": false
+ },
+ "s05-02-story-45316f.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And he went deeper than anyone expected.",
+  "seed": 1,
+  "words_per_second": 3.24,
+  "in_range": true
+ },
+ "s05-03-grave-21175a.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "You have heard that it was said, \u2018You shall not commit adultery.\u2019",
+  "seed": 3,
+  "words_per_second": 2.88,
+  "in_range": true
+ },
+ "s05-04-talk-e0cb22.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Then he said it begins long before anything happens.",
+  "seed": 1,
+  "words_per_second": 3.09,
+  "in_range": true
+ },
+ "s05-05-story-07dbcc.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "It begins in the heart.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true
+ },
+ "s05-06-talk-1e2a6b.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Faithfulness isn't only what your hands do.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s05-07-story-b1d481.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "It's what your heart holds on to.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true
+ },
+ "s05-08-talk-aecfca.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "That means none of us can say we've kept this one perfectly.",
+  "seed": 3,
+  "words_per_second": 3.99,
+  "in_range": false
+ },
+ "s06-01-pivot-10af06.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "So is there any hope for promise breakers?",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s06-02-story-d10c51.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "One day, some leaders brought a woman to Jesus.",
+  "seed": 1,
+  "words_per_second": 2.9,
+  "in_range": true
+ },
+ "s06-03-story-fadb29.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "She had broken this commandment, and they wanted her punished.",
+  "seed": 1,
+  "words_per_second": 2.96,
+  "in_range": true
+ },
+ "s06-04-story-32e9d5.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Jesus said the one without sin should throw the first stone.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true
+ },
+ "s06-05-story-942954.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "And one by one, they all walked away.",
+  "seed": 2,
+  "words_per_second": 2.62,
+  "in_range": true
+ },
+ "s06-06-story-ac3778.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Then Jesus spoke to her.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true
+ },
+ "s06-07-grave-86f365.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Neither do I condemn you; go, and from now on sin no more.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true
+ },
+ "s06-08-talk-89f5a6.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "He didn't say it was nothing.",
+  "seed": 2,
+  "words_per_second": 4.03,
+  "in_range": false
+ },
+ "s06-09-story-7c5bf1.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He gave her grace first, and then a new way to live.",
+  "seed": 1,
+  "words_per_second": 3.32,
+  "in_range": true
+ },
+ "s07-01-talk-15ba47.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "That's the seventh commandment in the end.",
+  "seed": 1,
+  "words_per_second": 3.59,
+  "in_range": true
+ },
+ "s07-02-story-1d3935.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Keep your promises, because God keeps his.",
+  "seed": 1,
+  "words_per_second": 2.15,
+  "in_range": false
+ },
+ "s07-03-grave-701ed8.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "Two cords, one knot, held together by a faithful God.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true
+ },
+ "s07-04-talk-70409f.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Next time, the eighth commandment.",
+  "seed": 1,
+  "words_per_second": 2.92,
+  "in_range": true
+ },
+ "s07-05-story-36602e.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Something goes missing, and we ask who it really belongs to.",
+  "seed": 2,
+  "words_per_second": 2.61,
+  "in_range": true
+ }
+}

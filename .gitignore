@@ -8,3 +8,27 @@ __pycache__/
 desktop.ini
 Thumbs.db
 .env
+
+# Rendered videos: re-renderable from the episode pages, and episodes exceed GitHub's 100 MB limit.
+# Short clips committed before this rule stay tracked.
+*.mp4
+# The brand outro is joined onto every video, so it is kept in the repo (0.8 MB).
+!videos/_kit/outro/godward-outro-9x16.mp4
+
+# Render tools' packages, per-episode build output, large rescued audio stems
+node_modules/
+videos/*/build/
+videos/_kit/outro/build/
+tools/rescued/**/*.wav
+tools/rescued/**/*.mp3
+voice/full/*/chunks/
+
+# Files filled with ESV text (Crossway copyright)
+*.esv.md
+*.esv.json
+
+# Narration renders (WAVs stay local; passages.json and timings are committed)
+voice/full/**/*.wav
+
+# Post packs: rebuilt from videos/<slug>/ by tools/package.js
+posts/

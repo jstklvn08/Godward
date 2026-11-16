@@ -1,0 +1,25 @@
+{
+  "_note": "Delivery modes for the Creation script, which predates inline [grave]/[talk]/[story]/[pivot] tags. New scripts should use inline tags instead.",
+  "section_mode": {"1": "grave", "10": "grave"},
+  "overrides": {
+    "Then God spoke": "pivot",
+    "But God wasn't finished": "pivot",
+    "The climax of creation": "talk",
+    "On the seventh day": "grave",
+    "Genesis then moves in closer": "talk",
+    "If he ate from that tree": "grave",
+    "Then God said something new": "pivot",
+    "It is not good for the man": "grave",
+    "And the serpent contradicted": "pivot",
+    "You will not certainly die": "grave",
+    "But all they discovered": "grave",
+    "Where are you": "grave",
+    "And then came the blame": "pivot",
+    "He pointed to the woman": "talk",
+    "She pointed to the serpent": "talk",
+    "Christians have long read": "talk",
+    "Then he banished them": "grave",
+    "On the east side": "grave"
+  },
+  "say": {}
+}
