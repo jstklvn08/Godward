@@ -107,6 +107,11 @@ render with `node tools/render.js shot <page.html> <out.png> 1080 1350` (the pag
 `window.ready=true` when drawn). Deliver with SendUserFile. Remind the user of the description
 credits: ESV notice, and that the narration is AI-generated from their own voice (YouTube's
 synthetic-content disclosure). Offer to commit the sources (not the MP4s or stems).
+Newer thumbnails draw the episode's own cast and setting with the kits (`people.js`, `scenery.js`):
+`videos/the-ten-plagues/thumbnail-ig-4x5.html` loads them directly (no engine; pass `t` to `PPL.rig`) and shows
+one big figure acting the story (Moses' staff over the red Nile), the title on torn strips with the key words
+highlighted, a coral reference tag, and a few story details (frogs, a Passover doorframe). Keep the main figure
+and title inside the centre 1012 px; check the PNG before sending.
 
 ## Working rules
 
@@ -120,3 +125,12 @@ synthetic-content disclosure). Offer to commit the sources (not the MP4s or stem
 - You cannot hear audio or watch video: judge by measurements, stills and transcripts, say so,
   and ask the user to listen at each checkpoint.
 - Only the narrator's own voice. Never clone another real person.
+- Split work across sessions (Nov 2026, the Ten Plagues): a cloud session without the ESV key, voice model or
+  narration WAVs can still write the script, draw the whole page on stand-in timings
+  (`node tools/standin-words.js scripts/NN-<slug>.md videos/<slug>/words.js`), write `audio-cues.json` and check that
+  `build-audio.js` resolves every cue. The session with the audio fills the ESV, records, aligns, pushes `words.js`, and
+  does the mix, renders and outro. After the real `words.js` lands, seek the whole page (0..DUR in 0.5 s steps) for
+  sheet-order errors before anyone renders, and re-check every scene's stills.
+- Pharaoh (and any royal or god figure) uses a headcloth that follows the head's facing (`r.hf` from people.js),
+  sits above the brows and never covers the eyes; give him a stern pose, not a raised "dab" arm. Show a hard heart
+  as a cracked stone heart, not a grey disc.
