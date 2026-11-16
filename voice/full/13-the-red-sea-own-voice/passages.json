@@ -1,0 +1,474 @@
+{
+ "s00-01-grave-22ea9a.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "In front of them, the sea.",
+  "seed": 1,
+  "words_per_second": 2.49,
+  "in_range": true
+ },
+ "s00-02-grave-7df747.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "Behind them, six hundred chariots. And nowhere left to run.",
+  "seed": 1,
+  "words_per_second": 1.94,
+  "in_range": true
+ },
+ "s00-03-talk-d63acf.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most people remember this story as Moses parting the sea with his staff, like a hero in a film.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": true
+ },
+ "s00-04-pivot-3eb04f.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But read it closely, and Moses isn't the hero.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true
+ },
+ "s00-05-talk-40e57f.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Neither is Israel.",
+  "seed": 1,
+  "words_per_second": 1.83,
+  "in_range": false
+ },
+ "s01-01-story-07a911.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "When Pharaoh finally let them go, there was a short road out of Egypt.",
+  "seed": 1,
+  "words_per_second": 3.26,
+  "in_range": true
+ },
+ "s01-02-story-d7f149.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "It ran straight along the coast.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true
+ },
+ "s01-03-pivot-1fb5b6.wav": {
+  "section": 1,
+  "mode": "pivot",
+  "text": "God chose the long way.",
+  "seed": 1,
+  "words_per_second": 2.73,
+  "in_range": true
+ },
+ "s01-04-talk-24bc80.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "The short road was full of soldiers.",
+  "seed": 1,
+  "words_per_second": 2.79,
+  "in_range": true
+ },
+ "s01-05-story-9ab4bf.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And God knew his people.",
+  "seed": 1,
+  "words_per_second": 3.18,
+  "in_range": true
+ },
+ "s01-06-story-7b02d2.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "One battle, and they'd run straight back to slavery.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true
+ },
+ "s01-07-grave-0dab92.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Lest the people change their minds when they see war and return to Egypt.",
+  "seed": 3,
+  "words_per_second": 2.73,
+  "in_range": true
+ },
+ "s02-01-story-018e60.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And they weren't walking alone.",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": true
+ },
+ "s02-02-grave-3c4354.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "And the LORD went before them by day in a pillar of cloud to lead them along the way,",
+  "seed": 3,
+  "words_per_second": 3.46,
+  "in_range": false
+ },
+ "s02-03-grave-5ec843.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "and by night in a pillar of fire to give them light, that they might travel by day and by night.",
+  "seed": 2,
+  "words_per_second": 3.29,
+  "in_range": false
+ },
+ "s02-04-story-aaab18.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Then God told Moses something strange.",
+  "seed": 2,
+  "words_per_second": 2.6,
+  "in_range": true
+ },
+ "s02-05-story-c9417f.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Turn back, and camp by the sea.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true
+ },
+ "s03-01-pivot-ac2444.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "Then Pharaoh changed his mind.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": true
+ },
+ "s03-02-story-de4a3d.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "His slaves were gone. His brick fields were empty.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true
+ },
+ "s03-03-story-9bbe97.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And his officials asked the question he was already thinking.",
+  "seed": 1,
+  "words_per_second": 3.25,
+  "in_range": true
+ },
+ "s03-04-grave-a62589.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "What is this we have done, that we have let Israel go from serving us?",
+  "seed": 1,
+  "words_per_second": 2.81,
+  "in_range": true
+ },
+ "s03-05-story-e360e5.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "So Pharaoh took six hundred of his best chariots, and every other chariot in Egypt, and went after them.",
+  "seed": 1,
+  "words_per_second": 3.05,
+  "in_range": true
+ },
+ "s04-01-story-db4c34.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Israel looked up and saw the army coming.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s04-02-story-340603.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "And they were terrified. They turned on Moses.",
+  "seed": 1,
+  "words_per_second": 2.68,
+  "in_range": true
+ },
+ "s04-03-grave-353196.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "Is it because there are no graves in Egypt that you have taken us away to die in the wilderness?",
+  "seed": 3,
+  "words_per_second": 3.23,
+  "in_range": false
+ },
+ "s05-01-pivot-262aba.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "Moses answered with the strangest battle plan in history.",
+  "seed": 1,
+  "words_per_second": 2.52,
+  "in_range": true
+ },
+ "s05-02-grave-6479e5.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Fear not, stand firm, and see the salvation of the LORD, which he will work for you today.",
+  "seed": 1,
+  "words_per_second": 2.83,
+  "in_range": true
+ },
+ "s05-03-grave-d4bda7.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "The LORD will fight for you, and you have only to be silent.",
+  "seed": 1,
+  "words_per_second": 2.93,
+  "in_range": false
+ },
+ "s05-04-talk-9eedfa.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Israel didn't have to fight.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s05-05-story-9028f0.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "They only had to trust.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s05-06-story-2f6886.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Then God told Moses to stop crying out, and to tell the people to go forward.",
+  "seed": 1,
+  "words_per_second": 3.49,
+  "in_range": true
+ },
+ "s06-01-story-84c756.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Then the cloud moved.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true
+ },
+ "s06-02-story-19c147.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "It went behind Israel and stood between the two armies.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true
+ },
+ "s06-03-story-492acc.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Darkness on one side, light on the other.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s06-04-grave-901ea4.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Then Moses stretched out his hand over the sea,",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true
+ },
+ "s06-05-grave-746b98.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "and the LORD drove the sea back by a strong east wind all night and made the sea dry land,",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true
+ },
+ "s06-06-grave-b9f264.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "and the waters were divided.",
+  "seed": 2,
+  "words_per_second": 2.58,
+  "in_range": true
+ },
+ "s07-01-pivot-a96700.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "And the people walked in.",
+  "seed": 1,
+  "words_per_second": 4.07,
+  "in_range": true
+ },
+ "s07-02-grave-5e0bc1.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "And the people of Israel went into the midst of the sea on dry ground,",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": false
+ },
+ "s07-03-grave-bb8d3e.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "the waters being a wall to them on their right hand and on their left.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": false
+ },
+ "s07-04-story-1d08f2.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Through the night they crossed, on the floor of the sea.",
+  "seed": 1,
+  "words_per_second": 3.75,
+  "in_range": false
+ },
+ "s08-01-story-08dba1.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Pharaoh's army followed them in.",
+  "seed": 2,
+  "words_per_second": 2.44,
+  "in_range": true
+ },
+ "s08-02-story-ac9bc6.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Then their chariot wheels began to stick.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true
+ },
+ "s08-03-story-41ef33.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "And the Egyptians knew.",
+  "seed": 2,
+  "words_per_second": 3.39,
+  "in_range": true
+ },
+ "s08-04-grave-4125dc.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "Let us flee from before Israel, for the LORD fights for them against the Egyptians.",
+  "seed": 1,
+  "words_per_second": 2.57,
+  "in_range": true
+ },
+ "s08-05-grave-5173eb.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "Then the morning came.",
+  "seed": 1,
+  "words_per_second": 2.31,
+  "in_range": true
+ },
+ "s08-06-grave-5fd745.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "Moses stretched out his hand, and the sea came back.",
+  "seed": 1,
+  "words_per_second": 2.46,
+  "in_range": true
+ },
+ "s08-07-story-6ea5b4.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "By sunrise, Pharaoh's army was gone.",
+  "seed": 2,
+  "words_per_second": 2.32,
+  "in_range": false
+ },
+ "s08-08-story-39fbf0.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Not one of them remained.",
+  "seed": 1,
+  "words_per_second": 2.92,
+  "in_range": true
+ },
+ "s09-01-story-0b1ced.wav": {
+  "section": 9,
+  "mode": "story",
+  "text": "On the other shore, Moses' sister Miriam took a tambourine, and all the women danced with her.",
+  "seed": 1,
+  "words_per_second": 3.05,
+  "in_range": true
+ },
+ "s09-02-grave-4ada44.wav": {
+  "section": 9,
+  "mode": "grave",
+  "text": "Sing to the LORD, for he has triumphed gloriously; the horse and his rider he has thrown into the sea.",
+  "seed": 1,
+  "words_per_second": 2.83,
+  "in_range": true
+ },
+ "s09-03-talk-7a0a6e.wav": {
+  "section": 9,
+  "mode": "talk",
+  "text": "Notice who they sang about.",
+  "seed": 2,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s09-04-story-db59d4.wav": {
+  "section": 9,
+  "mode": "story",
+  "text": "Not Moses. Not themselves. The LORD.",
+  "seed": 1,
+  "words_per_second": 2.06,
+  "in_range": false
+ },
+ "s10-01-talk-871460.wav": {
+  "section": 10,
+  "mode": "talk",
+  "text": "Remember the line?",
+  "seed": 2,
+  "words_per_second": 2.31,
+  "in_range": false
+ },
+ "s10-02-story-3d2326.wav": {
+  "section": 10,
+  "mode": "story",
+  "text": "The LORD will fight for you.",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true
+ },
+ "s10-03-story-e44eb4.wav": {
+  "section": 10,
+  "mode": "story",
+  "text": "Israel would need it.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s10-04-story-7f57a7.wav": {
+  "section": 10,
+  "mode": "story",
+  "text": "Ahead lay a desert with no bread and no water.",
+  "seed": 1,
+  "words_per_second": 3.12,
+  "in_range": true
+ },
+ "s10-05-story-713abe.wav": {
+  "section": 10,
+  "mode": "story",
+  "text": "And a mountain, where God would speak.",
+  "seed": 1,
+  "words_per_second": 3.27,
+  "in_range": true
+ },
+ "s10-06-pivot-20f5b6.wav": {
+  "section": 10,
+  "mode": "pivot",
+  "text": "But that's the next story.",
+  "seed": 1,
+  "words_per_second": 3.57,
+  "in_range": true
+ }
+}
