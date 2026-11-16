@@ -30,7 +30,8 @@ torch CUDA, pyloudnorm, praat-parselmouth, transformers). Models are cached in `
    skipping a chunk; transcribe the affected sections one at a time before believing it.
 5. Fix wrong words: `fix_lines.py --ref-dir reference/own-voice --name <name> --seeds 4-29 8.2 9.2`
    (section.passage numbers from passages.json or --plan). It only replaces a take whose transcript
-   matches the script; very short lines may need 20+ seeds. Then rerun step 3 (seconds, all cached).
+   matches the script; very short lines may need 20+ seeds. It has no `--natural` flag, and it does NOT rebuild the
+   full WAV: rerun step 3 (seconds, all cached) before checking or aligning again, or the old takes are still in it.
 6. Word timings for the video: `align_words.py --script ... --audio full/<name>/<name>-natural.wav --out ..\videos\<slug>\words.js`
    Expect about 98% of words timed directly; it lists every misheard or filled stretch.
 
@@ -65,7 +66,8 @@ out at 147 words a minute, 4:21.
 
 ## CPU-only machines (cloud sessions)
 
-- Chatterbox runs on CPU at about 20-30 s per take (4 cores); one 4-minute episode takes 1-2 hours.
+- Chatterbox runs on CPU at about 13 s per take (4 cores); the Ten Plagues (4:07, 60 lines) took about 20 minutes,
+  the two-section test about 8.
   Pip installs: `chatterbox-tts`, `setuptools<81` (perth needs pkg_resources), `pyloudnorm praat-parselmouth librosa`.
 - Whisper steps (check_styled, fix_lines, align_words) use `voice/asr_fast.py` (faster-whisper, int8) when it is
   installed and there is no CUDA GPU: about 3 minutes for a full check instead of over an hour with transformers.

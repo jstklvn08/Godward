@@ -166,8 +166,14 @@ Load them after the engine: `<script src="../_kit/people.js"></script><script sr
 ### PPL: the round figures as a rig
 Same shapes, colours, dot eyes and halftone paper as `E.chubby` (feet at x,y, ~215*s tall), with a thinner sticker
 edge (own `pplHt` filter, dilate 3.4 instead of 6-7) and a soft contact shadow under the feet. New abilities:
-- arms are two bones with IK (46+46, never longer: an out-of-reach target gets a straight arm pointing at it; the user flagged a stretched arm reaching the ground): `near`/`far` = `{x,y}` world target for the hand, or
-  `'up' | 'open' | 'chest' | 'cover'` (hand over eyes/mouth) | null (rest). Near arm draws in front of the body, far behind.
+- arms are ONE straight stub from the shoulder, like the original round figures (user: "u dont have to put extra joints
+  unless nessesarry"). Rest length 54, a reach lengthens it to 86 at most, and it never folds. `near`/`far` = `{x,y}`
+  world target for the hand, or `'up' | 'open' | 'chest' | 'cover'` (the stub angles inward) | null (rest: hanging
+  straight, slightly out). Near arm draws in front of the body, far behind; an arm that would cross a face goes behind
+  the head. `PPL.ik` is kept for pages that call it.
+- `kid:true` (no beard; use it on every child), `talk:true` (head bob and moving mouth), `blush:true` to opt into
+  cheeks (off by default). Brows show only for fear, awe and surprise. The rig exposes `r.hf`, the head's facing (-1
+  when the head turns away from the body), for anything drawn over the head (Pharaoh's nemes in the Ten Plagues).
 - `look:{x,y}` moves the pupils toward a point and tilts the head; a target behind turns the head round. `'up'`/`'down'`.
 - `expr`: `calm joy tender fear awe sad surprised`, or `[a,b,k]` to blend over a beat (`['awe','joy',prog(t,a,b)]`).
   Wide eyes get white rings, joy gets laughing arcs, brows lift at the inner end for worry/awe; blinks by itself.

@@ -39,6 +39,9 @@ draft against this list before sending it; it is cheaper than another round of n
   Resting arms hang straight. Children get `kid:true` (no beard).
 - No hand or arm ever crosses a face, the person's own or anyone else's (a raised arm goes up and out; a hug or
   carry arm goes behind the other head; a hand on a shoulder rests below the chin).
+- Headwear and costume never cover the eyes or turn the face lopsided (Pharaoh's headcloth hid an eye; the user flagged
+  it). Symbols on a person must read as what they are: a "hard heart" is a cracked stone heart, not a grey disc. Match
+  the expression to the line (no smile on "his heart was hard").
 - Houses must not be plain boxes ("houses look bland, refine it"): mud-brick courses, flat roofs with parapets and
   beam ends, upper rooms, ladders, awnings, lattice windows, lamplight, jars, laundry, smoke.
 - Backgrounds must not be bland ("background looks bland fix it"): no big empty gradient skies, no repeated

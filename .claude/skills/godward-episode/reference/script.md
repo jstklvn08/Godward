@@ -55,15 +55,18 @@ script the first finished episode actually used: short, plain, 11 sections, 639 
 
 ## Scripture
 
-- Never type scripture from memory. Write `{{ESV Genesis 3:19}}` with a note of which part to keep,
+- Never type scripture from memory unless the user tells you to (Ten Plagues: no key, "just copy the wording as close
+  as possible"; then write the trimmed ESV text into the `.esv.md` yourself and ask the user to check it against their
+  Bible). Otherwise write `{{ESV Genesis 3:19}}` with a note of which part to keep,
   then `set ESV_API_KEY=...` and run `python scripts/fill_esv.py scripts/<name>.md` to get
   `<name>.esv.md` (git-ignored, Crossway copyright). Render voice and on-screen text from the filled
   copy. Never ask the user to paste the key in chat.
 - **ESV is the translation for every episode** (user, Nov 2026: "save skill as ESV"). The key is read
   from `.env` at the repo root first (`ESV_API_KEY=<40-character key>`), then from the environment.
   The Windows user variable `ESV_API_KEY` held a stale 8-character value that the API rejects with
-  403, so a 403 means the key is wrong, not the API. If no working key exists, stop and ask the user
-  to add one to `.env`; do not switch to KJV unless the user says so (`fill_esv.py --kjv` exists only
+  403, so a 403 means the key is wrong, not the API. In a cloud session there is no `.env`: ask with the
+  credential form (host `api.esv.org`, header `Authorization: Token <key>`), never in chat. If no working key
+  exists, stop and ask the user; do not switch to KJV unless the user says so (`fill_esv.py --kjv` exists only
   for that). Never mix translations in one episode.
 - Partial verses: the fill inserts whole verses. Trim them in the filled file with
   `python scripts/trim_verses.py scripts/<name>.esv.md` (add a rule there for each new partial verse),
