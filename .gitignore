@@ -26,3 +26,6 @@ voice/full/*/chunks/
 # Files filled with ESV text (Crossway copyright)
 *.esv.md
 *.esv.json
+
+# Post packs: rebuilt from videos/<slug>/ by tools/package.js
+posts/

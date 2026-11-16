@@ -5,7 +5,7 @@ description: Make a Godward Bible-story episode end to end, the way "Creation an
 
 # Godward episode
 
-An episode is built in seven stages. Each stage has a tool in this repo and a checkpoint where the
+An episode is built in nine stages. Each stage has a tool in this repo and a checkpoint where the
 user sees or hears something before the next expensive step. The reference pages hold the detail:
 
 | Stage | Read | Main tool |
@@ -17,6 +17,8 @@ user sees or hears something before the next expensive step. The reference pages
 | 5 Sound | reference/audio.md | `tools/audio/` |
 | 6 Render | this page | `tools/render.js` |
 | 7 Thumbnail and delivery | this page | `tools/render.js shot` |
+| 8 Caption / description (IG Reel) | this page | `videos/<slug>/caption-ig.txt` |
+| 9 Post pack | this page | `tools/package.js` |
 
 Always read **reference/taste.md** before showing the user anything: it is every note the user
 gave on episode 1, and following it saves rounds of feedback.
@@ -37,7 +39,8 @@ videos/<slug>/episode.html      the page (copied from videos/_template/)
 videos/<slug>/words.js          word timings (align_words.py)
 videos/<slug>/audio-cues.json   soundtrack plan
 videos/<slug>/build/            audio stems, mix, stills, samples (git-ignored)
-videos/<slug>/<slug>-vertical.mp4, thumbnail-ig-4x5.png
+videos/<slug>/<slug>-vertical.mp4, thumbnail-ig-4x5.png, caption-ig.txt
+posts/<slug>/                   post pack: reel, cover, caption (tools/package.js); posts/index.html lists all
 ```
 
 ## Stage by stage
@@ -121,6 +124,40 @@ render with `node tools/render.js shot <page.html> <out.png> 1080 1350` (the pag
 `window.ready=true` when drawn). Deliver with SendUserFile. Remind the user of the description
 credits: ESV notice, and that the narration is AI-generated from their own voice (YouTube's
 synthetic-content disclosure). Offer to commit the sources (not the MP4s or stems).
+
+**8. Caption / description for the IG Reel post.** Write `videos/<slug>/caption-ig.txt` (plain text,
+committed with the sources) and also paste it in chat, ready to copy. Build it from the script's
+thesis, in this order:
+1. **Hook line**, under about 125 characters: only the start shows before "more". A question or a
+   turn the episode answers ("One tree. One rule. Everything changed."), not the title restated.
+2. **Two to four short lines** on what the episode shows and why it matters today. Plain words, no
+   sermon, no spoilers of the final line.
+3. **The passage**, e.g. `📖 Genesis 1–3 (ESV)`. If you quote a verse, copy it exactly from the
+   filled `.esv.md`; never paraphrase inside quote marks.
+4. **One ask**: follow for the next episode, save it, or send it to someone. Asks live here, never
+   on screen (see the outro rule).
+5. **3–5 hashtags**, specific before broad: `#genesis #bible #biblestory #christian #godward`.
+6. **Credits**, last, after a blank line: the ESV notice ("Scripture quotations are from the ESV®
+   Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway. Used by permission. All
+   rights reserved."; check esv.org for the current wording) and "Narration: AI-generated from the
+   creator's own voice."
+Keep it under 2,200 characters (Instagram's limit), with line breaks between parts. Remind the user to
+turn on Instagram's AI label (Advanced settings) when posting, and to use the IG 4:5 thumbnail as the
+cover. Write a separate YouTube/TikTok description only if the user asks.
+*Checkpoint: the user approves the caption before posting.*
+
+**9. Post pack.** Gather the three things a post needs into one place:
+```
+node tools/package.js <slug>
+```
+It writes `posts/<slug>/<slug>-reel.mp4` (the outro-joined video: `<slug>-final.mp4`, else the newest
+`*-final.mp4` or `*-with-outro.mp4`; pass `--video <file>` to choose), `<slug>-cover.png` (from
+`thumbnail-ig-4x5.png`) and `<slug>-caption.txt` (from `caption-ig.txt`), then rebuilds
+`posts/index.html`: one page listing every episode with its cover, playable video, caption with a copy
+button, and a "Ready to post" or "Missing: ..." badge. The video is hard-linked, so it takes no extra
+disk space; re-run the command after any re-render, cover or caption change. Never package a video
+without the outro. `node tools/package.js --index` only rebuilds the page. Tell the user to open
+`posts/index.html` to post from.
 
 ## Working rules
 
