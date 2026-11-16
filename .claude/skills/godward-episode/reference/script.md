@@ -65,8 +65,9 @@ script the first finished episode actually used: short, plain, 11 sections, 639 
   from `.env` at the repo root first (`ESV_API_KEY=<40-character key>`), then from the environment.
   The Windows user variable `ESV_API_KEY` held a stale 8-character value that the API rejects with
   403, so a 403 means the key is wrong, not the API. In a cloud session there is no `.env`: ask with the
-  credential form (host `api.esv.org`, header `Authorization: Token <key>`), never in chat. If no working key
-  exists, stop and ask the user; do not switch to KJV unless the user says so (`fill_esv.py --kjv` exists only
+  credential form (host `api.esv.org`, header `Authorization: Token <key>`), never in chat. With no working key,
+  fill from Bible Gateway's ESV page instead: `fill_esv.py <script> --bg` (check long verses word for word). Otherwise
+  stop and ask the user; do not switch to KJV unless the user says so (`fill_esv.py --kjv` exists only
   for that). Never mix translations in one episode.
 - Partial verses: the fill inserts whole verses. Trim them in the filled file with
   `python scripts/trim_verses.py scripts/<name>.esv.md` (add a rule there for each new partial verse),
