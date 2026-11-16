@@ -1,0 +1,64 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The Ten Plagues of Egypt: Instagram Thumbnail</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:1080px;height:1350px}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="../_kit/people.js"></script>
+<script src="../_kit/fire.js"></script>
+<script src="../_kit/scenery.js"></script>
+<script>
+// Instagram feed post, 4:5 (1080x1350). Key content inside the centre 1012 px (profile-grid crop).
+// The Nile turned to blood at dusk under a pyramid; Moses (old, white beard) holds his staff over it, frogs on the
+// bank, a marked doorframe glowing in the corner; title "Who is the LORD?" on torn strips. God is never a figure.
+const {G,R,C,L,P,T,mix,rng,lerp}=K, Ell=K.E;
+const {tw,glow,strip,tape,label,mark,scribble,paperDefs}=S;
+const INK='#141416',YEL='#FFE100',CORAL='#FF5A48',GOLD='#E8B53A',BLOOD='#B0182A',W=1080,H=1350,t=5.3;
+const defs=`<defs>
+  <filter id="tex2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".62 .48" numOctaves="4" seed="11"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .9 .9 .9 0 -.98"/></filter>
+  <filter id="grain2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="2" seed="38"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="2.6" intercept="-.8"/><feFuncG type="linear" slope="2.6" intercept="-.8"/><feFuncB type="linear" slope="2.6" intercept="-.8"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A0A24"/><stop offset=".55" stop-color="#8A1A2A"/><stop offset="1" stop-color="#FF8A4C"/></linearGradient>
+  <radialGradient id="vig" cx="50%" cy="50%" r="72%"><stop offset=".55" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".55"/></radialGradient>
+</defs>`;
+const pyramid=(x,y,s,c)=>P(`M${x-260*s} ${y}L${x} ${y-300*s}L${x+260*s} ${y}Z`,c)+P(`M${x} ${y-300*s}L${x+260*s} ${y}L${x+40*s} ${y}Z`,SC.mx(c,'#000000',.25));
+function frog(x,y,s,f=1){const col='#4AAA3A',dk='#1E5A1A';return G(`translate(${x} ${y}) scale(${s*f} ${s})`,
+  Ell(-14,-6,16,10,dk)+Ell(22,-4,12,8,dk)+Ell(0,-22,34,22,col,{stroke:dk,'stroke-width':3})+C(14,-40,11,col,{stroke:dk,'stroke-width':3})+C(-6,-40,11,col,{stroke:dk,'stroke-width':3})+C(15,-41,5,'#111')+C(-5,-41,5,'#111')+P('M2 -18Q14 -12 28 -20','none',{stroke:dk,'stroke-width':2.5}));}
+function scene(){
+  let g=R(0,0,W,H,0,'url(#sky)');
+  const r=rng(5);for(let i=0;i<60;i++)g+=C(r()*W,r()*420,1+r()*2.4,'#FFF6DA',{opacity:.3+.5*r()});
+  g+=glow(820,620,420,'#FFB070',.45)+C(820,640,70,'#FFD8A0',{opacity:.9});
+  g+=pyramid(250,760,1.2,'#5A2A3A')+pyramid(560,760,.7,'#4A2232');
+  for(let i=0;i<5;i++)if(i!==3)g+=SC.tree(t,40+i*190+r()*40,770,.6+r()*.25,{kind:'palm',col:'#2A1018',col2:'#3A1A20'});
+  // the river, blood red, with ripples and the sun's reflection
+  g+=R(0,760,W,240,0,BLOOD)+Ell(820,800,60,12,'#FF8A7A',{opacity:.6});
+  for(let i=0;i<10;i++){const x=r()*W,y=790+r()*190;g+=P(`M${x} ${y}q30 -10 60 0t60 0`,'none',{stroke:'#FF9A8A',opacity:.35,'stroke-width':4});}
+  for(let i=0;i<4;i++){const x=180+i*230,y=850+(i%2)*60;g+=Ell(x,y,30,10,'#D8D0C0',{stroke:'#6A6A5A','stroke-width':3})+P(`M${x+26} ${y}l18 -12v24Z`,'#D8D0C0');}
+  g+=R(0,990,W,400,0,'#3A1E14');
+  // a marked doorframe glowing at the right edge (Passover)
+  g+=R(800,800,230,210,6,'#7A5A44',{stroke:'#3A2414','stroke-width':5})+R(860,870,100,140,6,'#FFC86A')+glow(910,940,160,'#FFC86A',.5)+
+    mark('M850 862L970 862',1,BLOOD,14)+mark('M852 870L852 1006',1,BLOOD,12)+mark('M968 870L968 1006',1,BLOOD,12)+Ell(1000,1006,22,9,'#C8B08A')+Ell(1000,1002,16,4,BLOOD);
+  // Moses with his staff raised over the river
+  const q={x:470,y:1250,s:2.6,face:1,tunic:'#E8DCC0',tunic2:'#8A6A40',skin:'#D9965E',shade:'#A86A3E',hair:'#ECE8DE',expr:'calm',look:{x:820,y:820},t};
+  const r0=PPL.rig(q),sh=r0.shoulder('near');q.near={x:sh[0]+70*2.6,y:sh[1]-75*2.6};
+  const rg=PPL.rig(q),h=rg.hand('near');
+  g+=rg.draw('back')+rg.draw('body')+rg.draw('head')+L(h[0],h[1]-160,h[0]+6,h[1]+200,'#4A2E16',20)+L(h[0],h[1]-160,h[0]+6,h[1]+200,'#7A5432',12)+C(h[0],h[1]-160,14,'#7A5432')+rg.draw('front');
+  // frogs on the bank
+  [[150,1300,2.4,1],[860,1290,2.8,-1],[960,1200,1.6,-1],[260,1220,1.6,1],[690,1320,1.5,-1],[110,1120,1.2,1]].forEach(([x,y,s,f])=>g+=frog(x,y,s,f));
+  return g;
+}
+function title(){
+  let g='';
+  const s1='The Ten Plagues',s2='Who is the LORD?',a=72,b=96;
+  const w1=tw(s1,a,'Georgia',700)+90,w2=tw(s2,b,'Georgia',700)+90;
+  g+=`<g transform="rotate(-2.5 ${W/2} 120)">${strip(60,58,w1,118,3,'#F6EFDC',{ax:12,ay:4})}${T(105,142,s1,{size:a,font:'Georgia',weight:700,fill:INK})}${tape(60+w1-30,60,130,9)}</g>`;
+  g+=`<g transform="rotate(1.5 ${W/2} 260)">${strip(44,196,w2,150,5,'#F6EFDC',{ax:14,ay:5})}${S.highlight(86,214,tw(s2,b,'Georgia',700)+8,112,1,YEL)}${T(88,302,s2,{size:b,font:'Georgia',weight:700,fill:INK})}${tape(70,196,140,-10)}</g>`;
+  g+=label(70,390,'EXODUS 5–12',{size:28,rot:-2,bg:CORAL});
+  return g;
+}
+document.querySelector('svg').innerHTML=paperDefs(t)+defs+scene()+title()+
+  R(0,0,W,H,0,'url(#vig)')+
+  `<rect width="${W}" height="${H}" filter="url(#tex2)" opacity=".2" style="mix-blend-mode:multiply"/>`+
+  `<rect width="${W}" height="${H}" filter="url(#grain2)" opacity=".24" style="mix-blend-mode:overlay"/>`;
+window.ready=true;
+</script>
