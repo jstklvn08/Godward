@@ -40,6 +40,13 @@ RULES = [
     ("esv", "I AM WHO", " I AM.", ""),  # 04 third: keeps "I AM WHO I AM."
     ("esv", "This is my name forever", "throughout all generations", "."),  # 04 third
     ("esv", "Our Father in heaven", "hallowed be your name", "."),  # 04 third
+    ("esv", "Lest the people change their minds", "return to Egypt", "."),  # 13 red sea
+    ("esv", "What is this we have done", "from serving us", "?"),  # 13 red sea
+    ("esv", "Is it because there are no graves", "die in the wilderness", "?"),  # 13 red sea
+    ("esv", "Fear not, stand firm", "for you today", "."),  # 13 red sea
+    ("esv", "The LORD will fight for you", "only to be silent", "."),  # 13 red sea (drops the speech's closing quote)
+    ("esv", "Let us flee from before Israel", "against the Egyptians", "."),  # 13 red sea
+    ("esv", "Sing to the LORD, for he has triumphed", "thrown into the sea", "."),  # 13 red sea
 ]
 
 
@@ -51,7 +58,7 @@ def main() -> int:
         if rule_tr != tr:
             continue
         # A filled verse is one “...” run; replace the whole quote with the kept part.
-        pattern = re.compile(r"“[^”]*?" + re.escape(start) + r".*?" + re.escape(end) + r"[^”]*”")
+        pattern = re.compile(r"“[^”]*?" + re.escape(start) + r".*?" + re.escape(end) + r"[^”]*”+")  # ”+ : a verse that ends a speech has two
         text, n = pattern.subn(lambda m: "“" + m.group(0)[m.group(0).index(start):m.group(0).index(end) + len(end)] + close + "”", text)
         print(f"{start!r}: {n} trimmed")
     path.write_text(text, encoding="utf-8")
