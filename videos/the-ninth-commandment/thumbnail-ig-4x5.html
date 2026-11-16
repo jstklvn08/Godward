@@ -1,0 +1,67 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The Ninth Commandment: Instagram Thumbnail</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:1080px;height:1350px}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script>
+// Instagram feed post, 4:5 (1080x1350). Key content inside the centre 1012 px (profile-grid crop).
+const {G,R,C,E,L,P,T,mix,rng}=K;
+const {tw,glow,ridge,strip,tape,label,mark,scribble,paperDefs}=S;
+const INK='#141416',YEL='#FFE100',CORAL='#FF5A48',GOLD='#E8B53A',W=1080,H=1350,t=5.3;
+const defs=`<defs>
+  <filter id="tex2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".62 .48" numOctaves="4" seed="11"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .9 .9 .9 0 -.98"/></filter>
+  <filter id="texL2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".05 .62" numOctaves="4" seed="23"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.2 1.2 0 0 -1.12"/></filter>
+  <filter id="grain2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="2" seed="38"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="2.6" intercept="-.8"/><feFuncG type="linear" slope="2.6" intercept="-.8"/><feFuncB type="linear" slope="2.6" intercept="-.8"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>
+  <linearGradient id="bg" x1="0" y1="0" x2=".5" y2="1"><stop offset="0" stop-color="#1A1440"/><stop offset=".6" stop-color="#2A1838"/><stop offset="1" stop-color="#3A2418"/></linearGradient>
+  <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B0"/><stop offset=".4" stop-color="${GOLD}"/><stop offset="1" stop-color="#8A5A12"/></linearGradient>
+  <radialGradient id="vig" cx="50%" cy="50%" r="72%"><stop offset=".55" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".55"/></radialGradient>
+</defs>`;
+const slab=(w,h)=>`M${-w/2} ${h/2}V${-h/2+w*.32}Q${-w/2} ${-h/2} 0 ${-h/2}Q${w/2} ${-h/2} ${w/2} ${-h/2+w*.32}V${h/2}Z`;
+const NUM=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+function tablet(x,y,w,h,first,seed){
+  const r=rng(seed);let g=G(`translate(${x} ${y})`,P(slab(w,h),'#7E7A70')+P(slab(w-24,h-24),'#9C988C'));
+  for(let i=0;i<5;i++){const k=first+i,on=k===8?1:.12,ly=y-h/2+w*.46+i*(h-w*.5)/5.2,x0=x-w/2+92,x1=x+w/2-34-r()*40;
+    let d=`M${x0} ${ly}`;for(let xx=x0;xx<x1;xx+=18)d+=`L${xx+9} ${ly+(r()-.5)*6}L${xx+18} ${ly}`;
+    g+=glow((x0+x1)/2,ly,(x1-x0)*.7,'#FFD86B',.6*on);
+    g+=T(x-w/2+60,ly+12,NUM[k],{size:34,font:'Georgia',weight:700,anchor:'middle',fill:mix('#4A4740','#FFF4C8',on)});
+    g+=P(d,'none',{stroke:'#4A4740','stroke-width':5,opacity:.8})+P(d,'none',{stroke:'#FFE9A8','stroke-width':3,opacity:on.toFixed(2)});}
+  return g;
+}
+function bubble(x,y,w,h){const r=rng(9);let g=P(`M${x+w/2-90} ${y+h/2}L${x+w/2-20} ${y+h/2+50}L${x+w/2-30} ${y+h/2}Z`,'#F6EFDC')+R(x-w/2,y-h/2,w,h,h*.4,'#F6EFDC',{stroke:INK,'stroke-width':4});
+  for(let i=0;i<3;i++){const ly=y-h/2+h*(.3+i*.22);let d=`M${x-w/2+34} ${ly}`;for(let xx=x-w/2+34;xx<x+w/2-40-r()*50;xx+=16)d+=`L${xx+8} ${ly+(r()-.5)*7}L${xx+16} ${ly}`;g+=P(d,'none',{stroke:'#6A6458','stroke-width':4});}
+  return g;}
+function scene(){
+  let g=R(0,0,W,H,0,'url(#bg)');
+  const r=rng(77);
+  for(let i=0;i<80;i++){const x=r()*W,y=r()*700,s=1+r()*3;g+=C(x,y,s,'#fff',{opacity:.2+.5*r()});}
+  g+=glow(540,860,700,'#FFD86B',.35);
+  g+=`<path d="${ridge(5,1180,16,200,-60,W+60,H+60)}" fill="#1E1A24"/>`;
+  // The tablets, the first line lit and circled.
+  g+=G('translate(540 860) scale(1.12) translate(-540 -860)',tablet(345,860,380,560,0,21)+tablet(735,860,380,560,5,33)+
+    mark(scribble(756,968,170,48,4),1,CORAL,9));
+  // A grey false witness, pointing; his words stamped LIE.
+  g+=S.chubby(930,1338,.8,{flip:-1,reach:.9,tunic:'#A4A4AE',tunic2:'#62626E',skin:'#C9B8A8',shade:'#9A8878',hair:'#3A3A44',eye:'#22222A'});
+  g+=bubble(700,1262,250,110);
+  g+=`<g transform="rotate(-8 700 1262)">${R(620,1222,160,80,6,'none',{stroke:CORAL,'stroke-width':7})}${T(700,1288,'LIE',{size:64,font:'Segoe UI Black',weight:900,anchor:'middle',fill:CORAL})}</g>`;
+  g+=label(80,1190,'NO FALSE WITNESS',{size:40,bg:CORAL,rot:-3});
+  return g;
+}
+function title(){
+  let g='';
+  const s1='The one about',s2='your words',a=78,b=126;
+  const w1=tw(s1,a,'Georgia',700)+90,w2=tw(s2,b,'Georgia',700)+100;
+  g+=`<g transform="rotate(-2.5 ${W/2} 120)">${strip(70,58,w1,122,3,'#F6EFDC',{ax:12,ay:4})}${T(115,146,s1,{size:a,font:'Georgia',weight:700,fill:INK})}${tape(70+w1-30,60,130,9)}</g>`;
+  g+=`<g transform="rotate(1.5 ${W/2} 260)">${strip(50,196,w2,166,5,'#F6EFDC',{ax:14,ay:5})}${S.highlight(98,216,tw(s2,b,'Georgia',700)+8,130,1,YEL)}${T(100,320,s2,{size:b,font:'Georgia',weight:700,fill:INK})}${tape(80,196,140,-10)}</g>`;
+  g+=label(80,410,'THE TEN COMMANDMENTS · PART 9',{size:30,rot:-2});
+  g+=label(80,468,'EXODUS 20:16',{size:26,rot:-2,bg:'#14141A'});
+  return g;
+}
+document.querySelector('svg').innerHTML=paperDefs(t)+defs+scene()+title()+
+  R(0,0,W,H,0,'url(#vig)')+
+  `<rect width="${W}" height="${H}" filter="url(#tex2)" opacity=".2" style="mix-blend-mode:multiply"/>`+
+  `<rect width="${W}" height="${H}" filter="url(#texL2)" opacity=".28" style="mix-blend-mode:screen"/>`+
+  `<rect width="${W}" height="${H}" filter="url(#grain2)" opacity=".26" style="mix-blend-mode:overlay"/>`;
+window.ready=true;
+</script>

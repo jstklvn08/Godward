@@ -27,5 +27,8 @@ voice/full/*/chunks/
 *.esv.md
 *.esv.json
 
+# Narration renders (WAVs stay local; passages.json and timings are committed)
+voice/full/**/*.wav
+
 # Post packs: rebuilt from videos/<slug>/ by tools/package.js
 posts/

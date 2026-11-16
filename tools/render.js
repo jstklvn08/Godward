@@ -135,7 +135,7 @@ async function video(html, out, opt) {
   console.log(`${parts.length} workers, frames ${F0}-${F1} (${((F1 - F0) / fps).toFixed(1)} s), ${opt.vertical ? '1080x1920' : '1920x1080'}, ${opt.quality || 'web'}`);
   await Promise.all(parts.map(([p, a, b]) => segment(html, p, a, b, fps, opt, quality)));
   const list = path.join(tmp, 'list.txt');
-  fs.writeFileSync(list, parts.map(p => `file '${p[0].replace(/\\/g, '/')}'`).join('\n'));
+  fs.writeFileSync(list, parts.map(p => `file '${path.resolve(p[0]).replace(/\\/g, '/')}'`).join('\n')); // absolute: ffmpeg reads list entries relative to the list
   const cat = ['-y', '-f', 'concat', '-safe', '0', '-i', list];
   if (opt.audio) {
     const af = ['aresample=48000', 'pan=stereo|c0=c0|c1=c0'];

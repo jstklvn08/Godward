@@ -1,0 +1,491 @@
+{
+ "s00-01-story-604e41.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "A courtroom goes quiet.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s00-02-story-97b99b.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "A witness stands up and points at a man.",
+  "seed": 2,
+  "words_per_second": 3.69,
+  "in_range": false
+ },
+ "s00-03-grave-321738.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "Every word he says is a lie.",
+  "seed": 2,
+  "words_per_second": 3.07,
+  "in_range": false
+ },
+ "s00-04-story-87662b.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And because of it, an innocent man dies.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s00-05-talk-a0de30.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "That really happened, in the Bible.",
+  "seed": 1,
+  "words_per_second": 3.43,
+  "in_range": true
+ },
+ "s00-06-grave-9d4513.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "You shall not bear false witness against your neighbor.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s00-07-talk-cab627.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most of us hear that as just don't lie.",
+  "seed": 2,
+  "words_per_second": 3.78,
+  "in_range": true
+ },
+ "s00-08-story-983fef.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "But read it again. It's about your neighbor.",
+  "seed": 1,
+  "words_per_second": 3.11,
+  "in_range": true
+ },
+ "s00-09-pivot-b5f851.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "It's about what your words do to someone else.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s01-01-story-d42b2f.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "In ancient Israel, there were no cameras, no fingerprints, and no video.",
+  "seed": 1,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s01-02-story-5fc99d.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Trials happened at the city gate, in front of everyone.",
+  "seed": 1,
+  "words_per_second": 2.87,
+  "in_range": true
+ },
+ "s01-03-story-38587f.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And every case rested on one thing: witnesses.",
+  "seed": 3,
+  "words_per_second": 2.37,
+  "in_range": false
+ },
+ "s01-04-talk-6341eb.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "So God built in a safeguard.",
+  "seed": 1,
+  "words_per_second": 3.49,
+  "in_range": true
+ },
+ "s01-05-grave-86466e.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Only on the evidence of two witnesses or of three witnesses shall a charge be established.",
+  "seed": 2,
+  "words_per_second": 2.63,
+  "in_range": true
+ },
+ "s01-06-talk-397a78.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "One voice was never enough.",
+  "seed": 1,
+  "words_per_second": 3.12,
+  "in_range": true
+ },
+ "s01-07-story-b9705e.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "A lie would need a partner.",
+  "seed": 3,
+  "words_per_second": 2.82,
+  "in_range": true
+ },
+ "s02-01-pivot-8476de.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "But even two witnesses can be bought.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s02-02-story-e4bc62.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "King Ahab wanted a vineyard.",
+  "seed": 1,
+  "words_per_second": 2.96,
+  "in_range": true
+ },
+ "s02-03-story-8b52a3.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "It belonged to a man named Naboth, and he wouldn't sell it.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true
+ },
+ "s02-04-story-3018d5.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "It was his family's land.",
+  "seed": 2,
+  "words_per_second": 2.78,
+  "in_range": true
+ },
+ "s02-05-story-2da132.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "So Queen Jezebel wrote letters, and arranged for two worthless men to accuse him in public.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": true
+ },
+ "s02-06-grave-eae814.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "And the worthless men brought a charge against Naboth in the presence of the people, saying,",
+  "seed": 3,
+  "words_per_second": 3.16,
+  "in_range": false
+ },
+ "s02-07-grave-4f2951.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Naboth cursed God and the king. It was a lie.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true
+ },
+ "s02-08-story-c744c2.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And on that lie, Naboth was put to death, and the king took his vineyard.",
+  "seed": 1,
+  "words_per_second": 3.3,
+  "in_range": true
+ },
+ "s02-09-talk-f531a4.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "The rule of two witnesses was kept.",
+  "seed": 1,
+  "words_per_second": 3.87,
+  "in_range": true
+ },
+ "s02-10-story-1b08a2.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The lie simply found a partner.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s03-01-talk-09c625.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "That's why the commandment says against your neighbor.",
+  "seed": 1,
+  "words_per_second": 3.28,
+  "in_range": true
+ },
+ "s03-02-talk-cc2dac.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "A false witness doesn't just bend the truth.",
+  "seed": 1,
+  "words_per_second": 3.32,
+  "in_range": true
+ },
+ "s03-03-story-8722f4.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He takes something. A name. A home. Sometimes a life.",
+  "seed": 7,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s03-04-talk-a9603a.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Christians have long read this commandment as guarding your neighbor's good name.",
+  "seed": 1,
+  "words_per_second": 3.39,
+  "in_range": true
+ },
+ "s04-01-pivot-df5bc3.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "And centuries later, it happened again.",
+  "seed": 3,
+  "words_per_second": 2.35,
+  "in_range": true
+ },
+ "s04-02-story-93ba15.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "On the night Jesus was arrested, the leaders went looking for witnesses against him.",
+  "seed": 1,
+  "words_per_second": 3.52,
+  "in_range": true
+ },
+ "s04-03-grave-49a168.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "For many bore false witness against him, but their testimony did not agree.",
+  "seed": 3,
+  "words_per_second": 2.96,
+  "in_range": false
+ },
+ "s04-04-talk-74e52f.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "They couldn't even get their lies to match.",
+  "seed": 1,
+  "words_per_second": 3.9,
+  "in_range": false
+ },
+ "s04-05-talk-329c45.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "The one who called himself the truth stood silent, while lies were told about him.",
+  "seed": 2,
+  "words_per_second": 3.42,
+  "in_range": true
+ },
+ "s05-01-pivot-95ed65.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "We don't stand at the city gate any more.",
+  "seed": 3,
+  "words_per_second": 3.91,
+  "in_range": true
+ },
+ "s05-02-story-9abed5.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "But the courtroom hasn't gone away.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s05-03-talk-aecc7d.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Now it's a group chat.",
+  "seed": 1,
+  "words_per_second": 3.82,
+  "in_range": true
+ },
+ "s05-04-story-363e85.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "A screenshot. A comment under a video.",
+  "seed": 1,
+  "words_per_second": 2.21,
+  "in_range": false
+ },
+ "s05-05-talk-caf93d.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "A rumour about someone, passed on because it's interesting.",
+  "seed": 1,
+  "words_per_second": 3.28,
+  "in_range": true
+ },
+ "s05-06-talk-2a0b46.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "I'm just saying what I heard.",
+  "seed": 1,
+  "words_per_second": 4.0,
+  "in_range": false
+ },
+ "s05-07-story-be926c.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "That's false witness, today.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true
+ },
+ "s05-08-story-c7b19c.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Sometimes it's half the story, cropped to look worse.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true
+ },
+ "s05-09-story-18601f.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And once it's shared, you can't take it back.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s06-01-pivot-b682e3.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "So what does God want instead?",
+  "seed": 1,
+  "words_per_second": 3.17,
+  "in_range": true
+ },
+ "s06-02-grave-66ab05.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Therefore, having put away falsehood, let each one of you speak the truth with his neighbor,",
+  "seed": 2,
+  "words_per_second": 3.11,
+  "in_range": false
+ },
+ "s06-03-grave-321a50.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "for we are members one of another.",
+  "seed": 1,
+  "words_per_second": 2.77,
+  "in_range": true
+ },
+ "s06-04-talk-c01d7a.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Members of one another.",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true
+ },
+ "s06-05-story-0d64b3.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Tear down someone's name, and you tear the body you belong to.",
+  "seed": 1,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s06-06-talk-a4b31a.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "And Paul ties that truth to love.",
+  "seed": 1,
+  "words_per_second": 3.63,
+  "in_range": true
+ },
+ "s06-07-grave-7ae617.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Rather, speaking the truth in love, we are to grow up in every way into him who is the head, into Christ.",
+  "seed": 3,
+  "words_per_second": 2.8,
+  "in_range": true
+ },
+ "s06-08-story-be0e9f.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "The opposite of false witness isn't only keeping quiet.",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true
+ },
+ "s06-09-story-13d29e.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "It's speaking up for someone when they're not in the room.",
+  "seed": 2,
+  "words_per_second": 3.48,
+  "in_range": true
+ },
+ "s07-01-talk-124c69.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Before you pass something on, ask yourself.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s07-02-story-ebb2d2.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Is it true? Is it fair? Would I say it to their face?",
+  "seed": 1,
+  "words_per_second": 2.95,
+  "in_range": true
+ },
+ "s07-03-grave-4870dc.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "Your words are a witness.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true
+ },
+ "s07-04-story-abc874.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Make sure they tell the truth about your neighbor.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true
+ },
+ "s07-05-pivot-a5f72a.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "And remember how Naboth's story began.",
+  "seed": 1,
+  "words_per_second": 2.31,
+  "in_range": true
+ },
+ "s07-06-talk-07f667.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Not with a lie.",
+  "seed": 1,
+  "words_per_second": 3.51,
+  "in_range": true
+ },
+ "s07-07-story-9d56dc.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "With a king who wanted something that wasn't his.",
+  "seed": 1,
+  "words_per_second": 3.5,
+  "in_range": true
+ },
+ "s07-08-story-0db85e.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "That's the last commandment, and it's next.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true
+ }
+}

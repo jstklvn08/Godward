@@ -19,7 +19,10 @@ draft against this list before sending it; it is cheaper than another round of n
   with a header, rather than showing a grid of small panels.
 - Not stagnant: something always moves. Characters breathe, shift weight and gesture while their
   line is spoken; verses appear and leave about a second after they are narrated.
-- Camera shake and punch-in only on a few focus beats (about one every 10 s); steady otherwise.
+- Camera shake and punch-in only on 2-3 big focus beats per episode; steady otherwise.
+- Calm camera ("in the first few sec of the vid, there is too much motion, zoom in and out"): at most one slow
+  push-in or pan per shot (2-3 s or longer), or a still hold. No zooming in and back out; cut to change framing.
+  Visual pace comes from cuts, new scenes and characters acting, not from the camera.
 - Frame the subject of the line ("this scene should focus on the man"). Don't go too tight
   ("too zoomed in ... see the whole picture"): use a wide shot when the whole scene matters.
 - Scale and motion must make sense: the serpent was too big and moved back and forth; it should
@@ -29,6 +32,21 @@ draft against this list before sending it; it is cheaper than another round of n
   out in the opening, not skipped.
 - Text must never be hidden, cut off or covered (a yellow label at 242 s was invisible; a "GENESIS
   1–3" label covered a word; a tag sat on the serpent).
+
+## People and settings (Ten Commandments and Ten Plagues feedback, Nov 2026)
+- People are the simple round figures (PPL): big round head, dot eyes, small smile, rounded tunic, stub legs, and each
+  arm ONE short straight stub with a round hand; no elbow ("u dont have to put extra joints unless nessesarry").
+  Resting arms hang straight. Children get `kid:true` (no beard).
+- No hand or arm ever crosses a face, the person's own or anyone else's (a raised arm goes up and out; a hug or
+  carry arm goes behind the other head; a hand on a shoulder rests below the chin).
+- Headwear and costume never cover the eyes or turn the face lopsided (Pharaoh's headcloth hid an eye; the user flagged
+  it). Symbols on a person must read as what they are: a "hard heart" is a cracked stone heart, not a grey disc. Match
+  the expression to the line (no smile on "his heart was hard").
+- Houses must not be plain boxes ("houses look bland, refine it"): mud-brick courses, flat roofs with parapets and
+  beam ends, upper rooms, ladders, awnings, lattice windows, lamplight, jars, laundry, smoke.
+- Backgrounds must not be bland ("background looks bland fix it"): no big empty gradient skies, no repeated
+  grass-and-rock foreground, no small subject in a thin band. Every scene gets a sky in its own mood colour,
+  landmark silhouettes, a real mid-ground and a foreground that belongs to the place, plus matching particles.
 
 ## Captions
 - Below the picture (vertical: about 68% of the height, y≈1300), clear of the platform's buttons.

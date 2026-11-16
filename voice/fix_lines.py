@@ -28,6 +28,7 @@ from transformers import pipeline  # noqa: E402
 import render_full  # noqa: E402
 import render_styled as r  # noqa: E402
 from generate import Narrator  # noqa: E402
+import asr_fast  # noqa: E402
 
 SEEDS = range(4, 10)
 
@@ -51,7 +52,11 @@ def main() -> int:
     r.use_ref_dir(args.ref_dir.resolve(), name)
     report_path = r.OUT / "passages.json"
     report = json.loads(report_path.read_text(encoding="utf-8"))
-    asr = pipeline("automatic-speech-recognition", model="openai/whisper-medium", device=-1, dtype=torch.float32)
+    if asr_fast.available():
+        def asr(item, generate_kwargs=None):
+            return {"text": asr_fast.text(item["raw"], "medium")}
+    else:
+        asr = pipeline("automatic-speech-recognition", model="openai/whisper-medium", device=-1, dtype=torch.float32)
     narrator = Narrator()
 
     for target in args.targets:
@@ -69,7 +74,7 @@ def main() -> int:
             wps = len(line.split()) / (len(render_full.trim(audio, sr)) / sr)
             heard = asr({"raw": librosa.resample(audio, orig_sr=sr, target_sr=16000), "sampling_rate": 16000},
                         generate_kwargs={"language": "en", "task": "transcribe"})["text"]
-            match = words(heard) == words(line)
+            match = words(heard) == words(line) or asr_fast.squash(heard) == asr_fast.squash(line)
             print(f"  seed {seed}: {wps:.2f} words/s, heard '{heard.strip()}' {'MATCH' if match else ''}", flush=True)
             score = (match, low <= wps <= high, -abs(wps - (low + high) / 2))
             if best is None or score > best[0]:

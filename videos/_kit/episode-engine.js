@@ -191,7 +191,8 @@
   }
   function burstCaption(t) {
     const c = st.bursts.find(c => t >= c.s - .03 && t < c.e); if (!c) return '';
-    const size = 78, F = 'Segoe UI', WT = 900, sp = tw(' ', size, F, WT), y = CAP_Y;
+    // The gap leaves room for the 14 px outline and the 8% pop of the current word (fonts with a narrow space touched).
+    const size = 78, F = 'Segoe UI', WT = 900, sp = tw(' ', size, F, WT) + size * .2, y = CAP_Y;
     const ws = c.w.map(w => tw(w[0].toUpperCase(), size, F, WT)), tot = ws.reduce((a, b) => a + b, 0) + sp * (ws.length - 1);
     let x = 540 - tot / 2, g = ''; const vis = c.w.filter(w => t >= w[1] - .03);
     c.w.forEach((w, k) => {
@@ -267,9 +268,10 @@
     const s = st.sheets[i]; let f = s.fore;
     if (typeof f === 'function') f = f(t);
     if (!f) return '';
-    const gc = f.grass, fc = f.flowers || []; let g = '';
-    g += `<path d="${ridge0(500 + i, 1180, 22, 170, -120, 2040, 1800)}" fill="${gc[1]}" opacity=".55"/><path d="${ridge0(510 + i, 1430, 26, 140, -120, 2040, 1800)}" fill="${gc[1]}"/>`;
-    const it = [...Array(170)].map((_, k) => [k, 1000 + Math.pow(hash(k, i * 13 + 1), .7) * 780]).sort((a, b) => a[1] - b[1]);
+    // f.top (optional, default 1000) starts the layer lower, to keep it clear of labels under the captions.
+    const gc = f.grass, fc = f.flowers || [], top = f.top || 1000, sh = top - 1000; let g = '';
+    g += `<path d="${ridge0(500 + i, 1180 + sh, 22, 170, -120, 2040, 1800)}" fill="${gc[1]}" opacity=".55"/><path d="${ridge0(510 + i, 1430 + sh * .5, 26, 140, -120, 2040, 1800)}" fill="${gc[1]}"/>`;
+    const it = [...Array(170)].map((_, k) => [k, top + Math.pow(hash(k, i * 13 + 1), .7) * (1780 - top)]).sort((a, b) => a[1] - b[1]);
     it.forEach(([k, y]) => {
       const x = hash(k, i * 13 + 2) * 2060 - 60, d = (y - 1010) / 760, sz = lerp(1.1, 3.6, d), sw = Math.sin(t * 1.5 + k) * 4 * sz, c = gc[k % 3];
       if (k % 9 === 0) { g += K.E(x, y, 26 * sz, 12 * sz, gc[1]) + K.E(x - 6 * sz, y - 4 * sz, 14 * sz, 6 * sz, gc[2], { opacity: .6 }); return; }
@@ -311,8 +313,10 @@
   }
   // One sheet through the vertical camera, held inside its paper so the wall never shows.
   // Zoom 0.845 or less is a deliberate wide shot; anything else is raised to at least 1.12.
+  // cfg.gentleZoom: true keeps every zoom as written (only the paper-edge clamps below apply), so a slow push
+  // from the wide shot (.84) to e.g. 1.05 is possible.
   function sheetView(i, t, tc) {
-    const c = camAt(i, tc), z = c.z <= .845 ? c.z : Math.max(c.z, 1.12);
+    const c = camAt(i, tc), z = st.cfg.gentleZoom ? c.z : c.z <= .845 ? c.z : Math.max(c.z, 1.12);
     let x = c.x, y = c.y;
     const xa = 540 / z - 30, xb = 1950 - 540 / z; x = xa < xb ? clamp(x, xa, xb) : 960;
     const ya = -640 + BANDY / z, yb = 1720 - (FH - BANDY) / z; y = ya < yb ? clamp(y, ya, yb) : 540;

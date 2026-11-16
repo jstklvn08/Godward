@@ -6,7 +6,7 @@
 //   node tools/package.js --index                         only rebuild posts/index.html
 //
 // It looks in videos/<slug>/ for:
-//   video      --video, else <slug>-final.mp4, else any *-final.mp4 or *-with-outro.mp4 (newest first).
+//   video      --video, else <slug>-vertical-outro.mp4, else any *-outro.mp4 or *-final.mp4 (newest first).
 //              Only outro-joined files count: every posted video ends with the Godward outro.
 //   cover      thumbnail-ig-4x5.png
 //   caption    caption-ig.txt
@@ -24,10 +24,10 @@ const IG_LIMIT = 2200;
 
 function findVideo(dir, slug, explicit) {
   if (explicit) return path.resolve(explicit);
-  const named = path.join(dir, `${slug}-final.mp4`);
+  const named = path.join(dir, `${slug}-vertical-outro.mp4`);
   if (fs.existsSync(named)) return named;
   const hits = fs.readdirSync(dir)
-    .filter(f => /-(final|with-outro)\.mp4$/i.test(f))
+    .filter(f => /-(final|outro)\.mp4$/i.test(f))
     .map(f => path.join(dir, f))
     .sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs);
   return hits[0] || null;

@@ -1,0 +1,205 @@
+{
+  "_doc": "Soundtrack for 'The Ninth Commandment' (Ten Commandments part 9). Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue, so re-voicing re-times the sound.",
+  "episode": "the-ninth-commandment",
+  "words": "words.js",
+  "duration": {"word": "next", "n": -1, "edge": "end", "offset": 7},
+  "marks": {
+    "gate": {"word": "In ancient Israel", "offset": -0.1},
+    "vineyard": {"word": "But even two", "offset": -0.1},
+    "lie": {"word": "It was a lie"},
+    "neighbor": {"word": "That's why the commandment", "offset": -0.1},
+    "trial": {"word": "And centuries later", "offset": -0.1},
+    "phone": {"word": "We don't stand", "offset": -0.1},
+    "truth": {"word": "So what does God want", "offset": -0.1},
+    "words": {"word": "Before you pass", "offset": -0.1},
+    "wanting": {"word": "And remember how", "offset": -0.1},
+    "lastWord": {"word": "next", "n": -1, "edge": "end"}
+  },
+  "motifs": {
+    "TRUE": [57, 64, 62, 66],
+    "TRUEm": [57, 64, 62, 65]
+  },
+  "scenes": [
+    {"name": "cold-open", "start": 0, "screen": "a quiet courtroom; a grey witness points, LIE stamped; then the tablets, the ninth line lit; Exodus 20:16", "music": "hushed low pad, high bells; choir under the verse", "sound": "room tone wind, gavel thump at 'goes quiet', shimmer as the ninth line glows"},
+    {"name": "gate", "start": "gate", "screen": "stone city gate, elders on a bench, crowd; cameras/fingerprints/video crossed out; witnesses 1, 2, 3", "music": "warm pad, plucked lyre pattern; TRUE motif on flute at the verse", "sound": "warm wind, sand, steps as the witnesses come forward"},
+    {"name": "vineyard", "start": "vineyard", "screen": "vineyard and wall, a gold crown peers over; letters fall; two grey men accuse Naboth; LIE", "music": "pastoral plucks, turning minor with the letters; SILENCE before 'It was a lie', then a low hit; TRUEm on piano", "sound": "birds and leaves, paper flutter for the letters; hit at 'It was a lie'"},
+    {"name": "neighbor", "start": "neighbor", "screen": "Exodus 20:16 again; a name, a home, a life; a golden ring guards the neighbor", "music": "soft pad, piano TRUE motif; bell at 'good name'", "sound": "shimmer"},
+    {"name": "trial", "start": "trial", "screen": "night hall, torches, a column of light; grey witnesses whose torn stories don't match", "music": "low drone, tremolo under the false witnesses; choir only at 'called himself the truth'", "sound": "torch flames, night wind, crickets"},
+    {"name": "phone", "start": "phone", "screen": "a giant phone, chat bubbles, screenshot flash; a rumour passed along and growing; a photo cropped; SHARE flies off", "music": "ticking pulse that speeds up, cold detuned piano", "sound": "soft pops per bubble, swish for the crop, whoosh for the share"},
+    {"name": "truth", "start": "truth", "screen": "warm light; people joined hand to hand; Ephesians 4:25 and 4:15; one steps in to shield another", "music": "warm pads, choir at the verses, TRUE motif on flute", "sound": "birds and warm wind"},
+    {"name": "words", "start": "words", "screen": "three check boxes; the tablets, the ninth line brightest", "music": "steady piano, bells on each tick", "sound": "shimmer"},
+    {"name": "wanting", "start": "wanting", "screen": "the vineyard again, the crown looking at it; end card", "music": "unresolved minor chord (pointing to coveting), then a held chord under the end card", "sound": "wind, a few birds"}
+  ],
+
+  "stems": {
+    "score": {
+      "seed": 9016,
+      "reverb": {"room": 0.85, "damp": 0.34, "wet": 0.36},
+      "autoLevel": {"window": 0.1, "smooth": 15, "min": 0.35, "max": 4},
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2.5},
+      "events": [
+        {"scene": "cold-open"},
+        {"inst": "pad", "at": 0, "to": "gate", "notes": [33, 45, 52, 57], "lv": 0.45, "bright": 0.25, "a": 2.5, "r": 1.5},
+        {"inst": "bell", "repeat": {"from": 0.3, "to": {"word": "That really happened"}, "every": 0.9, "shift": 0.2}, "seq": [81, 84, 88, 84], "lv": 0.35, "pan": "random", "dec": 3},
+        {"inst": "tremolo", "at": {"word": "is a lie"}, "to": {"word": "man dies", "edge": "end", "offset": 0.6}, "notes": [45, 48, 52], "lv": 0.8},
+        {"inst": "choir", "at": {"word": "You shall not bear", "offset": -0.3}, "to": {"word": "You shall not bear", "offset": 4}, "notes": [57, 61, 64, 69], "lv": 0.9, "att": 0.8, "rel": 1.5},
+        {"inst": "bell", "motif": "TRUE", "at": {"word": "It's about your neighbor"}, "step": 0.7, "transpose": 12, "lv": 0.6, "pan": 0.5, "dec": 3},
+
+        {"scene": "gate"},
+        {"inst": "pad", "repeat": {"from": "gate", "to": "vineyard", "every": 4}, "chords": [[45, 57, 64, 69], [43, 55, 62, 67], [41, 53, 60, 65], [40, 52, 59, 64]], "hold": 4.3, "lv": 0.65, "bright": 0.45, "a": 1.2, "r": 0.6},
+        {"inst": "pluck", "repeat": {"from": "gate+0.3", "to": "vineyard", "every": 0.3}, "seq": [69, 72, 76, 72, 69, 64, 67, 72], "lv": 0.25, "pan": [0.3, 0.7], "len": 1, "bright": 0.6},
+        {"inst": "flute", "motif": "TRUE", "at": {"word": "Only on the evidence", "offset": 0.3}, "step": 0.75, "transpose": 12, "len": 0.6, "lv": 0.8, "pan": 0.5},
+        {"inst": "drum", "at": [{"word": "of two witnesses"}, {"word": "of two witnesses", "offset": 0.35}, {"word": "of three witnesses"}], "lv": 1.2, "f0": 58},
+
+        {"scene": "vineyard"},
+        {"inst": "pad", "at": "vineyard", "to": {"word": "wrote letters"}, "notes": [45, 57, 61, 64, 69], "lv": 0.6, "bright": 0.5, "a": 1, "r": 1},
+        {"inst": "pluck", "repeat": {"from": "vineyard+0.3", "to": {"word": "wrote letters"}, "every": 0.32}, "seq": [76, 81, 85, 81, 76, 73], "lv": 0.25, "pan": [0.35, 0.65], "len": 1.1, "bright": 0.7},
+        {"inst": "pad", "at": {"word": "wrote letters"}, "to": "lie-0.7", "notes": [38, 50, 53, 57, 60], "lv": 0.75, "bright": 0.3, "a": 0.8, "r": 0.6},
+        {"inst": "tick", "repeat": {"from": {"word": "two worthless men"}, "to": "lie-0.8", "every": [0.6, 0.3]}, "lv": 0.8, "pan": {"rand": [0.3, 0.7]}},
+        {"inst": "glide", "at": "lie+0.1", "len": 3, "from": 38, "toNote": 33, "lv": 1, "pan": 0.5},
+        {"inst": "piano", "motif": "TRUEm", "at": {"word": "on that lie", "offset": 0.3}, "step": 0.85, "lv": 0.8, "pan": 0.5, "dec": 3},
+        {"inst": "pad", "at": {"word": "was kept", "offset": -0.5}, "to": "neighbor", "notes": [38, 50, 57, 62, 65], "lv": 0.6, "bright": 0.35, "a": 0.8, "r": 1},
+
+        {"scene": "neighbor"},
+        {"inst": "pad", "repeat": {"from": "neighbor", "to": "trial", "every": 4}, "chords": [[38, 50, 57, 62], [34, 46, 53, 58], [36, 48, 55, 60], [33, 45, 52, 57]], "hold": 4.3, "lv": 0.6, "bright": 0.4, "a": 1.2, "r": 0.6},
+        {"inst": "pluck", "at": [{"word": "A name"}, {"word": "A home"}, {"word": "Sometimes a life"}], "notes": [62, 66, 69], "strum": 0.08, "lv": 0.55, "pan": 0.5, "len": 1.2, "bright": 0.6},
+        {"inst": "piano", "motif": "TRUE", "at": {"word": "Christians have long", "offset": 0.4}, "step": 0.85, "lv": 0.8, "pan": 0.5, "dec": 3},
+        {"inst": "bell", "at": {"word": "good name"}, "note": 86, "lv": 0.6, "pan": 0.55, "dec": 3},
+
+        {"scene": "trial"},
+        {"inst": "pad", "at": "trial", "to": "phone", "notes": [26, 38, 45, 50], "lv": 0.8, "bright": 0.25, "a": 1.5, "r": 1},
+        {"inst": "tremolo", "at": {"word": "looking for witnesses"}, "to": {"word": "lies to match", "edge": "end", "offset": 0.5}, "notes": [50, 53, 56], "lv": 0.9},
+        {"inst": "drum", "at": [{"word": "lies to match"}, {"word": "lies to match", "offset": 0.3}], "lv": 1.4, "f0": 50},
+        {"inst": "choir", "at": {"word": "called himself the truth", "offset": -0.3}, "to": "phone-0.3", "notes": [62, 65, 69, 74], "lv": 0.85, "att": 1.2, "rel": 1.5},
+
+        {"scene": "phone"},
+        {"inst": "pad", "at": "phone", "to": "truth", "notes": [33, 45, 52], "lv": 0.5, "bright": 0.2, "a": 1.2, "r": 1},
+        {"inst": "tick", "repeat": {"from": {"word": "group chat"}, "to": {"word": "half the story"}, "every": [0.55, 0.25]}, "lv": 0.9, "pan": {"rand": [0.2, 0.8]}},
+        {"inst": "piano", "repeat": {"from": {"word": "A rumour"}, "to": "truth-0.5", "every": 1.5, "jitter": 1}, "pick": "random", "seq": [64, 67, 69, 72, 74, 76], "lv": 0.6, "pan": "random", "dec": 2.5, "detune": {"rand": [-0.006, 0.006]}},
+        {"inst": "reversed", "at": {"word": "take it back", "offset": -2}, "len": 2, "notes": [45, 52], "lv": 0.9},
+
+        {"scene": "truth"},
+        {"inst": "pad", "repeat": {"from": "truth", "to": "words", "every": 3.8}, "chords": [[45, 57, 61, 64, 69], [42, 54, 57, 61, 66], [38, 50, 57, 62, 66], [40, 52, 56, 59, 64]], "hold": 4.1, "lv": 0.75, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "choir", "at": {"word": "Therefore, having put", "offset": -0.3}, "to": {"word": "Members of one", "offset": 1}, "notes": [57, 61, 64, 69], "lv": 0.85, "att": 1, "rel": 1.5},
+        {"inst": "flute", "motif": "TRUE", "at": {"word": "Paul ties"}, "step": 0.75, "transpose": 12, "len": 0.6, "lv": 0.9, "pan": 0.5},
+        {"inst": "choir", "at": {"word": "Rather, speaking", "offset": -0.3}, "to": {"word": "into Christ", "edge": "end", "offset": 1.2}, "notes": [61, 64, 69, 73], "lv": 0.9, "att": 1, "rel": 1.5},
+        {"inst": "bell", "at": {"word": "speaking up for someone"}, "note": 81, "lv": 0.6, "pan": 0.6, "dec": 3},
+
+        {"scene": "words"},
+        {"inst": "pad", "at": "words", "to": "wanting", "notes": [38, 50, 57, 62, 66], "lv": 0.6, "bright": 0.45, "a": 1.2, "r": 1},
+        {"inst": "bell", "at": [{"word": "Is it true", "offset": 0.5}, {"word": "Is it fair", "offset": 0.5}, {"word": "Would I say", "offset": 0.5}], "note": 81, "lv": 0.55, "pan": 0.5, "dec": 2},
+        {"inst": "choir", "at": {"word": "Your words are a witness", "offset": -0.2}, "to": {"word": "Make sure", "offset": 4}, "notes": [62, 66, 69, 74], "lv": 0.9, "att": 0.8, "rel": 1.5},
+
+        {"scene": "wanting"},
+        {"comment": "unresolved: points to the tenth commandment", "inst": "pad", "at": "wanting", "to": {"mark": "lastWord", "offset": 0.6}, "notes": [38, 50, 55, 57, 64], "lv": 0.65, "bright": 0.4, "a": 1.2, "r": 1},
+        {"inst": "piano", "motif": "TRUEm", "at": {"word": "With a king who wanted"}, "step": 0.8, "lv": 0.75, "pan": 0.5, "dec": 3},
+        {"comment": "held chord under the end card", "inst": "pad", "at": {"mark": "lastWord", "offset": 0.3}, "to": {"mark": "lastWord", "offset": 6.5}, "notes": [38, 50, 57, 62, 66, 69], "lv": 0.9, "bright": 0.55, "a": 0.8, "r": 2},
+        {"inst": "bell", "motif": "TRUE", "at": {"mark": "lastWord", "offset": 1.6}, "step": 0.8, "transpose": 24, "lv": 0.5, "pan": 0.5, "dec": 3}
+      ]
+    },
+
+    "ambience": {
+      "seed": 9116,
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2},
+      "events": [
+        {"scene": "cold-open"},
+        {"inst": "wind", "at": 0, "to": "gate", "lv": 0.35, "fc": 320},
+        {"inst": "shimmer", "at": {"word": "That really happened"}, "len": 3, "lv": 0.6},
+
+        {"scene": "gate"},
+        {"inst": "wind", "at": "gate", "to": "vineyard", "lv": 0.55, "fc": 600},
+        {"inst": "sand", "at": "gate", "to": "vineyard", "lv": 0.35},
+        {"inst": "step", "repeat": {"from": {"word": "of two witnesses"}, "to": {"word": "One voice"}, "every": 0.45}, "lv": 0.35, "pan": {"ramp": [0.35, 0.65]}, "soft": 0.8},
+
+        {"scene": "vineyard"},
+        {"inst": "wind", "at": "vineyard", "to": "neighbor", "lv": 0.45, "fc": 700},
+        {"inst": "rustle", "at": "vineyard", "to": {"word": "wrote letters"}, "lv": 0.4},
+        {"inst": "bird", "repeat": {"from": "vineyard+0.5", "to": {"word": "wrote letters"}, "every": 1.8, "jitter": 1}, "lv": 0.5, "pan": "random"},
+
+        {"scene": "neighbor"},
+        {"inst": "shimmer", "at": {"word": "good name", "offset": -0.3}, "len": 3, "lv": 0.7},
+
+        {"scene": "trial"},
+        {"inst": "wind", "at": "trial", "to": "phone", "lv": 0.5, "fc": 380},
+        {"inst": "crickets", "at": "trial", "to": "phone", "lv": 0.35},
+        {"inst": "flame", "at": "trial", "to": "phone", "lv": 0.6, "pan": 0.5},
+
+        {"scene": "phone"},
+        {"inst": "wind", "at": "phone", "to": "truth", "lv": 0.3, "fc": 350},
+
+        {"scene": "truth"},
+        {"inst": "wind", "at": "truth", "to": "words", "lv": 0.5, "fc": 700, "pan": 0.6},
+        {"inst": "bird", "repeat": {"from": "truth+0.5", "to": "words", "every": 1.8, "jitter": 1}, "lv": 0.45, "pan": "random"},
+
+        {"scene": "words"},
+        {"inst": "shimmer", "at": {"word": "Your words are a witness", "offset": -0.3}, "len": 3, "lv": 0.7},
+
+        {"scene": "wanting"},
+        {"inst": "wind", "at": "wanting", "to": {"mark": "lastWord", "offset": 6}, "lv": 0.5, "fc": 650},
+        {"inst": "bird", "repeat": {"from": "wanting+0.5", "to": {"mark": "lastWord", "offset": 1}, "every": 2.2, "jitter": 1}, "lv": 0.4, "pan": "random"}
+      ]
+    },
+
+    "sfx": {
+      "seed": 9216,
+      "events": [
+        {"comment": "gavel: the courtroom goes quiet", "inst": "thump", "at": [{"word": "A courtroom goes quiet", "offset": -0.3}, {"word": "A courtroom goes quiet", "offset": -0.05}], "lv": 0.9},
+        {"comment": "pieces landing: soft paper taps", "inst": "paperTap", "at": [
+          {"word": "A witness stands up"}, {"word": "Every word he says"}, {"word": "innocent"}, {"word": "That really happened"}, {"word": "just don't lie"}, {"word": "It's about your neighbor"}, {"word": "what your words do"},
+          {"word": "no cameras"}, {"word": "no fingerprints"}, {"word": "no video"}, {"word": "the city gate"}, {"word": "rested on one thing", "offset": 0.6}, {"word": "of two witnesses"}, {"word": "of three witnesses"}, {"word": "One voice"}, {"word": "would need a partner"},
+          {"word": "King Ahab", "offset": 0.3}, {"word": "named Naboth"}, {"word": "family's land"}, {"word": "two worthless men", "offset": 0.4}, {"word": "was kept"}, {"word": "found a partner"},
+          {"word": "bend the truth"}, {"word": "He takes something"}, {"word": "A name"}, {"word": "A home"}, {"word": "Sometimes a life"}, {"word": "Christians have long", "offset": 0.4}, {"word": "good name"},
+          {"word": "looking for witnesses"}, {"word": "For many bore"}, {"word": "lies to match"}, {"word": "stood silent"},
+          {"word": "courtroom hasn't gone away"}, {"word": "group chat"}, {"word": "A screenshot"}, {"word": "A comment under"}, {"word": "I'm just saying"}, {"word": "That's false witness"}, {"word": "half the story"},
+          {"word": "Members of one"}, {"word": "Paul ties"}, {"word": "The opposite of false"}, {"word": "speaking up for someone"},
+          {"word": "Before you pass"}, {"word": "Is it true"}, {"word": "Is it fair"}, {"word": "Would I say"}, {"word": "Your words are a witness"},
+          {"word": "Not with a lie"}, {"word": "With a king who wanted", "offset": 0.4}],
+          "lv": 0.8, "pan": {"rand": [0.35, 0.65]}},
+        {"comment": "stamps", "inst": "thump", "at": [{"word": "is a lie"}, {"word": "It was a lie", "offset": 0.05}], "lv": 0.7},
+        {"comment": "strikes, Xs, ticks, highlights, the crop: soft swish", "inst": "swish", "at": [
+          {"word": "read it again"}, {"word": "no cameras", "offset": 0.4}, {"word": "no fingerprints", "offset": 0.4}, {"word": "no video", "offset": 0.3},
+          {"word": "cropped"}, {"word": "Is it true", "offset": 0.5}, {"word": "Is it fair", "offset": 0.5}, {"word": "Would I say", "offset": 0.5}, {"word": "With a king who wanted", "offset": -0.4}],
+          "len": 0.6, "lv": 0.5, "pan": 0.5},
+        {"comment": "letters flutter down", "inst": "flap", "at": {"word": "wrote letters"}, "n": 3, "lv": 0.4, "pan": 0.5},
+        {"comment": "chat bubbles pop", "inst": "chime", "at": [{"word": "group chat"}, {"word": "group chat", "offset": 0.42}, {"word": "group chat", "offset": 0.84}, {"word": "group chat", "offset": 1.26}, {"word": "group chat", "offset": 1.68}, {"word": "group chat", "offset": 2.1}], "note": 88, "lv": 0.35},
+        {"comment": "screenshot flash", "inst": "sparkle", "at": {"word": "A screenshot"}, "len": 0.8, "lv": 0.6, "pan": 0.5},
+        {"comment": "the share flies off", "inst": "whoosh", "at": {"word": "once it's shared"}, "len": 1, "lv": 0.8, "pan": 0.7},
+        {"comment": "sheet changes: whoosh 0.4 s before each", "inst": "whoosh", "at": ["gate-0.4", "vineyard-0.4", "neighbor-0.4", "trial-0.4", "phone-0.4", "truth-0.4", "words-0.4", "wanting-0.4"], "len": 0.8, "lv": 0.75, "pan": 0.5},
+        {"comment": "the ninth line lights", "inst": "sparkle", "at": {"word": "That really happened"}, "len": 2, "lv": 1, "pan": 0.55},
+        {"inst": "sparkle", "at": {"word": "called himself the truth"}, "len": 2.4, "lv": 0.9},
+        {"inst": "sparkle", "at": {"word": "Your words are a witness"}, "len": 2, "lv": 0.9},
+        {"comment": "the end card", "inst": "chime", "at": {"mark": "lastWord", "offset": 1.6}, "note": 74, "lv": 0.7}
+      ]
+    }
+  },
+
+  "mix": {
+    "voice": {"volume": 1.25},
+    "buses": [
+      {"name": "music", "stem": "score.wav", "volume": 0.8,
+       "duck": {"threshold": 0.02, "ratio": 4, "attack": 30, "release": 500, "makeup": 1},
+       "envelope": [
+         {"comment": "silence before 'It was a lie', back after the hit", "from": {"word": "It was a lie", "offset": -0.76}, "to": {"word": "It was a lie", "edge": "end", "offset": 1.1}, "mute": true, "in": 0.6, "out": 1.4},
+         {"comment": "end card: let the closing chord be heard", "from": {"mark": "lastWord", "offset": 0.4}, "to": {"mark": "lastWord", "offset": 7}, "db": 6, "in": 1.2, "out": 0.5}
+       ]},
+      {"name": "sfx", "stem": "sfx.wav", "volume": 0.2},
+      {"name": "ambience", "stem": "ambience.wav", "volume": 0.724,
+       "compressor": {"threshold": 0.05, "ratio": 3.5, "attack": 10, "release": 300, "makeup": 2.8},
+       "duck": {"threshold": 0.02, "ratio": 6, "attack": 20, "release": 600, "makeup": 1.5}}
+    ],
+    "hits": [
+      {"name": "thunder", "sound": "thunder", "seed": 916, "len": 5, "at": {"word": "It was a lie", "offset": -0.04},
+       "compressor": {"threshold": 0.02, "ratio": 12, "attack": 0.5, "release": 400, "makeup": 10}, "volume": 1.8}
+    ],
+    "limiter": {"limit": 0.89, "attack": 1, "release": 60},
+    "loudnorm": {"I": -14, "TP": -1.0, "LRA": 18},
+    "tail": 7,
+    "checks": [
+      {"label": "music cut", "from": "lie-0.15", "to": "lie-0.05", "solo": "music"},
+      {"label": "hit", "from": "lie-0.04", "to": "lie+0.96"},
+      {"label": "gate music", "from": "gate+1", "to": "vineyard-1.0", "solo": "music"},
+      {"label": "trial ambience", "from": "trial+1", "to": "phone-1.0", "solo": "ambience"},
+      {"label": "end card", "from": {"mark": "lastWord", "offset": 2}, "to": {"mark": "lastWord", "offset": 5}}
+    ]
+  }
+}

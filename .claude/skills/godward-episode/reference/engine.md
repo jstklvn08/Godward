@@ -112,6 +112,7 @@ E.start({
   fadeIn:0,               // fade up from black at the start
   captions:true,          // false hides burned-in captions
   focusLandscape:true,    // false = focus beats only in the vertical cut (as in the first episode)
+  gentleZoom:false,       // true = vertical zooms are used as written (no raise to 1.12), for slow push-ins
   words:null,             // a word list, if not using WORDS
 });
 ```
@@ -156,9 +157,15 @@ cam:[E.shot(0, AT.formless-.8, 960,560,.84),           // wide, until just befor
 
 Rules (the engine enforces the first two):
 - **Zoom 0.845 or less is a deliberate wide shot.** Any other zoom is raised to at least 1.12. Between those the frame would look like a mistake.
+  With `gentleZoom:true` in `E.start` this raise is switched off and every zoom is used as written (the paper-edge
+  clamps below still apply, so the wall never shows). Use it for slow push-ins that start wide, e.g. `.84 -> 1.05`
+  over the whole sheet. New episodes should set it (the user found quick in/out zooms tiring, Nov 2026).
 - **The camera stays inside the paper.** x and y are clamped so the wall never shows. The vertical paper runs from y -700 to 1800. Asking for x 1900 gives you the right-most legal framing, not the wall.
 - At zoom z the frame shows 1080/z by 1920/z sheet pixels: 1.12 shows 964 px wide, 1.45 shows 745, 0.84 shows 1286.
-- Plan moves of 0.4–0.8 s. Arrive just before the word, not on it.
+- **At most one camera move per sheet** (user feedback, Nov 2026: "too much motion, zoom in and out"): a slow
+  push-in or slow pan lasting at least 2–3 s (the whole sheet is fine), or a still hold. Never zoom in and back out
+  within a sheet. Keep the zoom change within a sheet to about 1.3x; to reach a very different framing, cut to a new
+  sheet (`vIn:'cut'`) instead of zooming.
 - Frame one subject per shot. Space subjects at least ~160 px apart on the sheet, so a close-up of one never shows a sliver of the next.
 - No `cam` means one wide shot at (960, 560, 0.84).
 
@@ -210,7 +217,7 @@ The engine adds life on 12 fps held time: breathing (squash ±3%), weight shift,
 
 `focus:[[time, strength], ...]`. Each beat gives a punch-in of up to 7%·strength, eased in over 0.18 s, and a hash-driven shake that decays over 1.4 s. The rest of the time the frame is steady. Strength 0.5 is a nudge, 0.8 normal, 1.2 a major beat ("Then God spoke", "she ate").
 
-Use roughly one beat per 10–20 s, on the words that carry the story. Put beats on the word start (`E.cue('spoke')`).
+Use only 2–3 beats in a whole episode, on its biggest moments (God speaks, the sea closes, the idol rises), never while the camera is moving. Put beats on the word start (`E.cue('spoke')`).
 
 ## 12. Flashes, fades, grain
 

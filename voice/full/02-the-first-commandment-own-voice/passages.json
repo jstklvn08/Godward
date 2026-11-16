@@ -1,0 +1,540 @@
+{
+ "s00-01-pivot-a72fad.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "There are ten commandments.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true
+ },
+ "s00-02-story-613950.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "But one of them comes first, and every other one hangs on it.",
+  "seed": 3,
+  "words_per_second": 3.69,
+  "in_range": false
+ },
+ "s00-03-talk-3b3d2a.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It's not do not murder.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s00-04-story-500359.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "It's not do not steal. It's this.",
+  "seed": 3,
+  "words_per_second": 2.47,
+  "in_range": true
+ },
+ "s00-05-grave-9a294a.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "You shall have no other gods before me.",
+  "seed": 3,
+  "words_per_second": 3.33,
+  "in_range": false
+ },
+ "s00-06-talk-082fd8.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most people hear that as a rule about other religions.",
+  "seed": 1,
+  "words_per_second": 3.46,
+  "in_range": true
+ },
+ "s00-07-story-100963.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Or as put God first on your list.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s00-08-pivot-82a695.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "It's bigger than both.",
+  "seed": 2,
+  "words_per_second": 2.92,
+  "in_range": true
+ },
+ "s01-01-story-063fc2.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "To understand it, you have to know who heard it first.",
+  "seed": 1,
+  "words_per_second": 3.1,
+  "in_range": true
+ },
+ "s01-02-story-87b547.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Not a nation. Not yet.",
+  "seed": 2,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s01-03-story-1094a2.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "A crowd of slaves who had just walked out of Egypt, through the middle of the sea.",
+  "seed": 1,
+  "words_per_second": 3.42,
+  "in_range": true
+ },
+ "s01-04-grave-e86feb.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Thus the LORD saved Israel that day from the hand of the Egyptians.",
+  "seed": 2,
+  "words_per_second": 3.0,
+  "in_range": false
+ },
+ "s01-05-talk-9c4150.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "They didn't earn it.",
+  "seed": 2,
+  "words_per_second": 4.65,
+  "in_range": false
+ },
+ "s01-06-story-a9dde5.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "They were rescued.",
+  "seed": 2,
+  "words_per_second": 2.4,
+  "in_range": true
+ },
+ "s01-07-story-b8fdf9.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And three months later, God brings them to a mountain in the desert called Sinai.",
+  "seed": 1,
+  "words_per_second": 2.97,
+  "in_range": true
+ },
+ "s02-01-grave-4553cc.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Now Mount Sinai was wrapped in smoke because the LORD had descended on it in fire.",
+  "seed": 2,
+  "words_per_second": 2.41,
+  "in_range": true
+ },
+ "s02-02-story-f9dc8c.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The smoke of it went up like the smoke of a kiln, and the whole mountain trembled greatly.",
+  "seed": 1,
+  "words_per_second": 3.22,
+  "in_range": true
+ },
+ "s02-03-story-997fe2.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The people stand behind a line, trembling.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true
+ },
+ "s02-04-story-a46221.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And then, out of the fire, God speaks.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true
+ },
+ "s03-01-pivot-f9bb44.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "Here's the strange thing.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s03-02-talk-d44c2e.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "The first words aren't a command at all.",
+  "seed": 7,
+  "words_per_second": 3.59,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s03-03-grave-3f588b.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "I am the LORD your God, who brought you out of the land of Egypt, out of the house of slavery.",
+  "seed": 2,
+  "words_per_second": 3.03,
+  "in_range": false
+ },
+ "s03-04-talk-9e35b0.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Before God tells them what to do, he tells them who he is, and what he has already done.",
+  "seed": 1,
+  "words_per_second": 4.03,
+  "in_range": false
+ },
+ "s03-05-story-5f40bf.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "The rescue comes first. The rules come second.",
+  "seed": 1,
+  "words_per_second": 2.29,
+  "in_range": false
+ },
+ "s03-06-talk-e45bad.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "These aren't instructions for earning God's love.",
+  "seed": 1,
+  "words_per_second": 2.77,
+  "in_range": true
+ },
+ "s03-07-story-17df49.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "They're for people who already have it.",
+  "seed": 2,
+  "words_per_second": 3.3,
+  "in_range": true
+ },
+ "s04-01-grave-ffbc0f.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "And then comes the first command.",
+  "seed": 2,
+  "words_per_second": 3.57,
+  "in_range": false
+ },
+ "s04-02-grave-9a294a.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "You shall have no other gods before me.",
+  "seed": 3,
+  "words_per_second": 3.33,
+  "in_range": false
+ },
+ "s04-03-talk-66e98a.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "For people raised in Egypt, this was radical.",
+  "seed": 1,
+  "words_per_second": 3.19,
+  "in_range": true
+ },
+ "s04-04-story-a8e2c6.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Egypt had gods for everything. The sun. The river.",
+  "seed": 3,
+  "words_per_second": 1.98,
+  "in_range": false
+ },
+ "s04-05-story-99296d.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "The harvest. The king.",
+  "seed": 3,
+  "words_per_second": 1.35,
+  "in_range": false
+ },
+ "s04-06-talk-c557f6.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "You spread your trust around, and hoped one of them came through.",
+  "seed": 1,
+  "words_per_second": 3.83,
+  "in_range": true
+ },
+ "s04-07-story-a726c9.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "But the God who just beat Egypt says: not here.",
+  "seed": 1,
+  "words_per_second": 2.94,
+  "in_range": true
+ },
+ "s04-08-story-822f78.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Not any more. No dividing your heart. No backup plan.",
+  "seed": 1,
+  "words_per_second": 2.14,
+  "in_range": false
+ },
+ "s05-01-talk-a2665c.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "And look at that little word, before.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true
+ },
+ "s05-02-story-cdb937.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "In Hebrew, it's built on the word for face.",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": true
+ },
+ "s05-03-grave-2d255f.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "No other gods before my face.",
+  "seed": 1,
+  "words_per_second": 2.4,
+  "in_range": true
+ },
+ "s05-04-talk-83892e.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "It isn't God first, then everything else in order.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true
+ },
+ "s05-05-story-bd48b7.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "It's no one else in the room.",
+  "seed": 2,
+  "words_per_second": 2.82,
+  "in_range": true
+ },
+ "s05-06-story-6774da.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "The first commandment isn't a ranking. It's a relationship.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true
+ },
+ "s06-01-pivot-c5a21c.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "And Israel broke it fast.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s06-02-story-ebe81c.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Moses climbed the mountain and stayed forty days.",
+  "seed": 1,
+  "words_per_second": 2.57,
+  "in_range": true
+ },
+ "s06-03-story-774b4e.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Down in the camp, the people got tired of waiting.",
+  "seed": 2,
+  "words_per_second": 3.29,
+  "in_range": true
+ },
+ "s06-04-story-2b482f.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "They melted their gold into a calf, and said:",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true
+ },
+ "s06-05-grave-07d29d.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "These are your gods, O Israel, who brought you up out of the land of Egypt!",
+  "seed": 2,
+  "words_per_second": 2.85,
+  "in_range": true
+ },
+ "s06-06-talk-288379.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Here's the twist.",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": true
+ },
+ "s06-07-story-62e8ea.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Aaron called it a feast to the LORD.",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": true
+ },
+ "s06-08-talk-ac7e36.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "They didn't think they were leaving God.",
+  "seed": 2,
+  "words_per_second": 4.19,
+  "in_range": false
+ },
+ "s06-09-story-196deb.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "They thought they were adding something.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true
+ },
+ "s06-10-story-3abab3.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Something they could see, and hold.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true
+ },
+ "s06-11-talk-14cf68.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "That's exactly what the first commandment ruled out.",
+  "seed": 1,
+  "words_per_second": 3.48,
+  "in_range": true
+ },
+ "s07-01-talk-99caaf.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "We don't melt down earrings any more.",
+  "seed": 5,
+  "words_per_second": 3.76,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s07-02-story-3a3a1a.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "But the pull is the same. Money. Approval. Success.",
+  "seed": 2,
+  "words_per_second": 2.26,
+  "in_range": false
+ },
+ "s07-03-story-0cd448.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "A plan B for when God feels slow.",
+  "seed": 1,
+  "words_per_second": 2.96,
+  "in_range": true
+ },
+ "s07-04-story-af32c6.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Good things, handed a place only God should have.",
+  "seed": 2,
+  "words_per_second": 2.68,
+  "in_range": true
+ },
+ "s07-05-talk-d8f9a9.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "A psalm puts it bluntly:",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s07-06-grave-5941ba.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "Those who make them become like them; so do all who trust in them.",
+  "seed": 2,
+  "words_per_second": 3.54,
+  "in_range": false
+ },
+ "s07-07-grave-1b72be.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "You become like what you trust.",
+  "seed": 2,
+  "words_per_second": 2.54,
+  "in_range": true
+ },
+ "s08-01-story-334d53.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Centuries later, someone asked Jesus which commandment was the greatest.",
+  "seed": 3,
+  "words_per_second": 2.29,
+  "in_range": false
+ },
+ "s08-02-story-453a92.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "He didn't add a new rule.",
+  "seed": 1,
+  "words_per_second": 3.61,
+  "in_range": false
+ },
+ "s08-03-story-a83991.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "He turned the first one inside out.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true
+ },
+ "s08-04-grave-5facc6.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "You shall love the Lord your God with all your heart and with all your soul and with all your mind.",
+  "seed": 2,
+  "words_per_second": 3.58,
+  "in_range": false
+ },
+ "s08-05-talk-d1ec3d.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "No other gods is the fence.",
+  "seed": 1,
+  "words_per_second": 3.49,
+  "in_range": true
+ },
+ "s08-06-story-a60460.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Loving God with everything is the field inside it.",
+  "seed": 3,
+  "words_per_second": 2.47,
+  "in_range": true
+ },
+ "s08-07-grave-37f734.wav": {
+  "section": 8,
+  "mode": "grave",
+  "text": "The God who rescued you doesn't want a share of your heart.",
+  "seed": 3,
+  "words_per_second": 3.19,
+  "in_range": false
+ },
+ "s08-08-story-6dcb70.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "He wants all of it.",
+  "seed": 1,
+  "words_per_second": 3.18,
+  "in_range": true
+ },
+ "s02-02-grave-b3ea40.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "The smoke of it went up like the smoke of a kiln, and the whole mountain trembled greatly.",
+  "seed": 2,
+  "words_per_second": 3.02,
+  "in_range": false
+ }
+}

@@ -46,7 +46,8 @@ full render takes longer; test samples should stay short (about 8 s is enough fo
    skipping a chunk; transcribe the affected sections one at a time before believing it.
 5. Fix wrong words: `fix_lines.py --name <name> --seeds 4-29 8.2 9.2`
    (section.passage numbers from passages.json or --plan). It only replaces a take whose transcript
-   matches the script; very short lines may need 20+ seeds. Then rerun step 3 (seconds, all cached).
+   matches the script; very short lines may need 20+ seeds. It has no `--natural` flag, and it does NOT rebuild the
+   full WAV: rerun step 3 (seconds, all cached) before checking or aligning again, or the old takes are still in it.
 6. Word timings for the video: `align_words.py --script ... --audio full/<name>/<name>-natural.wav --out ..\videos\<slug>\words.js`
    Expect about 98% of words timed directly; it lists every misheard or filled stretch.
 
@@ -80,3 +81,16 @@ narrator. Episode 1 (own-voice) came out at 147 words a minute, 4:21.
   narration was lost when a Downloads file was overwritten.
 - Changing script wording after the video is timed: re-render voice, re-run align_words.py, and the
   page re-times itself (all animation uses cue()). Re-check stills around the changed lines.
+
+## CPU-only machines (cloud sessions)
+
+- Chatterbox runs on CPU at about 13 s per take (4 cores); the Ten Plagues (4:07, 60 lines) took about 20 minutes,
+  the two-section test about 8.
+  Pip installs: `chatterbox-tts`, `setuptools<81` (perth needs pkg_resources), `pyloudnorm praat-parselmouth librosa`.
+- Whisper steps (check_styled, fix_lines, align_words) use `voice/asr_fast.py` (faster-whisper, int8) when it is
+  installed and there is no CUDA GPU: about 3 minutes for a full check instead of over an hour with transformers.
+  Set GODWARD_ASR=transformers to force the old path.
+- A "filled" stretch in align_words' report is often only the recogniser skipping a window edge: transcribe that
+  passage's chunk on its own (asr_fast.text) before re-rendering it.
+- fix_lines accepts numerals and joined words ("40" = "forty", "anymore" = "any more").
+- A `> [grave] “...”` line that is one whole quotation keeps its tag for every sentence in it.

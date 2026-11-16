@@ -135,6 +135,16 @@ def use_script(script: Path) -> None:
             SENTENCE_GAP = float(data["sentence_gap"])
 
 
+def quote_tag(line: str) -> str:
+    """A tagged line that is one quotation (scripture) keeps its tag for every sentence in it."""
+    tag = TAG.match(line)
+    body = re.sub(r"(\s*\[(?:beat|pause|hold)\])+$", "", line[tag.end():]) if tag else ""
+    if not tag or not (body.startswith("“") and body.endswith("”") and body.count("“") == 1):
+        return line
+    head, body = line[: tag.end()], line[tag.end():]
+    return head + re.sub(r"(?<=[.?!])\s+(?=[^\[])", " " + head.strip() + " ", body)
+
+
 def read_sections(only: set[int]) -> list[tuple[int, str, str]]:
     """(number, title, narration) for each '## N. Title' section; every '> ' line is narration."""
     source = SCRIPT.read_text(encoding="utf-8")
@@ -142,7 +152,7 @@ def read_sections(only: set[int]) -> list[tuple[int, str, str]]:
         sys.exit(f"{SCRIPT.name} has ESV references. Run scripts/fill_esv.py on it and render the .esv.md copy.")
     sections = []
     for match in re.finditer(r"^## (?:Scene )?(\d+)[:.] (.+?)$(.*?)(?=^## |\Z)", source, re.M | re.S):
-        lines = [line[2:].strip() for line in match.group(3).splitlines() if line.startswith("> ")]
+        lines = [quote_tag(line[2:].strip()) for line in match.group(3).splitlines() if line.startswith("> ")]
         if lines:
             sections.append((int(match.group(1)), match.group(2).strip(), " ".join(lines)))
     return [s for s in sections if not only or s[0] in only]
@@ -167,8 +177,9 @@ def passages_with_pauses(section: int, text: str) -> list[tuple[str, str, float]
     marker = re.compile("|".join(re.escape(m) for m in MARKERS))
     out: list[list] = []
     # Clean the text first (quotes, pronunciations), then split, so sentences ending in a quote split.
+    # A delivery tag in the middle of a line (after "and said:") starts a new passage.
     # Also split after a pause marker, so a marker at the end of a line pauses after that sentence, not the next.
-    for sentence in re.split(r"(?<=[.?!])\s+|(?<=\[beat\])\s+|(?<=\[pause\])\s+|(?<=\[hold\])\s+", render_full.to_speech(text)):
+    for sentence in re.split(r"(?<=[.?!])\s+|(?<=\[beat\])\s+|(?<=\[pause\])\s+|(?<=\[hold\])\s+|\s+(?=\[(?:grave|talk|story|pivot)\])", render_full.to_speech(text)):
         extra = sum(MARKERS[m] for m in marker.findall(sentence))
         sentence = marker.sub("", sentence).strip()
         if not sentence:
