@@ -60,11 +60,13 @@ the cloud hand-back below.
 | Creation and the Fall | `creation-and-the-fall` | finished, vertical + outro |
 | The Ten Commandments, parts 1-10 | `the-first-commandment` … `the-tenth-commandment` (scripts `02-` to `11-`) | finished in the cloud with the round-figure characters + outro; the user called them final ("good enough") |
 | The Ten Plagues of Egypt | `the-ten-plagues` (script `12-`) | finished in the cloud: 4:20 with outro, thumbnail |
-| The Red Sea | `the-red-sea` (script `13-`) | script approved; first-draft page on provisional timings; voice next |
+| The Red Sea | `the-red-sea` (script `13-`) | finished: 4:30 with outro, thumbnail, caption |
+| The Fall of Jericho | `the-fall-of-jericho` (script `14-`) | finished: 3:34 with outro, thumbnail, caption |
+| David and Goliath | `david-and-goliath` (script `15-`) | finished: 3:42 with outro, thumbnail, caption |
 
 What to make next: `Godward-Content-Report.html` (viewership research, 9 Nov 2026). Old Testament stories beat
 Bible study and prayer.
-- **Ranked next:** Jericho, Job, David and Goliath, Samson, Daniel, Every Beast in Revelation.
+- **Ranked next:** Job, Samson or Gideon, Daniel or Esther, Every Beast in Revelation (Jericho and David and Goliath are done).
 - **Big-hook topics:** every angel in the Bible, the story from Satan's point of view, what happens after death.
 - **Each video stands alone:** no "Part 1 / Part 2" titles or labels.
 
