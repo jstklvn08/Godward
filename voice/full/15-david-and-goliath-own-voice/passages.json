@@ -1,0 +1,488 @@
+{
+ "s00-01-story-0f014b.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "A giant, over nine feet tall, in bronze armour.",
+  "seed": 3,
+  "words_per_second": 2.32,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-0df2a2.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And a shepherd boy, with a sling and five smooth stones.",
+  "seed": 1,
+  "words_per_second": 2.43,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-talk-cacabe.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "You know how this ends.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-story-888f00.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And you've probably heard the lesson. Be brave.",
+  "seed": 3,
+  "words_per_second": 2.33,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-05-story-ed04ce.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Face your giants.",
+  "seed": 2,
+  "words_per_second": 1.6,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-06-pivot-063b19.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But that's not what David said.",
+  "seed": 1,
+  "words_per_second": 2.63,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-07-talk-93f939.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Listen to what he actually said.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-4a7a98.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Israel's army stood on one hill.",
+  "seed": 1,
+  "words_per_second": 2.68,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-ba0aa8.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "The Philistines stood on the other.",
+  "seed": 2,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-00cd38.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And a valley lay between them.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-story-433dae.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Every morning, for forty days, the Philistines' champion walked out and shouted at Israel.",
+  "seed": 1,
+  "words_per_second": 2.49,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-grave-140cab.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "I defy the ranks of Israel this day.",
+  "seed": 1,
+  "words_per_second": 2.83,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-06-grave-a56fb3.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Give me a man, that we may fight together.",
+  "seed": 2,
+  "words_per_second": 2.99,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-grave-d2d5a4.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "When Saul and all Israel heard these words of the Philistine, they were dismayed and greatly afraid.",
+  "seed": 1,
+  "words_per_second": 2.52,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-18f023.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Even King Saul, the tallest man in Israel, stayed in his tent.",
+  "seed": 4,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s03-01-pivot-7aa489.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "But God had already chosen someone.",
+  "seed": 1,
+  "words_per_second": 2.11,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-88f3e6.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Someone nobody noticed.",
+  "seed": 1,
+  "words_per_second": 1.53,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-afe738.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Not long before, the prophet Samuel had come to a man named Jesse, to anoint Israel's next king.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-story-9d24fd.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Jesse showed him seven strong sons.",
+  "seed": 1,
+  "words_per_second": 2.01,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-story-b7f78e.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "God said no to every one.",
+  "seed": 3,
+  "words_per_second": 2.7,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-06-grave-6e01c1.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "For the LORD sees not as man sees: man looks on the outward appearance, but the LORD looks on the heart.",
+  "seed": 4,
+  "words_per_second": 3.0,
+  "in_range": false,
+  "word_check": "match"
+ },
+ "s03-07-story-19dd54.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "The youngest was out in the fields, looking after the sheep.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-08-story-951e4f.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "His name was David.",
+  "seed": 2,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-f98ba6.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "One day his father sent him to the army camp with bread and cheese for his brothers.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-pivot-8dab01.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "Then David heard the giant.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-99a436.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "And he couldn't believe what he saw.",
+  "seed": 1,
+  "words_per_second": 3.3,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-df39cd.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "The whole army was running away from a man who was mocking the living God.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-05-talk-7f609c.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "His brothers told him to go home.",
+  "seed": 2,
+  "words_per_second": 3.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-06-story-b0c586.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Instead, he went to the king.",
+  "seed": 2,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-story-32f710.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Saul said, you're just a boy.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-d8444d.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "He's been a soldier all his life.",
+  "seed": 1,
+  "words_per_second": 2.46,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-41cef4.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "David said, I keep my father's sheep.",
+  "seed": 3,
+  "words_per_second": 2.46,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-ec6b6c.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "I've fought off a lion, and a bear.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-grave-febb2d.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "The LORD who delivered me from the paw of the lion and from the paw of the bear will deliver me from the hand of this Philistine.",
+  "seed": 1,
+  "words_per_second": 3.54,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-story-1c2d37.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "So Saul gave him his own armour. It was far too big.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-07-story-94d8d1.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "David took it off.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-story-9e9ead.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He picked five smooth stones from the stream, took his sling, and walked out to meet the giant.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-pivot-b37cf8.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "Goliath laughed.",
+  "seed": 2,
+  "words_per_second": 1.39,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-story-602e2a.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "A boy, with a stick?",
+  "seed": 2,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-talk-939e76.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Then David said this.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-grave-f2e788.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "You come to me with a sword and with a spear and with a javelin,",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-06-grave-cf7f05.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "but I come to you in the name of the LORD of hosts.",
+  "seed": 2,
+  "words_per_second": 3.74,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-07-grave-9cafbe.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "For the battle is the LORD's, and he will give you into our hand.",
+  "seed": 3,
+  "words_per_second": 3.22,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-story-d8fa84.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "David ran toward him.",
+  "seed": 1,
+  "words_per_second": 2.33,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-story-97fcb3.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "He put a stone in his sling, and let it fly.",
+  "seed": 3,
+  "words_per_second": 3.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-grave-4d2613.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "The stone sank into his forehead, and he fell on his face to the ground.",
+  "seed": 3,
+  "words_per_second": 3.34,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-04-story-ca257e.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "The Philistines ran.",
+  "seed": 2,
+  "words_per_second": 1.69,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-05-story-4c644b.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "And the army that had been so afraid won the day.",
+  "seed": 1,
+  "words_per_second": 2.93,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-01-pivot-bd5938.wav": {
+  "section": 8,
+  "mode": "pivot",
+  "text": "So who's the hero?",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-02-talk-fabb78.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "Not the boy with good aim.",
+  "seed": 1,
+  "words_per_second": 3.66,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-03-story-532410.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "David said it himself. The battle is the LORD's.",
+  "seed": 2,
+  "words_per_second": 2.51,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-04-talk-473679.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "The same God who fought for Israel at the Red Sea, and brought down the walls of Jericho.",
+  "seed": 1,
+  "words_per_second": 3.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-05-story-ecfc44.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "And the shepherd boy nobody noticed?",
+  "seed": 2,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-06-story-beae0f.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "He became Israel's greatest king.",
+  "seed": 1,
+  "words_per_second": 2.02,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ }
+}
