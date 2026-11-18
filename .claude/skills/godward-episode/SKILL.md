@@ -238,6 +238,20 @@ disk space; re-run the command after any re-render, cover or caption change. Nev
 without the outro. `node tools/package.js --index` only rebuilds the page. Tell the user to open
 `posts/index.html` to post from.
 
+**Then put it on the Post Packs artifact, every episode, without being asked** (user, 18 Nov 2026: "upload it to
+the post, do this for every video from now on"). The page is https://claude.ai/artifact/2yZGNmfLw85eZyBWCxYuhg
+("Godward Post Packs", one card per episode: cover, playable preview, caption with a copy button, Posted tick).
+1. Read the artifact (`action: "read"`), then fetch its `index.html` with `path` into a scratch folder and edit that copy.
+2. Cover: `thumbnail-ig-4x5.png` resized to 720×900 JPEG (quality 85) as `covers/<slug>.jpg`.
+3. Preview video: a file on the page can be at most 15 MB, so encode a small copy of the outro video:
+   `ffmpeg -i <slug>-vertical-outro.mp4 -vf scale=540:960 -c:v libx264 -b:v 300k -maxrate 420k -bufsize 840k
+   -pix_fmt yuv420p -c:a aac -b:a 64k -movflags +faststart videos/<slug>.mp4` (about 12 MB for 4:30).
+   Show it with `<video class="reel" controls playsinline preload="metadata" poster=…>`, and say under it that
+   it's a preview and to post the full-quality file sent in chat.
+4. Add the episode's card (copy an existing one; caption from `caption-ig.txt`, its length "/ 2,200", the
+   reel length), update the "N ready to post" count, and publish to the same `url` with `files` for the cover and
+   video. Also send the full-quality MP4 in chat with SendUserFile.
+
 ## Working in the cloud, and across sessions
 
 - **Starting a cloud session.** It clones GitHub, so push the working branch first (`voice/clip-6-narration`).
