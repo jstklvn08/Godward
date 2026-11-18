@@ -47,6 +47,8 @@ RULES = [
     ("esv", "The LORD will fight for you", "only to be silent", "."),  # 13 red sea (drops the speech's closing quote)
     ("esv", "Let us flee from before Israel", "against the Egyptians", "."),  # 13 red sea
     ("esv", "Sing to the LORD, for he has triumphed", "thrown into the sea", "."),  # 13 red sea
+    ("esv", "for the LORD your God, he is God", "on the earth beneath", "."),  # 14 jericho
+    ("esv", "As soon as the people heard the sound", "the wall fell down flat", "."),  # 14 jericho
 ]
 
 
