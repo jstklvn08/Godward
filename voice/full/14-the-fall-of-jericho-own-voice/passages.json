@@ -1,0 +1,470 @@
+{
+ "s00-01-story-d92d42.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "The walls of Jericho were so high, no army could climb them.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-c7bed1.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "So how did Israel take the city?",
+  "seed": 1,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-talk-860967.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "They walked round it.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-story-e1a38f.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "In silence. For seven days.",
+  "seed": 3,
+  "words_per_second": 1.98,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-05-pivot-b03cc3.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "Most people think this is a war story.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-06-talk-d437e7.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It isn't.",
+  "seed": 2,
+  "words_per_second": 2.04,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-07-story-c537fb.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "It's a story about trust.",
+  "seed": 3,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-5d9210.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Forty years after the Red Sea, Israel stood on the edge of the land God had promised them.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-67c220.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Moses had died. Their new leader was Joshua.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-643024.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And the first thing in their way was Jericho.",
+  "seed": 1,
+  "words_per_second": 3.17,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-story-55ada6.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "A city of thick, high walls, on the road into the land.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-pivot-52da01.wav": {
+  "section": 1,
+  "mode": "pivot",
+  "text": "But first, the spies.",
+  "seed": 2,
+  "words_per_second": 1.84,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-story-7e825f.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Joshua sent two men to look at the city.",
+  "seed": 1,
+  "words_per_second": 2.68,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-c9f168.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "They hid in the house of a woman named Rahab, built right into the city wall.",
+  "seed": 1,
+  "words_per_second": 3.29,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-eddb05.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "When the king's soldiers came looking, she hid them on her roof under stalks of flax.",
+  "seed": 1,
+  "words_per_second": 2.43,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-d95d8a.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Then she told them why.",
+  "seed": 2,
+  "words_per_second": 2.66,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-story-e211aa.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Everyone in Jericho had heard what God did at the Red Sea.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-story-c9a3d9.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And they were terrified.",
+  "seed": 3,
+  "words_per_second": 2.6,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-07-grave-f0dc38.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "for the LORD your God, he is God in the heavens above and on the earth beneath.",
+  "seed": 1,
+  "words_per_second": 3.32,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-25890b.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "The spies made her a promise.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-befc60.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "When Israel came, she must tie a red cord in her window.",
+  "seed": 1,
+  "words_per_second": 3.17,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-22bfa6.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And everyone inside her house would be safe.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-talk-1cfb33.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "A red mark, and a family saved.",
+  "seed": 1,
+  "words_per_second": 3.2,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-story-6e7072.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "It's the Passover all over again.",
+  "seed": 3,
+  "words_per_second": 2.27,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-66d98b.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Then, just like at the Red Sea, God stopped the river, and they crossed on dry ground.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-4310f7.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Joshua looked up at the walls of Jericho. And God spoke.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-grave-1ba29a.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "See, I have given Jericho into your hand.",
+  "seed": 1,
+  "words_per_second": 2.8,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-pivot-c031cf.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "Then God gave Joshua the strangest battle plan in the Bible.",
+  "seed": 1,
+  "words_per_second": 2.27,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-05-talk-dc4afc.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "March round the city once a day, for six days.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-06-story-ce520d.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Seven priests with trumpets in front. No shouting.",
+  "seed": 1,
+  "words_per_second": 2.1,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-07-story-bd3716.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Not a word.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-story-0d8388.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Day after day, they walked round the city. Silent.",
+  "seed": 2,
+  "words_per_second": 2.45,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-ecd209.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Then back to camp.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-talk-a1623f.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Imagine how that looked from the walls.",
+  "seed": 1,
+  "words_per_second": 3.48,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-f15ef6.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "No ladders. No battering rams. Not a single sword raised.",
+  "seed": 2,
+  "words_per_second": 2.36,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-talk-88fe1e.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Just people, walking, because God told them to.",
+  "seed": 2,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-story-0a4bf1.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "On the seventh day, they walked round the city seven times.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-35c61c.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Then the priests blew the trumpets, and Joshua said, \"Shout!",
+  "seed": 3,
+  "words_per_second": 2.21,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-story-3227fb.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "For the LORD has given you the city.\"",
+  "seed": 1,
+  "words_per_second": 3.45,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-grave-ff4b2f.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "As soon as the people heard the sound of the trumpet, the people shouted a great shout,",
+  "seed": 3,
+  "words_per_second": 3.26,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-grave-977fab.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "and the wall fell down flat.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-pivot-ff803c.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "But one house was still standing.",
+  "seed": 1,
+  "words_per_second": 2.08,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-story-cbfac7.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "The one with the red cord.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-story-de2afc.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Rahab and her whole family were brought out safe.",
+  "seed": 2,
+  "words_per_second": 2.98,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-04-story-a96e2c.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "And she lived among God's people from then on.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-05-talk-8d4845.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Centuries later, the book of Hebrews looked back on that day.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-06-grave-d4b616.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "By faith the walls of Jericho fell down after they had been encircled for seven days.",
+  "seed": 3,
+  "words_per_second": 2.96,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s08-01-talk-0f52e2.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "The walls didn't fall because Israel was strong.",
+  "seed": 1,
+  "words_per_second": 2.8,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-02-story-8766f8.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "They fell because Israel trusted God, even when his plan looked foolish.",
+  "seed": 2,
+  "words_per_second": 2.6,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-03-talk-8abbb5.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "And Rahab, an outsider, trusted him too.",
+  "seed": 3,
+  "words_per_second": 2.61,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s08-04-story-33d8c3.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Matthew's Gospel names her in the family line of Jesus.",
+  "seed": 2,
+  "words_per_second": 2.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-05-pivot-667f3a.wav": {
+  "section": 8,
+  "mode": "pivot",
+  "text": "God's rescue was always bigger than one nation.",
+  "seed": 1,
+  "words_per_second": 2.45,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
