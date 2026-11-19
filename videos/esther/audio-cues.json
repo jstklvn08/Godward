@@ -1,0 +1,941 @@
+{
+ "_doc": "Soundtrack for 'Esther'. Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue. God is never named in Esther: no voice, only the turn of events, with a choir on the key lines. The sceptre held out is the one big hit.",
+ "episode": "esther",
+ "words": "words.js",
+ "duration": {
+  "word": "absent",
+  "n": -1,
+  "edge": "end",
+  "offset": 7
+ },
+ "marks": {
+  "orphan": {
+   "word": "Esther was an orphan",
+   "offset": -0.1
+  },
+  "haman": {
+   "word": "Then came Haman",
+   "offset": -0.1
+  },
+  "message": {
+   "word": "Mordecai sent a message",
+   "offset": -0.1
+  },
+  "third": {
+   "word": "On the third day",
+   "offset": -0.1
+  },
+  "sleep": {
+   "word": "That night, the king couldn't",
+   "offset": -0.1
+  },
+  "second": {
+   "word": "At the second banquet",
+   "offset": -0.1
+  },
+  "hidden": {
+   "word": "God's name never appears",
+   "offset": -0.1
+  },
+  "lastWord": {
+   "word": "absent",
+   "n": -1,
+   "edge": "end"
+  }
+ },
+ "motifs": {
+  "QUEEN": [
+   62,
+   66,
+   69,
+   71
+  ],
+  "HAMAN": [
+   45,
+   48,
+   51,
+   50
+  ],
+  "LORD": [
+   62,
+   66,
+   69,
+   74
+  ]
+ },
+ "scenes": [
+  {
+   "name": "cold-open",
+   "start": 0,
+   "screen": "the bronze door, the long hall, GOD 0 times",
+   "music": "low held pad, a heartbeat drum, a soft swell on \"see him everywhere\"",
+   "sound": "quiet hall"
+  },
+  {
+   "name": "orphan",
+   "start": "orphan",
+   "screen": "the market, the crowning, the secret",
+   "music": "warm pads, flute QUEEN, plucks",
+   "sound": "market, birds"
+  },
+  {
+   "name": "haman",
+   "start": "haman",
+   "screen": "Haman parades, the dice, the law signed",
+   "music": "low pizzicato HAMAN, drums",
+   "sound": "crowd"
+  },
+  {
+   "name": "message",
+   "start": "message",
+   "screen": "Mordecai mourning, the messages, such a time as this, fasting",
+   "music": "lament, then choir on 4:14 and 4:16",
+   "sound": "wind"
+  },
+  {
+   "name": "third",
+   "start": "third",
+   "screen": "walking in, the sceptre, the first banquet",
+   "music": "heartbeat drum, silence, then a bright chord on the sceptre",
+   "sound": "quiet hall"
+  },
+  {
+   "name": "sleep",
+   "start": "sleep",
+   "screen": "the sleepless king, the records, the parade",
+   "music": "light, playful plucks for the irony",
+   "sound": "night, then city"
+  },
+  {
+   "name": "second",
+   "start": "second",
+   "screen": "the second banquet, Purim",
+   "music": "tension, then a celebration with drums and bells",
+   "sound": "crowd, celebration"
+  },
+  {
+   "name": "hidden",
+   "start": "hidden",
+   "screen": "Esther at the window, for such a time as this",
+   "music": "warm pads, flute QUEEN, choir to the end",
+   "sound": "evening birds"
+  }
+ ],
+ "stems": {
+  "score": {
+   "seed": 1901,
+   "reverb": {
+    "room": 0.87,
+    "damp": 0.32,
+    "wet": 0.38
+   },
+   "autoLevel": {
+    "window": 0.1,
+    "smooth": 15,
+    "min": 0.35,
+    "max": 4
+   },
+   "fade": {
+    "end": {
+     "mark": "lastWord",
+     "offset": 6.6
+    },
+    "len": 2.5
+   },
+   "events": [
+    {
+     "scene": "cold-open"
+    },
+    {
+     "inst": "pad",
+     "at": 0,
+     "to": "orphan-0.3",
+     "notes": [
+      38,
+      45,
+      50,
+      53
+     ],
+     "lv": 0.55,
+     "bright": 0.3,
+     "a": 2,
+     "r": 1
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": 0.4,
+      "to": {
+       "word": "Here's the strange thing"
+      },
+      "every": 0.9
+     },
+     "lv": 0.45,
+     "f0": 45,
+     "pan": 0.5
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "But read it closely"
+     },
+     "to": "orphan",
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.7,
+     "att": 1,
+     "rel": 1.2
+    },
+    {
+     "scene": "orphan"
+    },
+    {
+     "inst": "pad",
+     "repeat": {
+      "from": "orphan",
+      "to": "haman-0.4",
+      "every": 4
+     },
+     "chords": [
+      [
+       50,
+       57,
+       62,
+       66
+      ],
+      [
+       47,
+       54,
+       59,
+       62
+      ],
+      [
+       43,
+       50,
+       55,
+       59
+      ],
+      [
+       45,
+       52,
+       57,
+       61
+      ]
+     ],
+     "hold": 4.3,
+     "lv": 0.6,
+     "bright": 0.55,
+     "a": 1.2,
+     "r": 0.8
+    },
+    {
+     "inst": "flute",
+     "motif": "QUEEN",
+     "at": {
+      "word": "When the king looked",
+      "offset": 0.6
+     },
+     "step": 0.7,
+     "transpose": 12,
+     "len": 0.6,
+     "lv": 0.8,
+     "pan": 0.5
+    },
+    {
+     "inst": "pluck",
+     "repeat": {
+      "from": "orphan+0.4",
+      "to": "haman-0.4",
+      "every": 0.5,
+      "jitter": 0.1
+     },
+     "pick": "random",
+     "seq": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.3,
+     "pan": "random",
+     "len": 0.8,
+     "bright": 0.5
+    },
+    {
+     "scene": "haman"
+    },
+    {
+     "inst": "pluck",
+     "repeat": {
+      "from": "haman",
+      "to": "message-0.4",
+      "every": 0.6,
+      "jitter": 0.1
+     },
+     "pick": "random",
+     "seq": [
+      45,
+      48,
+      50,
+      51
+     ],
+     "lv": 0.45,
+     "pan": "random",
+     "len": 0.6,
+     "bright": 0.3
+    },
+    {
+     "inst": "bell",
+     "motif": "HAMAN",
+     "at": {
+      "word": "Haman was so furious"
+     },
+     "step": 0.8,
+     "transpose": 12,
+     "lv": 0.45,
+     "pan": 0.5,
+     "dec": 3
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": {
+       "word": "He threw dice to"
+      },
+      "to": "message-0.4",
+      "every": [
+       0.6,
+       0.3
+      ]
+     },
+     "lv": 0.6,
+     "f0": 42,
+     "pan": 0.5
+    },
+    {
+     "scene": "message"
+    },
+    {
+     "inst": "pad",
+     "at": "message",
+     "to": {
+      "word": "Mordecai sent back this"
+     },
+     "notes": [
+      45,
+      52,
+      57,
+      60
+     ],
+     "lv": 0.5,
+     "bright": 0.3,
+     "a": 1,
+     "r": 1
+    },
+    {
+     "inst": "tremolo",
+     "at": {
+      "word": "But no one could"
+     },
+     "to": {
+      "word": "Mordecai sent back this"
+     },
+     "notes": [
+      45,
+      51
+     ],
+     "lv": 0.45
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "And who knows whether",
+      "offset": -0.3
+     },
+     "to": {
+      "word": "Esther asked all the"
+     },
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.85,
+     "att": 1,
+     "rel": 1.2
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "Then I will go",
+      "offset": -0.3
+     },
+     "to": "third-0.3",
+     "notes": [
+      57,
+      61,
+      64,
+      69
+     ],
+     "lv": 0.8,
+     "att": 1,
+     "rel": 1.2
+    },
+    {
+     "scene": "third"
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": "third",
+      "to": {
+       "word": "She won favor in",
+       "offset": -0.3
+      },
+      "every": 0.9
+     },
+     "lv": 0.55,
+     "f0": 40,
+     "pan": 0.5
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "She won favor in",
+      "offset": 1.4
+     },
+     "to": {
+      "word": "Esther didn't ask for"
+     },
+     "notes": [
+      50,
+      62,
+      66,
+      69
+     ],
+     "lv": 0.95,
+     "att": 0.5,
+     "rel": 1.2
+    },
+    {
+     "inst": "pluck",
+     "repeat": {
+      "from": {
+       "word": "Esther didn't ask for"
+      },
+      "to": "sleep-0.3",
+      "every": 0.6,
+      "jitter": 0.1
+     },
+     "pick": "random",
+     "seq": [
+      62,
+      66,
+      69
+     ],
+     "lv": 0.35,
+     "pan": "random",
+     "len": 0.8,
+     "bright": 0.5
+    },
+    {
+     "scene": "sleep"
+    },
+    {
+     "inst": "piano",
+     "repeat": {
+      "from": "sleep+0.3",
+      "to": {
+       "word": "The next morning, Haman"
+      },
+      "every": 1.6,
+      "jitter": 0.4
+     },
+     "pick": "random",
+     "seq": [
+      62,
+      65,
+      69,
+      72
+     ],
+     "lv": 0.45,
+     "pan": "random",
+     "dec": 2.5
+    },
+    {
+     "inst": "pluck",
+     "repeat": {
+      "from": {
+       "word": "The next morning, Haman"
+      },
+      "to": {
+       "word": "A sleepless night. A book"
+      },
+      "every": 0.4,
+      "jitter": 0.05
+     },
+     "pick": "random",
+     "seq": [
+      67,
+      69,
+      71,
+      74
+     ],
+     "lv": 0.4,
+     "pan": "random",
+     "len": 0.5,
+     "bright": 0.6
+    },
+    {
+     "inst": "bell",
+     "motif": "LORD",
+     "at": {
+      "word": "But who else"
+     },
+     "step": 0.5,
+     "transpose": 12,
+     "lv": 0.5,
+     "pan": 0.5,
+     "dec": 3
+    },
+    {
+     "scene": "second"
+    },
+    {
+     "inst": "tremolo",
+     "at": "second",
+     "to": {
+      "word": "The king was furious",
+      "offset": 1
+     },
+     "notes": [
+      45,
+      51
+     ],
+     "lv": 0.5
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": {
+       "word": "The month that had"
+      },
+      "to": "hidden-0.3",
+      "every": [
+       0.5,
+       0.25
+      ]
+     },
+     "lv": 0.6,
+     "f0": 50,
+     "pan": 0.5
+    },
+    {
+     "inst": "pad",
+     "repeat": {
+      "from": {
+       "word": "The month that had"
+      },
+      "to": "hidden-0.3",
+      "every": 2
+     },
+     "chords": [
+      [
+       50,
+       57,
+       62,
+       66
+      ],
+      [
+       55,
+       59,
+       62,
+       67
+      ]
+     ],
+     "hold": 2.2,
+     "lv": 0.65,
+     "bright": 0.6,
+     "a": 0.4,
+     "r": 0.6
+    },
+    {
+     "scene": "hidden"
+    },
+    {
+     "inst": "pad",
+     "repeat": {
+      "from": "hidden",
+      "to": {
+       "mark": "lastWord",
+       "offset": 6.5
+      },
+      "every": 4
+     },
+     "chords": [
+      [
+       50,
+       62,
+       66,
+       69
+      ],
+      [
+       47,
+       59,
+       62,
+       66
+      ],
+      [
+       43,
+       55,
+       59,
+       62
+      ],
+      [
+       45,
+       57,
+       61,
+       64
+      ]
+     ],
+     "hold": 4.3,
+     "lv": 0.65,
+     "bright": 0.55,
+     "a": 1.2,
+     "r": 0.8
+    },
+    {
+     "inst": "flute",
+     "motif": "QUEEN",
+     "at": {
+      "word": "But he was there"
+     },
+     "step": 0.7,
+     "transpose": 12,
+     "len": 0.6,
+     "lv": 0.8,
+     "pan": 0.5
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "mark": "lastWord",
+      "offset": 0.3
+     },
+     "to": {
+      "mark": "lastWord",
+      "offset": 6.5
+     },
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.85,
+     "att": 1,
+     "rel": 2
+    }
+   ]
+  },
+  "ambience": {
+   "seed": 3191,
+   "fade": {
+    "end": {
+     "mark": "lastWord",
+     "offset": 6.6
+    },
+    "len": 2
+   },
+   "events": [
+    {
+     "inst": "wind",
+     "at": 0,
+     "to": "orphan",
+     "lv": 0.25,
+     "fc": 500
+    },
+    {
+     "inst": "bird",
+     "repeat": {
+      "from": "orphan",
+      "to": "haman-1.0",
+      "every": 1.8,
+      "jitter": 1
+     },
+     "lv": 0.4,
+     "pan": "random"
+    },
+    {
+     "inst": "step",
+     "repeat": {
+      "from": "orphan",
+      "to": {
+       "word": "When the king looked"
+      },
+      "every": 0.5,
+      "jitter": 0.1
+     },
+     "lv": 0.3,
+     "pan": "random",
+     "soft": 1
+    },
+    {
+     "inst": "wind",
+     "at": "message",
+     "to": "third",
+     "lv": 0.3,
+     "fc": 500
+    },
+    {
+     "inst": "step",
+     "repeat": {
+      "from": "third",
+      "to": {
+       "word": "She won favor in"
+      },
+      "every": 0.6,
+      "jitter": 0.05
+     },
+     "lv": 0.35,
+     "pan": 0.5,
+     "soft": 1
+    },
+    {
+     "inst": "crickets",
+     "at": "sleep",
+     "to": {
+      "word": "The next morning, Haman"
+     },
+     "lv": 0.45
+    },
+    {
+     "inst": "bird",
+     "repeat": {
+      "from": {
+       "word": "The month that had"
+      },
+      "to": {
+       "mark": "lastWord",
+       "offset": 5
+      },
+      "every": 1.6,
+      "jitter": 1
+     },
+     "lv": 0.4,
+     "pan": "random"
+    }
+   ]
+  },
+  "sfx": {
+   "seed": 5191,
+   "events": [
+    {
+     "inst": "paperTap",
+     "at": [
+      {
+       "word": "If she walked through",
+       "offset": 0.4
+      },
+      {
+       "word": "God is never mentioned",
+       "offset": 0.4
+      },
+      {
+       "word": "When the king looked",
+       "offset": 0.6
+      },
+      {
+       "word": "Then came Haman",
+       "offset": 0.4
+      },
+      {
+       "word": "He threw dice to",
+       "offset": 0.6
+      },
+      {
+       "word": "A sleepless night. A book"
+      }
+     ],
+     "lv": 0.8,
+     "pan": {
+      "rand": [
+       0.35,
+       0.65
+      ]
+     }
+    },
+    {
+     "inst": "whoosh",
+     "at": [
+      "orphan-0.4",
+      "haman-0.4",
+      "message-0.4",
+      "third-0.4",
+      "sleep-0.4",
+      "second-0.4",
+      "hidden-0.4"
+     ],
+     "len": 0.8,
+     "lv": 0.7,
+     "pan": 0.5
+    },
+    {
+     "inst": "thump",
+     "at": [
+      {
+       "word": "He threw dice to",
+       "offset": 0.8
+      },
+      {
+       "word": "He threw dice to",
+       "offset": 1.1
+      }
+     ],
+     "lv": 0.6
+    },
+    {
+     "inst": "sparkle",
+     "at": [
+      {
+       "word": "She won favor in",
+       "offset": 1.4
+      },
+      {
+       "word": "But he was there"
+      }
+     ],
+     "len": 2,
+     "lv": 0.9,
+     "pan": 0.5
+    },
+    {
+     "inst": "swell",
+     "at": {
+      "word": "I am Jewish"
+     },
+     "len": 2,
+     "note": 45,
+     "lv": 0.9
+    }
+   ]
+  }
+ },
+ "mix": {
+  "voice": {
+   "volume": 1.25
+  },
+  "buses": [
+   {
+    "name": "music",
+    "stem": "score.wav",
+    "volume": 0.9,
+    "duck": {
+     "threshold": 0.02,
+     "ratio": 4,
+     "attack": 30,
+     "release": 500,
+     "makeup": 1
+    },
+    "envelope": [
+     {
+      "comment": "opening",
+      "from": 0.3,
+      "to": 4.0,
+      "db": 2,
+      "in": 0.8,
+      "out": 1.5
+     },
+     {
+      "comment": "held breath as she walks in, back with the sceptre",
+      "from": {
+       "word": "On the third day",
+       "offset": 2.0
+      },
+      "to": {
+       "word": "She won favor in",
+       "offset": 1.3
+      },
+      "mute": true,
+      "in": 0.6,
+      "out": 0.6
+     },
+     {
+      "comment": "end card",
+      "from": {
+       "mark": "lastWord",
+       "offset": 0.4
+      },
+      "to": {
+       "mark": "lastWord",
+       "offset": 7
+      },
+      "db": 6,
+      "in": 1.2,
+      "out": 0.5
+     }
+    ]
+   },
+   {
+    "name": "sfx",
+    "stem": "sfx.wav",
+    "volume": 0.2
+   },
+   {
+    "name": "ambience",
+    "stem": "ambience.wav",
+    "volume": 0.832,
+    "compressor": {
+     "threshold": 0.05,
+     "ratio": 3.5,
+     "attack": 10,
+     "release": 300,
+     "makeup": 2.8
+    },
+    "duck": {
+     "threshold": 0.02,
+     "ratio": 6,
+     "attack": 20,
+     "release": 600,
+     "makeup": 1.5
+    }
+   }
+  ],
+  "hits": [
+   {
+    "name": "sceptre",
+    "sound": "thunder",
+    "seed": 1907,
+    "len": 4,
+    "at": {
+     "word": "She won favor in",
+     "offset": 1.4
+    },
+    "compressor": {
+     "threshold": 0.02,
+     "ratio": 12,
+     "attack": 0.5,
+     "release": 400,
+     "makeup": 10
+    },
+    "volume": 2.6
+   }
+  ],
+  "limiter": {
+   "limit": 0.89,
+   "attack": 1,
+   "release": 60
+  },
+  "loudnorm": {
+   "I": -14,
+   "TP": -1.0,
+   "LRA": 18
+  },
+  "tail": 7
+ }
+}
