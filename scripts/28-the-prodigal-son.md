@@ -48,7 +48,7 @@ Jesus's story of a younger son who wastes everything, comes home expecting to be
 > [pivot] Then a famine came. And he had nothing left.
 > [story] He got a job feeding pigs, so hungry he wanted to eat their food. And no one gave him anything.
 > [grave] {{ESV Luke 15:17}}
-> [story] So he practised a speech. I'm not worthy to be your son. Just make me a servant.
+> [story] So he practiced a speech. I'm not worthy to be your son. Just make me a servant.
 
 ## 3. A long way off (1:20–1:55)
 

@@ -1,0 +1,281 @@
+{
+ "s00-01-story-0eb26e.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Jesus told a story about a son who threw everything away.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-pivot-55ecc2.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But the real surprise in it is the father.",
+  "seed": 1,
+  "words_per_second": 3.08,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-f23484.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "A man had two sons.",
+  "seed": 2,
+  "words_per_second": 2.48,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-3a5d46.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "The younger one said, Father, give me my share of the inheritance.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-3e2766.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Now.",
+  "seed": 3,
+  "words_per_second": 1.49,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-talk-9730c7.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "It was like saying, I wish you were already dead.",
+  "seed": 1,
+  "words_per_second": 3.17,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-story-94a05a.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And the father gave it to him.",
+  "seed": 1,
+  "words_per_second": 3.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-06-grave-f60663.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "The younger son gathered all he had and took a journey into a far country,",
+  "seed": 3,
+  "words_per_second": 3.12,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-07-grave-ef7285.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "and there he squandered his property in reckless living.",
+  "seed": 1,
+  "words_per_second": 2.51,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-280832.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "Then a famine came.",
+  "seed": 1,
+  "words_per_second": 2.03,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-65a86a.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And he had nothing left.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-0fb6a7.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "He got a job feeding pigs, so hungry he wanted to eat their food.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-98d7be.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And no one gave him anything.",
+  "seed": 2,
+  "words_per_second": 3.19,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-grave-1c37b1.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "How many of my father's hired servants have more than enough bread, but I perish here with hunger!",
+  "seed": 8,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s02-06-story-f10192.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "So he practiced a speech. I'm not worthy to be your son.",
+  "seed": 4,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s02-07-story-9272a4.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Just make me a servant.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-grave-c0ab1e.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "But while he was still a long way off, his father saw him and felt compassion,",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-grave-e6f29c.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "and ran and embraced him and kissed him.",
+  "seed": 1,
+  "words_per_second": 2.85,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-0dc46a.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "The son started his speech. But the father wasn't listening.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-story-6aa62d.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He was calling for his best robe, a ring, sandals, and a party.",
+  "seed": 1,
+  "words_per_second": 2.41,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-grave-455c06.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "For this my son was dead, and is alive again; he was lost, and is found.",
+  "seed": 1,
+  "words_per_second": 3.27,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-0effae.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "But the older brother was angry, and wouldn't go in.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-fe9577.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "I've worked for you all these years, he said.",
+  "seed": 1,
+  "words_per_second": 3.2,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-0ad6a1.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And you never threw me a party.",
+  "seed": 1,
+  "words_per_second": 3.37,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-177097.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And the father went out to him too.",
+  "seed": 1,
+  "words_per_second": 3.48,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-grave-2340f1.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Son, you are always with me, and all that is mine is yours.",
+  "seed": 3,
+  "words_per_second": 2.69,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-talk-d0aea4.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Jesus never tells us if the older brother went in.",
+  "seed": 1,
+  "words_per_second": 2.87,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-0995d3.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He told this story to religious people, grumbling that he welcomed sinners.",
+  "seed": 2,
+  "words_per_second": 2.63,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-pivot-470d33.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "Both sons were a long way off.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-story-e99d8b.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "And the father went out to both.",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-story-ec44db.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "So he practiced a speech. I'm not worthy to be your son.",
+  "seed": 1,
+  "words_per_second": 2.94,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}

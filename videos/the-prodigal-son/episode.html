@@ -22,7 +22,7 @@ const GOLD='#E8B53A', NILE='#2E7AB8', BLOOD='#B0182A', GREEN='#1E9A5A';
 const AT={
   open:cue('Jesus told a story'), surprise:cue('But the real surprise'),
   twoSons:cue('A man had two'), like:cue('It was like saying'), gave:cue('And the father gave'), v1513:cue('The younger son gathered'),
-  famine:cue('Then a famine came'), pigs:cue('He got a job'), v1517:cue('How many of my'), practised:cue('So he practised a'),
+  famine:cue('Then a famine came'), pigs:cue('He got a job'), v1517:cue('How many of my'), practiced:cue('So he practiced a'),
   v1520:cue('But while he was'), started:cue('The son started his'), calling:cue('He was calling for'), v1524:cue('For this my son'),
   older:cue('But the older brother'), worked:cue("I've worked for you"), wentOut:cue('And the father went'), v1531:cue('Son, you are always'),
   never:cue('Jesus never tells us'), both:cue('Both sons were a'),
@@ -792,7 +792,7 @@ function pigs(t,lt){let g=farm(t,'locust',{sky:{sun:[1500,300,70]},house:false})
   for(let i=0;i<10;i++)g+=P(`M${hash(i,1431)*2000-100} ${880+hash(i,1433)*160}l30 14l-10 20l40 10`,'none',{stroke:'#6A4A28','stroke-width':4});
   g+=R(980,FY-160,420,10,2,'#6A4422')+[980,1190,1400].map(x=>R(x-6,FY-180,12,180,2,'#6A4422')).join('');
   g+=pig(t,1120,FY+10,1.0,-1)+pig(t,1300,FY+30,.9,1)+pig(t,1040,FY+50,.8,1);
-  const sp=t>=AT.practised;g+=fig('rags',sp?800:760,FY,1.9,{face:sp?-1:1,kneel:sp?0:.9,expr:'sad',look:sp?{x:300,y:FY-200}:'down',talk:sp});
+  const sp=t>=AT.practiced;g+=fig('rags',sp?800:760,FY,1.9,{face:sp?-1:1,kneel:sp?0:.9,expr:'sad',look:sp?{x:300,y:FY-200}:'down',talk:sp});
   if(t>=AT.v1517-.2&&!sp){const k=ease.out(prog(t,AT.v1517+.3,AT.v1517+1.2));g+=G('',strip(520,300,560,240,5,'#F6EFDC',{ax:8,ay:4})+R(600,440,400,20,4,'#8A5A30')+[640,760,880].map(x=>Ell(x,430,40,20,'#D8A050')).join('')+folk(1,700,520,.5,{face:1})+folk(2,900,520,.5,{face:-1}),k);}
   return g+foreSand(t,960,1.0,{kind:'barley',bare:.95,soil:'#8A6A40'});}
 
