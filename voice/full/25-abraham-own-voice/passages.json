@@ -1,0 +1,299 @@
+{
+ "s00-01-story-be1246.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "An old man and his son climb a mountain.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-02ebf4.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "The boy carries the wood.",
+  "seed": 2,
+  "words_per_second": 2.6,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-grave-5038a8.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "It's one of the hardest stories in the Bible.",
+  "seed": 1,
+  "words_per_second": 3.41,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-pivot-769977.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But it doesn't end the way you might fear.",
+  "seed": 1,
+  "words_per_second": 3.26,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-98909e.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Abraham had waited a lifetime for a son.",
+  "seed": 3,
+  "words_per_second": 2.45,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-f50b16.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "God had promised him a family as many as the stars.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-grave-c61a95.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Look toward heaven, and number the stars, if you are able to number them.",
+  "seed": 3,
+  "words_per_second": 2.97,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-d7ad74.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "So shall your offspring be.",
+  "seed": 1,
+  "words_per_second": 2.22,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-story-766b6f.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And when Abraham was a hundred years old, and Sarah was ninety, Isaac was born.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-06-story-fbb731.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "His name means laughter.",
+  "seed": 3,
+  "words_per_second": 1.86,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-1fb229.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "Then God tested Abraham.",
+  "seed": 2,
+  "words_per_second": 2.08,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-grave-fcdf8e.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Take your son, your only son Isaac, whom you love, and go to the land of Moriah.",
+  "seed": 3,
+  "words_per_second": 3.43,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-c231b3.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "God told him to offer Isaac there, on a mountain he would show him.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-1f9545.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Early the next morning, Abraham got up and went.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-04512d.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Isaac carried the wood.",
+  "seed": 2,
+  "words_per_second": 2.05,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-322323.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And on the way up, he asked a question.",
+  "seed": 2,
+  "words_per_second": 2.97,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-grave-dc2cf1.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "Behold, the fire and the wood, but where is the lamb for a burnt offering?",
+  "seed": 2,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-story-d6e33b.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And Abraham said,",
+  "seed": 2,
+  "words_per_second": 1.97,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-grave-a2ead3.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "God will provide for himself the lamb for a burnt offering, my son.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-06-story-62c72b.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "So they went both of them together.",
+  "seed": 1,
+  "words_per_second": 3.3,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-grave-9060cd.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "At the top, Abraham built an altar, and laid the wood on it.",
+  "seed": 1,
+  "words_per_second": 2.98,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-f87a24.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "And then the angel of the LORD called out from heaven.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-28260b.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Abraham! Abraham!",
+  "seed": 3,
+  "words_per_second": 1.1,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-grave-4f1a9c.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Do not lay your hand on the boy or do anything to him, for now I know that you fear God.",
+  "seed": 2,
+  "words_per_second": 3.28,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-0d9e2a.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Abraham looked up.",
+  "seed": 3,
+  "words_per_second": 1.88,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-story-a79cef.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And there in a thicket was a ram, caught by its horns.",
+  "seed": 1,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-story-36eeb5.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "God had provided.",
+  "seed": 2,
+  "words_per_second": 1.71,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-grave-3537c6.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "So Abraham called the name of that place, The LORD will provide.",
+  "seed": 2,
+  "words_per_second": 2.63,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-talk-9d567b.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "The other gods of that land demanded children.",
+  "seed": 1,
+  "words_per_second": 2.79,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-story-05f29a.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "This God stopped it.",
+  "seed": 2,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-talk-c1cf2f.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Centuries later, Christians looked back at this mountain, at a father,",
+  "seed": 2,
+  "words_per_second": 2.75,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-talk-3f4e53.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "a beloved son and wood carried up a hill, and saw a picture of something bigger.",
+  "seed": 1,
+  "words_per_second": 3.1,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-pivot-fc0f39.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "God would provide the lamb himself.",
+  "seed": 1,
+  "words_per_second": 2.05,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
