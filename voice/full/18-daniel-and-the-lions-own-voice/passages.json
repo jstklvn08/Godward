@@ -1,0 +1,389 @@
+{
+ "s00-01-grave-a39543.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "A pit full of hungry lions.",
+  "seed": 1,
+  "words_per_second": 2.35,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-98654d.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "A stone rolled over the top.",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-story-a999c8.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And an old man inside, thrown there for praying.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-talk-393c15.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most people remember Daniel as a brave young hero, staring down lions.",
+  "seed": 2,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-05-pivot-83eed7.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But the real story is quieter than that.",
+  "seed": 1,
+  "words_per_second": 2.63,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-06-talk-0b6fc3.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "And it started years earlier.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-05b152.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Daniel was an old man by now.",
+  "seed": 1,
+  "words_per_second": 2.92,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-c55931.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "He had been taken from Jerusalem as a boy, and had served the kings of Babylon all his life.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-5962bf.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Now the new king, Darius, wanted to put him in charge of the whole kingdom.",
+  "seed": 1,
+  "words_per_second": 3.41,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-4ff5af.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Daniel became distinguished above all the other high officials and satraps,",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-grave-5d66c5.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "because an excellent spirit was in him.",
+  "seed": 1,
+  "words_per_second": 2.79,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-story-50fac5.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The other officials were jealous.",
+  "seed": 1,
+  "words_per_second": 2.18,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-a451ba.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "They tried to find something wrong with him.",
+  "seed": 1,
+  "words_per_second": 2.9,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-grave-4b698a.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "They could find no ground for complaint or any fault, because he was faithful.",
+  "seed": 3,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-pivot-511aa5.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "So they set a trap.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-story-8311c9.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "They told the king to make a law: for thirty days, no one could pray to any god or man except the king.",
+  "seed": 1,
+  "words_per_second": 3.3,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-story-70c3ce.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Anyone who did would be thrown to the lions.",
+  "seed": 1,
+  "words_per_second": 2.71,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-07-story-ea751c.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The king liked the sound of that, and he signed it.",
+  "seed": 1,
+  "words_per_second": 3.35,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-d81901.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Daniel heard about the law.",
+  "seed": 2,
+  "words_per_second": 2.46,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-f2746b.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And he went home, upstairs, to his room with the windows open toward Jerusalem.",
+  "seed": 1,
+  "words_per_second": 2.79,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-grave-dd5d07.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "He got down on his knees three times a day and prayed and gave thanks before his God,",
+  "seed": 2,
+  "words_per_second": 3.3,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-grave-192d32.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "as he had done previously.",
+  "seed": 1,
+  "words_per_second": 2.49,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-talk-3e2006.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "As he had done previously.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-06-story-992b05.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He didn't change a thing.",
+  "seed": 2,
+  "words_per_second": 2.99,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-acf5b9.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "The officials caught him praying, and ran to the king.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-f8e6a6.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "The king was upset. He tried until sunset to save Daniel.",
+  "seed": 3,
+  "words_per_second": 2.52,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-c00645.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "But even the king couldn't change his own law.",
+  "seed": 1,
+  "words_per_second": 3.09,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-27ac55.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "So Daniel was thrown into the den.",
+  "seed": 1,
+  "words_per_second": 2.61,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-05-story-994558.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "And the king called down to him.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-06-grave-b54016.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "May your God, whom you serve continually, deliver you!",
+  "seed": 1,
+  "words_per_second": 2.15,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-115157.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "That night, the king couldn't eat.",
+  "seed": 1,
+  "words_per_second": 2.83,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-b94f98.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "He couldn't sleep.",
+  "seed": 2,
+  "words_per_second": 2.34,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-5dd802.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "At dawn, he ran to the den, and called out.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-0e22e5.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Daniel, is your God able to save you?",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-story-ea06d6.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And from the dark, Daniel answered.",
+  "seed": 2,
+  "words_per_second": 2.51,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-grave-74648a.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "My God sent his angel and shut the lions' mouths, and they have not harmed me.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-story-95cd09.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "They pulled him out.",
+  "seed": 1,
+  "words_per_second": 2.63,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-grave-5a0c48.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "No kind of harm was found on him, because he had trusted in his God.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-story-ecb2c3.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Then King Darius wrote to every nation in his empire, telling them to honour Daniel's God.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-grave-1d2666.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "For he is the living God, enduring forever; his kingdom shall never be destroyed.",
+  "seed": 1,
+  "words_per_second": 2.19,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-talk-9e43d8.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Daniel didn't become brave in one night.",
+  "seed": 2,
+  "words_per_second": 3.1,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-04-story-2d76cd.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "He just kept praying, the way he always had.",
+  "seed": 1,
+  "words_per_second": 3.26,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-05-story-320d1a.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "And when the lions came, God was already there.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
