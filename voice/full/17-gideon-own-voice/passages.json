@@ -1,0 +1,398 @@
+{
+ "s00-01-story-8b83a7.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Thirty-two thousand soldiers. And God said, that's too many.",
+  "seed": 1,
+  "words_per_second": 2.16,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-b3bf9f.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "So he sent most of them home, until there were three hundred left.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-talk-5d7498.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Armed with trumpets, clay jars, and torches.",
+  "seed": 1,
+  "words_per_second": 2.33,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-pivot-eb274a.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "It sounds like a story about a mighty hero.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-05-talk-d437e7.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It isn't.",
+  "seed": 2,
+  "words_per_second": 2.04,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-c6a0f6.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Israel had forgotten God, and for seven years the Midianites ruled over them.",
+  "seed": 1,
+  "words_per_second": 2.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-89e8b9.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Every harvest, they came, with camels too many to count, and took everything.",
+  "seed": 2,
+  "words_per_second": 2.51,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-deeb6a.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Israel hid in caves in the hills.",
+  "seed": 3,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-052b77.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "And Israel was brought very low because of Midian.",
+  "seed": 1,
+  "words_per_second": 2.61,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-grave-47f3b5.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "And the people of Israel cried out for help to the LORD.",
+  "seed": 1,
+  "words_per_second": 3.67,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-d1be4f.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "Gideon was hiding.",
+  "seed": 3,
+  "words_per_second": 1.72,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-3f36c7.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "He was threshing his wheat in a winepress, down in a pit, where the raiders wouldn't see him.",
+  "seed": 4,
+  "words_per_second": 3.21,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s02-03-story-9a456c.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Then the angel of the LORD appeared under the oak tree, and said this.",
+  "seed": 1,
+  "words_per_second": 3.37,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-grave-5623c4.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "The LORD is with you, O mighty man of valor.",
+  "seed": 3,
+  "words_per_second": 3.13,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-talk-c10a9f.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "Mighty man of valor?",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-story-51d66d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Gideon looked around for who he meant.",
+  "seed": 1,
+  "words_per_second": 2.49,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-07-grave-40d078.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Please, Lord, how can I save Israel?",
+  "seed": 1,
+  "words_per_second": 2.35,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-08-grave-ca9c3a.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Behold, my clan is the weakest in Manasseh, and I am the least in my father's house.",
+  "seed": 2,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-3969c2.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Gideon was still afraid. So he asked God for a sign.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-5a6068.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He laid a wool fleece on the ground.",
+  "seed": 4,
+  "words_per_second": 3.45,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s03-03-story-b3024c.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "In the morning, the fleece was soaked with dew, and the ground was dry.",
+  "seed": 2,
+  "words_per_second": 3.47,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-story-c2d036.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then he asked again, the other way round.",
+  "seed": 4,
+  "words_per_second": 2.87,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s03-05-story-c853c5.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And God did that too.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-06-talk-2de2f0.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "God was patient with his fear.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-38b3ac.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Gideon gathered an army. Thirty-two thousand men.",
+  "seed": 1,
+  "words_per_second": 2.32,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-pivot-b8e57e.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "And God said, too many.",
+  "seed": 4,
+  "words_per_second": 2.27,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s04-03-grave-2a047b.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "The people with you are too many for me to give the Midianites into their hand, lest Israel boast over me,",
+  "seed": 1,
+  "words_per_second": 3.28,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-grave-4cfffb.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "saying, \u2018My own hand has saved me.\u2019",
+  "seed": 1,
+  "words_per_second": 2.19,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-05-story-9cfbd4.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "So everyone who was afraid went home.",
+  "seed": 2,
+  "words_per_second": 2.44,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-06-story-ebb727.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Ten thousand were left. Still too many.",
+  "seed": 3,
+  "words_per_second": 2.22,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-07-story-1b669e.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "God sent them down to the water, and kept only the three hundred who lapped it from their hands.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-story-34b6ff.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Gideon split the three hundred into three groups.",
+  "seed": 2,
+  "words_per_second": 2.45,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-434dbe.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "He didn't give them swords.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-56465b.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "He gave each man a trumpet, and an empty jar with a torch hidden inside.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-pivot-125387.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "In the middle of the night, they surrounded the camp.",
+  "seed": 1,
+  "words_per_second": 3.22,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-story-ee43c3.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "They blew the trumpets. They smashed the jars.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-980683.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "The torches blazed all round the camp. And they shouted.",
+  "seed": 1,
+  "words_per_second": 2.48,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-grave-388d34.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "A sword for the LORD and for Gideon!",
+  "seed": 1,
+  "words_per_second": 2.66,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-story-cf5a07.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "The whole camp of Midian woke up in terror, and ran.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-story-cd21af.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Not one of the three hundred had to move from his place.",
+  "seed": 1,
+  "words_per_second": 2.57,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-pivot-3811d9.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "Afterwards, they wanted to make Gideon king.",
+  "seed": 1,
+  "words_per_second": 2.07,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-grave-2b4fc8.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "I will not rule over you, and my son will not rule over you; the LORD will rule over you.",
+  "seed": 2,
+  "words_per_second": 3.2,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-talk-cafadf.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "God didn't need a mighty man.",
+  "seed": 1,
+  "words_per_second": 3.35,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-04-story-bb4a9b.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "He chose a frightened one, and a tiny army, so nobody could say they saved themselves.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
