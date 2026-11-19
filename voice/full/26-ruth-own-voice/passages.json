@@ -1,0 +1,317 @@
+{
+ "s00-01-story-ff1fcc.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "There's a book in the Bible with no miracles in it.",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-7e10d7.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "No sea splits. No fire falls.",
+  "seed": 3,
+  "words_per_second": 2.52,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-story-43eeab.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Just a widow, picking up leftover grain in a field.",
+  "seed": 1,
+  "words_per_second": 2.75,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-pivot-26c33e.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "And it changed history.",
+  "seed": 2,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-3c9c6c.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "In a famine, Naomi's family left Bethlehem for the land of Moab.",
+  "seed": 2,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-08be7c.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Her two sons married Moabite women, Orpah and Ruth.",
+  "seed": 2,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-grave-6e9cdb.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Then Naomi's husband died.",
+  "seed": 1,
+  "words_per_second": 1.91,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-story-66e80a.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And both her sons. Naomi had lost everything.",
+  "seed": 1,
+  "words_per_second": 2.32,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-story-e9318b.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "She decided to go home, and told her daughters-in-law to go back to their own families.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-story-7751a1.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Orpah kissed her goodbye, and went back.",
+  "seed": 2,
+  "words_per_second": 2.41,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-45511a.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "But Ruth clung to her.",
+  "seed": 2,
+  "words_per_second": 2.6,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-grave-0eaaf0.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Where you go I will go, and where you lodge I will lodge.",
+  "seed": 3,
+  "words_per_second": 2.41,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-grave-477846.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Your people shall be my people, and your God my God.",
+  "seed": 1,
+  "words_per_second": 2.43,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-talk-ccfcc3.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "Ruth was a foreigner.",
+  "seed": 3,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-story-a41396.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "She had nothing to gain. She chose Naomi, and Naomi's God.",
+  "seed": 2,
+  "words_per_second": 2.49,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-7f61a9.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "They arrived in Bethlehem at the barley harvest.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-729fa8.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Ruth went out to glean, picking up what the reapers left behind.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-grave-001cb3.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "And she happened to come to the part of the field belonging to Boaz.",
+  "seed": 5,
+  "words_per_second": 3.7,
+  "in_range": false,
+  "word_check": "match"
+ },
+ "s03-04-story-2f4211.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Boaz was a relative of Naomi's husband.",
+  "seed": 4,
+  "words_per_second": 2.93,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s03-05-story-4f9053.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He'd heard what Ruth had done for Naomi.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-06-story-8ce53c.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "So he told his workers to drop extra grain for her, on purpose.",
+  "seed": 1,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-pivot-b924b8.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "Naomi had a plan.",
+  "seed": 1,
+  "words_per_second": 2.19,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-3e1732.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "In Israel, a close relative could redeem a widow's family: buy back their land, and marry her,",
+  "seed": 3,
+  "words_per_second": 2.37,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-a89b77.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "so the family name wouldn't die.",
+  "seed": 2,
+  "words_per_second": 2.51,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-b7b00c.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "So Ruth went to Boaz at night on the threshing floor, and asked him.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-05-grave-d9624d.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "Spread your wings over your servant, for you are a redeemer.",
+  "seed": 3,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-story-2f6955.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Boaz did it properly, in front of the elders at the town gate.",
+  "seed": 1,
+  "words_per_second": 3.01,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-c72110.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And Ruth became his wife.",
+  "seed": 3,
+  "words_per_second": 2.39,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-story-8bf078.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "They had a son.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-ddf38b.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "And the women of Bethlehem said, Naomi has a son again.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-grave-c32edf.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "They named him Obed.",
+  "seed": 1,
+  "words_per_second": 1.98,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-grave-d838f7.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "He was the father of Jesse, the father of David.",
+  "seed": 2,
+  "words_per_second": 3.27,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-talk-a8ee12.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "No miracles.",
+  "seed": 1,
+  "words_per_second": 1.63,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-story-778851.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Just loyal love, and a God who was there all along, in a field, in a famine, in a widow's grief.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-pivot-2547cb.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "And from that family, centuries later, in that same town of Bethlehem, came Jesus.",
+  "seed": 1,
+  "words_per_second": 2.33,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
