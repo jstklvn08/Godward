@@ -1,0 +1,344 @@
+{
+ "s00-01-story-5ad1df.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Ten brothers bowed down before the second most powerful man in Egypt.",
+  "seed": 1,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-56ad53.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "They had no idea he was the brother they'd sold as a slave.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-talk-e6c159.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most people remember Joseph for his colourful coat.",
+  "seed": 2,
+  "words_per_second": 2.59,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-pivot-8b1a49.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But the coat is where the trouble starts.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-a126ef.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Joseph was his father's favourite, and everyone knew it.",
+  "seed": 2,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-a16106.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Jacob gave him a special robe.",
+  "seed": 2,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-207ad1.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Then Joseph told his brothers about his dreams, where they all bowed down to him.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-10fcd8.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "But when his brothers saw that their father loved him more than all his brothers,",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-grave-085888.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "they hated him and could not speak peacefully to him.",
+  "seed": 2,
+  "words_per_second": 3.38,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-917964.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "So when they got the chance, they threw him into a pit.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-dfa42d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Then they sold him to traders on their way to Egypt, for twenty pieces of silver.",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-ef1709.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "They brought his torn robe home, and let their father believe a wild animal had killed him.",
+  "seed": 1,
+  "words_per_second": 2.87,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-fd0e9b.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "In Egypt, Joseph was sold again, as a servant.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-387b38.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He worked hard and was trusted.",
+  "seed": 1,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-171afc.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then he was lied about, and thrown into prison.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-grave-99e182.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "But the LORD was with Joseph and showed him steadfast love.",
+  "seed": 1,
+  "words_per_second": 2.68,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-talk-7686c0.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Even in prison, God hadn't left him.",
+  "seed": 1,
+  "words_per_second": 2.66,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-403e31.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Years later, Pharaoh had dreams no one could explain.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-bfe3bb.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Seven fat cows eaten by seven thin ones.",
+  "seed": 1,
+  "words_per_second": 2.13,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-5c673d.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Joseph told him what they meant.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-e15868.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Seven good harvests, and then seven years of famine.",
+  "seed": 3,
+  "words_per_second": 2.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-05-grave-8fd566.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "See, I have set you over all the land of Egypt.",
+  "seed": 3,
+  "words_per_second": 2.93,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-fd1233.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "And then the famine came.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-e2a6ca.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Joseph's brothers came to Egypt to buy food.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-c6191e.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "They bowed down before him. Just like the dream.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-13cbfa.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And they didn't know him. Joseph tested them.",
+  "seed": 2,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-story-d35cda.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And when the youngest, Benjamin, was in trouble, Judah, the brother who had sold Joseph,",
+  "seed": 1,
+  "words_per_second": 2.57,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-story-ee8084.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "offered to become a slave in his place.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-pivot-f09176.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "Joseph couldn't hold it in any longer.",
+  "seed": 1,
+  "words_per_second": 2.46,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-ef99c0.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He sent everyone else out, and wept.",
+  "seed": 1,
+  "words_per_second": 2.52,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-grave-3e0b41.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "I am your brother, Joseph, whom you sold into Egypt.",
+  "seed": 2,
+  "words_per_second": 2.85,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-story-2b854a.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "They were terrified. But he hugged them, and wept over them.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-story-f76304.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Years later, his brothers were still afraid he'd take revenge.",
+  "seed": 1,
+  "words_per_second": 2.43,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-story-a07ef2.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Joseph told them,",
+  "seed": 2,
+  "words_per_second": 2.08,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-grave-020262.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "As for you, you meant evil against me, but God meant it for good,",
+  "seed": 2,
+  "words_per_second": 2.39,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-04-grave-efac86.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "to bring it about that many people should be kept alive, as they are today.",
+  "seed": 2,
+  "words_per_second": 3.1,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-05-talk-a30a48.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Their evil was real.",
+  "seed": 2,
+  "words_per_second": 3.25,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-06-story-abace1.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "But God was bigger than it. And Joseph chose to forgive.",
+  "seed": 2,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
