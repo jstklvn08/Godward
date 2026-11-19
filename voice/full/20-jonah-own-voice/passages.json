@@ -1,0 +1,407 @@
+{
+ "s00-01-story-d70d74.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "A man thrown into a stormy sea. Swallowed by a great fish.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-73e886.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Three days and three nights inside it.",
+  "seed": 3,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-talk-33f035.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "That's the part everyone remembers.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-pivot-2786a6.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But the fish isn't the point of the story.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-05-talk-5e5c41.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "The point is what happened after.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-f1545f.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "The word of the LORD came to a prophet named Jonah.",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-grave-ad1b3e.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Arise, go to Nineveh, that great city, and call out against it, for their evil has come up before me.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-5dd28b.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Nineveh was the capital of Assyria, the cruellest empire of its day, and Israel's enemy.",
+  "seed": 1,
+  "words_per_second": 2.26,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-36f0e8.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "But Jonah ran.",
+  "seed": 1,
+  "words_per_second": 2.07,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-7fe51e.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "He got on a ship going the opposite way, as far from Nineveh as he could get.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-f2d658.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "So God sent a great storm.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-e9e0f4.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The sailors were terrified, and every one of them prayed to his own god.",
+  "seed": 1,
+  "words_per_second": 2.83,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-story-0ee2ee.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Jonah was fast asleep. Jonah told them the truth.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-story-f9bb08.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "I'm running from the LORD.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-07-story-07fca1.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Throw me into the sea, and it will be calm.",
+  "seed": 1,
+  "words_per_second": 3.41,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-08-story-4b128b.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "They didn't want to. But in the end they did.",
+  "seed": 2,
+  "words_per_second": 3.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-09-story-b5f185.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And the sea went still.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-pivot-003d85.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "Then a great fish swallowed Jonah.",
+  "seed": 1,
+  "words_per_second": 2.33,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-a8cd86.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And there, inside the fish, Jonah prayed.",
+  "seed": 1,
+  "words_per_second": 2.27,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-30f10d.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "He thanked God for saving his life.",
+  "seed": 2,
+  "words_per_second": 3.18,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-grave-a32f6c.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "Salvation belongs to the LORD!",
+  "seed": 1,
+  "words_per_second": 2.25,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-story-f16d15.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And the fish spat him out onto dry land.",
+  "seed": 1,
+  "words_per_second": 2.96,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-56188e.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "So God spoke to Jonah a second time. And this time, he went.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-grave-955138.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "Yet forty days, and Nineveh shall be overthrown!",
+  "seed": 4,
+  "words_per_second": 2.16,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s04-03-pivot-f6a851.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "And the whole city listened.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-d0d844.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "From the king down, they stopped their violence and turned to God.",
+  "seed": 1,
+  "words_per_second": 2.71,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-05-grave-074895.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "When God saw what they did, how they turned from their evil way,",
+  "seed": 3,
+  "words_per_second": 3.12,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-06-grave-c5154d.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "God relented of the disaster that he had said he would do to them, and he did not do it.",
+  "seed": 1,
+  "words_per_second": 3.39,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-7e28be.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "And Jonah was furious.",
+  "seed": 1,
+  "words_per_second": 1.9,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-044da9.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Because this is exactly why he ran.",
+  "seed": 1,
+  "words_per_second": 2.25,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-grave-ac392a.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "For I knew that you are a gracious God and merciful, slow to anger and abounding in steadfast love,",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-grave-474b60.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "and relenting from disaster.",
+  "seed": 2,
+  "words_per_second": 2.02,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-story-50bceb.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Jonah sat on a hill to see what would happen.",
+  "seed": 1,
+  "words_per_second": 3.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-story-dbb1db.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "God made a plant grow to shade him, and Jonah was glad.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-07-story-f8e2b1.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Then God sent a worm, and the plant died.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-08-story-462485.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And Jonah was angry about the plant.",
+  "seed": 3,
+  "words_per_second": 2.49,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-story-291594.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "So God said to him, you cared about a plant you didn't even grow.",
+  "seed": 1,
+  "words_per_second": 3.22,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-grave-40cfeb.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "And should not I pity Nineveh, that great city,",
+  "seed": 1,
+  "words_per_second": 2.2,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-grave-eaf30d.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "in which there are more than a hundred and twenty thousand persons who do not know their right hand from their left,",
+  "seed": 1,
+  "words_per_second": 3.67,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-grave-6bbd88.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "and also much cattle?",
+  "seed": 1,
+  "words_per_second": 1.96,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-talk-4e8942.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "And that's where the book ends.",
+  "seed": 1,
+  "words_per_second": 3.66,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-06-story-94a9fd.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "With a question.",
+  "seed": 2,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-talk-bd5b80.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Jonah never answers it.",
+  "seed": 2,
+  "words_per_second": 2.52,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-story-bbad0d.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Maybe that's because the question is for us.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-pivot-63341c.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "Is there anyone we think is too far gone for God's mercy?",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
