@@ -1,0 +1,754 @@
+{
+ "_doc": "Soundtrack for 'The Burning Bush'. Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue. God has no voice effect: choir, shimmer and fire. 'I AM WHO I AM' is the one big hit.",
+ "episode": "the-burning-bush",
+ "words": "words.js",
+ "duration": {
+  "word": "enough",
+  "n": -1,
+  "edge": "end",
+  "offset": 7
+ },
+ "marks": {
+  "egypt": {
+   "word": "In Egypt, God's people",
+   "offset": -0.1
+  },
+  "turn": {
+   "word": "Then he saw it",
+   "offset": -0.1
+  },
+  "seen": {
+   "word": "I have surely seen",
+   "offset": -0.3
+  },
+  "who": {
+   "word": "And Moses said",
+   "offset": -0.1
+  },
+  "name": {
+   "word": "Then Moses asked, what",
+   "offset": -0.1
+  },
+  "excuses": {
+   "word": "But Moses still had",
+   "offset": -0.1
+  },
+  "end": {
+   "word": "Moses asked who he",
+   "offset": -0.1
+  },
+  "lastWord": {
+   "word": "enough",
+   "n": -1,
+   "edge": "end"
+  }
+ },
+ "motifs": {
+  "FIRE": [
+   62,
+   66,
+   69,
+   71
+  ],
+  "LAMENT": [
+   57,
+   60,
+   64,
+   62
+  ],
+  "IAM": [
+   62,
+   66,
+   69,
+   74
+  ]
+ },
+ "scenes": [
+  {
+   "name": "cold-open",
+   "start": 0,
+   "screen": "the bush on fire, Who am I?",
+   "music": "shimmering pads, FIRE motif",
+   "sound": "fire crackle, wind"
+  },
+  {
+   "name": "egypt",
+   "start": "egypt",
+   "screen": "slaves in Egypt, the cry rising, Moses a shepherd",
+   "music": "LAMENT, then warm desert pads",
+   "sound": "wind, sheep"
+  },
+  {
+   "name": "turn",
+   "start": "turn",
+   "screen": "turn aside, holy ground",
+   "music": "choir rising, held",
+   "sound": "fire"
+  },
+  {
+   "name": "seen",
+   "start": "seen",
+   "screen": "I have seen, sent to Pharaoh",
+   "music": "warm choir",
+   "sound": "fire"
+  },
+  {
+   "name": "who",
+   "start": "who",
+   "screen": "Who am I? I will be with you",
+   "music": "quiet piano, then a warm chord",
+   "sound": "fire"
+  },
+  {
+   "name": "name",
+   "start": "name",
+   "screen": "I AM WHO I AM, the LORD",
+   "music": "the biggest choir and the hit on I AM",
+   "sound": "fire roar"
+  },
+  {
+   "name": "excuses",
+   "start": "excuses",
+   "screen": "excuses, the snake, Aaron",
+   "music": "light playful plucks",
+   "sound": "night, then morning"
+  },
+  {
+   "name": "end",
+   "start": "end",
+   "screen": "walking to Egypt",
+   "music": "warm pads, flute FIRE, choir to the end",
+   "sound": "birds"
+  }
+ ],
+ "stems": {
+  "score": {
+   "seed": 2401,
+   "reverb": {
+    "room": 0.87,
+    "damp": 0.32,
+    "wet": 0.38
+   },
+   "autoLevel": {
+    "window": 0.1,
+    "smooth": 15,
+    "min": 0.35,
+    "max": 4
+   },
+   "fade": {
+    "end": {
+     "mark": "lastWord",
+     "offset": 6.6
+    },
+    "len": 2.5
+   },
+   "events": [
+    {
+     "scene": "cold-open"
+    },
+    {
+     "inst": "choir",
+     "at": 0,
+     "to": 4,
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.7,
+     "att": 1.5
+    },
+    {
+     "inst": "pad",
+     "at": 0.5,
+     "to": "egypt-0.3",
+     "notes": [
+      50,
+      57,
+      62,
+      66
+     ],
+     "lv": 0.55,
+     "bright": 0.5,
+     "a": 2,
+     "r": 1
+    },
+    {
+     "inst": "bell",
+     "motif": "FIRE",
+     "at": {
+      "word": "And an old shepherd",
+      "offset": 1
+     },
+     "step": 0.7,
+     "transpose": 12,
+     "lv": 0.45,
+     "pan": 0.5,
+     "dec": 3
+    },
+    {
+     "scene": "egypt"
+    },
+    {
+     "inst": "piano",
+     "motif": "LAMENT",
+     "at": "egypt+0.3",
+     "step": 0.9,
+     "lv": 0.5,
+     "pan": 0.5,
+     "dec": 3
+    },
+    {
+     "inst": "pad",
+     "at": "egypt",
+     "to": {
+      "word": "Meanwhile, far away in"
+     },
+     "notes": [
+      33,
+      45,
+      52,
+      57
+     ],
+     "lv": 0.5,
+     "bright": 0.25,
+     "a": 1,
+     "r": 1
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "And God heard their",
+      "offset": -0.3
+     },
+     "to": {
+      "word": "Meanwhile, far away in"
+     },
+     "notes": [
+      57,
+      61,
+      64,
+      69
+     ],
+     "lv": 0.7,
+     "att": 1,
+     "rel": 1
+    },
+    {
+     "inst": "pad",
+     "repeat": {
+      "from": {
+       "word": "Meanwhile, far away in"
+      },
+      "to": "turn-0.3",
+      "every": 4
+     },
+     "chords": [
+      [
+       50,
+       57,
+       62,
+       66
+      ],
+      [
+       47,
+       54,
+       59,
+       62
+      ]
+     ],
+     "hold": 4.3,
+     "lv": 0.55,
+     "bright": 0.55,
+     "a": 1.2,
+     "r": 0.8
+    },
+    {
+     "scene": "turn"
+    },
+    {
+     "inst": "pad",
+     "at": "turn",
+     "to": "who-0.3",
+     "notes": [
+      38,
+      50,
+      57,
+      62
+     ],
+     "lv": 0.55,
+     "bright": 0.5,
+     "a": 1.5,
+     "r": 1
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "Moses turned aside to",
+      "offset": 1
+     },
+     "to": "seen",
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.85,
+     "att": 1,
+     "rel": 1.2
+    },
+    {
+     "scene": "seen"
+    },
+    {
+     "inst": "choir",
+     "at": "seen",
+     "to": "who-0.3",
+     "notes": [
+      57,
+      62,
+      66,
+      69
+     ],
+     "lv": 0.75,
+     "att": 1,
+     "rel": 1
+    },
+    {
+     "scene": "who"
+    },
+    {
+     "inst": "piano",
+     "repeat": {
+      "from": "who",
+      "to": {
+       "word": "But I will be",
+       "offset": -0.3
+      },
+      "every": 1.4,
+      "jitter": 0.3
+     },
+     "pick": "random",
+     "seq": [
+      62,
+      65,
+      69,
+      72
+     ],
+     "lv": 0.45,
+     "pan": "random",
+     "dec": 2.5
+    },
+    {
+     "inst": "pad",
+     "at": {
+      "word": "But I will be",
+      "offset": -0.2
+     },
+     "to": "name-0.3",
+     "notes": [
+      50,
+      57,
+      62,
+      66,
+      69
+     ],
+     "lv": 0.65,
+     "bright": 0.6,
+     "a": 0.6,
+     "r": 1
+    },
+    {
+     "scene": "name"
+    },
+    {
+     "inst": "pad",
+     "at": "name",
+     "to": {
+      "word": "I AM WHO I",
+      "offset": -0.3
+     },
+     "notes": [
+      50,
+      57
+     ],
+     "lv": 0.35,
+     "bright": 0.3,
+     "a": 0.6,
+     "r": 0.3
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "I AM WHO I",
+      "offset": -0.1
+     },
+     "to": "excuses-0.3",
+     "notes": [
+      50,
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 1.0,
+     "att": 0.3,
+     "rel": 1.5
+    },
+    {
+     "inst": "pad",
+     "at": {
+      "word": "I AM WHO I",
+      "offset": -0.1
+     },
+     "to": "excuses-0.3",
+     "notes": [
+      26,
+      38,
+      45,
+      50
+     ],
+     "lv": 0.75,
+     "bright": 0.5,
+     "a": 0.2,
+     "r": 1
+    },
+    {
+     "scene": "excuses"
+    },
+    {
+     "inst": "pluck",
+     "repeat": {
+      "from": "excuses",
+      "to": "end-0.3",
+      "every": 0.45,
+      "jitter": 0.08
+     },
+     "pick": "random",
+     "seq": [
+      62,
+      66,
+      69,
+      71,
+      74
+     ],
+     "lv": 0.38,
+     "pan": "random",
+     "len": 0.6,
+     "bright": 0.5
+    },
+    {
+     "scene": "end"
+    },
+    {
+     "inst": "pad",
+     "repeat": {
+      "from": "end",
+      "to": {
+       "mark": "lastWord",
+       "offset": 6.5
+      },
+      "every": 4
+     },
+     "chords": [
+      [
+       50,
+       62,
+       66,
+       69
+      ],
+      [
+       47,
+       59,
+       62,
+       66
+      ],
+      [
+       43,
+       55,
+       59,
+       62
+      ],
+      [
+       45,
+       57,
+       61,
+       64
+      ]
+     ],
+     "hold": 4.3,
+     "lv": 0.65,
+     "bright": 0.55,
+     "a": 1.2,
+     "r": 0.8
+    },
+    {
+     "inst": "flute",
+     "motif": "FIRE",
+     "at": {
+      "word": "Moses asked who he",
+      "offset": 0.5
+     },
+     "step": 0.7,
+     "transpose": 12,
+     "len": 0.6,
+     "lv": 0.8,
+     "pan": 0.5
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "mark": "lastWord",
+      "offset": 0.3
+     },
+     "to": {
+      "mark": "lastWord",
+      "offset": 6.5
+     },
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.85,
+     "att": 1,
+     "rel": 2
+    }
+   ]
+  },
+  "ambience": {
+   "seed": 3241,
+   "fade": {
+    "end": {
+     "mark": "lastWord",
+     "offset": 6.6
+    },
+    "len": 2
+   },
+   "events": [
+    {
+     "inst": "wind",
+     "at": 0,
+     "to": "egypt",
+     "lv": 0.3,
+     "fc": 600
+    },
+    {
+     "inst": "wind",
+     "at": {
+      "word": "Meanwhile, far away in"
+     },
+     "to": "turn",
+     "lv": 0.3,
+     "fc": 600
+    },
+    {
+     "inst": "shimmer",
+     "at": "turn",
+     "to": "excuses",
+     "lv": 0.45
+    },
+    {
+     "inst": "crickets",
+     "at": "excuses",
+     "to": {
+      "word": "And God sent his"
+     },
+     "lv": 0.4
+    },
+    {
+     "inst": "bird",
+     "repeat": {
+      "from": {
+       "word": "And God sent his"
+      },
+      "to": {
+       "mark": "lastWord",
+       "offset": 5
+      },
+      "every": 1.6,
+      "jitter": 1
+     },
+     "lv": 0.4,
+     "pan": "random"
+    }
+   ]
+  },
+  "sfx": {
+   "seed": 5241,
+   "events": [
+    {
+     "inst": "paperTap",
+     "at": [
+      {
+       "word": "A bush on fire",
+       "offset": 0.4
+      },
+      {
+       "word": "Who am I",
+       "offset": 1
+      },
+      {
+       "word": "Meanwhile, far away in",
+       "offset": 0.6
+      },
+      {
+       "word": "Do not come near",
+       "offset": 2.5
+      },
+      {
+       "word": "But Moses still had",
+       "offset": 0.4
+      },
+      {
+       "word": "And God sent his",
+       "offset": 0.4
+      },
+      {
+       "word": "And that was enough"
+      }
+     ],
+     "lv": 0.8,
+     "pan": {
+      "rand": [
+       0.35,
+       0.65
+      ]
+     }
+    },
+    {
+     "inst": "whoosh",
+     "at": [
+      "egypt-0.4",
+      "turn-0.4",
+      "who-0.4",
+      "name-0.4",
+      "excuses-0.4",
+      "end-0.4"
+     ],
+     "len": 0.8,
+     "lv": 0.7,
+     "pan": 0.5
+    },
+    {
+     "inst": "sparkle",
+     "at": [
+      {
+       "word": "Moses turned aside to",
+       "offset": 1
+      },
+      {
+       "word": "But I will be"
+      }
+     ],
+     "len": 2,
+     "lv": 0.9,
+     "pan": 0.5
+    },
+    {
+     "inst": "swell",
+     "at": {
+      "word": "I AM WHO I",
+      "offset": -1.5
+     },
+     "len": 1.5,
+     "note": 50,
+     "lv": 1.0
+    }
+   ]
+  }
+ },
+ "mix": {
+  "voice": {
+   "volume": 1.25
+  },
+  "buses": [
+   {
+    "name": "music",
+    "stem": "score.wav",
+    "volume": 1.0,
+    "duck": {
+     "threshold": 0.02,
+     "ratio": 4,
+     "attack": 30,
+     "release": 500,
+     "makeup": 1
+    },
+    "envelope": [
+     {
+      "comment": "end card",
+      "from": {
+       "mark": "lastWord",
+       "offset": 0.4
+      },
+      "to": {
+       "mark": "lastWord",
+       "offset": 7
+      },
+      "db": 6,
+      "in": 1.2,
+      "out": 0.5
+     }
+    ]
+   },
+   {
+    "name": "sfx",
+    "stem": "sfx.wav",
+    "volume": 0.2
+   },
+   {
+    "name": "ambience",
+    "stem": "ambience.wav",
+    "volume": 0.832,
+    "compressor": {
+     "threshold": 0.05,
+     "ratio": 3.5,
+     "attack": 10,
+     "release": 300,
+     "makeup": 2.8
+    },
+    "duck": {
+     "threshold": 0.02,
+     "ratio": 6,
+     "attack": 20,
+     "release": 600,
+     "makeup": 1.5
+    }
+   }
+  ],
+  "hits": [
+   {
+    "name": "iam",
+    "sound": "thunder",
+    "seed": 2407,
+    "len": 5,
+    "at": {
+     "word": "I AM WHO I",
+     "offset": -0.1
+    },
+    "compressor": {
+     "threshold": 0.02,
+     "ratio": 12,
+     "attack": 0.5,
+     "release": 400,
+     "makeup": 10
+    },
+    "volume": 2.6
+   }
+  ],
+  "limiter": {
+   "limit": 0.89,
+   "attack": 1,
+   "release": 60
+  },
+  "loudnorm": {
+   "I": -14,
+   "TP": -1.0,
+   "LRA": 18
+  },
+  "tail": 7
+ }
+}
