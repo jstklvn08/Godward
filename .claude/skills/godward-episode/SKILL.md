@@ -63,10 +63,11 @@ the cloud hand-back below.
 | The Red Sea | `the-red-sea` (script `13-`) | finished: 4:30 with outro, thumbnail, caption |
 | The Fall of Jericho | `the-fall-of-jericho` (script `14-`) | finished: 3:34 with outro, thumbnail, caption |
 | David and Goliath | `david-and-goliath` (script `15-`) | finished: 3:42 with outro, thumbnail, caption |
+| Job | `job` (script `16-`) | finished: 3:08 with outro, thumbnail, caption |
 
 What to make next: `Godward-Content-Report.html` (viewership research, 9 Nov 2026). Old Testament stories beat
 Bible study and prayer.
-- **Ranked next:** Job, Samson or Gideon, Daniel or Esther, Every Beast in Revelation (Jericho and David and Goliath are done).
+- **Ranked next:** Samson or Gideon, Daniel or Esther, Every Beast in Revelation (Jericho, David and Goliath and Job are done).
 - **Big-hook topics:** every angel in the Bible, the story from Satan's point of view, what happens after death.
 - **Each video stands alone:** no "Part 1 / Part 2" titles or labels.
 
