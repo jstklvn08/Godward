@@ -1,0 +1,398 @@
+{
+ "s00-01-story-2a277f.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Four hundred and fifty prophets on one side.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-cedfc5.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "One man on the other.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-story-27135e.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And fire falling from heaven.",
+  "seed": 2,
+  "words_per_second": 2.31,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-talk-a26d6a.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It sounds like a magic contest.",
+  "seed": 1,
+  "words_per_second": 2.79,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-05-story-d301a8.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Elijah the wizard wins.",
+  "seed": 2,
+  "words_per_second": 1.91,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-06-pivot-10ecfb.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But watch who the story is really talking to.",
+  "seed": 1,
+  "words_per_second": 2.87,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-a88c8e.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Israel's king, Ahab, and his queen, Jezebel, had led the people to worship Baal, the storm god,",
+  "seed": 2,
+  "words_per_second": 2.39,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-305a14.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "the one they said sent the rain.",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-9309d3.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "So the prophet Elijah told the king,",
+  "seed": 1,
+  "words_per_second": 2.93,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-8a38c1.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "As the LORD, the God of Israel, lives, before whom I stand, there shall be neither dew nor rain these years,",
+  "seed": 1,
+  "words_per_second": 2.69,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-grave-b17a6b.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "except by my word.",
+  "seed": 2,
+  "words_per_second": 2.29,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-06-story-d86997.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "For three years, not a drop fell.",
+  "seed": 3,
+  "words_per_second": 2.4,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-story-3b5467.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Then Elijah called all Israel to Mount Carmel.",
+  "seed": 1,
+  "words_per_second": 2.48,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-9362c7.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And he asked them a question.",
+  "seed": 1,
+  "words_per_second": 3.49,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-grave-8f5de1.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "How long will you go limping between two different opinions?",
+  "seed": 1,
+  "words_per_second": 2.92,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-grave-efa8a3.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "If the LORD is God, follow him; but if Baal, then follow him.",
+  "seed": 1,
+  "words_per_second": 2.39,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-talk-d0adec.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "And the people said nothing.",
+  "seed": 1,
+  "words_per_second": 3.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-story-bd3716.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Not a word.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-dc178b.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "So Elijah set a test.",
+  "seed": 1,
+  "words_per_second": 2.49,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-487244.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Each side would prepare a sacrifice, with no fire.",
+  "seed": 2,
+  "words_per_second": 2.47,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-43cb26.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "The God who answered by fire, he is God.",
+  "seed": 2,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-story-7d1c34.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Baal's prophets went first.",
+  "seed": 2,
+  "words_per_second": 1.95,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-story-df915f.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "They shouted from morning until noon.",
+  "seed": 3,
+  "words_per_second": 2.26,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-06-grave-70ba21.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "\u2018O Baal, answer us!\u2019 But there was no voice, and no one answered.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-07-talk-0bd4bd.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Elijah teased them.",
+  "seed": 2,
+  "words_per_second": 2.22,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-08-story-6ccb5e.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Shout louder. Maybe he's asleep.",
+  "seed": 2,
+  "words_per_second": 2.35,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-c033ff.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Then it was Elijah's turn.",
+  "seed": 2,
+  "words_per_second": 2.39,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-0a13c9.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "He rebuilt the broken altar of the LORD, with twelve stones, one for each tribe of Israel.",
+  "seed": 2,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-e4591e.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "And he had them pour water over it. Not once. Three times.",
+  "seed": 1,
+  "words_per_second": 2.52,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-24208e.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Until the trench round it was full.",
+  "seed": 2,
+  "words_per_second": 2.99,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-785c9b.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "Then Elijah prayed.",
+  "seed": 2,
+  "words_per_second": 2.22,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-a206a4.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "No shouting. Just a short prayer.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-grave-abd960.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Answer me, O LORD, answer me, that this people may know that you, O LORD, are God,",
+  "seed": 2,
+  "words_per_second": 2.98,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-grave-4133f7.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "and that you have turned their hearts back.",
+  "seed": 3,
+  "words_per_second": 3.0,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-grave-f43851.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Then the fire of the LORD fell and consumed the burnt offering and the wood and the stones and the dust,",
+  "seed": 3,
+  "words_per_second": 3.16,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-grave-d82146.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "and licked up the water that was in the trench.",
+  "seed": 1,
+  "words_per_second": 3.51,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-story-67e3e8.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "When the people saw it, they fell on their faces and cried out,",
+  "seed": 1,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-grave-99b0ff.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "The LORD, he is God; the LORD, he is God.",
+  "seed": 1,
+  "words_per_second": 2.1,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-pivot-f3d790.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "And then, the rain.",
+  "seed": 1,
+  "words_per_second": 2.38,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-story-a81581.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "A little cloud over the sea, as small as a man's hand.",
+  "seed": 1,
+  "words_per_second": 3.22,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-story-91b587.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "And then a downpour.",
+  "seed": 1,
+  "words_per_second": 2.41,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-talk-3afcfe.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Elijah's question wasn't just for them.",
+  "seed": 2,
+  "words_per_second": 2.33,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-story-8e27e8.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "It's for anyone trying to keep one foot in each camp.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-pivot-a56106.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "If the LORD is God, follow him.",
+  "seed": 1,
+  "words_per_second": 2.69,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
