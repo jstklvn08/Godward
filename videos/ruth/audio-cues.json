@@ -1,0 +1,750 @@
+{
+ "_doc": "Soundtrack for 'Ruth'. Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue. One big hit: Ruth's vow.",
+ "episode": "ruth",
+ "words": "words.js",
+ "duration": {
+  "word": "Jesus",
+  "n": -1,
+  "edge": "end",
+  "offset": 7
+ },
+ "marks": {
+  "famine": {
+   "word": "In a famine, Naomi's",
+   "offset": -0.1
+  },
+  "road": {
+   "word": "Orpah kissed her goodbye",
+   "offset": -0.1
+  },
+  "field": {
+   "word": "They arrived in Bethlehem",
+   "offset": -0.1
+  },
+  "night": {
+   "word": "Naomi had a plan",
+   "offset": -0.1
+  },
+  "gate": {
+   "word": "Boaz did it properly",
+   "offset": -0.1
+  },
+  "son": {
+   "word": "They had a son",
+   "offset": -0.1
+  },
+  "end": {
+   "word": "No miracles. Just loyal",
+   "offset": -0.1
+  },
+  "lastWord": {
+   "word": "Jesus",
+   "n": -1,
+   "edge": "end"
+  }
+ },
+ "motifs": {
+  "FIELD": [
+   62,
+   64,
+   66,
+   69,
+   66
+  ],
+  "LOYAL": [
+   57,
+   62,
+   64,
+   66
+  ],
+  "HOME": [
+   62,
+   66,
+   69,
+   74
+  ]
+ },
+ "scenes": [
+  {
+   "name": "cold-open",
+   "start": 0,
+   "screen": "gleaning in the field, no miracles",
+   "music": "warm guitar-like plucks, soft pad",
+   "sound": "wind in barley"
+  },
+  {
+   "name": "famine",
+   "start": "famine",
+   "screen": "the road to Moab, three graves",
+   "music": "low pad, minor, slow",
+   "sound": "dry wind"
+  },
+  {
+   "name": "road",
+   "start": "road",
+   "screen": "Orpah goes back, Ruth clings, where you go",
+   "music": "LOYAL on flute over held strings",
+   "sound": "wind"
+  },
+  {
+   "name": "field",
+   "start": "field",
+   "screen": "harvest, Boaz, extra grain",
+   "music": "FIELD plucks, bright pads",
+   "sound": "birds, reaping"
+  },
+  {
+   "name": "night",
+   "start": "night",
+   "screen": "Naomi's plan, the threshing floor",
+   "music": "quiet pad, bells",
+   "sound": "crickets"
+  },
+  {
+   "name": "gate",
+   "start": "gate",
+   "screen": "the town gate, the wedding",
+   "music": "warm choir",
+   "sound": "town murmur"
+  },
+  {
+   "name": "son",
+   "start": "son",
+   "screen": "a son, Obed, Jesse, David",
+   "music": "HOME on flute, rising choir",
+   "sound": "birds"
+  },
+  {
+   "name": "end",
+   "start": "end",
+   "screen": "Bethlehem at dusk, a star",
+   "music": "warm pads, choir to the end",
+   "sound": "evening birds"
+  }
+ ],
+ "stems": {
+  "score": {
+   "seed": 2601,
+   "reverb": {
+    "room": 0.87,
+    "damp": 0.32,
+    "wet": 0.38
+   },
+   "autoLevel": {
+    "window": 0.1,
+    "smooth": 15,
+    "min": 0.35,
+    "max": 4
+   },
+   "fade": {
+    "end": {
+     "mark": "lastWord",
+     "offset": 6.6
+    },
+    "len": 2.5
+   },
+   "events": [
+    {
+     "scene": "cold-open"
+    },
+    {
+     "inst": "pad",
+     "at": 0,
+     "to": "famine-0.3",
+     "notes": [
+      50,
+      57,
+      62,
+      66
+     ],
+     "lv": 0.5,
+     "bright": 0.45,
+     "a": 2,
+     "r": 1
+    },
+    {
+     "inst": "piano",
+     "motif": "FIELD",
+     "at": 0.6,
+     "step": 0.7,
+     "lv": 0.45,
+     "pan": 0.5,
+     "dec": 3
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "And it changed history",
+      "offset": -0.2
+     },
+     "to": "famine-0.3",
+     "notes": [
+      50,
+      62,
+      66,
+      69
+     ],
+     "lv": 0.55,
+     "att": 0.6,
+     "rel": 1
+    },
+    {
+     "scene": "famine"
+    },
+    {
+     "inst": "pad",
+     "at": "famine",
+     "to": "road-0.3",
+     "notes": [
+      33,
+      45,
+      52,
+      57
+     ],
+     "lv": 0.5,
+     "bright": 0.25,
+     "a": 1,
+     "r": 1
+    },
+    {
+     "inst": "tremolo",
+     "at": {
+      "word": "Then Naomi's husband died"
+     },
+     "to": "road-0.3",
+     "notes": [
+      57,
+      60
+     ],
+     "lv": 0.3
+    },
+    {
+     "scene": "road"
+    },
+    {
+     "inst": "pad",
+     "at": "road",
+     "to": "field-0.3",
+     "notes": [
+      38,
+      50,
+      57,
+      62
+     ],
+     "lv": 0.5,
+     "bright": 0.4,
+     "a": 1,
+     "r": 1
+    },
+    {
+     "inst": "flute",
+     "motif": "LOYAL",
+     "at": {
+      "word": "Where you go I",
+      "offset": -0.2
+     },
+     "step": 0.9,
+     "transpose": 12,
+     "len": 0.8,
+     "lv": 0.75,
+     "pan": 0.5
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "Ruth was a foreigner"
+     },
+     "to": "field-0.3",
+     "notes": [
+      50,
+      62,
+      66,
+      69
+     ],
+     "lv": 0.6,
+     "att": 1,
+     "rel": 1
+    },
+    {
+     "scene": "field"
+    },
+    {
+     "inst": "pad",
+     "repeat": {
+      "from": "field",
+      "to": "night-0.4",
+      "every": 4
+     },
+     "chords": [
+      [
+       50,
+       57,
+       62,
+       66
+      ],
+      [
+       47,
+       54,
+       59,
+       62
+      ],
+      [
+       43,
+       50,
+       55,
+       59
+      ],
+      [
+       45,
+       52,
+       57,
+       61
+      ]
+     ],
+     "hold": 4.3,
+     "lv": 0.55,
+     "bright": 0.6,
+     "a": 1.2,
+     "r": 0.8
+    },
+    {
+     "inst": "piano",
+     "motif": "FIELD",
+     "at": "field+0.3",
+     "step": 0.6,
+     "lv": 0.45,
+     "pan": 0.4,
+     "dec": 3
+    },
+    {
+     "inst": "piano",
+     "motif": "FIELD",
+     "at": {
+      "word": "So he told his"
+     },
+     "step": 0.6,
+     "transpose": 12,
+     "lv": 0.4,
+     "pan": 0.6,
+     "dec": 3
+    },
+    {
+     "scene": "night"
+    },
+    {
+     "inst": "pad",
+     "at": "night",
+     "to": "gate-0.3",
+     "notes": [
+      45,
+      52,
+      57,
+      61
+     ],
+     "lv": 0.45,
+     "bright": 0.3,
+     "a": 1,
+     "r": 1
+    },
+    {
+     "inst": "bell",
+     "repeat": {
+      "from": {
+       "word": "So Ruth went to"
+      },
+      "to": "gate-0.5",
+      "every": 0.6,
+      "jitter": 0.15
+     },
+     "pick": "random",
+     "seq": [
+      74,
+      78,
+      81,
+      83,
+      86
+     ],
+     "lv": 0.3,
+     "pan": "random",
+     "dec": 2
+    },
+    {
+     "scene": "gate"
+    },
+    {
+     "inst": "choir",
+     "at": "gate",
+     "to": "son-0.3",
+     "notes": [
+      50,
+      62,
+      66,
+      69
+     ],
+     "lv": 0.7,
+     "att": 0.8,
+     "rel": 1
+    },
+    {
+     "scene": "son"
+    },
+    {
+     "inst": "pad",
+     "at": "son",
+     "to": "end-0.3",
+     "notes": [
+      50,
+      57,
+      62,
+      66
+     ],
+     "lv": 0.55,
+     "bright": 0.6,
+     "a": 0.8,
+     "r": 1
+    },
+    {
+     "inst": "flute",
+     "motif": "HOME",
+     "at": "son+0.4",
+     "step": 0.7,
+     "transpose": 12,
+     "len": 0.6,
+     "lv": 0.8,
+     "pan": 0.5
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "They named him Obed",
+      "offset": 2
+     },
+     "to": "end-0.3",
+     "notes": [
+      50,
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.9,
+     "att": 1.2,
+     "rel": 1
+    },
+    {
+     "scene": "end"
+    },
+    {
+     "inst": "pad",
+     "repeat": {
+      "from": "end",
+      "to": {
+       "mark": "lastWord",
+       "offset": 6.5
+      },
+      "every": 4
+     },
+     "chords": [
+      [
+       50,
+       62,
+       66,
+       69
+      ],
+      [
+       47,
+       59,
+       62,
+       66
+      ],
+      [
+       43,
+       55,
+       59,
+       62
+      ],
+      [
+       45,
+       57,
+       61,
+       64
+      ]
+     ],
+     "hold": 4.3,
+     "lv": 0.65,
+     "bright": 0.55,
+     "a": 1.2,
+     "r": 0.8
+    },
+    {
+     "inst": "flute",
+     "motif": "LOYAL",
+     "at": "end+1",
+     "step": 0.9,
+     "transpose": 12,
+     "len": 0.8,
+     "lv": 0.75,
+     "pan": 0.5
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "And from that family",
+      "offset": 0.2
+     },
+     "to": {
+      "mark": "lastWord",
+      "offset": 6.5
+     },
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.85,
+     "att": 1.5,
+     "rel": 2
+    }
+   ]
+  },
+  "ambience": {
+   "seed": 3261,
+   "fade": {
+    "end": {
+     "mark": "lastWord",
+     "offset": 6.6
+    },
+    "len": 2
+   },
+   "events": [
+    {
+     "inst": "wind",
+     "at": 0,
+     "to": "road",
+     "lv": 0.35,
+     "fc": 700
+    },
+    {
+     "inst": "wind",
+     "at": "road",
+     "to": "field",
+     "lv": 0.3,
+     "fc": 550
+    },
+    {
+     "inst": "bird",
+     "repeat": {
+      "from": "field",
+      "to": "night-1.0",
+      "every": 1.8,
+      "jitter": 1
+     },
+     "lv": 0.4,
+     "pan": "random"
+    },
+    {
+     "inst": "crickets",
+     "at": {
+      "word": "So Ruth went to"
+     },
+     "to": "gate",
+     "lv": 0.45
+    },
+    {
+     "inst": "bird",
+     "repeat": {
+      "from": "son",
+      "to": {
+       "mark": "lastWord",
+       "offset": 5
+      },
+      "every": 1.8,
+      "jitter": 1
+     },
+     "lv": 0.4,
+     "pan": "random"
+    }
+   ]
+  },
+  "sfx": {
+   "seed": 5261,
+   "events": [
+    {
+     "inst": "paperTap",
+     "at": [
+      {
+       "word": "There's a book in",
+       "offset": 0.4
+      },
+      {
+       "word": "Just a widow, picking",
+       "offset": 0.4
+      },
+      {
+       "word": "In a famine, Naomi's",
+       "offset": 0.4
+      },
+      {
+       "word": "Boaz was a relative",
+       "offset": 0.3
+      },
+      {
+       "word": "In Israel, a close",
+       "offset": 0.3
+      },
+      {
+       "word": "They named him Obed",
+       "offset": 4
+      },
+      {
+       "word": "No miracles. Just loyal",
+       "offset": 1.8
+      }
+     ],
+     "lv": 0.8,
+     "pan": {
+      "rand": [
+       0.35,
+       0.65
+      ]
+     }
+    },
+    {
+     "inst": "whoosh",
+     "at": [
+      "famine-0.4",
+      "road-0.4",
+      "field-0.4",
+      "night-0.4",
+      "gate-0.4",
+      "son-0.4",
+      "end-0.4"
+     ],
+     "len": 0.8,
+     "lv": 0.7,
+     "pan": 0.5
+    },
+    {
+     "inst": "sparkle",
+     "at": [
+      {
+       "word": "And she happened to"
+      },
+      {
+       "word": "They named him Obed",
+       "offset": 3.3
+      },
+      {
+       "word": "And from that family",
+       "offset": 1
+      }
+     ],
+     "len": 2,
+     "lv": 0.9,
+     "pan": 0.5
+    },
+    {
+     "inst": "swell",
+     "at": {
+      "word": "Where you go I",
+      "offset": -1.2
+     },
+     "len": 1.2,
+     "note": 50,
+     "lv": 1.0
+    }
+   ]
+  }
+ },
+ "mix": {
+  "voice": {
+   "volume": 1.25
+  },
+  "buses": [
+   {
+    "name": "music",
+    "stem": "score.wav",
+    "volume": 1.0,
+    "duck": {
+     "threshold": 0.02,
+     "ratio": 4,
+     "attack": 30,
+     "release": 500,
+     "makeup": 1
+    },
+    "envelope": [
+     {
+      "comment": "end card",
+      "from": {
+       "mark": "lastWord",
+       "offset": 0.4
+      },
+      "to": {
+       "mark": "lastWord",
+       "offset": 7
+      },
+      "db": 6,
+      "in": 1.2,
+      "out": 0.5
+     }
+    ]
+   },
+   {
+    "name": "sfx",
+    "stem": "sfx.wav",
+    "volume": 0.2
+   },
+   {
+    "name": "ambience",
+    "stem": "ambience.wav",
+    "volume": 0.832,
+    "compressor": {
+     "threshold": 0.05,
+     "ratio": 3.5,
+     "attack": 10,
+     "release": 300,
+     "makeup": 2.8
+    },
+    "duck": {
+     "threshold": 0.02,
+     "ratio": 6,
+     "attack": 20,
+     "release": 600,
+     "makeup": 1.5
+    }
+   }
+  ],
+  "hits": [
+   {
+    "name": "vow",
+    "sound": "thunder",
+    "seed": 2607,
+    "len": 4,
+    "at": {
+     "word": "Where you go I",
+     "offset": -0.2
+    },
+    "compressor": {
+     "threshold": 0.02,
+     "ratio": 12,
+     "attack": 0.5,
+     "release": 400,
+     "makeup": 10
+    },
+    "volume": 2.4
+   }
+  ],
+  "limiter": {
+   "limit": 0.89,
+   "attack": 1,
+   "release": 60
+  },
+  "loudnorm": {
+   "I": -14,
+   "TP": -1.0,
+   "LRA": 18
+  },
+  "tail": 7
+ }
+}
