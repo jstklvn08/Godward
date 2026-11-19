@@ -1,0 +1,990 @@
+{
+ "_doc": "Soundtrack for 'Gideon'. Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue. The angel is a choir and shimmer, never a voice. The music holds its breath through the night approach and the trumpet blast is the one big hit.",
+ "episode": "gideon",
+ "words": "words.js",
+ "duration": {
+  "word": "themselves",
+  "n": -1,
+  "edge": "end",
+  "offset": 7
+ },
+ "marks": {
+  "midian": {
+   "word": "Israel had forgotten God",
+   "offset": -0.1
+  },
+  "hiding": {
+   "word": "Gideon was hiding",
+   "offset": -0.1
+  },
+  "fleece": {
+   "word": "Gideon was still afraid",
+   "offset": -0.1
+  },
+  "army": {
+   "word": "Gideon gathered an army",
+   "offset": -0.1
+  },
+  "night": {
+   "word": "Gideon split the three",
+   "offset": -0.1
+  },
+  "shout": {
+   "word": "They blew the trumpets",
+   "offset": -0.1
+  },
+  "king": {
+   "word": "Afterwards, they wanted",
+   "offset": -0.1
+  },
+  "lastWord": {
+   "word": "themselves",
+   "n": -1,
+   "edge": "end"
+  }
+ },
+ "motifs": {
+  "HORN": [
+   50,
+   57,
+   62,
+   57
+  ],
+  "FEAR": [
+   57,
+   60,
+   63,
+   62
+  ],
+  "LORD": [
+   62,
+   66,
+   69,
+   74
+  ]
+ },
+ "scenes": [
+  {
+   "name": "cold-open",
+   "start": 0,
+   "screen": "32,000 to 300, trumpets and jars, the hero poster crossed out",
+   "music": "drums and low brass-like pads, HORN motif",
+   "sound": "wind"
+  },
+  {
+   "name": "midian",
+   "start": "midian",
+   "screen": "the raid at harvest, caves in the hills",
+   "music": "tense drums and tremolo, then a lament",
+   "sound": "wind, dust"
+  },
+  {
+   "name": "hiding",
+   "start": "hiding",
+   "screen": "the winepress, the angel of light at the oak",
+   "music": "quiet plucks, choir for the angel",
+   "sound": "birds, threshing"
+  },
+  {
+   "name": "fleece",
+   "start": "fleece",
+   "screen": "the fleece at night and at dawn",
+   "music": "soft piano FEAR, warm pads for \"patient\"",
+   "sound": "crickets, birds"
+  },
+  {
+   "name": "army",
+   "start": "army",
+   "screen": "32,000 to 10,000 to 300, the water",
+   "music": "marching drum, each cut a drop in the band",
+   "sound": "crowd murmur, stream"
+  },
+  {
+   "name": "night",
+   "start": "night",
+   "screen": "three groups, surrounding the camp",
+   "music": "low pulse, held breath",
+   "sound": "crickets"
+  },
+  {
+   "name": "shout",
+   "start": "shout",
+   "screen": "trumpets, jars, torches, the camp runs",
+   "music": "silence, then a big choir and drums after the shout",
+   "sound": "rumble"
+  },
+  {
+   "name": "king",
+   "start": "king",
+   "screen": "the crown refused, broken jars at dawn",
+   "music": "warm pads, choir to the end",
+   "sound": "birds"
+  }
+ ],
+ "stems": {
+  "score": {
+   "seed": 1701,
+   "reverb": {
+    "room": 0.87,
+    "damp": 0.32,
+    "wet": 0.38
+   },
+   "autoLevel": {
+    "window": 0.1,
+    "smooth": 15,
+    "min": 0.35,
+    "max": 4
+   },
+   "fade": {
+    "end": {
+     "mark": "lastWord",
+     "offset": 6.6
+    },
+    "len": 2.5
+   },
+   "events": [
+    {
+     "scene": "cold-open"
+    },
+    {
+     "inst": "choir",
+     "at": 0,
+     "to": 4.0,
+     "notes": [
+      50,
+      57,
+      62,
+      66
+     ],
+     "lv": 0.7,
+     "att": 1.5
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": 0.5,
+      "to": {
+       "word": "Armed with trumpets"
+      },
+      "every": 1.0
+     },
+     "lv": 0.55,
+     "f0": 45,
+     "pan": 0.5
+    },
+    {
+     "inst": "pad",
+     "at": 0.5,
+     "to": "midian-0.4",
+     "notes": [
+      38,
+      45,
+      50,
+      53
+     ],
+     "lv": 0.55,
+     "bright": 0.3,
+     "a": 2,
+     "r": 1
+    },
+    {
+     "inst": "bell",
+     "motif": "HORN",
+     "at": {
+      "word": "Armed with trumpets"
+     },
+     "step": 0.6,
+     "transpose": 12,
+     "lv": 0.5,
+     "pan": 0.5,
+     "dec": 3
+    },
+    {
+     "inst": "reversed",
+     "at": {
+      "word": "It isn't",
+      "offset": -1.2
+     },
+     "len": 1.2,
+     "notes": [
+      50,
+      57
+     ],
+     "lv": 0.6
+    },
+    {
+     "scene": "midian"
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": {
+       "word": "Every harvest, they came"
+      },
+      "to": {
+       "word": "Israel hid in caves"
+      },
+      "every": [
+       0.6,
+       0.3
+      ]
+     },
+     "lv": 0.65,
+     "f0": 42,
+     "pan": 0.5
+    },
+    {
+     "inst": "tremolo",
+     "at": {
+      "word": "Every harvest, they came"
+     },
+     "to": {
+      "word": "Israel hid in caves"
+     },
+     "notes": [
+      45,
+      51
+     ],
+     "lv": 0.45
+    },
+    {
+     "inst": "piano",
+     "motif": "FEAR",
+     "at": {
+      "word": "Israel hid in caves"
+     },
+     "step": 0.9,
+     "lv": 0.45,
+     "pan": 0.5,
+     "dec": 3
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "And Israel was brought",
+      "offset": -0.3
+     },
+     "to": "hiding-0.3",
+     "notes": [
+      57,
+      60,
+      64,
+      69
+     ],
+     "lv": 0.7,
+     "att": 1,
+     "rel": 1.5
+    },
+    {
+     "scene": "hiding"
+    },
+    {
+     "inst": "pluck",
+     "repeat": {
+      "from": "hiding",
+      "to": {
+       "word": "Then the angel of"
+      },
+      "every": 0.6,
+      "jitter": 0.15
+     },
+     "pick": "random",
+     "seq": [
+      57,
+      60,
+      62,
+      64
+     ],
+     "lv": 0.35,
+     "pan": "random",
+     "len": 0.8,
+     "bright": 0.4
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "Then the angel of",
+      "offset": 0.5
+     },
+     "to": {
+      "word": "Gideon looked around"
+     },
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.85,
+     "att": 1,
+     "rel": 1.2
+    },
+    {
+     "inst": "pad",
+     "at": {
+      "word": "Gideon looked around"
+     },
+     "to": "fleece-0.3",
+     "notes": [
+      50,
+      57,
+      62
+     ],
+     "lv": 0.5,
+     "bright": 0.4,
+     "a": 1,
+     "r": 1
+    },
+    {
+     "scene": "fleece"
+    },
+    {
+     "inst": "piano",
+     "repeat": {
+      "from": "fleece+0.3",
+      "to": {
+       "word": "God was patient",
+       "offset": -0.3
+      },
+      "every": 1.6,
+      "jitter": 0.4
+     },
+     "pick": "random",
+     "seq": [
+      62,
+      65,
+      69,
+      72
+     ],
+     "lv": 0.45,
+     "pan": "random",
+     "dec": 2.5
+    },
+    {
+     "inst": "pad",
+     "at": {
+      "word": "God was patient"
+     },
+     "to": "army-0.3",
+     "notes": [
+      50,
+      57,
+      62,
+      66
+     ],
+     "lv": 0.6,
+     "bright": 0.55,
+     "a": 0.8,
+     "r": 1
+    },
+    {
+     "scene": "army"
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": "army",
+      "to": {
+       "word": "And God said, too many"
+      },
+      "every": 0.5
+     },
+     "lv": 0.6,
+     "f0": 50,
+     "pan": 0.5
+    },
+    {
+     "inst": "pad",
+     "at": "army",
+     "to": {
+      "word": "And God said, too many"
+     },
+     "notes": [
+      38,
+      45,
+      50,
+      57,
+      62
+     ],
+     "lv": 0.6,
+     "bright": 0.5,
+     "a": 0.5,
+     "r": 0.6
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "The people with you",
+      "offset": -0.3
+     },
+     "to": {
+      "word": "So everyone who was afraid"
+     },
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.75,
+     "att": 1,
+     "rel": 1
+    },
+    {
+     "inst": "pad",
+     "at": {
+      "word": "So everyone who was afraid"
+     },
+     "to": {
+      "word": "God sent them down"
+     },
+     "notes": [
+      38,
+      45,
+      50
+     ],
+     "lv": 0.5,
+     "bright": 0.4,
+     "a": 0.5,
+     "r": 0.6
+    },
+    {
+     "inst": "pad",
+     "at": {
+      "word": "God sent them down"
+     },
+     "to": "night-0.3",
+     "notes": [
+      50
+     ],
+     "lv": 0.45,
+     "bright": 0.4,
+     "a": 0.5,
+     "r": 0.6
+    },
+    {
+     "scene": "night"
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": "night",
+      "to": {
+       "word": "They blew the trumpets",
+       "offset": -0.6
+      },
+      "every": 1.2
+     },
+     "lv": 0.45,
+     "f0": 40,
+     "pan": 0.5
+    },
+    {
+     "inst": "tremolo",
+     "at": {
+      "word": "In the middle of the"
+     },
+     "to": {
+      "word": "They blew the trumpets",
+      "offset": -0.6
+     },
+     "notes": [
+      45,
+      51
+     ],
+     "lv": 0.5
+    },
+    {
+     "scene": "shout"
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "The torches blazed"
+     },
+     "to": {
+      "word": "Not one of the",
+      "offset": 2
+     },
+     "notes": [
+      50,
+      62,
+      66,
+      69
+     ],
+     "lv": 1.0,
+     "att": 0.5,
+     "rel": 1.5
+    },
+    {
+     "inst": "drum",
+     "repeat": {
+      "from": {
+       "word": "A sword for the"
+      },
+      "to": {
+       "word": "Not one of the"
+      },
+      "every": [
+       0.5,
+       0.25
+      ]
+     },
+     "lv": 0.8,
+     "f0": 45,
+     "pan": 0.5
+    },
+    {
+     "inst": "pad",
+     "at": {
+      "word": "The torches blazed"
+     },
+     "to": "king-0.3",
+     "notes": [
+      26,
+      38,
+      45,
+      50
+     ],
+     "lv": 0.7,
+     "bright": 0.45,
+     "a": 0.3,
+     "r": 1
+    },
+    {
+     "scene": "king"
+    },
+    {
+     "inst": "pad",
+     "repeat": {
+      "from": "king",
+      "to": {
+       "mark": "lastWord",
+       "offset": 6.5
+      },
+      "every": 4
+     },
+     "chords": [
+      [
+       50,
+       62,
+       66,
+       69
+      ],
+      [
+       47,
+       59,
+       62,
+       66
+      ],
+      [
+       43,
+       55,
+       59,
+       62
+      ],
+      [
+       45,
+       57,
+       61,
+       64
+      ]
+     ],
+     "hold": 4.3,
+     "lv": 0.65,
+     "bright": 0.55,
+     "a": 1.2,
+     "r": 0.8
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "word": "I will not rule",
+      "offset": -0.3
+     },
+     "to": {
+      "word": "God didn't need a"
+     },
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.85,
+     "att": 1,
+     "rel": 1.5
+    },
+    {
+     "inst": "bell",
+     "motif": "HORN",
+     "at": {
+      "word": "He chose a frightened"
+     },
+     "step": 0.6,
+     "transpose": 12,
+     "lv": 0.45,
+     "pan": 0.5,
+     "dec": 3
+    },
+    {
+     "inst": "choir",
+     "at": {
+      "mark": "lastWord",
+      "offset": 0.3
+     },
+     "to": {
+      "mark": "lastWord",
+      "offset": 6.5
+     },
+     "notes": [
+      62,
+      66,
+      69,
+      74
+     ],
+     "lv": 0.85,
+     "att": 1,
+     "rel": 2
+    }
+   ]
+  },
+  "ambience": {
+   "seed": 3171,
+   "fade": {
+    "end": {
+     "mark": "lastWord",
+     "offset": 6.6
+    },
+    "len": 2
+   },
+   "events": [
+    {
+     "inst": "wind",
+     "at": 0,
+     "to": "hiding",
+     "lv": 0.35,
+     "fc": 600
+    },
+    {
+     "inst": "step",
+     "repeat": {
+      "from": {
+       "word": "Every harvest, they came"
+      },
+      "to": {
+       "word": "Israel hid in caves",
+       "offset": 2
+      },
+      "every": 0.3,
+      "jitter": 0.08
+     },
+     "lv": 0.4,
+     "pan": "random",
+     "soft": 1
+    },
+    {
+     "inst": "bird",
+     "repeat": {
+      "from": "hiding",
+      "to": "fleece-1.0",
+      "every": 1.8,
+      "jitter": 1
+     },
+     "lv": 0.4,
+     "pan": "random"
+    },
+    {
+     "inst": "shimmer",
+     "at": {
+      "word": "Then the angel of",
+      "offset": 0.5
+     },
+     "to": {
+      "word": "Gideon looked around"
+     },
+     "lv": 0.5
+    },
+    {
+     "inst": "crickets",
+     "at": "fleece",
+     "to": {
+      "word": "In the morning, the fleece"
+     },
+     "lv": 0.5
+    },
+    {
+     "inst": "bird",
+     "repeat": {
+      "from": {
+       "word": "In the morning, the fleece"
+      },
+      "to": "army-1.0",
+      "every": 1.8,
+      "jitter": 1
+     },
+     "lv": 0.4,
+     "pan": "random"
+    },
+    {
+     "inst": "stream",
+     "at": {
+      "word": "God sent them down"
+     },
+     "to": "night",
+     "lv": 0.55
+    },
+    {
+     "inst": "crickets",
+     "at": "night",
+     "to": {
+      "word": "They blew the trumpets",
+      "offset": -0.3
+     },
+     "lv": 0.5
+    },
+    {
+     "inst": "rumble",
+     "at": {
+      "word": "The whole camp of"
+     },
+     "to": "king",
+     "lv": 0.7
+    },
+    {
+     "inst": "bird",
+     "repeat": {
+      "from": "king+1.0",
+      "to": {
+       "mark": "lastWord",
+       "offset": 5
+      },
+      "every": 1.6,
+      "jitter": 1
+     },
+     "lv": 0.4,
+     "pan": "random"
+    },
+    {
+     "inst": "wind",
+     "at": "king",
+     "to": {
+      "mark": "lastWord",
+      "offset": 6
+     },
+     "lv": 0.3,
+     "fc": 650
+    }
+   ]
+  },
+  "sfx": {
+   "seed": 5171,
+   "events": [
+    {
+     "inst": "paperTap",
+     "at": [
+      {
+       "word": "Thirty-two thousand soldiers",
+       "offset": 0.4
+      },
+      {
+       "word": "It isn't"
+      },
+      {
+       "word": "Israel had forgotten God",
+       "offset": 0.4
+      },
+      {
+       "word": "Gideon was hiding",
+       "offset": 0.4
+      },
+      {
+       "word": "He laid a wool"
+      },
+      {
+       "word": "Gideon split the three",
+       "offset": 0.4
+      },
+      {
+       "word": "God didn't need a"
+      }
+     ],
+     "lv": 0.8,
+     "pan": {
+      "rand": [
+       0.35,
+       0.65
+      ]
+     }
+    },
+    {
+     "inst": "whoosh",
+     "at": [
+      "midian-0.4",
+      "hiding-0.4",
+      "fleece-0.4",
+      "army-0.4",
+      "night-0.4",
+      "king-0.4"
+     ],
+     "len": 0.8,
+     "lv": 0.7,
+     "pan": 0.5
+    },
+    {
+     "inst": "thump",
+     "at": [
+      {
+       "word": "They smashed the jars"
+      },
+      {
+       "word": "They smashed the jars",
+       "offset": 0.15
+      },
+      {
+       "word": "They smashed the jars",
+       "offset": 0.3
+      }
+     ],
+     "lv": 0.9
+    },
+    {
+     "inst": "sparkle",
+     "at": [
+      {
+       "word": "Then the angel of",
+       "offset": 0.5
+      },
+      {
+       "word": "God was patient"
+      }
+     ],
+     "len": 2,
+     "lv": 0.9,
+     "pan": 0.5
+    },
+    {
+     "inst": "swell",
+     "at": {
+      "word": "They blew the trumpets"
+     },
+     "len": 2.4,
+     "note": 50,
+     "lv": 1.0
+    }
+   ]
+  }
+ },
+ "mix": {
+  "voice": {
+   "volume": 1.25
+  },
+  "buses": [
+   {
+    "name": "music",
+    "stem": "score.wav",
+    "volume": 0.55,
+    "duck": {
+     "threshold": 0.02,
+     "ratio": 4,
+     "attack": 30,
+     "release": 500,
+     "makeup": 1
+    },
+    "envelope": [
+     {
+      "comment": "opening swell",
+      "from": 0.3,
+      "to": 4.0,
+      "db": 3,
+      "in": 0.8,
+      "out": 1.5
+     },
+     {
+      "comment": "held breath before the trumpets, back with the blaze",
+      "from": {
+       "word": "In the middle of the",
+       "offset": 1.5
+      },
+      "to": {
+       "word": "The torches blazed",
+       "offset": -0.2
+      },
+      "mute": true,
+      "in": 0.6,
+      "out": 0.6
+     },
+     {
+      "comment": "end card",
+      "from": {
+       "mark": "lastWord",
+       "offset": 0.4
+      },
+      "to": {
+       "mark": "lastWord",
+       "offset": 7
+      },
+      "db": 6,
+      "in": 1.2,
+      "out": 0.5
+     }
+    ]
+   },
+   {
+    "name": "sfx",
+    "stem": "sfx.wav",
+    "volume": 0.2
+   },
+   {
+    "name": "ambience",
+    "stem": "ambience.wav",
+    "volume": 0.832,
+    "compressor": {
+     "threshold": 0.05,
+     "ratio": 3.5,
+     "attack": 10,
+     "release": 300,
+     "makeup": 2.8
+    },
+    "duck": {
+     "threshold": 0.02,
+     "ratio": 6,
+     "attack": 20,
+     "release": 600,
+     "makeup": 1.5
+    }
+   }
+  ],
+  "hits": [
+   {
+    "name": "trumpets",
+    "sound": "thunder",
+    "seed": 1707,
+    "len": 5,
+    "at": {
+     "word": "They blew the trumpets",
+     "offset": -0.05
+    },
+    "compressor": {
+     "threshold": 0.02,
+     "ratio": 12,
+     "attack": 0.5,
+     "release": 400,
+     "makeup": 10
+    },
+    "volume": 3.0
+   }
+  ],
+  "limiter": {
+   "limit": 0.89,
+   "attack": 1,
+   "release": 60
+  },
+  "loudnorm": {
+   "I": -14,
+   "TP": -1.0,
+   "LRA": 18
+  },
+  "tail": 7
+ }
+}
