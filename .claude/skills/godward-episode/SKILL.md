@@ -69,7 +69,11 @@ the cloud hand-back below.
 | Esther | `esther` (script `19-`) | finished: 3:22 with outro, thumbnail, caption |
 | Jonah | `jonah` (script `20-`; `20-jonah.esv.voice.json` says "120,000") | finished: 3:12 with outro, thumbnail, caption |
 | Noah's Ark | `noahs-ark` (script `21-`) | finished: 2:26 with outro, thumbnail, caption |
-| Elijah on Mount Carmel, Joseph | `elijah-on-carmel`, `joseph` (scripts `22-`, `23-`) | pages, sound plans, thumbnails, captions done; voice/render in progress |
+| Elijah on Mount Carmel | `elijah-on-carmel` (script `22-`) | finished: 2:59 with outro, thumbnail, caption |
+| Joseph | `joseph` (script `23-`) | finished: 2:51 with outro, thumbnail, caption (robe in woven stripes, not a rainbow) |
+| The Burning Bush | `the-burning-bush` (script `24-`) | finished: 2:43 with outro, thumbnail, caption |
+| Abraham and Isaac | `abraham-and-isaac` (script `25-`) | page, sound plan, thumbnail, caption done; voice/render in progress |
+| Ruth | `ruth` (script `26-`) | page, sound plan, thumbnail, caption done; voice next |
 
 What to make next: `Godward-Content-Report.html` (viewership research, 9 Nov 2026). Old Testament stories beat
 Bible study and prayer.
