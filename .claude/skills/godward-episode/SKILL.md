@@ -64,10 +64,16 @@ the cloud hand-back below.
 | The Fall of Jericho | `the-fall-of-jericho` (script `14-`) | finished: 3:34 with outro, thumbnail, caption |
 | David and Goliath | `david-and-goliath` (script `15-`) | finished: 3:42 with outro, thumbnail, caption |
 | Job | `job` (script `16-`) | finished: 3:08 with outro, thumbnail, caption |
+| Gideon | `gideon` (script `17-`) | finished: 3:17 with outro, thumbnail, caption |
+| Daniel and the Lions | `daniel-and-the-lions` (script `18-`) | finished: 3:06 with outro, thumbnail, caption |
+| Esther | `esther` (script `19-`) | finished: 3:22 with outro, thumbnail, caption |
+| Jonah | `jonah` (script `20-`; `20-jonah.esv.voice.json` says "120,000") | finished: 3:12 with outro, thumbnail, caption |
+| Noah's Ark | `noahs-ark` (script `21-`) | finished: 2:26 with outro, thumbnail, caption |
+| Elijah on Mount Carmel, Joseph | `elijah-on-carmel`, `joseph` (scripts `22-`, `23-`) | pages, sound plans, thumbnails, captions done; voice/render in progress |
 
 What to make next: `Godward-Content-Report.html` (viewership research, 9 Nov 2026). Old Testament stories beat
 Bible study and prayer.
-- **Ranked next:** Samson or Gideon, Daniel or Esther, Every Beast in Revelation (Jericho, David and Goliath and Job are done).
+- **Ranked next:** Daniel or Esther, Every Beast in Revelation (Jericho, David and Goliath and Job are done).
 - **Big-hook topics:** every angel in the Bible, the story from Satan's point of view, what happens after death.
 - **Each video stands alone:** no "Part 1 / Part 2" titles or labels.
 
