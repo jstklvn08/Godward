@@ -1,0 +1,290 @@
+{
+ "s00-01-story-8c7dc1.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Animals two by two. A big boat. A rainbow.",
+  "seed": 2,
+  "words_per_second": 2.24,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-talk-b49cf5.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It's on nursery walls all over the world.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-pivot-4a0bc5.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But that's not how the story starts.",
+  "seed": 1,
+  "words_per_second": 2.39,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-talk-d223d9.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It starts with grief.",
+  "seed": 2,
+  "words_per_second": 2.92,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-6b6a2e.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "The world God had made good had gone wrong.",
+  "seed": 2,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-grave-5249f9.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Now the earth was corrupt in God's sight, and the earth was filled with violence.",
+  "seed": 1,
+  "words_per_second": 3.05,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-1cc624.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And God saw it. He didn't shrug.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-fda584.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "And the LORD regretted that he had made man on the earth, and it grieved him to his heart.",
+  "seed": 3,
+  "words_per_second": 3.68,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-7ec1c6.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "But Noah was different.",
+  "seed": 1,
+  "words_per_second": 2.12,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-grave-f6e267.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "But Noah found favor in the eyes of the LORD.",
+  "seed": 3,
+  "words_per_second": 3.45,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-6d0570.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "God told Noah to build an ark.",
+  "seed": 2,
+  "words_per_second": 2.8,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-449562.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "A huge wooden boat, longer than a football field, on dry land, with no sea in sight.",
+  "seed": 2,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-grave-1b6352.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Noah did this; he did all that God commanded him.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-8e1e73.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then the animals came, two by two, and seven pairs of some.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-eadb14.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And Noah went in with his family. Eight people.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-grave-7c46df.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "And the LORD shut him in.",
+  "seed": 3,
+  "words_per_second": 3.0,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-talk-b6ad56.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Noah didn't close the door.",
+  "seed": 1,
+  "words_per_second": 2.98,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-story-20bde9.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "God did.",
+  "seed": 3,
+  "words_per_second": 1.68,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-6e91b2.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Then the rain came. Forty days and forty nights.",
+  "seed": 3,
+  "words_per_second": 2.51,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-grave-ac769b.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "The waters rose over the land, and over the mountains, until nothing was left but the ark.",
+  "seed": 2,
+  "words_per_second": 2.84,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-grave-00a2e0.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "But God remembered Noah and all the beasts and all the livestock that were with him in the ark.",
+  "seed": 3,
+  "words_per_second": 3.63,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-b67a22.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "He sent a wind, and the waters went down.",
+  "seed": 1,
+  "words_per_second": 3.27,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-8280bc.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "The ark came to rest on a mountain. Noah sent out a dove.",
+  "seed": 1,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-b0c1d7.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And it came back with a fresh olive leaf.",
+  "seed": 1,
+  "words_per_second": 3.08,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-pivot-583503.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "Then God made a promise.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-a6e6bf.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Never again would a flood destroy the earth.",
+  "seed": 2,
+  "words_per_second": 2.44,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-grave-36191b.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "I have set my bow in the cloud, and it shall be a sign of the covenant between me and the earth.",
+  "seed": 1,
+  "words_per_second": 3.55,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-talk-94ce81.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "The word for rainbow is the word for a warrior's bow.",
+  "seed": 1,
+  "words_per_second": 2.81,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-story-20d2d2.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Many readers have seen it as God hanging up his weapon, pointed away from the earth.",
+  "seed": 1,
+  "words_per_second": 2.9,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-talk-a86f16.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "The flood shows how seriously God takes evil.",
+  "seed": 2,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-story-f629f2.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "The rainbow shows how much he wants to save.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-pivot-97990f.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "Every time you see one, it's a promise he's kept.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
