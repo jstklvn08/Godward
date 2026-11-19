@@ -1,0 +1,335 @@
+{
+ "s00-01-story-5bd30e.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "A bush on fire in the desert. But it doesn't burn up.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-d3c3ba.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And an old shepherd, who's about to be told to take on the most powerful king on earth.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-talk-554304.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "His first question is the one most of us would ask.",
+  "seed": 1,
+  "words_per_second": 3.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-pivot-8bf8af.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "Who am I?",
+  "seed": 1,
+  "words_per_second": 2.63,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-d5818d.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "In Egypt, God's people were slaves.",
+  "seed": 2,
+  "words_per_second": 2.14,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-23f5a8.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "They groaned under the work, and they cried out for help.",
+  "seed": 1,
+  "words_per_second": 2.87,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-grave-2cc74c.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "And God heard their groaning, and God remembered his covenant with Abraham, with Isaac, and with Jacob.",
+  "seed": 1,
+  "words_per_second": 2.45,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-story-cf9543.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Meanwhile, far away in the desert, Moses was a shepherd.",
+  "seed": 3,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-story-cfe526.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "He'd run from Egypt forty years before. He was eighty now.",
+  "seed": 2,
+  "words_per_second": 2.64,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-844e16.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "Then he saw it.",
+  "seed": 1,
+  "words_per_second": 3.51,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-0c3a5e.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "A bush, on fire, that wasn't burning up.",
+  "seed": 1,
+  "words_per_second": 2.63,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-a1f1b0.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Moses turned aside to look.",
+  "seed": 2,
+  "words_per_second": 2.27,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-529698.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And God called to him from the bush. Moses! Moses!",
+  "seed": 2,
+  "words_per_second": 2.16,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-grave-c0d324.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Do not come near; take your sandals off your feet, for the place on which you are standing is holy ground.",
+  "seed": 3,
+  "words_per_second": 3.16,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-grave-76f485.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "I have surely seen the affliction of my people who are in Egypt and have heard their cry because of their taskmasters.",
+  "seed": 3,
+  "words_per_second": 3.3,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-grave-16b6bf.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "I know their sufferings.",
+  "seed": 1,
+  "words_per_second": 1.99,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-9d1e65.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And then God said, so I am sending you to Pharaoh, to bring my people out.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-pivot-5efc7e.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "And Moses said,",
+  "seed": 2,
+  "words_per_second": 2.13,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-grave-abe5c9.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "Who am I that I should go to Pharaoh and bring the children of Israel out of Egypt?",
+  "seed": 2,
+  "words_per_second": 3.49,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-71602e.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "God didn't tell him how great he was. He said,",
+  "seed": 1,
+  "words_per_second": 3.1,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-grave-62b329.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "But I will be with you.",
+  "seed": 3,
+  "words_per_second": 3.85,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-33a392.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "Then Moses asked, what is your name?",
+  "seed": 1,
+  "words_per_second": 2.38,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-78fc95.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "What do I tell them?",
+  "seed": 1,
+  "words_per_second": 2.92,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-grave-36c99e.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "I am who I am.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-grave-e07bd7.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Say this to the people of Israel: \u2018I am has sent me to you.\u2019",
+  "seed": 3,
+  "words_per_second": 2.92,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-talk-d0b4dd.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "It's the name behind the word LORD, in capitals, all through the Bible.",
+  "seed": 1,
+  "words_per_second": 2.71,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-story-8c23e2.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "The God who simply is.",
+  "seed": 1,
+  "words_per_second": 2.37,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-07-story-8992ad.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Who doesn't need anyone or anything, and who chooses to be with his people.",
+  "seed": 1,
+  "words_per_second": 2.69,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-pivot-816adf.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "But Moses still had excuses.",
+  "seed": 2,
+  "words_per_second": 2.3,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-d9f1da.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "What if they don't believe me? I'm not good with words.",
+  "seed": 1,
+  "words_per_second": 2.81,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-story-105f55.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "God gave him signs.",
+  "seed": 1,
+  "words_per_second": 1.89,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-story-d646ce.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "His staff turned into a snake, and back again.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-story-5e9d58.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "And God sent his brother Aaron to help him.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-06-story-103377.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "So Moses picked up his staff, and went back to Egypt.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-talk-c92657.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Moses asked who he was.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-story-c94abb.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "God told him who God is.",
+  "seed": 2,
+  "words_per_second": 2.28,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-pivot-eb5b8b.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "And that was enough.",
+  "seed": 1,
+  "words_per_second": 2.61,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
