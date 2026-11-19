@@ -1,0 +1,209 @@
+{
+ "s00-01-story-bc1f20.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "They wanted to build a tower that reached heaven.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-talk-fbf9a7.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "But the funniest line in the story is about how small it really was.",
+  "seed": 1,
+  "words_per_second": 3.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-67b144.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "After the flood, Noah's family grew into a whole people.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-grave-2bb92a.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Now the whole earth had one language and the same words.",
+  "seed": 1,
+  "words_per_second": 2.93,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-301d49.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "They settled on a wide plain, and learned to make bricks, and to bake them hard in fire.",
+  "seed": 1,
+  "words_per_second": 3.15,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-6aebad.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "And then they had an idea.",
+  "seed": 1,
+  "words_per_second": 3.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-grave-d45e3f.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Come, let us build ourselves a city and a tower with its top in the heavens,",
+  "seed": 3,
+  "words_per_second": 2.9,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-grave-1d30ff.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "and let us make a name for ourselves.",
+  "seed": 3,
+  "words_per_second": 2.92,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-talk-0cba39.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "Not to worship God.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-story-f191ad.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "To make a name for themselves. To never need him again.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-pivot-437ba6.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "But listen to what happens next.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-grave-d0c168.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "And the LORD came down to see the city and the tower, which the children of man had built.",
+  "seed": 6,
+  "words_per_second": 3.48,
+  "in_range": false,
+  "word_check": "match"
+ },
+ "s03-03-talk-d7364c.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "The tower that was meant to reach heaven was so small, God had to come down to see it.",
+  "seed": 1,
+  "words_per_second": 3.68,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-56a776.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "So God mixed up their language.",
+  "seed": 2,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-b5df88.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Suddenly no one could understand each other.",
+  "seed": 3,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-ca2530.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "So they stopped building, and scattered across the earth.",
+  "seed": 1,
+  "words_per_second": 2.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-grave-b4e3bb.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "Therefore its name was called Babel, because there the LORD confused the language of all the earth.",
+  "seed": 1,
+  "words_per_second": 2.85,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-729c3a.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "Centuries later, in Jerusalem, God came down again.",
+  "seed": 1,
+  "words_per_second": 2.25,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-ab3f09.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "This time as fire, on Jesus's followers.",
+  "seed": 2,
+  "words_per_second": 2.05,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-f9dffd.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "People from every nation were there, and something amazing happened.",
+  "seed": 3,
+  "words_per_second": 2.29,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-grave-9b2e5e.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Each one was hearing them speak in his own language.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-talk-3770ee.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "At Babel, people tried to climb up to God, and were scattered.",
+  "seed": 1,
+  "words_per_second": 3.23,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-pivot-42498a.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "At Pentecost, God came down to us, and started gathering them back.",
+  "seed": 1,
+  "words_per_second": 2.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
