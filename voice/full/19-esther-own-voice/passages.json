@@ -1,0 +1,407 @@
+{
+ "s00-01-story-d61758.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "If she walked through that door uninvited, she could be put to death.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-story-4d9d73.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "And her whole people would die if she didn't.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-talk-03d0ce.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Here's the strange thing about her story.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-story-b59909.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "God is never mentioned. Not once.",
+  "seed": 3,
+  "words_per_second": 1.85,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-05-pivot-a2f057.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But read it closely, and you'll see him everywhere.",
+  "seed": 1,
+  "words_per_second": 3.08,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-3cf839.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Esther was an orphan, a Jewish girl living far from home in Persia.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-bc3782.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Her cousin Mordecai raised her as his own daughter.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-214008.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "When the king looked for a new queen, he chose Esther.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-story-c24418.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "But Mordecai told her not to tell anyone she was Jewish.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-pivot-e4574f.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "Then came Haman, the king's most powerful official.",
+  "seed": 1,
+  "words_per_second": 2.14,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-affd68.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Everyone bowed down to him.",
+  "seed": 2,
+  "words_per_second": 2.39,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-d887ea.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Except Mordecai, who bowed only to God.",
+  "seed": 3,
+  "words_per_second": 1.99,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-1f9de9.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Haman was so furious, he decided to destroy not just Mordecai, but every Jew in the empire.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-story-b5ea1a.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "He threw dice to pick the day.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-story-4a5e3d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And he talked the king into signing the law.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-pivot-86c0d2.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "Mordecai sent a message to Esther.",
+  "seed": 1,
+  "words_per_second": 2.17,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-2788c0.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Go to the king. Beg him to save your people.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-ec4a04.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "But no one could go to the king without being called.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-story-11d0c9.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Not even the queen.",
+  "seed": 2,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-story-1264f5.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Unless he held out his golden sceptre, they would die.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-06-story-8141fc.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Mordecai sent back this.",
+  "seed": 2,
+  "words_per_second": 1.91,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-07-grave-960db2.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "And who knows whether you have not come to the kingdom for such a time as this?",
+  "seed": 3,
+  "words_per_second": 3.8,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-08-story-bc9441.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Esther asked all the Jews to fast and pray for her for three days.",
+  "seed": 1,
+  "words_per_second": 3.02,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-09-story-867247.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "And then she said,",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-10-grave-72167e.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "Then I will go to the king, though it is against the law, and if I perish, I perish.",
+  "seed": 3,
+  "words_per_second": 2.79,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-pivot-f7d3c8.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "On the third day, she put on her royal robes, and walked in.",
+  "seed": 1,
+  "words_per_second": 2.7,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-grave-635324.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "She won favor in his sight, and he held out to Esther the golden scepter that was in his hand.",
+  "seed": 3,
+  "words_per_second": 3.37,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-955a2a.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Esther didn't ask for anything yet.",
+  "seed": 2,
+  "words_per_second": 2.75,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-f18b4a.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "She invited the king and Haman to a banquet.",
+  "seed": 1,
+  "words_per_second": 3.12,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-ae6fa5.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "That night, the king couldn't sleep.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-44ef69.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "So he had the royal records read to him.",
+  "seed": 1,
+  "words_per_second": 2.6,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-6e9798.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And he heard how Mordecai had once saved his life, and had never been rewarded.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-304714.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "The next morning, Haman had to lead Mordecai through the city on the king's own horse.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-talk-f67c1c.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "A sleepless night.",
+  "seed": 2,
+  "words_per_second": 2.08,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-story-5aca3a.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "A book opened to the right page. No one says God did it.",
+  "seed": 1,
+  "words_per_second": 2.9,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-07-story-5eecd5.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "But who else?",
+  "seed": 2,
+  "words_per_second": 2.34,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-story-5d7527.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "At the second banquet, Esther told the king the truth.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-2113a5.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "I am Jewish. And this man wants to destroy my people.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-story-9abf50.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "The king was furious with Haman.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-story-810b80.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He gave the Jews the right to defend themselves, and they were saved.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-grave-9965d5.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "The month that had been turned for them from sorrow into gladness and from mourning into a holiday.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-talk-0147e9.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "God's name never appears in the book of Esther.",
+  "seed": 1,
+  "words_per_second": 3.17,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-talk-25170d.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "But he was there in every turn: an orphan made queen, a night without sleep, a brave woman at a door.",
+  "seed": 1,
+  "words_per_second": 3.19,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-03-pivot-a86f7b.wav": {
+  "section": 7,
+  "mode": "pivot",
+  "text": "Sometimes God is hidden.",
+  "seed": 3,
+  "words_per_second": 1.84,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s07-04-story-ad8c67.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "But he is never absent.",
+  "seed": 2,
+  "words_per_second": 3.03,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
