@@ -1,0 +1,443 @@
+{
+ "s00-01-story-e66d82.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "In one day, a man lost everything he had.",
+  "seed": 5,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s00-02-story-3b0e4f.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "His animals. His servants. His children.",
+  "seed": 1,
+  "words_per_second": 1.93,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-talk-0583ff.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "And the question he asked is the one everybody asks.",
+  "seed": 2,
+  "words_per_second": 3.12,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-04-story-08ace8.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Why?",
+  "seed": 2,
+  "words_per_second": 1.23,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-05-pivot-9611c7.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "Most people think the book of Job answers that question.",
+  "seed": 1,
+  "words_per_second": 2.66,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-06-talk-5ecf48.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "It doesn't.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-07-story-60a978.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "It gives a better answer.",
+  "seed": 1,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-c4f7cc.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Job had everything.",
+  "seed": 2,
+  "words_per_second": 1.83,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-a9b204.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Land, flocks, camels, a big family, and the respect of everyone around him.",
+  "seed": 2,
+  "words_per_second": 2.43,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-grave-b751f4.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "There was a man in the land of Uz whose name was Job, and that man was blameless and upright,",
+  "seed": 3,
+  "words_per_second": 3.1,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-8a8646.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "one who feared God and turned away from evil.",
+  "seed": 2,
+  "words_per_second": 2.83,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-story-22b260.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Every morning he got up early and prayed for his children.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-story-c1a6f8.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Then the book pulls back the curtain.",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-9efda2.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "In heaven, an accuser stands before God and points at Job.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-grave-e2296e.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "Does Job fear God for no reason?",
+  "seed": 1,
+  "words_per_second": 2.85,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-talk-5c7af2.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "Take away his blessings, he says, and Job will curse you.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-story-878eda.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And God lets Job be tested.",
+  "seed": 1,
+  "words_per_second": 2.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-pivot-ff67ac.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "Then, in one day, it all came down.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-d944fa.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Raiders took his oxen and his camels.",
+  "seed": 4,
+  "words_per_second": 2.68,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s03-03-story-75fd7a.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Fire fell from the sky on his sheep.",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-04-grave-e97055.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "And a great wind struck the house where his children were eating together.",
+  "seed": 2,
+  "words_per_second": 3.09,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-05-grave-d2cd40.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "None of them survived.",
+  "seed": 1,
+  "words_per_second": 2.63,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-c6bc9e.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Job tore his robe, and fell to the ground.",
+  "seed": 1,
+  "words_per_second": 2.94,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-91b8bc.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "And he worshipped.",
+  "seed": 1,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-grave-4f6dc5.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "The LORD gave, and the LORD has taken away; blessed be the name of the LORD.",
+  "seed": 3,
+  "words_per_second": 3.09,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-1a4c9b.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Then sores broke out all over his body, and he sat in the ashes.",
+  "seed": 1,
+  "words_per_second": 2.8,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-pivot-0420d2.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "Then his friends came.",
+  "seed": 1,
+  "words_per_second": 2.09,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-2699c1.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "For seven days they sat with him on the ground, and didn't say a word.",
+  "seed": 1,
+  "words_per_second": 2.96,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-story-0e9cbe.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "That was the best thing they did. Then they started talking.",
+  "seed": 1,
+  "words_per_second": 3.48,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-04-story-9acc71.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "God punishes sinners, they said.",
+  "seed": 3,
+  "words_per_second": 1.92,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-05-story-03c8a8.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "So you must have done something wrong.",
+  "seed": 1,
+  "words_per_second": 3.04,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-06-talk-2ef05b.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Job said, I haven't.",
+  "seed": 3,
+  "words_per_second": 2.29,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-07-story-3a6e2f.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And he begged God to answer him.",
+  "seed": 1,
+  "words_per_second": 3.07,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-08-grave-c1c876.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "Though he slay me, I will hope in him.",
+  "seed": 2,
+  "words_per_second": 2.88,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-pivot-7ccd4a.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "And then God answered.",
+  "seed": 1,
+  "words_per_second": 2.08,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-a49069.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Out of a whirlwind.",
+  "seed": 1,
+  "words_per_second": 2.61,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-grave-6cc8b0.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Where were you when I laid the foundation of the earth?",
+  "seed": 2,
+  "words_per_second": 3.12,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-story-4d7c8f.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Have you seen where the snow is kept?",
+  "seed": 1,
+  "words_per_second": 3.39,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-05-story-7d5ae0.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Do you tell the lightning where to strike?",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-06-story-bc47dd.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Do you feed the lions, or teach the eagle to fly?",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-07-talk-bcfd2f.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "God never told Job why.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-08-story-d12c7e.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He showed Job who he is.",
+  "seed": 2,
+  "words_per_second": 3.57,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-01-story-ca9ef7.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "And that was enough for Job.",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s07-02-grave-c183b0.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "I had heard of you by the hearing of the ear, but now my eye sees you.",
+  "seed": 3,
+  "words_per_second": 3.78,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s08-01-story-c249cd.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Then God told Job's friends they had been wrong about him.",
+  "seed": 1,
+  "words_per_second": 2.64,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-02-story-8bdb09.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "Job prayed for them, and God gave Job twice what he had before.",
+  "seed": 1,
+  "words_per_second": 2.85,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-03-pivot-1a8c61.wav": {
+  "section": 8,
+  "mode": "pivot",
+  "text": "He never found out why.",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-04-talk-d87338.wav": {
+  "section": 8,
+  "mode": "talk",
+  "text": "But he found something better than a reason.",
+  "seed": 1,
+  "words_per_second": 3.62,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s08-05-story-48daee.wav": {
+  "section": 8,
+  "mode": "story",
+  "text": "He met God himself.",
+  "seed": 2,
+  "words_per_second": 1.91,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ }
+}

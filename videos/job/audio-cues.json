@@ -940,7 +940,7 @@
    {
     "name": "music",
     "stem": "score.wav",
-    "volume": 0.95,
+    "volume": 0.55,
     "duck": {
      "threshold": 0.02,
      "ratio": 4,
@@ -953,7 +953,7 @@
       "comment": "opening swell",
       "from": 0.3,
       "to": 4.0,
-      "db": 6,
+      "db": 3,
       "in": 0.8,
       "out": 1.5
      },
@@ -1029,7 +1029,7 @@
      "release": 400,
      "makeup": 10
     },
-    "volume": 2.4
+    "volume": 3.2
    }
   ],
   "limiter": {
