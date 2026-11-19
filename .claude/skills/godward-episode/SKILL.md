@@ -72,8 +72,10 @@ the cloud hand-back below.
 | Elijah on Mount Carmel | `elijah-on-carmel` (script `22-`) | finished: 2:59 with outro, thumbnail, caption |
 | Joseph | `joseph` (script `23-`) | finished: 2:51 with outro, thumbnail, caption (robe in woven stripes, not a rainbow) |
 | The Burning Bush | `the-burning-bush` (script `24-`) | finished: 2:43 with outro, thumbnail, caption |
-| Abraham and Isaac | `abraham-and-isaac` (script `25-`) | page, sound plan, thumbnail, caption done; voice/render in progress |
-| Ruth | `ruth` (script `26-`) | page, sound plan, thumbnail, caption done; voice next |
+| Abraham and Isaac | `abraham-and-isaac` (script `25-`) | finished: 2:25 with outro, thumbnail, caption |
+| Ruth | `ruth` (script `26-`) | finished: 2:37 with outro, thumbnail, caption |
+| The Tower of Babel | `tower-of-babel` (script `27-`) | finished: 1:57 with outro, thumbnail, caption (ends at Pentecost) |
+| The Prodigal Son | `the-prodigal-son` (script `28-`) | finished: 2:12 with outro, thumbnail, caption |
 
 What to make next: `Godward-Content-Report.html` (viewership research, 9 Nov 2026). Old Testament stories beat
 Bible study and prayer.
