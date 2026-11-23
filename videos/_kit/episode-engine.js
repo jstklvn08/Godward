@@ -319,7 +319,10 @@
   // and the figures grow up into the sky instead of off the bottom. Card sheets (camera at y 600 or above, zoom 1 or less)
   // and sheets with vz:false keep their framing; a sheet's own vz number overrides cfg.vzoom.
   function sheetView(i, t, tc) {
-    const c = camAt(i, tc), sv = st.sheets[i], card = c.y <= 600 && c.z <= 1.0;
+    const c = camAt(i, tc), sv = st.sheets[i];
+    // A card sheet is decided once per sheet (every camera key at y 600 or above, zoom 1 or less), so a shot never snaps mid-move.
+    if (sv._card === undefined) sv._card = (sv.cam && sv.cam.length ? sv.cam : [[0, 960, 560, .84]]).every(k => k[2] <= 600 && k[3] <= 1.0);
+    const card = sv._card;
     const vz = sv.vz === false || card ? 1 : (typeof sv.vz === 'number' ? sv.vz : (st.cfg.vzoom || 1));
     if (vz !== 1) { c.y = 1000 - (1000 - c.y) / vz; c.z *= vz; }
     const z = st.cfg.gentleZoom ? c.z : c.z <= .845 ? c.z : Math.max(c.z, 1.12);

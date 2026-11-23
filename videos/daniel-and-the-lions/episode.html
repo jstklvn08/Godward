@@ -549,7 +549,10 @@ function den(t,o={}){const lit=o.lit||0;let g=R(-200,-900,2400,2900,0,'#14121A')
   if(lit>0)g+=glow(960,500,700,'#FFF6DA',.55*lit)+C(960,380,140,'#FFFDF0',{opacity:(.5*lit).toFixed(2)});
   if(o.open){g+=R(560,-900,800,700*o.open,0,'#BCD4F0',{opacity:.6})+P(`M560 -200L760 1000H1160L1360 -200Z`,'#FFF6DA',{opacity:(.18*o.open).toFixed(2)});}
   return g+R(-200,1000,2400,900,0,'#2A2630');}
-const lionsAround=(t,calm=1)=>[[520,FY+20,1.3,1],[1400,FY+30,1.4,-1],[780,FY+90,1.0,1],[1180,FY+100,1.1,-1]].map(([x,y,s,f],i)=>SC.animal(t,'lion',x,y,s,{face:f,phase:i,walk:calm?0:t*4+i})).join('');
+// Real-size lions (a lion is about as long as a man is tall): two behind Daniel, two big ones in front-left and front-right,
+// heads turned in towards him and their bodies running off the edges of the frame.
+const LIONS=[[690,FY-90,2.8,1],[1230,FY-90,2.8,-1],[440,FY+70,3.5,1],[1480,FY+80,3.5,-1]];   // at least as tall as Daniel
+const lionsAround=(t,calm=1,o={})=>LIONS.map(([x,y,s,f],i)=>SC.animal(t,'lion',x,y,s,Object.assign({face:f,phase:i,walk:calm?0:t*4+i},o))).join('');
 // the sealed stone over the pit, seen from above ground
 const sealedStone=(x,y,s=1,seal=1)=>Ell(x,y,300*s,90*s,'#6A6460',{stroke:'#3A3430','stroke-width':6*s})+Ell(x-60*s,y-20*s,120*s,30*s,'#8A8480',{opacity:.6})+(seal?C(x+120*s,y-10*s,28*s,'#B0182A',{stroke:'#6A0A12','stroke-width':4*s})+C(x+120*s,y-10*s,12*s,GOLD):'');
 // Daniel's upper room: a wall with an open window looking west to faraway Jerusalem
@@ -562,7 +565,7 @@ function upperRoom(t,o={}){const ev=o.evening;let g=R(-200,-900,2400,2900,0,'#C8
   return g+R(-200,1000,2400,900,0,'#7A5A3A')+R(400,1000,1100,40,0,'#A8483A',{opacity:.5});}
 
 // ================= 0. Cold open =================
-function denOpen(t,lt){let g=den(t,{});g+=lionsAround(t,0);for(let i=0;i<4;i++){const x=[560,1360,800,1160][i];g+=C(x+30,FY-110,5,'#FFE07A')+C(x+46,FY-110,5,'#FFE07A');}return g;}
+function denOpen(t,lt){let g=den(t,{});g+=lionsAround(t,0);return g;}
 function stoneRolls(t,lt){let g=eSky(t,'night',{hz:760,seed:303,moon:[1400,100]})+R(-200,760,2400,1200,0,'#3A3440');
   const p=ease.inOut(prog(t,AT.stone,AT.stone+1.6));g+=Ell(960,FY,320,96,'#0A0810')+sealedStone(lerp(1500,960,p),FY,1,p>.95?1:0);
   g+=officials(t,560,FY-40,1.3,{face:1,expr:'joy',look:{x:960,y:FY}});
@@ -615,7 +618,7 @@ function dawnRun(t,lt){let g=eSky(t,'dawn',{hz:760,seed:307,sun:[1500,700,70]})+
   const p=prog(t,AT.dawn,AT.dawn+1.5);g+=dariusFig(t,lerp(400,760,p),FY,2.2,{face:1,walk:p<1?t*10:0,lean:p<1?12:0,expr:'fear',look:{x:1100,y:FY},talk:p>=1,near:p>=1?'open':null});
   return g+foreSand(t,960,1.0,{kind:'barley',bare:.5,soil:'#5A4A40'});}
 function angelDen(t,lt){const k=ease.out(prog(t,AT.answered,AT.v622+1));let g=den(t,{lit:.3+.7*k});
-  g+=[[520,FY+20,1.3,1],[1400,FY+30,1.4,-1],[780,FY+90,1.0,1],[1180,FY+100,1.1,-1]].map(([x,y,s,f],i)=>SC.animal(t,'lion',x,y,s,{face:f,phase:i,graze:1})).join('');
+  g+=lionsAround(t,1,{graze:1});
   g+=fig('daniel',960,FY,2.2,{face:1,expr:'tender',look:'up',near:t>AT.answered?'up':null,talk:t>AT.answered});return g;}
 
 // ================= 6. Not a scratch =================
@@ -633,7 +636,7 @@ function decree(t,lt){let g=babylon(t,'day',{sky:{sun:[1500,200,60]}});
 function livingGod(t,lt){let g=eSky(t,'gold',{hz:900,seed:311,sun:[960,420,100]})+glow(960,420,700,'#FFF6DA',.45)+R(-200,900,2400,1000,0,'#C8A878');
   g+=zig(960,900,1.2,'#D4A872');return g;}
 function asBefore(t,lt){let g=upperRoom(t,{evening:true});g+=fig('daniel',960,FY,2.4,{face:-1,kneel:1,expr:'tender',look:{x:960,y:400},near:'up',far:'up'});
-  g+=SC.animal(t,'lion',1500,FY+40,.8,{face:-1,graze:1,op:ease.out(prog(t,AT.already,AT.already+1.5))});return g;}
+  g+=SC.animal(t,'lion',1470,FY+60,3.0,{face:-1,graze:1,op:ease.out(prog(t,AT.already,AT.already+1.5))});return g;}
 
 // ---------- frame-space overlays ----------
 const VERSES=[
@@ -673,7 +676,7 @@ const SH=[];
 const sh=(name,at,draw,bg,cam,o={})=>SH.push(Object.assign({name,at,draw,bg,camF:cam,stars:false},o));
 const DAWN=['#3A4A8A','#E8909A'],GOLDB=['#6A4AA0','#F0A060'],DAYB=['#5AA0E0','#F4E4C0'],DUSK=['#2A1A4A','#C85A6A'],DARK=['#1A1428','#08060E'],NIGHT=['#040A24','#2A3A6A'],HALL=['#1E3A7A','#0E1E4A'],ROOM=['#C8A07A','#8A6A44'];
 const flat=(a,b)=>[[a,960,560,.9],[b,960,560,.96]];
-sh('the den',0,denOpen,DARK,(a,b)=>[[0,960,620,.92],[b,960,600,1.0]]);
+sh('the den',0,denOpen,DARK,(a,b)=>[[0,960,FY-60,.92],[b,960,FY-80,1.0]]);
 sh('the stone',AT.stone-.12,stoneRolls,NIGHT,H(960,FY,1.0,1190),{vIn:'cut'});
 sh('an old man inside',AT.oldMan-.12,oldInDen,DARK,M(960,FY,1.0,960,FY,1.08,1190),{vIn:'cut'});
 sh('lion tamer?',AT.most-.12,heroPoster,DARK,flat,{vIn:'cut'});
