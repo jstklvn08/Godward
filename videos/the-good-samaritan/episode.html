@@ -861,11 +861,11 @@ const hud=t=>{let g='';VERSES.forEach(v=>g+=verse(t,v[0],v[1],v[2],v[3],v[4],v[5
 const SH=[];
 const sh=(name,at,draw,bg,cam,o={})=>SH.push(Object.assign({name,at,draw,bg,camF:cam,stars:false},o));
 const GOLDB=['#6A4AA0','#F0A060'],DUSK=['#2A1A4A','#C85A6A'];
-sh('the wrong hero',0,openRoad,DUSK,M(900,FY,.9,920,FY,1.0,1190));
+sh('the wrong hero',0,openRoad,DUSK,M(900,FY,.9,920,FY,1.0,1190),{vz:1.1});
 sh('the lawyer',AT.lawyer-.12,lawyerAsks,GOLDB,M(960,FY,.95,1000,FY,1.05,1190),{vIn:'cut'});
 sh('jericho road',AT.told-.12,jericho,GOLDB,M(920,FY,1.0,1000,FY,1.05,1190),{vIn:'cut'});
-sh('passed by',AT.priest-.12,passedBy,GOLDB,H(1060,FY,.9,1190),{vIn:'cut'});
-sh('a samaritan',AT.samaritan-.12,samaritan,DUSK,M(1100,FY,.95,960,FY,1.05,1190),{vIn:'cut'});
+sh('passed by',AT.priest-.12,passedBy,GOLDB,H(1060,FY,.9,1190),{vIn:'cut',vz:1.1});
+sh('a samaritan',AT.samaritan-.12,samaritan,DUSK,M(1100,FY,.95,960,FY,1.05,1190),{vIn:'cut',vz:1.1});
 sh('the inn',AT.inn-.12,inn,DUSK,H(1000,FY,.95,1190),{vIn:'cut'});
 sh('which one',AT.which-.12,whichOne,GOLDB,M(960,FY,1.0,960,FY,1.1,1190),{vIn:'cut'});
 sh('likewise',AT.asked-.12,likewise,DUSK,M(860,FY,1.0,980,FY,.95,1190),{vIn:'cut'});

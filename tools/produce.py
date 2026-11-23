@@ -219,7 +219,7 @@ def dur(p: Path) -> float:
 
 
 def st_render(e: Ep):
-    w = str(e.cfg.get('workers', 2))
+    w = str(e.cfg.get('workers', 3))
     e.sh(['node', 'tools/render.js', 'video', str(e.dir / 'episode.html'), str(e.mp4), '--vertical', '--audio', str(e.audio / 'mix.wav'), '--workers', w])
     e.sh(['tools/append-outro.sh', str(e.mp4)])
     if not e.final.exists() or dur(e.final) < dur(e.mp4):
