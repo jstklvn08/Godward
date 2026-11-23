@@ -267,6 +267,21 @@ the post, do this for every video from now on"). The page is https://claude.ai/a
    reel length), update the "N ready to post" count, and publish to the same `url` with `files` for the cover and
    video. Also send the full-quality MP4 in chat with SendUserFile.
 
+## The automated pipeline (tools/produce.py)
+
+Once the creative files exist (script, `episode.html`, `audio-cues.json`, thumbnail, caption), add
+`videos/<slug>/episode.json` (`{"script","voice","title","eyebrow"}`) and run, in the background:
+
+    python3 tools/produce.py queue <slug> <slug> ...     # or: run <slug> [--from stage] [--to stage]
+
+It runs trim (ESV fill + cut to the "keep only" notes) → voice → align (re-records misheard passages and
+scripture faster than 3.6 words/s once, then re-aligns) → check (seek errors + `build/check.jpg` contact
+sheet) → mix (levels the music bus until the voice is 29 dB over it) → render + outro → post (Post Packs
+preview, cover, card) → finish (deletes stems, commits timing files). The queue records the next episode's
+narration while the previous one aligns, mixes and renders. Log: `videos/<slug>/build/produce.log`.
+After a run: look at `build/check.jpg` and `build/strip.jpg`, publish the Post Packs page and send the MP4.
+A run with `--to check` first is a good way to review the scenes on the real timings before rendering.
+
 ## Working in the cloud, and across sessions
 
 - **Starting a cloud session.** It clones GitHub, so push the working branch first (`voice/clip-6-narration`).
