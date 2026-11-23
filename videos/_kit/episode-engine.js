@@ -327,7 +327,9 @@
     st.VQ.length = 0; st.vtop = VTOP;
     const fx = focusFx(t), big = s => s.replace(/width="1920" height="1080"/g, `width="${FW}" height="${FH}"`);
     const [wg, wd] = vgrad('#0C1040', '#05061A', '#0A0C30');
-    let g = big(paperDefs(t)) + wd + R(0, 0, FW, FH, 0, wg);
+    // The paper grain is frozen (seed of t=0) and lighter in vertical: grain that changes every frame eats the encoder's
+    // bits and turns to mush when Instagram/TikTok re-compress the reel.
+    let g = big(paperDefs(0)) + wd + R(0, 0, FW, FH, 0, wg);
     const i = sheetIndex(t);
     // Between sheets the old scene scrolls up and away while the next rises from below (or a hard cut: vIn:'cut').
     const kn = st.cuts.findIndex(c => t >= c - SL && t < c + SL);
@@ -340,7 +342,7 @@
     if (st.cfg.hud) g += st.cfg.hud(t);
     g += flashes(t, FW, FH);
     g += verseOverlay(t);
-    g += big(vignette(.38)) + big(paperOver({ tex: .2, grain: .32, blot: .12, texL: .3 }));
+    g += big(vignette(.38)) + big(paperOver({ tex: .2, grain: .16, blot: .12, texL: .3 }));
     g += captions(t);
     return g + fades(t, FW, FH);
   }

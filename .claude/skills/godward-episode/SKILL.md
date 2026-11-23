@@ -282,6 +282,12 @@ narration while the previous one aligns, mixes and renders. Log: `videos/<slug>/
 After a run: look at `build/check.jpg` and `build/strip.jpg`, publish the Post Packs page and send the MP4.
 A run with `--to check` first is a good way to review the scenes on the real timings before rendering.
 
+
+**Video quality (since episode 29).** `render.js video` captures frames as PNG and writes a near-lossless intermediate
+(`--quality inter`, CRF 10); `tools/append-outro.sh` is the only lossy encode (x264 CRF 16, preset slow, tune animation).
+In vertical the paper grain is frozen and at 0.16 (it used to re-seed 12 times a second at 0.32, which ate the bitrate
+and turned to mush after Instagram/TikTok re-compression). Result: sharper dots and lines at about half the file size.
+
 ## Working in the cloud, and across sessions
 
 - **Starting a cloud session.** It clones GitHub, so push the working branch first (`voice/clip-6-narration`).

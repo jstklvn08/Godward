@@ -46,6 +46,10 @@ const BROWSERS = [
 const CHROME = BROWSERS.find(p => fs.existsSync(p));
 
 const QUALITY = {
+  // hq (default): sharp enough for halftone dots and paper grain to survive Instagram/TikTok's own re-encode.
+  hq: ['-crf', '16', '-preset', 'slow', '-tune', 'animation', '-maxrate', '40M', '-bufsize', '80M', '-profile:v', 'high'],
+  // inter: near-lossless intermediate for a file that will be encoded once more (tools/append-outro.sh).
+  inter: ['-crf', '10', '-preset', 'fast', '-tune', 'animation'],
   web: ['-crf', '23', '-maxrate', '12M', '-bufsize', '24M', '-preset', 'medium'],
   master: ['-crf', '18', '-preset', 'medium'],
 };
@@ -95,13 +99,13 @@ async function stills(html, outdir, list, opt) {
 
 async function segment(html, out, f0, f1, fps, opt, quality) {
   const { browser, page, errors } = await openPage(html, opt);
-  const ff = spawn(ffmpeg, ['-y', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',
+  const ff = spawn(ffmpeg, ['-y', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'png', '-i', '-',
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', ...quality, out], { stdio: ['pipe', 'ignore', 'pipe'] });
   let ffErr = '';
   ff.stderr.on('data', d => { ffErr = (ffErr + d).slice(-4000); });
   for (let i = f0; i < f1; i++) {
     await page.evaluate(x => window.seek(x), i / fps);
-    const buf = await page.screenshot({ type: 'jpeg', quality: 95 });
+    const buf = await page.screenshot({ type: 'png' });   // lossless: the only lossy step is the final encode
     if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
     if ((i - f0) % 300 === 0) console.log(`${path.basename(out)} frame ${i - f0}/${f1 - f0}`);
     if (errors.length) break;
@@ -115,8 +119,8 @@ async function segment(html, out, f0, f1, fps, opt, quality) {
 
 async function video(html, out, opt) {
   const fps = +(opt.fps || 30), workers = +(opt.workers || 4);
-  const quality = QUALITY[opt.quality || 'web'];
-  if (!quality) throw new Error('--quality must be web or master');
+  const quality = QUALITY[opt.quality || 'inter'];
+  if (!quality) throw new Error('--quality must be one of ' + Object.keys(QUALITY).join(', '));
   const probe = await openPage(html, opt);
   const dur = await probe.page.evaluate(() => window.DUR);
   await probe.browser.close();
@@ -132,7 +136,7 @@ async function video(html, out, opt) {
     if (a < b) parts.push([path.join(tmp, `p${k}.mp4`), a, b]);
   }
   const t0 = Date.now();
-  console.log(`${parts.length} workers, frames ${F0}-${F1} (${((F1 - F0) / fps).toFixed(1)} s), ${opt.vertical ? '1080x1920' : '1920x1080'}, ${opt.quality || 'web'}`);
+  console.log(`${parts.length} workers, frames ${F0}-${F1} (${((F1 - F0) / fps).toFixed(1)} s), ${opt.vertical ? '1080x1920' : '1920x1080'}, ${opt.quality || 'inter'}`);
   await Promise.all(parts.map(([p, a, b]) => segment(html, p, a, b, fps, opt, quality)));
   const list = path.join(tmp, 'list.txt');
   fs.writeFileSync(list, parts.map(p => `file '${path.resolve(p[0]).replace(/\\/g, '/')}'`).join('\n')); // absolute: ffmpeg reads list entries relative to the list

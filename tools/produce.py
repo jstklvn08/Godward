@@ -234,8 +234,10 @@ def st_render(e: Ep):
 def st_post(e: Ep):
     (POSTPACK / 'videos').mkdir(parents=True, exist_ok=True); (POSTPACK / 'covers').mkdir(parents=True, exist_ok=True)
     prev = POSTPACK / 'videos' / f'{e.slug}.mp4'; cover = POSTPACK / 'covers' / f'{e.slug}.jpg'
-    e.sh(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(e.final), '-vf', 'scale=540:960', '-c:v', 'libx264', '-b:v', '300k', '-maxrate', '420k',
-          '-bufsize', '840k', '-c:a', 'aac', '-b:a', '64k', '-movflags', '+faststart', str(prev)])
+    kb = int(min(1200, (13.5e6 * 8 / dur(e.final) - 64e3) / 1e3))   # as sharp as the 15 MB artifact limit allows
+    e.sh(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(e.final), '-vf', 'scale=540:960:flags=lanczos', '-c:v', 'libx264', '-preset', 'slow',
+          '-tune', 'animation', '-b:v', f'{kb}k', '-maxrate', f'{int(kb * 1.3)}k', '-bufsize', f'{kb * 2}k', '-c:a', 'aac', '-b:a', '64k',
+          '-movflags', '+faststart', str(prev)])
     if prev.stat().st_size > 15e6:
         raise RuntimeError('preview over 15 MB')
     e.sh(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(e.dir / 'thumbnail-ig-4x5.png'), '-vf', 'scale=720:900', '-q:v', '4', str(cover)])
