@@ -192,7 +192,7 @@
   function burstCaption(t) {
     const c = st.bursts.find(c => t >= c.s - .03 && t < c.e); if (!c) return '';
     // The gap leaves room for the 14 px outline and the 8% pop of the current word (fonts with a narrow space touched).
-    const size = 78, F = 'Segoe UI', WT = 900, sp = tw(' ', size, F, WT) + size * .2, y = CAP_Y;
+    const size = 78, F = 'Segoe UI', WT = 900, sp = tw(' ', size, F, WT) + size * .2, y = CAP_Y + (st.cfg.vcap || 0);  // cfg.vcap moves captions down with vdrop
     const ws = c.w.map(w => tw(w[0].toUpperCase(), size, F, WT)), tot = ws.reduce((a, b) => a + b, 0) + sp * (ws.length - 1);
     let x = 540 - tot / 2, g = ''; const vis = c.w.filter(w => t >= w[1] - .03);
     c.w.forEach((w, k) => {
@@ -315,12 +315,20 @@
   // Zoom 0.845 or less is a deliberate wide shot; anything else is raised to at least 1.12.
   // cfg.gentleZoom: true keeps every zoom as written (only the paper-edge clamps below apply), so a slow push
   // from the wide shot (.84) to e.g. 1.05 is possible.
+  // cfg.vzoom (e.g. 1.25): a closer camera for scene sheets, anchored at the ground line (world y 1000) so the feet stay put
+  // and the figures grow up into the sky instead of off the bottom. Card sheets (camera at y 600 or above, zoom 1 or less)
+  // and sheets with vz:false keep their framing; a sheet's own vz number overrides cfg.vzoom.
   function sheetView(i, t, tc) {
-    const c = camAt(i, tc), z = st.cfg.gentleZoom ? c.z : c.z <= .845 ? c.z : Math.max(c.z, 1.12);
+    const c = camAt(i, tc), sv = st.sheets[i], card = c.y <= 600 && c.z <= 1.0;
+    const vz = sv.vz === false || card ? 1 : (typeof sv.vz === 'number' ? sv.vz : (st.cfg.vzoom || 1));
+    if (vz !== 1) { c.y = 1000 - (1000 - c.y) / vz; c.z *= vz; }
+    const z = st.cfg.gentleZoom ? c.z : c.z <= .845 ? c.z : Math.max(c.z, 1.12);
     let x = c.x, y = c.y;
+    // cfg.vdrop (px): scene sheets sit lower in the frame, so less empty ground shows under the feet (cards are not moved).
+    const BY = BANDY + (card ? 0 : (st.cfg.vdrop || 0));
     const xa = 540 / z - 30, xb = 1950 - 540 / z; x = xa < xb ? clamp(x, xa, xb) : 960;
-    const ya = -640 + BANDY / z, yb = 1720 - (FH - BANDY) / z; y = ya < yb ? clamp(y, ya, yb) : 540;
-    return `<g transform="translate(${FW / 2} ${BANDY}) scale(${z.toFixed(4)}) translate(${(-x).toFixed(1)} ${(-y).toFixed(1)})">` + drawSheet(i, t, true) + '</g>';
+    const ya = -640 + BY / z, yb = 1720 - (FH - BY) / z; y = ya < yb ? clamp(y, ya, yb) : 540;
+    return `<g transform="translate(${FW / 2} ${BY}) scale(${z.toFixed(4)}) translate(${(-x).toFixed(1)} ${(-y).toFixed(1)})">` + drawSheet(i, t, true) + '</g>';
   }
   function sheetScene(i, t, tc) { const s = st.sheets[i]; return s.vdraw ? s.vdraw(t, t - s.at) : sheetView(i, t, tc); }
   function frameV(t) {

@@ -1,0 +1,218 @@
+{
+ "s00-01-story-f8c527.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Everyone knows the good Samaritan.",
+  "seed": 2,
+  "words_per_second": 2.05,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-pivot-994590.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But to the people who first heard it, the good guy was the enemy.",
+  "seed": 1,
+  "words_per_second": 3.2,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-92be7d.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "A lawyer stood up to test Jesus.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-b780b5.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "What must I do to inherit eternal life?",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-story-e63916.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "And he knew the answer.",
+  "seed": 1,
+  "words_per_second": 3.25,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-4fb973.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "You shall love the Lord your God with all your heart and your neighbor as yourself.",
+  "seed": 2,
+  "words_per_second": 2.99,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-pivot-c9f08c.wav": {
+  "section": 1,
+  "mode": "pivot",
+  "text": "But he wanted to justify himself.",
+  "seed": 1,
+  "words_per_second": 2.05,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-06-story-448919.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "So he asked, And who is my neighbor?",
+  "seed": 4,
+  "words_per_second": 3.19,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s02-01-story-5b6164.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "So Jesus told a story.",
+  "seed": 1,
+  "words_per_second": 3.18,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-25e944.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "A man was going down the road from Jerusalem to Jericho, and robbers attacked him.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-story-2f34da.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "They stripped him, beat him, and left him half dead.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-f40eb8.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "A priest came down that road.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-grave-e33443.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "When he saw him he passed by on the other side.",
+  "seed": 8,
+  "words_per_second": 4.03,
+  "in_range": false,
+  "word_check": "match"
+ },
+ "s03-03-story-4fb12d.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Then a Levite, who served in the temple. He passed by too.",
+  "seed": 1,
+  "words_per_second": 2.48,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-pivot-9bb9b7.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "Then came a Samaritan.",
+  "seed": 1,
+  "words_per_second": 2.23,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-5db223.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Jews and Samaritans hated each other.",
+  "seed": 3,
+  "words_per_second": 2.26,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-grave-b0322f.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "But a Samaritan, as he journeyed, came to where he was, and when he saw him, he had compassion.",
+  "seed": 1,
+  "words_per_second": 3.1,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-story-936077.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "He bandaged his wounds, put him on his own donkey, took him to an inn, and paid for him to stay.",
+  "seed": 1,
+  "words_per_second": 3.25,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-story-1fdb7c.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Then Jesus asked, Which of these three was a neighbor to the man?",
+  "seed": 1,
+  "words_per_second": 2.73,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-2ffa39.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "And the lawyer couldn't even say Samaritan.",
+  "seed": 3,
+  "words_per_second": 2.33,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-grave-3d67a6.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "The one who showed him mercy.",
+  "seed": 1,
+  "words_per_second": 2.68,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-talk-93c679.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "He asked who he had to love.",
+  "seed": 2,
+  "words_per_second": 3.87,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-37cc67.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Jesus asked who he would love.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-pivot-069055.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "You go, and do likewise.",
+  "seed": 2,
+  "words_per_second": 2.07,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}

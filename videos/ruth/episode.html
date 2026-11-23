@@ -791,7 +791,7 @@ function boazField(t,lt){let g=bethFields(t,'gold',{sky:{sun:[1500,300,90]}});co
 // ================= 4. Under his wings =================
 function naomiPlan(t,lt){let g=R(-200,-900,2400,2900,0,'#6A4A3A')+R(-200,820,2400,1100,0,'#4A3428')+P('M400 300h400v300h-400z','#FFD27A',{opacity:.25})+C(1500,520,30,'#FFB04C')+glow(1500,520,220,'#FFB04C',.35);
   g+=P(`M1150 ${FY}Q1100 ${FY-150} 1180 ${FY-180}H1300Q1380 ${FY-150} 1330 ${FY}Z`,'#C8A070',{stroke:'#6A4A28','stroke-width':4})+Ell(1240,FY-176,60,14,'#F0D070');
-  g+=woman('naomi',t,780,FY,2.2,{face:1,expr:'joy',look:{x:1040,y:FY-300},talk:true,near:{x:1150,y:FY-140}})+woman('ruth',t,1020,FY+10,1.9,{face:-1,expr:'calm',look:{x:780,y:FY-330}});return g;}
+  g+=woman('naomi',t,760,FY,2.2,{face:1,expr:'joy',look:{x:1080,y:FY-300},talk:true})+woman('ruth',t,1080,FY+10,1.9,{face:-1,expr:'calm',look:{x:780,y:FY-330}});return g;}
 function threshingFloor(t,lt){let g=threshing(t);const awake=t>=AT.v39-.3,k=ease.out(prog(t,AT.v39+1,AT.v39+2.4));
   g+=fig('boaz',1120,FY-40,1.9,{face:-1,sit:1,seat:FY-40,expr:awake?'tender':'calm',look:awake?{x:780,y:FY-200}:'down',tilt:awake?0:14})+woman('ruth',t,700,FY-20,1.6,{face:1,sit:1,seat:FY-20,expr:awake?'calm':'calm',look:{x:1120,y:FY-280},talk:awake&&t<AT.v39+4});
   g+=glow(920,FY-200,380,'#FFE9A8',.35*k);return g;}
@@ -805,7 +805,7 @@ function townGate(t,lt){let g=gateScene(t);const p=prog(t,AT.properly+1.2,AT.pro
 
 // ================= 6. Full again =================
 function baby(t,lt){let g=bethFields(t,'gold',{sky:{sun:[1500,300,80]}});const ag=t>=AT.again;
-  g+=fig('boaz',1340,FY,2.0,{face:-1,expr:'joy',look:{x:1000,y:FY-260}})+woman('ruth',t,1180,FY+10,1.8,{face:-1,expr:'joy',look:{x:900,y:FY-260}})+woman('naomi',t,860,FY,2.1,{face:1,expr:'joy',look:{x:920,y:FY-250},near:'chest',far:'chest',baby:1});
+  g+=fig('boaz',1420,FY,2.0,{face:-1,expr:'joy',look:{x:1000,y:FY-260}})+woman('ruth',t,1250,FY+10,1.8,{face:-1,expr:'joy',look:{x:900,y:FY-260}})+woman('naomi',t,860,FY,2.1,{face:1,expr:'joy',look:{x:920,y:FY-250},near:'chest',far:'chest',baby:1});
   if(ag)for(let i=0;i<3;i++)g+=woman(['orpah','ruth','naomi'][0],t,300+i*170,FY+30,1.4,{face:1,expr:'joy',look:{x:860,y:FY-300},near:i===1?'up':null,tunic:TUN[i][0],tunic2:TUN[i][1]});
   return g+foreSand(t,960,1.0,{kind:'barley'});}
 function treeOfDavid(t,lt){return familyTree(t,AT.v417);}
@@ -833,7 +833,7 @@ const TAGS=[
   [AT.v417+4.2,AT.nomir-.3,'KING DAVID',{bg:CORAL,size:hv(48,56)}],
   [AT.nomir+2,AT.last1+.4,'GOD WAS THERE',{bg:CORAL,rot:-2}],
 ];
-const ftag=(t,[a,b,s,o],k)=>{if(t<a||t>b+.4)return '';const txt=typeof s==='function'?s(t):s,size=o.size||hv(40,46),x=hv(960,540),y=o.y||hv(90,1430);
+const ftag=(t,[a,b,s,o],k)=>{if(t<a||t>b+.4)return '';const txt=typeof s==='function'?s(t):s,size=o.size||hv(40,46),x=hv(960,540),y=o.y||hv(90,1525);
   return E.fade(t,b,piece(t,a,x,y+size*.8,label(x,y,txt,{size,anchor:'middle',bg:o.bg||'#101014',rot:o.rot||0}),40+k,1.3));};
 function endCard(t){
   const ec=prog(t,AT.last1+.6,AT.last1+1.2);if(ec<=0)return '';
@@ -854,8 +854,8 @@ const DAWN=['#3A4A8A','#E8909A'],GOLDB=['#6A4AA0','#F0A060'],DUSK=['#2A1A4A','#C
 const flat=(a,b)=>[[a,960,560,.9],[b,960,560,.96]];
 sh('gleaning',0,gleanOpen,GOLDB,(a,b)=>[[0,860,FY-200,1.05],[b,900,FY-200,1.1]]);
 sh('changed history',AT.changed-.12,historyCard,DARK,flat,{vIn:'cut'});
-sh('famine',AT.famine-.12,famineRoad,GOLDB,M(860,FY,.95,1060,FY,.95,1190),{vIn:'cut'});
-sh('graves',AT.died-.12,graves,DUSK,(a,b)=>[[a,1300,FY-200,1.0],[b,800,FY-200,1.0]],{vIn:'cut'});
+sh('famine',AT.famine-.12,famineRoad,GOLDB,M(860,FY,.95,1060,FY,.95,1190),{vIn:'cut',vz:1.12});
+sh('graves',AT.died-.12,graves,DUSK,(a,b)=>[[a,1300,FY-200,1.0],[b,800,FY-200,1.0]],{vIn:'cut',vz:1.15});
 sh('parting',AT.orpah-.12,parting,GOLDB,M(900,FY,.95,1040,FY,1.05,1190),{vIn:'cut'});
 sh('where you go',AT.foreigner-.12,whereYouGo,DUSK,M(940,FY,1.2,1100,FY,1.2,1190),{vIn:'cut'});
 sh('harvest',AT.arrived-.12,harvest,GOLDB,H(960,FY,1.0,1190),{vIn:'cut'});
@@ -871,6 +871,7 @@ SH.forEach((s,i)=>{const nx=i+1<SH.length?SH[i+1].at:ENDT;s.cam=s.camF(i===0?0:s
 delete SH[0].at;
 
 E.start({
+  vzoom:1.3, vdrop:150, vcap:130,   // scene sits lower: less empty floor; captions just under the feet   // closer camera for scene sheets (engine: sheetView); a sheet can set vz to override
   cast:{}, gentleZoom:true, hud, sheets:SH, talk:[],
   // big moments: "where you go", "she happened to come", the family line reaching David
   focus:[[AT.v116,.8],[AT.v23,.6],[AT.v417+3.3,.8]],

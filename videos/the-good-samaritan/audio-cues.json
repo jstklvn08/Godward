@@ -549,7 +549,7 @@
    {
     "name": "music",
     "stem": "score.wav",
-    "volume": 0.8,
+    "volume": 0.482,
     "duck": {
      "threshold": 0.02,
      "ratio": 4,
