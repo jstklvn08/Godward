@@ -1,0 +1,200 @@
+{
+ "s00-01-story-eaadbf.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "The richest man in town, hiding up a tree.",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-pivot-f64cab.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "He thought he was looking for Jesus.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-b0fc21.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Zacchaeus was rich.",
+  "seed": 1,
+  "words_per_second": 1.74,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-b4cc99.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "He collected taxes for Rome, and took extra for himself.",
+  "seed": 2,
+  "words_per_second": 2.44,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-03-grave-bf6138.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "A man called by the name Zacchaeus.",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-04735e.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "He was a chief tax collector and was rich.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-05-talk-bfbc7d.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "To everyone in Jericho, he was a traitor and a thief.",
+  "seed": 1,
+  "words_per_second": 3.57,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-story-3ecc3e.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "One day Jesus came through Jericho, and Zacchaeus wanted to see him.",
+  "seed": 2,
+  "words_per_second": 2.48,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-grave-3ab9d3.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "He was seeking to see who Jesus was, but on account of the crowd he could not,",
+  "seed": 3,
+  "words_per_second": 3.46,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-grave-c2e59c.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "because he was small in stature.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-6d8e98.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "So he ran ahead, and climbed a sycamore tree.",
+  "seed": 1,
+  "words_per_second": 2.74,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-pivot-955719.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "When Jesus reached the spot, he stopped, and looked up, and called him by name.",
+  "seed": 1,
+  "words_per_second": 2.71,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-grave-09f5eb.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "Zacchaeus, hurry and come down, for I must stay at your house today.",
+  "seed": 1,
+  "words_per_second": 2.81,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-story-369814.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Zacchaeus hurried down, full of joy.",
+  "seed": 3,
+  "words_per_second": 2.26,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-pivot-9c1c92.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "But everyone grumbled.",
+  "seed": 1,
+  "words_per_second": 1.75,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-story-cae50f.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "He's gone to be the guest of a sinner.",
+  "seed": 1,
+  "words_per_second": 3.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-00dafd.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "And then Zacchaeus stood up.",
+  "seed": 2,
+  "words_per_second": 2.87,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-grave-1a392e.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "Behold, Lord, the half of my goods I give to the poor.",
+  "seed": 1,
+  "words_per_second": 2.89,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-05-grave-a05eba.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "And if I have defrauded anyone of anything, I restore it fourfold.",
+  "seed": 1,
+  "words_per_second": 2.27,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-talk-2999f3.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Zacchaeus thought he was looking for Jesus.",
+  "seed": 1,
+  "words_per_second": 3.26,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-19b2c2.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "But Jesus said,",
+  "seed": 2,
+  "words_per_second": 2.34,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-grave-c10e65.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "For the Son of Man came to seek and to save the lost.",
+  "seed": 3,
+  "words_per_second": 2.56,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}

@@ -839,7 +839,7 @@ const TAGS=[
   [AT.grumbled+.3,AT.stood-.3,'GRUMBLE',{size:hv(48,56)}],
   [AT.v198+4.5,AT.thought-.3,'×4',{bg:CORAL,size:hv(56,64)}],
 ];
-const ftag=(t,[a,b,s,o],k)=>{if(t<a||t>b+.4)return '';const txt=typeof s==='function'?s(t):s,size=o.size||hv(40,46),x=hv(960,540),y=o.y||hv(90,1430);
+const ftag=(t,[a,b,s,o],k)=>{if(t<a||t>b+.4)return '';const txt=typeof s==='function'?s(t):s,size=o.size||hv(40,46),x=hv(960,540),y=o.y||hv(90,1525);
   return E.fade(t,b,piece(t,a,x,y+size*.8,label(x,y,txt,{size,anchor:'middle',bg:o.bg||'#101014',rot:o.rot||0}),40+k,1.3));};
 function endCard(t){
   const ec=prog(t,AT.last1+.6,AT.last1+1.2);if(ec<=0)return '';
@@ -870,6 +870,7 @@ SH.forEach((s,i)=>{const nx=i+1<SH.length?SH[i+1].at:ENDT;s.cam=s.camF(i===0?0:s
 delete SH[0].at;
 
 E.start({
+  vzoom:1.3, vdrop:150, vcap:130,   // scene sits lower: less empty floor; captions just under the feet   // closer camera for scene sheets (engine: sheetView); a sheet can set vz to override
   cast:{}, gentleZoom:true, hud, sheets:SH, talk:[],
   focus:[[AT.v195,1.0],[AT.v198,.6],[AT.v1910,.8]],
   flashes:[[AT.rich-.12,.5,'#FFF6DA'],[AT.oneDay-.12,.4,'#FFF6DA'],[AT.reached-.12,.6,'#FFFFFF'],[AT.stood-.12,.5,'#FFF6DA'],[AT.thought-.12,.5,'#FFF6DA']],
