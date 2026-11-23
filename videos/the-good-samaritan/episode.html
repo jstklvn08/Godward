@@ -824,9 +824,9 @@ function passedBy(t,lt){let g=wadi(t,'gold',{sky:{sun:[1500,360,80]}})+lying(t,9
 
 // ================= 4. But a Samaritan =================
 function samaritan(t,lt){let g=wadi(t,'dusk',{sky:{sun:[1500,520,90]}});const kn=t>=AT.v1033+2,b=t>=AT.bandaged;
-  g+=lying(t,860,FY+20,1.6,{bandage:b});if(kn)g+=oilJar(1000,FY+20,1.2)+oilJar(1050,FY+20,1.0,'#7A5A9A')+samFig(t,1080,FY+10,1.9,{face:-1,kneel:.8,expr:'tender',look:{x:860,y:FY-40},near:{x:760,y:FY-10}});
-  else g+=samFig(t,lerp(1400,1150,prog(t,AT.samaritan,AT.v1033+2)),FY,1.9,{face:-1,walk:t*4,expr:t>=AT.v1033?'sad':'calm',look:{x:860,y:FY}});
-  g+=SC.animal(t,'donkey',1400,FY-10,1.0,{face:-1});return g+foreSand(t,960,1.0,{kind:'barley',bare:.9,soil:'#A8805A'});}
+  g+=lying(t,950,FY+20,1.6,{bandage:b});if(kn)g+=oilJar(1080,FY+20,1.2)+oilJar(1130,FY+20,1.0,'#7A5A9A')+samFig(t,1170,FY+10,1.9,{face:-1,kneel:.8,expr:'tender',look:{x:950,y:FY-40},near:{x:850,y:FY-10}});
+  else g+=samFig(t,lerp(1420,1240,prog(t,AT.samaritan,AT.v1033+2)),FY,1.9,{face:-1,walk:t*4,expr:t>=AT.v1033?'sad':'calm',look:{x:950,y:FY}});
+  g+=SC.animal(t,'donkey',1440,FY-10,1.0,{face:-1});return g+foreSand(t,960,1.0,{kind:'barley',bare:.9,soil:'#A8805A'});}
 function inn(t,lt){let g=farm(t,'dusk',{sky:{sun:[1500,560,90]},hx:700,hy:860,lit:1});const k=ease.out(prog(t,AT.inn+1,AT.inn+2));
   g+=SC.animal(t,'donkey',1350,FY,1.0,{face:-1})+fig('traveller',1350,FY-150,1.0,{face:-1,sit:1,seat:FY-150,expr:'calm',shadow:false});
   g+=folk(2,860,FY+10,1.8,{face:1,expr:'surprised',look:{x:1080,y:FY-300},near:k>0?{x:970,y:FY-150}:null})+samFig(t,1080,FY+10,1.9,{face:-1,expr:'tender',look:{x:860,y:FY-300},near:{x:980,y:FY-150}});

@@ -729,8 +729,8 @@ function hardestCard(t,lt){let g=R(-200,-900,2400,2900,0,'#1A1428')+strip(500,32
 // ================= 1. As many as the stars =================
 function stars(t,lt){let g=starSky(t);g+=tentI(1400,920,1.3)+voiceRings(t,AT.waited+1,960,-200)+abrahamFig(t,900,FY-60,2.0,{face:1,expr:'awe',look:'up',near:'up'});return g;}
 function laughter(t,lt){let g=eSky(t,'gold',{hz:700,seed:1005,sun:[1500,300,80]})+R(-200,700,2400,1200,0,'#C8A878')+tentI(400,800,1.1)+tentI(1600,790,1.0);
-  const k=t>=AT.laughter;g+=fig('sarah',820,FY,2.1,{face:1,expr:'joy',look:{x:1080,y:FY-200},near:k?null:{x:1000,y:FY-200}})+(k?isaacFig(t,1080,FY+10,1.4,{face:-1,expr:'joy',look:{x:820,y:600},jump:Math.max(0,Math.sin(t*6))*16})+SC.animal(t,'sheep',1300,FY+20,.8,{face:-1}):C(1010,FY-190,34,'#F4F0E4'));
-  g+=abrahamFig(t,560,FY,2.0,{face:1,expr:'joy',look:{x:1000,y:600}});return g+foreSand(t,960,1.0,{kind:'barley',bare:.7,soil:'#A88A5A'});}
+  const k=t>=AT.laughter;g+=fig('sarah',880,FY,2.1,{face:1,expr:'joy',look:{x:1120,y:FY-200},near:k?null:{x:1060,y:FY-200}})+(k?isaacFig(t,1120,FY+10,1.4,{face:-1,expr:'joy',look:{x:880,y:600},jump:Math.max(0,Math.sin(t*6))*16})+SC.animal(t,'sheep',1330,FY+20,.8,{face:-1}):C(1070,FY-190,34,'#F4F0E4'));
+  g+=abrahamFig(t,650,FY,2.0,{face:1,expr:'joy',look:{x:1000,y:600}});return g+foreSand(t,960,1.0,{kind:'barley',bare:.7,soil:'#A88A5A'});}
 
 // ================= 2. The test =================
 function testNight(t,lt){let g=starSky(t)+tentI(1350,920,1.2);g+=voiceRings(t,AT.tested+.5,960,-200)+abrahamFig(t,860,FY-60,2.2,{face:1,sit:1,seat:FY-60,expr:'sad',look:'down'});return g;}
