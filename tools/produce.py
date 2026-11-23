@@ -102,6 +102,8 @@ def trim_quotes(text: str) -> tuple[str, int]:
         if text.count(g) != 2:
             raise RuntimeError(f'quote appears {text.count(g)} times, expected 2: {g[:60]}')
         text = text.replace(g, new); n += 1
+    # a whole verse that ends inside speech comes back as “...lost.”” : drop the extra closing quote
+    text = re.sub(r'^(.*)$', lambda m: m.group(1).replace('””', '”') if m.group(1).count('”') > m.group(1).count('“') else m.group(1), text, flags=re.M)
     return text, n
 
 
