@@ -654,7 +654,7 @@ function godGrieved(t,lt){let g=eSky(t,'storm',{hz:900,seed:613})+R(-200,900,240
 // ================= 2. Build an ark =================
 function noahDifferent(t,lt){let g=eSky(t,'gold',{hz:700,seed:615,sun:[1500,300,80]})+R(-200,700,2400,1200,0,'#8AA060')+cypress(t,200,1700,740,.9,8);g+=fig('noah',960,FY,2.6,{face:1,expr:'tender',look:'up'})+glow(960,FY-400,220,'#FFE9A8',.3);return g+foreUz(t,960,1.0);}
 function building(t,lt){let g=eSky(t,'day',{hz:640,seed:617,sun:[1500,200,60]})+R(-200,640,2400,1200,0,'#9AB070');const fr=clamp(.55+prog(t,AT.build,AT.v622+2)*.6);
-  g+=ark(t,960,860,.8,{frame:fr});g+=fig('noah',620,FY+10,1.9,{face:1,expr:'calm',look:{x:960,y:700},near:{x:760,y:FY-160}})+folk(1,1300,FY+10,1.8,{face:-1,expr:'joy',near:{x:1150,y:FY-200}})+folk(3,1500,FY+20,1.7,{face:-1,expr:'calm',look:{x:960,y:600}});
+  g+=ark(t,960,860,.8,{frame:fr});g+=fig('noah',740,FY+10,1.9,{face:1,expr:'calm',look:{x:960,y:700},near:{x:880,y:FY-160}})+folk(1,1180,FY+10,1.8,{face:-1,expr:'joy',near:{x:1030,y:FY-200}})+folk(3,1500,FY+20,1.7,{face:-1,expr:'calm',look:{x:960,y:600}});
   g+=fig('off2',300,FY+30,1.5,{face:1,expr:'joy',look:{x:960,y:600},talk:true})+L(200,FY-40,420,FY-40,'#6A4422',8);return g+foreUz(t,960,1.0);}
 function arkDone(t,lt){let g=eSky(t,'gold',{hz:640,seed:619,sun:[1500,300,80]})+R(-200,640,2400,1200,0,'#9AB070');g+=ark(t,960,900,.8,{ramp:true})+mudHouse(t,160,920,.35,{})+mudHouse(t,1760,920,.35,{});
   g+=fig('noah',700,FY+40,1.4,{face:1,expr:'joy',look:{x:960,y:500}});return g+foreUz(t,960,1.0);}
@@ -682,7 +682,7 @@ function doveLeaf(t,lt){let g=eSky(t,'gold',{hz:760,seed:631,sun:[1500,400,80]})
 
 // ================= 6. The bow in the cloud =================
 function comeOut(t,lt){let g=eSky(t,'day',{hz:700,seed:633,sun:[1500,200,60]})+R(-200,700,2400,1200,0,'#8AB060')+ark(t,1500,760,.5,{ramp:true,door:0});
-  const kinds=['sheep','deer','camel','lion','donkey'];kinds.forEach((k,i)=>g+=SC.pair(t,k,380+i*260,FY+30+(i%2)*30,k==='camel'?.6:.75,{face:-1,walk:t*5+i}));
+  const kinds=['sheep','deer','camel','lion','donkey'];kinds.forEach((k,i)=>g+=SC.pair(t,k,[600,1580,1820,1390,330][i],FY+40+(i%2)*30,{sheep:1.15,deer:1.25,camel:1.0,lion:1.3,donkey:1.3}[k],{face:-1,walk:t*5+i}));
   g+=altar(1100,FY-40,1.3)+flame(t,1100,FY-120,1)+smokeUp(t,1100,FY-200,1.2)+fig('noah',880,FY-40,1.8,{face:1,kneel:.8,expr:'tender',look:'up'});return g+foreUz(t,960,1.0);}
 function theBow(t,lt){let g=eSky(t,'gold',{hz:760,seed:635,sun:[1500,300,80]})+R(-200,760,2400,1200,0,'#8AB060');const k=ease.out(prog(t,AT.promise,AT.v913+1));
   g+=rainbow(t,960,800,820,k)+family(t,560,FY,1.4,{gap:120,pose:{face:1,expr:'awe',look:'up'}});return g+foreUz(t,960,1.0);}
