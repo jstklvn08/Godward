@@ -159,7 +159,35 @@ scenery).
   - Every scene gets a mood sky, landmark silhouettes, a real mid-ground and a foreground that belongs to the
     place.
   - Subjects fill the middle of the frame.
-- **Fire:** `_kit/fire.js` (FX).
+- **Animals at realistic size** (`SC.animal` / `SC.pair`). The user asked for this ("make the lions as big or
+  bigger than the man, make it realistic size").
+  - Size animals against the people in the same shot, never on their own. `s = 1` is the scale of a PPL person
+    at `s = 1`, but the round figures read big, so animals drawn at the person's scale look like toys.
+  - Big animals (lion, ox, cow, camel, donkey, horse) are as tall as or taller than the adult beside them. Use
+    about 1.3–1.6 × the person's `s`. Daniel's den: Daniel 2.1, lions 2.8–3.5.
+  - Sheep, goats and deer are about hip to chest height: about 0.6–0.75 × the person's `s`.
+  - Birds and doves stay small.
+  - Smaller only for real distance: far animals sit higher in the frame with `flat:true`, not shrunk in the
+    foreground.
+  - Give big animals room so they don't overlap faces. In vertical, keep the main animal within x ≈ 560–1360.
+- **Decorative animals are decoration, not animals.** Palace lions are the gold glazed-brick frieze band
+  (`lionFrieze(y)`, as in Esther, Daniel, Joseph and Elijah). Never put a full `SC.animal` on a wall: it reads as
+  a lion stuck to the door.
+- **Realistic fire: always `_kit/fire.js` (FX), never hand-drawn spikes.** The user asked for this ("fix this
+  fire"; the old altar fire was a flat row of paper zigzags with white bubbles over it).
+  - Altars, bonfires, braziers, burning bushes: `FX.fireAlong(t, bases, {H, sp, seed})` along the burning
+    surface. Taper the weights to 0 at both ends, e.g. `w = sin(π·(i+.5)/n)^0.7`, so the fire has no straight
+    vertical edges.
+  - Layer a taller, narrower second pass in the middle for the leaders.
+  - Set the base on the fuel. Add a glowing ember bed (dark red bar, orange core, pale-yellow line) so the
+    flames never float or show a flat cut-off bottom.
+  - Add warm light with `glow()`: a big soft orange one, plus a pale-yellow one at the base.
+  - Smoke is `FX.smokeColumn` (billowing puffs that darken as they rise), never plain white circles.
+  - Mountains on fire: `FX.summitFire`.
+  - Size the fire to the moment: "the fire of the LORD fell" is tall (H ≈ 400 at altar scale 1.2), but keep it
+    clear of the scripture card.
+  - Small lamps and candles can stay simple, but still use `FX.flames` with a small `H`.
+  - Check fire in still frames at two or three times; it flickers, so one frame can mislead.
 - **Sheet spacing:** sheets must start at least 0.64 s apart. `E.start` throws otherwise, and nothing renders.
   Real narration can squeeze two cues closer than the stand-in did.
 - **Check every page:**
