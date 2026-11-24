@@ -667,7 +667,13 @@ function bigAltar(t,x,y,s=1,o={}){const wet=o.wet||0,burn=o.burn||0;let g='';
   for(let r=0;r<3;r++)for(let c=0;c<4-r;c++)g+=R(x-150*s+c*76*s+r*38*s,y-50*s-r*46*s,72*s,44*s,8*s,SC.mx(['#A89A88','#8A7E70','#B8AC98'][(r+c)%3],'#3A4A5A',wet*.5),{stroke:'#4A443C','stroke-width':3*s});
   g+=[0,1,2,3].map(i=>L(x-90*s+i*18*s,y-150*s-i*6*s,x+90*s+i*6*s,y-160*s+i*6*s,'#6A4422',10*s)).join('')+Ell(x,y-180*s,70*s,26*s,'#8A4A3A');
   if(wet>0)for(let i=0;i<6;i++){const k=((t*.8+i/6)%1);g+=C(x-120*s+i*48*s,y-160*s+k*150*s,4*s,'#9AD0F0',{opacity:(wet*(1-k)).toFixed(2)});}
-  if(burn>0){g+=glow(x,y-200*s,400*s*burn,'#FFB04C',.7*burn);for(let i=0;i<7;i++)g+=flame(t+i,x-150*s+i*50*s,y-150*s,1.6*s*burn);if(burn>.5)g+=smokeUp(t,x,y-300*s,1.6*s);}
+  if(burn>0){const H=400*s*burn,top=y-138*s;   // the fire of the LORD: licking flames over the whole altar top, kiln smoke above
+    g+=glow(x,y-200*s,480*s*burn,'#FFB04C',.75*burn)+glow(x,top,240*s*burn,'#FFE9A8',.6*burn);
+    g+=FX.smokeColumn(t,[[x-50*s,top-H*.8],[x,top-H*.95],[x+50*s,top-H*.8]],top-H,{smoke:Math.min(1,burn*1.2),smokeH:800*s,drift:90,seed:7,n:36});
+    const taper=(pts,sp)=>{const q=FX.samples(pts,sp);return q.map((p,i)=>[p[0],p[1],Math.pow(Math.sin(Math.PI*(i+.5)/q.length),.7)]);};
+    g+=FX.fireAlong(t,taper([[x-160*s,top+8*s],[x-80*s,top],[x,top-6*s],[x+80*s,top],[x+160*s,top+8*s]],12*s),{H,sp:12*s,seed:41});
+    g+=FX.fireAlong(t,taper([[x-90*s,top-4*s],[x+90*s,top-4*s]],16*s),{H:H*1.25,sp:16*s,seed:43});
+    g+=R(x-150*s,top-6*s,300*s,34*s,12*s,"#7A2A10")+R(x-136*s,top-2*s,272*s,14*s,7*s,'#FFB04C',{opacity:.9})+R(x-100*s,top,200*s,7*s,3.5*s,'#FFF2B0');}
   return g;}
 const fireColumn=(t,a,x,y)=>{const p=prog(t,a,a+.6);if(p<=0)return '';const k=1-prog(t,a+1.5,a+4);return glow(x,y-500,500,'#FFE9A8',.8*k)+P(`M${x-80} -900L${x+80} -900L${x+140} ${y}L${x-140} ${y}Z`,'#FFE07A',{opacity:(.85*Math.min(1,p*2)*k).toFixed(2)})+P(`M${x-40} -900L${x+40} -900L${x+70} ${y}L${x-70} ${y}Z`,'#FFFDF0',{opacity:(.9*Math.min(1,p*2)*k).toFixed(2)});};
 const carmelTop=(t,kind,o={})=>{let g=eSky(t,kind,Object.assign({hz:640,seed:o.seed||701},o.sky||{}));const dry=o.dry??1;
@@ -717,7 +723,7 @@ function pouring(t,lt){let g=carmelTop(t,'dusk',{sky:{sun:[1500,520,70]}});const
 // ================= 5. Fire =================
 function prays(t,lt){let g=carmelTop(t,'dusk',{sky:{sun:[1500,520,70]}});g+=bigAltar(t,1240,FY-20,1.0,{trench:true,wet:1})+elijahFig(t,760,FY,2.3,{face:1,expr:'tender',look:'up',near:'up',far:'up',talk:t>AT.v1837});return g+foreSand(t,960,1.0,{kind:'barley',bare:.9,soil:'#8A7050'});}
 function fireFalls(t,lt){let g=carmelTop(t,'storm',{sky:{}});const b=ease.out(prog(t,AT.v1838+.2,AT.v1838+1));g+=bigAltar(t,960,FY-20,1.2,{trench:true,wet:1-b,burn:b})+fireColumn(t,AT.v1838,960,FY-200);
-  if(b>.6)for(let i=0;i<8;i++){const k=((t*.7+i/8)%1);g+=C(800+i*45,FY-20-k*300,30+k*40,'#F4F0E8',{opacity:(.4*(1-k)).toFixed(2)});}return g+foreSand(t,960,1.0,{kind:'barley',bare:.9,soil:'#8A7050'});}
+  return g+foreSand(t,960,1.0,{kind:'barley',bare:.9,soil:'#8A7050'});}
 
 // ================= 6. The LORD, he is God =================
 function onFaces(t,lt){let g=carmelTop(t,'dusk',{sky:{sun:[1500,520,70]}})+bigAltar(t,960,760,.6,{burn:.7});const up=t>AT.v1839+1.5;
