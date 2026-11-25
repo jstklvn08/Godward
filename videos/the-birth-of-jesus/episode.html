@@ -852,8 +852,8 @@ function thePlay(t,lt){let g=R(-200,-900,2400,2900,0,'#1A1530');for(let i=0;i<90
 function theDecree(t,lt){return decree(t,AT.v21);}
 function theRoad(t,lt){let g=longRoad(t,'dusk',{sky:{sun:[1500,520,90]}})+town(1180,700,.7,0);const p=prog(t,AT.joseph,AT.while);
   for(let i=0;i<3;i++)g+=folk(i+1,1250+i*60,780-i*6,.55,{face:1,walk:t*4+i,expr:'calm'});
-  const x=lerp(600,700,p);g+=SC.animal(t,'donkey',x+100,FY,2.0,{face:1,walk:t*4})+mary(t,x+90,FY-185,1.5,{face:1,sit:1,seat:FY-185,expr:'tender',look:{x:1300,y:600},shadow:false})+
-    josephFig(t,x+560,FY+10,1.9,{face:1,walk:t*4+1,expr:'calm',look:{x:x+200,y:FY-300},far:{x:x+470,y:FY-170}})+L(x+330,FY-240,x+480,FY-170,'#6A4422',4);return g+foreSand(t,960,1.0,{kind:'barley',bare:.7,soil:'#A8885A'});}
+  const x=lerp(600,700,p);g+=SC.animal(t,'donkey',x+100,FY,2.4,{face:1,walk:t*4})+mary(t,x+55,FY-325,1.5,{face:1,sit:1,seat:FY-325,expr:'tender',look:{x:1300,y:600},shadow:false})+
+    josephFig(t,x+560,FY+10,1.9,{face:1,walk:t*4+1,expr:'calm',look:{x:x+200,y:FY-300},far:{x:x+470,y:FY-170}})+L(x+400,FY-290,x+480,FY-170,'#6A4422',4);return g+foreSand(t,960,1.0,{kind:'barley',bare:.7,soil:'#A8885A'});}
 // ================= 2. No place =================
 function noPlace(t,lt){let g=lowerRoom(t);const born=ease.out(prog(t,AT.v27,AT.v27+1.6));
   g+=SC.animal(t,'ox',1150,FY-70,2.3,{face:-1,graze:.4,phase:1})+SC.animal(t,'donkey',760,FY-80,2.1,{face:1,phase:2});
