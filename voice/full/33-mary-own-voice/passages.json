@@ -1,0 +1,29 @@
+{
+ "s00-01-story-60b526.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "God's biggest announcement didn't go to a palace, or a temple.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-pivot-e9fb78.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "It went to a young woman in a village people joked about.",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-51ea0a.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Years later, someone would sneer,",
+  "seed": 3,
+  "words_per_second": 1.81,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ }
+}
