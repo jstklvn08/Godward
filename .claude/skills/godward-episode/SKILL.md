@@ -219,6 +219,10 @@ scenery).
       in the page must match the trimmed text word for word.
   13. **A stale render.** Before sending a video, check that it was rendered after the last commit to its page
       (it is easy to send a render that predates a fix).
+  15. **Riders that float or sit on the neck.** A rider's seat is the animal's back, just behind its middle. Measure
+      it (draw `SC.animal` alone on a grid): a donkey at scale 2.4 has its back about 335 px above its feet, about 30 px
+      behind its centre. Use `sit:1, seat:<back y>` and a rider scale about 0.65× the animal's. Mary sat 150 px too low
+      and over the neck on the road to Bethlehem.
   14. **Background waiters.** A `pgrep -f` loop must not match its own command line; chain runs in one script
       instead (`cmd1; cmd2`).
 
