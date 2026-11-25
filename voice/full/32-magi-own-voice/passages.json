@@ -43,5 +43,176 @@
   "words_per_second": 2.52,
   "in_range": true,
   "pitch_movement_st": 0.0
+ },
+ "s01-03-grave-844814.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Where is he who has been born king of the Jews?",
+  "seed": 1,
+  "words_per_second": 3.23,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s01-04-grave-a2ebc6.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "For we saw his star when it rose and have come to worship him.",
+  "seed": 6,
+  "words_per_second": 3.58,
+  "in_range": false,
+  "word_check": "match"
+ },
+ "s02-01-pivot-4a2cb7.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "There was already a king of the Jews.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-story-d8bec9.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "His name was Herod.",
+  "seed": 2,
+  "words_per_second": 2.94,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-03-grave-c6ae52.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "When Herod the king heard this, he was troubled, and all Jerusalem with him.",
+  "seed": 2,
+  "words_per_second": 2.92,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-story-3dbdb9.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "His scholars found the answer in the prophets. Bethlehem.",
+  "seed": 3,
+  "words_per_second": 2.39,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-story-976dbe.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "So Herod sent the wise men there, and asked them to come back and tell him, so he could worship the child too.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-06-talk-433dc7.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "He was lying.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-grave-d1f1fe.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "And behold,",
+  "seed": 2,
+  "words_per_second": 1.9,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-grave-2d9aba.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "the star that they had seen when it rose went before them until it came to rest over the place where the child was.",
+  "seed": 2,
+  "words_per_second": 3.26,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-grave-781da7.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "When they saw the star, they rejoiced exceedingly with great joy.",
+  "seed": 1,
+  "words_per_second": 2.55,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-grave-4daeb9.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "And going into the house, they saw the child with Mary his mother, and they fell down and worshiped him.",
+  "seed": 6,
+  "words_per_second": 3.34,
+  "in_range": false,
+  "word_check": "match"
+ },
+ "s04-02-story-de8d3b.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Then they opened their treasures.",
+  "seed": 3,
+  "words_per_second": 2.33,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-story-a6aade.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Gold, frankincense and myrrh.",
+  "seed": 1,
+  "words_per_second": 1.56,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-grave-808005.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "And being warned in a dream not to return to Herod, they departed to their own country by another way.",
+  "seed": 3,
+  "words_per_second": 2.92,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-talk-4c04ca.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Herod had a throne, and he was terrified of losing it.",
+  "seed": 1,
+  "words_per_second": 3.51,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-bfb282.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "The wise men had treasure, and they travelled for months to give it away.",
+  "seed": 1,
+  "words_per_second": 2.81,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-pivot-b0740a.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "Same child.",
+  "seed": 3,
+  "words_per_second": 1.63,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-04-story-1120b9.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Two very different answers.",
+  "seed": 2,
+  "words_per_second": 2.03,
+  "in_range": false,
+  "pitch_movement_st": 0.0
  }
 }
