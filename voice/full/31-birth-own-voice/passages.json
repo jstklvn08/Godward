@@ -1,0 +1,65 @@
+{
+ "s00-01-story-8cb733.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Every Christmas play has a grumpy innkeeper.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-pivot-e8c3c2.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But Luke never mentions one.",
+  "seed": 1,
+  "words_per_second": 2.22,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-story-02f99a.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "What he does tell us is far stranger.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-grave-cb3166.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "In those days a decree went out from Caesar Augustus that all the world should be registered.",
+  "seed": 3,
+  "words_per_second": 2.9,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-be18ba.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "So Joseph took Mary, who was expecting a baby, to Bethlehem, the town of King David.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-01-story-dbb258.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "While they were there, the baby came.",
+  "seed": 1,
+  "words_per_second": 2.46,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-02-grave-3a33ea.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "And she gave birth to her firstborn son and wrapped him in swaddling cloths and laid him in a manger,",
+  "seed": 2,
+  "words_per_second": 3.25,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ }
+}
