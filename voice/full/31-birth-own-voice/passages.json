@@ -61,5 +61,59 @@
   "words_per_second": 3.25,
   "in_range": false,
   "pitch_movement_st": 0.0
+ },
+ "s02-03-grave-1a3bf4.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "because there was no place for them in the inn.",
+  "seed": 2,
+  "words_per_second": 3.47,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s02-04-pivot-8b2cea.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "A manger is a feeding trough.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s02-05-story-7476e1.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The king was laid where the animals ate.",
+  "seed": 1,
+  "words_per_second": 2.78,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-01-story-a59727.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "In the fields nearby, shepherds were watching their sheep through the night.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s03-02-story-ddf890.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Not priests. Not kings. Shepherds.",
+  "seed": 1,
+  "words_per_second": 1.44,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s03-03-grave-615866.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "And an angel of the Lord appeared to them, and the glory of the Lord shone around them,",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": false,
+  "pitch_movement_st": 0.0
  }
 }
