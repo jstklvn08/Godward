@@ -195,6 +195,32 @@ scenery).
   - Render a contact sheet: `node tools/render.js stills <page> <dir> t1,t2,… --vertical`, then
     `node tools/render.js sheet <out.jpg> 6 <stills…>`.
   - Look at it against taste.md.
+- **Mistake checklist.** Every one of these reached a render at least once in Nov 2026. Check the contact sheet
+  (one still per sheet, mid-sheet) for each before queueing:
+  1. **Cut off at the frame edge.** With `vzoom:1.3` the vertical frame shows only about camera-x ± 415/z of the
+     world (roughly x 560–1380 for a centred camera). Keep every person a shot is about, and the whole of a big
+     animal, inside that; walking figures must stay inside for the whole move, not just at mid-sheet.
+  2. **The subject hidden behind something.** A walker in front of the camel's head, the fire behind the shepherd
+     boy, the manger behind Mary. Draw in depth order (back to front) and leave gaps.
+  3. **Props or text over faces.** Scrolls, labels and verse strips must never cover a face (the "BETHLEHEM"
+     scroll did); put them above the heads.
+  4. **Headgear that floats.** Crowns and caps must sit down on the head, with a band that follows the head's
+     curve and the hair colour different from the crown (a crown on white hair looked like a crown on a turban).
+  5. **Toy-sized animals.** See "Animals at realistic size" below.
+  6. **Decoration that reads as real.** No full animals on walls; use friezes.
+  7. **Hand-drawn fire, or white circles for smoke.** See "Realistic fire" below.
+  8. **Floating objects.** Ember beds, bundles, jars and cages must touch what holds them (no gap).
+  9. **Wrong period detail.** No black-and-white dairy cows (use `ox`), no modern objects.
+  10. **Fire, light or a shaft under the scripture card.** Keep tall effects below about world y 250.
+  11. **Doctrine.** God, the Spirit and angels are light only; Jesus as a baby or child is a glowing bundle or a
+      glow, never a face; violence is kept off screen.
+  12. **Scripture.** The `.esv.md` is trimmed by hand to the "keep only" text, and `produce.py` keeps an `.esv.md`
+      that is newer than the script, so trim before the run. Fix doubled quotes (`““` or `””`). The verse cards
+      in the page must match the trimmed text word for word.
+  13. **A stale render.** Before sending a video, check that it was rendered after the last commit to its page
+      (it is easy to send a render that predates a fix).
+  14. **Background waiters.** A `pgrep -f` loop must not match its own command line; chain runs in one script
+      instead (`cmd1; cmd2`).
 
 *Checkpoint: the user likes 5-second samples (`render.js video … --start A --end B`, silent or with
 `--audio <narration> --loudnorm`) and before/after stills for any look change. Show one before re-rendering
