@@ -115,5 +115,104 @@
   "words_per_second": 3.36,
   "in_range": false,
   "pitch_movement_st": 0.0
+ },
+ "s03-04-grave-37e470.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "and they were filled with great fear.",
+  "seed": 1,
+  "words_per_second": 2.93,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-01-story-adc20f.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "The angel said, Fear not.",
+  "seed": 2,
+  "words_per_second": 2.02,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s04-02-grave-3ee6ba.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "For unto you is born this day in the city of David a Savior, who is Christ the Lord.",
+  "seed": 1,
+  "words_per_second": 2.9,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-03-pivot-b6c1dd.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "Then the whole sky filled with angels, praising God.",
+  "seed": 1,
+  "words_per_second": 2.36,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s04-04-grave-0181f9.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "Glory to God in the highest, and on earth peace among those with whom he is pleased!",
+  "seed": 1,
+  "words_per_second": 2.72,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-01-story-9df5fc.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "The shepherds ran into town and found the baby, lying in a manger, just as the angel said.",
+  "seed": 1,
+  "words_per_second": 3.0,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s05-02-story-50043c.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Then they told everyone.",
+  "seed": 2,
+  "words_per_second": 2.08,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s05-03-grave-119cf1.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "But Mary treasured up all these things, pondering them in her heart.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": false,
+  "pitch_movement_st": 0.0
+ },
+ "s06-01-talk-d6776a.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "God's king didn't arrive in a palace.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-02-story-1d98fd.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "He was laid in a feeding trough, and the first to hear were men nobody invited.",
+  "seed": 1,
+  "words_per_second": 2.99,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s06-03-pivot-354b5d.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "Which means the invitation is for you too.",
+  "seed": 1,
+  "words_per_second": 3.25,
+  "in_range": true,
+  "pitch_movement_st": 0.0
  }
 }
