@@ -1,0 +1,47 @@
+{
+ "s00-01-story-d35f4f.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Every nativity set has three kings kneeling at the manger.",
+  "seed": 2,
+  "words_per_second": 2.45,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-02-pivot-dd7eb1.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But Matthew never says there were three.",
+  "seed": 1,
+  "words_per_second": 2.54,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s00-03-story-d02066.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "He never calls them kings. And they never saw the manger.",
+  "seed": 1,
+  "words_per_second": 2.58,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-01-story-f531b3.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Wise men from the east saw a star rise.",
+  "seed": 1,
+  "words_per_second": 2.5,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ },
+ "s01-02-story-3939d1.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "They crossed hundreds of miles of desert to Jerusalem, and asked a dangerous question.",
+  "seed": 1,
+  "words_per_second": 2.52,
+  "in_range": true,
+  "pitch_movement_st": 0.0
+ }
+}
