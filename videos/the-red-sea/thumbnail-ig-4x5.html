@@ -1,0 +1,70 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The Red Sea: Instagram Thumbnail</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:1080px;height:1350px}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350"></svg>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script>
+// Instagram feed post, 4:5 (1080x1350). Key content inside the centre 1012 px (profile-grid crop).
+// Hook: trapped between Pharaoh's chariots and the sea, and the sea opens. God is never a figure: the pillar of cloud.
+const {G,R,C,E,L,P,T,mix,rng,lerp}=K;
+const {tw,glow,ridge,strip,tape,label,mark,paperDefs}=S;
+const INK='#141416',YEL='#FFE100',CORAL='#FF5A48',GOLD='#E8B53A',NEON='#7CFFE6',W=1080,H=1350,t=5.3;
+const defs=`<defs>
+  <filter id="tex2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".62 .48" numOctaves="4" seed="11"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .9 .9 .9 0 -.98"/></filter>
+  <filter id="grain2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="2" seed="38"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="2.6" intercept="-.8"/><feFuncG type="linear" slope="2.6" intercept="-.8"/><feFuncB type="linear" slope="2.6" intercept="-.8"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A1238"/><stop offset=".7" stop-color="#2A3A7A"/><stop offset="1" stop-color="#E8909A"/></linearGradient>
+  <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A8AD8"/><stop offset="1" stop-color="#062A6A"/></linearGradient>
+  <linearGradient id="face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7CE6FF"/><stop offset="1" stop-color="#1A6AC0"/></linearGradient>
+  <radialGradient id="vig" cx="50%" cy="50%" r="72%"><stop offset=".55" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".55"/></radialGradient>
+</defs>`;
+// a little round person seen from behind/side (the house's round figures, simplified)
+const person=(x,y,s,c,c2,skin='#D9965E')=>Ell(x,y+2,26*s,7*s,'#000',.3)+P(`M${x-24*s} ${y}Q${x-28*s} ${y-70*s} ${x} ${y-78*s}Q${x+28*s} ${y-70*s} ${x+24*s} ${y}Z`,c,{stroke:c2,'stroke-width':3*s})+C(x,y-104*s,30*s,skin,{stroke:mix(skin,'#000000',.3),'stroke-width':3*s})+P(`M${x-30*s} ${y-108*s}Q${x} ${y-150*s} ${x+30*s} ${y-108*s}Z`,'#2E1C52');
+function Ell(x,y,rx,ry,c,op){return K.E(x,y,rx,ry,c,{opacity:op});}
+function wallEdge(x0,x1,seed){const r=rng(seed);let d=`M${x0} 1350`;for(let y=1350;y>=520;y-=36){const u=(1350-y)/830;d+=`L${(x0+(x1-x0)*u+(r()-.5)*16).toFixed(0)} ${y}`;}return d+`L${x1} 520`;}
+function scene(){
+  let g=R(0,0,W,H,0,'url(#sky)');
+  const r=rng(9);for(let i=0;i<70;i++)g+=C(r()*W,r()*420,1+r()*2.5,'#fff',{opacity:.25+.5*r()});
+  // the path of dry ground running up into the distance
+  g+=P('M290 1350L800 1350L760 520L680 520Z','#D9B878')+P('M510 1350L590 1350L726 520L714 520Z','#EED29A',{opacity:.7});
+  // walls of water
+  const L1=wallEdge(290,680,3),R1=wallEdge(800,760,5);
+  g+=P(L1+'L-40 520L-40 1350Z','url(#wall)')+P(R1+'L1120 520L1120 1350Z','url(#wall)');
+  for(let i=0;i<10;i++){const side=i%2?1:-1,x=(side<0?150+r()*250:900+r()*120),y=600+r()*680;g+=G(`translate(${x.toFixed(0)} ${y.toFixed(0)}) scale(${side} 1)`,K.E(0,0,34,13,'#5AB0F0',{opacity:.7})+P('M30 0l22 -13v26z','#5AB0F0',{opacity:.7}));}
+  // the wall faces: standing water seen side-on, taller near us, lit along the top
+  const face=(x0,x1,dir)=>{let d=`M${x0} 1350`;for(let y=1350;y>=520;y-=30){const u=(1350-y)/830;d+=`L${(x0+(x1-x0)*u).toFixed(0)} ${y}`;}
+    for(let y=520;y<=1350;y+=30){const u=(1350-y)/830,hgt=lerp(10,220,1-u);d+=`L${(x0+(x1-x0)*u-dir*hgt*.55).toFixed(0)} ${(y-hgt).toFixed(0)}`;}return P(d+'Z','url(#face)');};
+  g+=face(290,680,1)+face(800,760,-1);
+  for(let i=0;i<16;i++){const u=i/16,y=1350-u*830;[[290,680,1],[800,760,-1]].forEach(([x0,x1,dir])=>{const x=x0+(x1-x0)*u,h=lerp(220,10,u);g+=L(x-dir*h*.2,y-h*.1,x-dir*h*.45,y-h*.85,'#BFF4FF',2+3*(1-u),{opacity:.35});});}
+  g+=P(L1,'none',{stroke:NEON,'stroke-width':9})+P(R1,'none',{stroke:NEON,'stroke-width':9})+glow(420,950,220,NEON,.25)+glow(790,950,220,NEON,.25);
+  for(let i=0;i<14;i++){g+=C(600+i*6+r()*20,520+r()*16,8+r()*8,'#EAF8FF',{opacity:.7})+C(780+i*20+r()*20,520+r()*16,8+r()*8,'#EAF8FF',{opacity:.7});}
+  // the pillar of cloud, glowing, far ahead at the end of the path
+  g+=glow(720,330,260,'#FFF2C8',.55);
+  g+=P('M690 520Q670 420 680 330Q690 240 650 170L790 170Q750 240 760 330Q770 420 750 520Z','#E8EEF6',{opacity:.92});
+  for(let i=0;i<14;i++){const yy=520-i*25,sd=i%2?1:-1;g+=C(720+sd*(40+i*3),yy,24+i*1.5,i%3?'#F4F6FA':'#DDE4EE',{opacity:.9});}
+  for(let i=0;i<6;i++)g+=C(640+i*32,170-Math.abs(i-2.5)*8,40,'#F4F8FC',{opacity:.92});
+  // families walking in (small far away, big near)
+  const cols=[['#3DE0B8','#1787A8'],['#FFC24C','#E0623C'],['#B98CFF','#6A4CD8'],['#FF8FB1','#C8487A'],['#7CD4FF','#2F6FD0']];
+  [[712,600,.32],[690,680,.42],[724,770,.52],[640,880,.68],[690,1000,.85],[500,1130,1.1],[650,1200,1.25]].forEach(([x,y,s],i)=>g+=person(x,y,s,cols[i%5][0],cols[i%5][1]));
+  // torches of the chariots behind, at the bottom edge
+  for(let i=0;i<9;i++){const x=80+i*115,y=1300+(i%2)*14;g+=glow(x,y,46,'#FF9A4C',.8)+C(x,y,6,'#FFE29A');}
+  return g;
+}
+function title(){
+  let g='';
+  const s1='Trapped.',s2='Then the sea',s3='opened.',a=96,b=80,c=118;
+  const w1=tw(s1,a,'Georgia',700)+90,w2=tw(s2,b,'Georgia',700)+90,w3=tw(s3,c,'Georgia',700)+100;
+  g+=`<g transform="rotate(-2.5 ${W/2} 120)">${strip(70,40,w1,140,3,'#F6EFDC',{ax:12,ay:4})}${T(115,142,s1,{size:a,font:'Georgia',weight:700,fill:INK})}${tape(70+w1-30,42,130,9)}</g>`;
+  g+=`<g transform="rotate(1.5 ${W/2} 240)">${strip(60,190,w2,120,5,'#F6EFDC',{ax:12,ay:4})}${T(105,274,s2,{size:b,font:'Georgia',weight:700,fill:INK})}</g>`;
+  g+=`<g transform="rotate(-1 ${W/2} 380)">${strip(60,320,w3,160,7,'#F6EFDC',{ax:14,ay:5})}${S.highlight(104,340,tw(s3,c,'Georgia',700)+8,124,1,YEL)}${T(106,438,s3,{size:c,font:'Georgia',weight:700,fill:INK})}${tape(60+w3-40,322,140,-10)}</g>`;
+  g+=label(80,1170,'THE RED SEA',{size:40,bg:CORAL,rot:-3});
+  g+=label(80,1236,'EXODUS 14 ESV',{size:26,rot:-2,bg:'#14141A'});
+  return g;
+}
+document.querySelector('svg').innerHTML=paperDefs(t)+defs+scene()+title()+
+  R(0,0,W,H,0,'url(#vig)')+
+  `<rect width="${W}" height="${H}" filter="url(#tex2)" opacity=".2" style="mix-blend-mode:multiply"/>`+
+  `<rect width="${W}" height="${H}" filter="url(#grain2)" opacity=".26" style="mix-blend-mode:overlay"/>`;
+window.ready=true;
+</script>

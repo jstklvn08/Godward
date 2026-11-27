@@ -1,0 +1,411 @@
+{
+ "s00-01-story-a0f61d.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Imagine a boss who orders you to stop working.",
+  "seed": 1,
+  "words_per_second": 3.42,
+  "in_range": true
+ },
+ "s00-02-talk-84f74b.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Not for a holiday.",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": true
+ },
+ "s00-03-story-cf85c7.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "One whole day, every single week, for the rest of your life.",
+  "seed": 1,
+  "words_per_second": 3.06,
+  "in_range": true
+ },
+ "s00-04-pivot-a12097.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "That's the fourth commandment.",
+  "seed": 1,
+  "words_per_second": 2.67,
+  "in_range": true
+ },
+ "s00-05-grave-4aafbe.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "Remember the Sabbath day, to keep it holy.",
+  "seed": 2,
+  "words_per_second": 2.92,
+  "in_range": false
+ },
+ "s00-06-talk-2b4dfc.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "Most people hear it as a list of things you can't do on Sunday.",
+  "seed": 1,
+  "words_per_second": 4.0,
+  "in_range": false
+ },
+ "s00-07-pivot-9cdafb.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "But it started as a gift.",
+  "seed": 1,
+  "words_per_second": 2.88,
+  "in_range": true
+ },
+ "s01-01-story-060fc8.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Israel had just come out of Egypt, where nobody ever rested.",
+  "seed": 1,
+  "words_per_second": 3.2,
+  "in_range": true
+ },
+ "s01-02-story-eab0f0.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Bricks today, more bricks tomorrow, and no end in sight.",
+  "seed": 1,
+  "words_per_second": 2.42,
+  "in_range": true
+ },
+ "s01-03-story-b03d1d.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Now God gives them a new rhythm, with a full stop built in.",
+  "seed": 1,
+  "words_per_second": 3.35,
+  "in_range": true
+ },
+ "s01-04-grave-e99824.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "Six days you shall labor, and do all your work, but the seventh day is a Sabbath to the LORD your God.",
+  "seed": 1,
+  "words_per_second": 2.71,
+  "in_range": true
+ },
+ "s01-05-grave-13a5c7.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "On it you shall not do any work, you, or your son, or your daughter, your male servant,",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": true
+ },
+ "s01-06-grave-e59717.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "or your female servant, or your livestock, or the sojourner who is within your gates.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ },
+ "s01-07-talk-d40988.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Look who's on that list.",
+  "seed": 1,
+  "words_per_second": 3.62,
+  "in_range": true
+ },
+ "s01-08-story-1d9529.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Sons, daughters and servants, even the animals and the foreigner.",
+  "seed": 2,
+  "words_per_second": 2.42,
+  "in_range": true
+ },
+ "s01-09-talk-177766.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "Nobody is left working so that somebody else can rest.",
+  "seed": 1,
+  "words_per_second": 3.18,
+  "in_range": true
+ },
+ "s02-01-pivot-b8ad3f.wav": {
+  "section": 2,
+  "mode": "pivot",
+  "text": "And why the seventh day?",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true
+ },
+ "s02-02-story-e78784.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "In six days God made the heavens and the earth, the sea, and everything in them.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true
+ },
+ "s02-03-story-f36167.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "And on the seventh day, he rested.",
+  "seed": 1,
+  "words_per_second": 3.55,
+  "in_range": true
+ },
+ "s02-04-grave-672e1e.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "So God blessed the seventh day and made it holy,",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": false
+ },
+ "s02-05-grave-26a2b3.wav": {
+  "section": 2,
+  "mode": "grave",
+  "text": "because on it God rested from all his work that he had done in creation.",
+  "seed": 2,
+  "words_per_second": 3.41,
+  "in_range": false
+ },
+ "s02-06-talk-6bfc20.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "God wasn't tired.",
+  "seed": 1,
+  "words_per_second": 2.65,
+  "in_range": false
+ },
+ "s02-07-story-3f477d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "Many readers take it as the rest of a finished work, not the rest of exhaustion.",
+  "seed": 1,
+  "words_per_second": 3.19,
+  "in_range": true
+ },
+ "s02-08-story-d9e073.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "The Sabbath invites people to stop, and say: the world doesn't hang on me.",
+  "seed": 1,
+  "words_per_second": 2.92,
+  "in_range": true
+ },
+ "s03-01-pivot-2618e8.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "Forty years later, Moses repeats the commandment, with a second reason.",
+  "seed": 1,
+  "words_per_second": 2.35,
+  "in_range": true
+ },
+ "s03-02-grave-9f128f.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "You shall remember that you were a slave in the land of Egypt,",
+  "seed": 1,
+  "words_per_second": 3.44,
+  "in_range": false
+ },
+ "s03-03-grave-d56c05.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "and the LORD your God brought you out from there with a mighty hand and an outstretched arm.",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": false
+ },
+ "s03-04-grave-4ce1c8.wav": {
+  "section": 3,
+  "mode": "grave",
+  "text": "Therefore the LORD your God commanded you to keep the Sabbath day.",
+  "seed": 1,
+  "words_per_second": 2.91,
+  "in_range": false
+ },
+ "s03-05-talk-2d6d19.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Slaves don't get a day off.",
+  "seed": 1,
+  "words_per_second": 3.82,
+  "in_range": true
+ },
+ "s03-06-story-678652.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Their worth is how much they produce.",
+  "seed": 1,
+  "words_per_second": 2.82,
+  "in_range": true
+ },
+ "s03-07-story-fc17da.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "So every Sabbath said it again: you are not a slave any more.",
+  "seed": 1,
+  "words_per_second": 3.38,
+  "in_range": true
+ },
+ "s04-01-pivot-7dd0c2.wav": {
+  "section": 4,
+  "mode": "pivot",
+  "text": "But over time, the gift got buried.",
+  "seed": 1,
+  "words_per_second": 2.51,
+  "in_range": true
+ },
+ "s04-02-story-a39c07.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "By the time of Jesus, some teachers had piled careful rules around the day.",
+  "seed": 1,
+  "words_per_second": 3.01,
+  "in_range": true
+ },
+ "s04-03-story-6e9ed9.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "One Sabbath, his hungry disciples picked some grain in a field, and critics called it work.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true
+ },
+ "s04-04-talk-f1be9e.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Jesus answered with a sentence that turns it right side up.",
+  "seed": 4,
+  "words_per_second": 3.81,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s04-05-grave-7c5517.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "The Sabbath was made for man, not man for the Sabbath.",
+  "seed": 2,
+  "words_per_second": 2.99,
+  "in_range": false
+ },
+ "s04-06-talk-0de3cb.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "It was made to serve people, not to crush them.",
+  "seed": 1,
+  "words_per_second": 3.56,
+  "in_range": true
+ },
+ "s05-01-talk-9f2dad.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "So how do Christians keep it today?",
+  "seed": 1,
+  "words_per_second": 3.83,
+  "in_range": true
+ },
+ "s05-02-story-c44520.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Honestly, they disagree.",
+  "seed": 2,
+  "words_per_second": 2.19,
+  "in_range": false
+ },
+ "s05-03-talk-65b30b.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Some, like Seventh-day Adventists, keep Saturday, the day Jewish families still keep.",
+  "seed": 2,
+  "words_per_second": 2.73,
+  "in_range": true
+ },
+ "s05-04-talk-e1c19b.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Many churches rest and worship on Sunday, the day Jesus rose.",
+  "seed": 1,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s05-05-talk-21f921.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Others believe Jesus fulfilled it, so no one day binds, but rest still matters.",
+  "seed": 1,
+  "words_per_second": 3.14,
+  "in_range": true
+ },
+ "s05-06-story-54abaf.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "But almost all of them agree that you were made to stop.",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true
+ },
+ "s06-01-pivot-25f7b5.wav": {
+  "section": 6,
+  "mode": "pivot",
+  "text": "And Jesus went further still.",
+  "seed": 2,
+  "words_per_second": 2.56,
+  "in_range": true
+ },
+ "s06-02-talk-2ea9bc.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "He offered the rest it pointed to.",
+  "seed": 2,
+  "words_per_second": 3.91,
+  "in_range": false
+ },
+ "s06-03-grave-01cf80.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "Come to me, all who labor and are heavy laden, and I will give you rest.",
+  "seed": 1,
+  "words_per_second": 3.4,
+  "in_range": false
+ },
+ "s06-04-talk-d74c71.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Christians have long read this as the deepest Sabbath of all.",
+  "seed": 1,
+  "words_per_second": 3.7,
+  "in_range": true
+ },
+ "s06-05-story-ded4e0.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Not just a day off, but rest for the soul.",
+  "seed": 1,
+  "words_per_second": 3.08,
+  "in_range": true
+ },
+ "s06-06-grave-5503db.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "You don't have to earn your worth.",
+  "seed": 3,
+  "words_per_second": 4.07,
+  "in_range": false
+ },
+ "s06-07-grave-ebd502.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "You can stop, because God never does.",
+  "seed": 2,
+  "words_per_second": 2.71,
+  "in_range": true
+ },
+ "s06-08-story-4a2bc4.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "Next time, the fifth commandment, and the people you came from.",
+  "seed": 1,
+  "words_per_second": 2.86,
+  "in_range": true
+ }
+}

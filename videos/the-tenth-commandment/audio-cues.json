@@ -1,0 +1,193 @@
+{
+  "_doc": "Soundtrack for 'The Tenth Commandment' (Ten Commandments part 10, series finale). Format: .claude/skills/godward-episode/reference/audio.md. Every time is a word cue, so re-voicing re-times the sound.",
+  "episode": "the-tenth-commandment",
+  "words": "words.js",
+  "duration": {"word": "neighbour", "n": -1, "edge": "end", "offset": 7},
+  "marks": {
+    "fire": {"word": "From the fire", "offset": -0.1},
+    "court": {"word": "Here's the strange", "offset": -0.1},
+    "eden": {"word": "And it's where", "offset": -0.1},
+    "vineyard": {"word": "Centuries later", "offset": -0.1},
+    "mirror": {"word": "undid a Pharisee", "offset": -0.3},
+    "cure": {"word": "So what's the cure", "offset": -0.1},
+    "allten": {"word": "And here is the end", "offset": -0.1},
+    "lastWord": {"word": "neighbour", "n": -1, "edge": "end"}
+  },
+  "motifs": {
+    "WANT": [64, 67, 71, 69],
+    "WANTm": [64, 67, 70, 69],
+    "REST": [64, 67, 71, 72]
+  },
+  "scenes": [
+    {"name": "cold-open", "start": 0, "screen": "two tablets, lines I-IX light, the tenth glows like a heartbeat", "music": "angelic choir + high bells, loud swell; WANT motif on bells", "sound": "low wind, shimmer; soft heartbeat drum on the tenth line"},
+    {"name": "last-word", "start": "fire", "screen": "Sinai's fire; Exodus 20:17; house, wife, servants, ox, donkey, anything", "music": "SILENCE, then thunder at 'From the fire'; low pad, a pluck for each thing listed", "sound": "fire roar, rumble"},
+    {"name": "court", "start": "court", "screen": "a judge, a lamp sweeping past a figure with a gold house in its chest", "music": "cool sparse piano, low pad", "sound": "quiet room tone wind"},
+    {"name": "eden", "start": "eden", "screen": "the garden, the glowing fruit; SAW, DELIGHT, DESIRED; she reaches", "music": "flute WANT motif, choir under Genesis 3:6, drop at 'she took'", "sound": "birdsong, warm wind"},
+    {"name": "vineyard", "start": "vineyard", "screen": "palace and crown, Naboth's vineyard, the king sulking, false witnesses, TAKEN", "music": "minor pad, slow drum, WANTm motif; low glide at 'put to death'", "sound": "hot wind, sand"},
+    {"name": "mirror", "start": "mirror", "screen": "Paul and a silver mirror; the reflection becomes a coral tangle", "music": "intimate piano, reversed swell into Romans 7:7", "sound": "shimmer"},
+    {"name": "cure", "start": "cure", "screen": "a plain table, cup and loaf; gold wants drift away; Hebrews 13:5", "music": "warm pads, REST motif on flute, choir at 'I will never leave you'", "sound": "birds, warm wind"},
+    {"name": "all-ten", "start": "allten", "screen": "tablets: four lines rise as light, six become a ring of people; Romans 13:9-10; LOVE; end card", "music": "full warm swell, choir, bells; held chord under the end card; REST motif on bells to close the series", "sound": "warm wind, shimmer"}
+  ],
+
+  "stems": {
+    "score": {
+      "seed": 2110,
+      "reverb": {"room": 0.87, "damp": 0.32, "wet": 0.38},
+      "autoLevel": {"window": 0.1, "smooth": 15, "min": 0.35, "max": 4},
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2.5},
+      "events": [
+        {"scene": "cold-open"},
+        {"inst": "pad", "at": 0, "to": "fire-1.0", "notes": [40, 52, 59, 64], "lv": 0.35, "bright": 0.3, "a": 3, "r": 1},
+        {"inst": "choir", "at": 0, "to": 7.4, "notes": [64, 68, 71, 76], "lv": 1.0, "att": 2.5},
+        {"inst": "bell", "repeat": {"from": 0.4, "to": 7.2, "every": 0.32, "shift": 0.2}, "seq": [88, 92, 95, 100], "lv": 0.55, "pan": "random", "dec": 3},
+        {"inst": "bell", "motif": "WANT", "at": {"word": "The last one"}, "step": 0.7, "transpose": 12, "lv": 0.7, "pan": 0.5, "dec": 3},
+        {"inst": "drum", "repeat": {"from": {"word": "what you want"}, "to": {"word": "So why would", "offset": 2}, "every": 0.9}, "lv": 0.7, "f0": 48, "pan": 0.5},
+        {"inst": "pad", "repeat": {"from": 7.4, "to": "fire-1.2", "every": 4}, "chords": [[40, 52, 59, 64], [36, 48, 55, 60], [43, 55, 59, 62], [38, 50, 57, 62]], "hold": 4.3, "lv": 0.65, "bright": 0.45, "a": 1.2, "r": 0.6},
+
+        {"scene": "last-word"},
+        {"inst": "pad", "at": "fire+1.5", "to": "court", "notes": [28, 35, 40, 47], "lv": 0.85, "bright": 0.3, "a": 2, "r": 1},
+        {"inst": "choir", "at": {"word": "You shall not covet your", "offset": -0.3}, "to": {"word": "You shall not covet your", "offset": 4}, "notes": [64, 67, 71, 76], "lv": 0.8, "att": 0.8, "rel": 1.5},
+        {"inst": "pluck", "at": [{"word": "neighbor's house"}, {"word": "neighbor's wife"}, {"word": "male servant"}, {"word": "his ox"}, {"word": "his donkey"}, {"word": "anything that"}], "notes": [64, 67, 71], "strum": 0.08, "lv": 0.55, "pan": 0.5, "len": 1.2, "bright": 0.6},
+        {"inst": "flute", "motif": "WANTm", "at": {"word": "It is wanting"}, "step": 0.7, "transpose": 12, "len": 0.5, "lv": 0.8, "pan": 0.6},
+
+        {"scene": "court"},
+        {"inst": "pad", "at": "court", "to": "eden", "notes": [40, 47, 52, 55], "lv": 0.55, "bright": 0.25, "a": 1.5, "r": 1},
+        {"inst": "piano", "repeat": {"from": "court+0.6", "to": {"word": "Many readers"}, "every": 1.8, "jitter": 1}, "pick": "random", "seq": [64, 67, 71, 74, 76], "lv": 0.6, "pan": "random", "dec": 2.5},
+        {"inst": "choir", "at": {"word": "entirely in the heart", "offset": -0.3}, "to": {"word": "always about hearts", "edge": "end", "offset": 1}, "notes": [64, 68, 71, 76], "lv": 0.8, "att": 1, "rel": 1.5},
+        {"inst": "bell", "at": {"word": "always about hearts"}, "note": 83, "lv": 0.6, "pan": 0.5, "dec": 3},
+
+        {"scene": "eden"},
+        {"inst": "pad", "repeat": {"from": "eden", "to": "vineyard", "every": 4}, "chords": [[40, 52, 59, 64], [45, 52, 57, 60], [41, 53, 57, 60], [43, 50, 55, 59]], "hold": 4.3, "lv": 0.7, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "flute", "motif": "WANT", "at": {"word": "with a look"}, "step": 0.75, "transpose": 12, "len": 0.6, "lv": 0.9, "pan": 0.5},
+        {"inst": "choir", "at": {"word": "So when the woman", "offset": -0.3}, "to": {"word": "she took of"}, "notes": [64, 67, 71, 76], "lv": 0.9, "att": 1, "rel": 0.4},
+        {"inst": "glide", "at": {"word": "she took of"}, "len": 2.4, "from": 40, "toNote": 34, "lv": 0.9, "pan": 0.5},
+
+        {"scene": "vineyard"},
+        {"inst": "pad", "repeat": {"from": "vineyard", "to": "mirror", "every": 5}, "chords": [[40, 52, 59, 64, 67], [36, 48, 55, 60, 64], [33, 45, 52, 57, 60], [35, 47, 54, 59, 63]], "hold": 5.4, "lv": 0.7, "bright": 0.35, "a": 1.4, "r": 0.8},
+        {"inst": "drum", "repeat": {"from": "vineyard+0.4", "to": {"word": "sulked"}, "every": 1.2}, "lv": 0.7, "f0": 52, "pan": 0.5},
+        {"inst": "flute", "motif": "WANTm", "at": {"word": "and Ahab wanted"}, "step": 0.75, "len": 0.6, "lv": 0.8, "pan": 0.6},
+        {"inst": "glide", "at": {"word": "put to death"}, "len": 2.6, "from": 38, "toNote": 31, "lv": 0.9, "pan": 0.5},
+        {"inst": "drum", "at": [{"word": "False witness"}, {"word": "murder and"}, {"word": "stealing"}], "lv": 1.4, "f0": 50},
+
+        {"scene": "mirror"},
+        {"inst": "pad", "at": "mirror", "to": "cure", "notes": [40, 52, 55, 59], "lv": 0.55, "bright": 0.4, "a": 1.5, "r": 1},
+        {"inst": "piano", "motif": "WANT", "at": "mirror+0.5", "step": 0.9, "lv": 0.85, "pan": 0.5, "dec": 3},
+        {"inst": "reversed", "at": {"word": "For I would not", "offset": -2}, "len": 2, "notes": [52, 59], "lv": 0.9},
+        {"inst": "piano", "motif": [71, 69, 67, 64], "at": {"word": "we need help"}, "step": 0.8, "lv": 0.8, "pan": 0.5, "dec": 3},
+
+        {"scene": "cure"},
+        {"inst": "pad", "repeat": {"from": "cure", "to": "allten", "every": 3.6}, "chords": [[40, 52, 56, 59, 64], [37, 49, 52, 56, 61], [33, 45, 52, 57, 61], [35, 47, 54, 59, 63]], "hold": 3.9, "lv": 0.75, "bright": 0.55, "a": 1.2, "r": 0.6},
+        {"inst": "flute", "motif": "REST", "at": {"word": "is contentment", "offset": 0.4}, "step": 0.8, "transpose": 12, "len": 0.6, "lv": 0.9, "pan": 0.5},
+        {"inst": "choir", "at": {"word": "I will never leave you", "offset": -0.3}, "to": {"word": "already held", "edge": "end", "offset": 1.2}, "notes": [64, 68, 71, 76], "lv": 1.0, "att": 1, "rel": 1.5},
+        {"inst": "bell", "at": {"word": "already held"}, "note": 88, "lv": 0.6, "pan": 0.6, "dec": 3},
+
+        {"scene": "all-ten"},
+        {"inst": "pad", "repeat": {"from": "allten", "to": {"mark": "lastWord", "offset": 0.5}, "every": 3.6}, "chords": [[40, 52, 56, 59, 64], [45, 52, 57, 61, 64], [42, 54, 57, 61, 66], [47, 54, 59, 63, 66]], "hold": 3.9, "holdClip": false, "lv": 0.8, "bright": 0.5, "a": 1.2, "r": 0.6},
+        {"inst": "choir", "at": {"word": "For the commandments", "offset": -0.3}, "to": {"word": "the fulfilling of the law", "edge": "end", "offset": 1.2}, "notes": [64, 68, 71, 76], "lv": 0.9, "att": 1.2, "rel": 1.5},
+        {"inst": "bell", "at": [{"word": "love for God"}, {"word": "love for our neighbour"}], "note": 83, "lv": 0.6, "pan": 0.5, "dec": 3},
+        {"comment": "'one word': the warmest chord, held under the end card", "inst": "pad", "at": {"word": "one word underneath"}, "to": {"mark": "lastWord", "offset": 6.5}, "notes": [40, 52, 56, 59, 64, 68, 71], "lv": 1, "bright": 0.6, "a": 0.8, "r": 2},
+        {"inst": "choir", "at": {"word": "your whole heart"}, "to": {"mark": "lastWord", "offset": 6.0}, "notes": [64, 68, 71, 76], "lv": 0.9, "att": 1, "rel": 2},
+        {"inst": "bell", "motif": "REST", "at": {"mark": "lastWord", "offset": 1.6}, "step": 0.8, "transpose": 24, "lv": 0.5, "pan": 0.5, "dec": 3}
+      ]
+    },
+
+    "ambience": {
+      "seed": 3211,
+      "fade": {"end": {"mark": "lastWord", "offset": 6.6}, "len": 2},
+      "events": [
+        {"scene": "cold-open"},
+        {"inst": "wind", "at": 0, "to": "fire", "lv": 0.4, "fc": 300},
+        {"inst": "shimmer", "at": 0.6, "to": 4.5, "lv": 0.5},
+        {"inst": "shimmer", "at": {"word": "The last one"}, "len": 2.5, "lv": 0.5},
+
+        {"scene": "last-word"},
+        {"inst": "rumble", "at": "fire", "to": "court", "lv": 0.7},
+        {"inst": "flame", "at": "fire", "to": "court", "lv": 1.0, "pan": 0.5},
+        {"inst": "wind", "at": "fire", "to": "court", "lv": 0.5, "fc": 280},
+
+        {"scene": "court"},
+        {"inst": "wind", "at": "court", "to": "eden", "lv": 0.3, "fc": 350},
+
+        {"scene": "eden"},
+        {"inst": "wind", "at": "eden", "to": "vineyard", "lv": 0.5, "fc": 700, "pan": 0.6},
+        {"inst": "bird", "repeat": {"from": "eden+0.5", "to": {"word": "she took of"}, "every": 1.6, "jitter": 1}, "lv": 0.6, "pan": "random"},
+
+        {"scene": "vineyard"},
+        {"inst": "wind", "at": "vineyard", "to": "mirror", "lv": 0.6, "fc": 650},
+        {"inst": "sand", "at": "vineyard", "to": "mirror", "lv": 0.4},
+
+        {"scene": "mirror"},
+        {"inst": "shimmer", "at": {"word": "what it is to covet", "offset": -0.4}, "len": 4, "lv": 0.8},
+
+        {"scene": "cure"},
+        {"inst": "wind", "at": "cure", "to": "allten", "lv": 0.5, "fc": 700, "pan": 0.6},
+        {"inst": "bird", "repeat": {"from": {"word": "Keep your life"}, "to": "allten-0.5", "every": 1.8, "jitter": 1}, "lv": 0.5, "pan": "random"},
+
+        {"scene": "all-ten"},
+        {"inst": "wind", "at": "allten", "to": {"mark": "lastWord", "offset": 6}, "lv": 0.6, "fc": 700, "pan": 0.6},
+        {"inst": "shimmer", "at": {"word": "one word underneath"}, "len": 4, "lv": 0.7}
+      ]
+    },
+
+    "sfx": {
+      "seed": 5211,
+      "events": [
+        {"comment": "pieces landing: soft paper taps on the label words", "inst": "paperTap", "at": [
+          {"word": "Nine of the", "offset": 0.4}, {"word": "what you want"}, {"word": "nobody would know"}, {"word": "So why would"},
+          {"word": "From the fire", "offset": 0.2}, {"word": "neighbor's house"}, {"word": "neighbor's wife"}, {"word": "male servant"}, {"word": "his ox"}, {"word": "his donkey"}, {"word": "anything that"},
+          {"word": "more than liking"}, {"word": "for yourself", "offset": -0.3},
+          {"word": "No judge"}, {"word": "witness to a wish"}, {"word": "no evidence"}, {"word": "entirely in the heart"}, {"word": "just about hands"}, {"word": "always about hearts"},
+          {"word": "And it's where"}, {"word": "with a look"}, {"word": "woman saw"}, {"word": "a delight"}, {"word": "to be desired"},
+          {"word": "She saw it"}, {"word": "she wanted it"}, {"word": "then she took it"}, {"word": "is the seed"},
+          {"word": "King Ahab"}, {"word": "his neighbour Naboth"}, {"word": "wouldn't sell"}, {"word": "sulked"}, {"word": "His wife arranged"}, {"word": "false witnesses"},
+          {"word": "took the vineyard"}, {"word": "False witness"}, {"word": "murder and"}, {"word": "stealing"}, {"word": "started with wanting"},
+          {"word": "undid a Pharisee"}, {"word": "blameless"}, {"word": "like a mirror"}, {"word": "doesn't make us good"}, {"word": "we need help"},
+          {"word": "is contentment"}, {"word": "from prison"}, {"word": "And Hebrews"}, {"word": "already held"},
+          {"word": "And here is the end"}, {"word": "love for God"}, {"word": "love for our neighbour"}, {"word": "one word underneath"}, {"word": "your whole heart"}],
+          "lv": 0.8, "pan": {"rand": [0.35, 0.65]}},
+        {"comment": "circles, strikes, highlights: soft swish", "inst": "swish", "at": [
+          {"word": "what you want"}, {"word": "You shall not covet your"}, {"word": "always about hearts", "offset": -0.3}, {"word": "a delight"},
+          {"word": "and Ahab wanted"}, {"word": "what it is to covet"}, {"word": "we need help", "offset": -0.5}, {"word": "I will never leave you"}, {"word": "the fulfilling of the law"}],
+          "len": 0.6, "lv": 0.5, "pan": 0.5},
+        {"comment": "sheet changes: whoosh 0.4 s before each", "inst": "whoosh", "at": ["fire-0.4", "court-0.4", "eden-0.4", "vineyard-0.4", "mirror-0.4", "cure-0.4", "allten-0.4"], "len": 0.8, "lv": 0.75, "pan": 0.5},
+        {"comment": "the tenth line lights", "inst": "sparkle", "at": {"word": "The last one"}, "len": 2, "lv": 1, "pan": 0.55},
+        {"comment": "she takes the fruit", "inst": "thump", "at": {"word": "she took of", "offset": 0.3}, "lv": 0.8},
+        {"comment": "the mirror changes", "inst": "chime", "at": {"word": "what it is to covet"}, "note": 76, "lv": 0.7},
+        {"inst": "sparkle", "at": {"word": "one word underneath"}, "len": 2.4, "lv": 1},
+        {"comment": "the end card", "inst": "chime", "at": {"mark": "lastWord", "offset": 1.6}, "note": 76, "lv": 0.7}
+      ]
+    }
+  },
+
+  "mix": {
+    "voice": {"volume": 1.25},
+    "buses": [
+      {"name": "music", "stem": "score.wav", "volume": 0.65,
+       "duck": {"threshold": 0.02, "ratio": 4, "attack": 30, "release": 500, "makeup": 1},
+       "envelope": [
+         {"comment": "opening choir swell", "from": 1.4, "to": 7.5, "db": 8.3, "in": 1.3, "out": 2.5},
+         {"comment": "silence before 'From the fire', back after the thunder", "from": {"word": "From the fire", "offset": -0.76}, "to": {"word": "From the fire", "edge": "end", "offset": 1.1}, "mute": true, "in": 0.6, "out": 1.4},
+         {"comment": "end card: let the closing chord be heard", "from": {"mark": "lastWord", "offset": 0.4}, "to": {"mark": "lastWord", "offset": 7}, "db": 6, "in": 1.2, "out": 0.5}
+       ]},
+      {"name": "sfx", "stem": "sfx.wav", "volume": 0.2},
+      {"name": "ambience", "stem": "ambience.wav", "volume": 0.832,
+       "compressor": {"threshold": 0.05, "ratio": 3.5, "attack": 10, "release": 300, "makeup": 2.8},
+       "duck": {"threshold": 0.02, "ratio": 6, "attack": 20, "release": 600, "makeup": 1.5}}
+    ],
+    "hits": [
+      {"name": "thunder", "sound": "thunder", "seed": 1017, "len": 6, "at": {"word": "From the fire", "offset": -0.04},
+       "compressor": {"threshold": 0.02, "ratio": 12, "attack": 0.5, "release": 400, "makeup": 10}, "volume": 2.2}
+    ],
+    "limiter": {"limit": 0.89, "attack": 1, "release": 60},
+    "loudnorm": {"I": -14, "TP": -1.0, "LRA": 18},
+    "tail": 7,
+    "checks": [
+      {"label": "choir swell peak", "from": 3, "to": 5, "solo": "music"},
+      {"label": "music cut", "from": "fire-0.05", "to": "fire+0.05", "solo": "music"},
+      {"label": "thunder", "from": "fire+0.06", "to": "fire+1.06"},
+      {"label": "eden music", "from": "eden+1", "to": "vineyard-1.0", "solo": "music"},
+      {"label": "vineyard ambience", "from": "vineyard+1", "to": "mirror-1.0", "solo": "ambience"},
+      {"label": "end card", "from": {"mark": "lastWord", "offset": 2}, "to": {"mark": "lastWord", "offset": 5}}
+    ]
+  }
+}

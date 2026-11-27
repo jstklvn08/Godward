@@ -1,0 +1,66 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The First Commandment: Thumbnail v2</title>
+<style>html,body{margin:0;background:#000}svg{display:block}</style>
+<svg xmlns="http://www.w3.org/2000/svg"></svg>
+<script>const WORDS=[["x",0,1]];</script>
+<script src="../_kit/shared.js"></script>
+<script src="../_kit/style-kit.js"></script>
+<script src="../_kit/episode-engine.js"></script>
+<script src="../_kit/people.js"></script>
+<script src="../_kit/fire.js"></script>
+<script>
+// Thumbnail concept matching the remade episode: the burning summit of Sinai, a family at its foot looking up.
+//   thumbnail-v2.html        Instagram feed 4:5 (1080x1350); key content inside the centre 1012 px (grid crop)
+//   thumbnail-v2.html?v=1    9:16 cover (1080x1920) for TikTok / Reels / Shorts; text clear of the bottom UI and right rail
+const V=new URLSearchParams(location.search).get('v')==='1'||window.innerHeight>1500;
+const W=1080,H=V?1920:1350,t=4.2;
+const {G,R,C,L,P,T,mix,rng}=K;
+const {tw,glow,strip,tape,label,paperDefs}=S;
+const INK='#141416',YEL='#FFE100',CORAL='#FF5A48';
+const svg=document.querySelector('svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.width=W+'px';svg.style.height=H+'px';
+const PEAKY=V?640:520, GROUND=V?1500:1180, SC=V?1.55:1.35;   // summit top, ground line, figure scale
+const defs=`<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E0A22"/><stop offset=".55" stop-color="#2A1630"/><stop offset="1" stop-color="#4A2216"/></linearGradient>
+  <linearGradient id="gnd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1C1E"/><stop offset="1" stop-color="#120C10"/></linearGradient>
+  <radialGradient id="vig" cx="50%" cy="45%" r="75%"><stop offset=".55" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".6"/></radialGradient>
+  <filter id="grain2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="2" seed="38"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="2.6" intercept="-.8"/><feFuncG type="linear" slope="2.6" intercept="-.8"/><feFuncB type="linear" slope="2.6" intercept="-.8"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>
+</defs>`;
+function scene(){
+  let g=R(0,0,W,H,0,'url(#sky)');
+  const r=rng(77);for(let i=0;i<90;i++)g+=C(r()*W,r()*PEAKY*.9,1+r()*2.6,'#fff',{opacity:.15+.45*r()});
+  // Sinai burning: the whole summit on fire, kiln smoke rising, firelight on the slopes
+  const pts=FX.peak(8,540,PEAKY,{halfW:620,bottom:GROUND+40});
+  g+=FX.summitFire(t,pts,1.15,0,{fill:'#3A3040',H:150,cap:110,smoke:1.2,smokeH:V?900:700,drift:40,light:620,seed:8,embers:50});
+  // the camp: a few tents and fires along the foot of the mountain
+  g+=`<path d="M-40 ${GROUND-30} Q300 ${GROUND-70} 540 ${GROUND-40} T1120 ${GROUND-50} V${H+20} H-40Z" fill="url(#gnd)"/>`;
+  [[150,GROUND-36,'#7A4A2E'],[930,GROUND-42,'#6A3E26']].forEach(([x,y,c])=>g+=P(`M${x-70} ${y+20}L${x} ${y-70}L${x+70} ${y+20}Z`,c)+P(`M${x} ${y-70}L${x-10} ${y+20}L${x+10} ${y+20}Z`,'#1A0E08'));
+  g+=glow(540,GROUND-120,700,'#FF8A3C',.22);
+  // the family at the foot, looking up at the fire: father's hand on the mother's shoulder, the child on her hip pointing up
+  const look={x:540,y:PEAKY-40};
+  // the child stands between her parents, holding her mother's hand and pointing up at the fire; the father's hand on her shoulder
+  const kid={x:545,y:GROUND+50,s:SC*.66,f:true,tunic:'#FFC24C',tunic2:'#E0623C',skin:'#F5BE8E',shade:'#C4835E',hair:'#2E1C52',look,expr:'awe',phase:.4};
+  const mom={x:720,y:GROUND+64,s:SC,face:-1,f:true,tunic:'#FF8FB1',tunic2:'#C8487A',skin:'#D9965E',shade:'#A86A3E',hair:'#4A2A16',look,expr:'awe',phase:.7};
+  const dad={x:360,y:GROUND+70,s:SC*1.04,face:1,tunic:'#3DE0B8',tunic2:'#1787A8',skin:'#B87444',shade:'#8A5230',hair:'#1A1A2A',look,expr:'awe',phase:.2};
+  kid.far='up';
+  dad.near=PPL.handOn(dad,kid,'shoulder');
+  g+=PPL.fig(dad)+PPL.holdHands(kid,mom).svg;
+  return g;
+}
+function title(){
+  // torn-strip headline, as in the episode's verse cards; all inside x 34..1046 (4:5 grid crop)
+  const x0=V?90:84,y0=V?150:66,s1='The one that',s2='comes first',a=V?84:76,b=V?136:124;
+  const w1=tw(s1,a,'Georgia',700)+90,w2=tw(s2,b,'Georgia',700)+96;
+  let g=`<g transform="rotate(-2.5 ${W/2} ${y0+60})">${strip(x0,y0,w1,a*1.55,3,'#F6EFDC',{ax:12,ay:4})}${T(x0+45,y0+a*1.12,s1,{size:a,font:'Georgia',weight:700,fill:INK})}${tape(x0+w1-30,y0+2,130,9)}</g>`;
+  const y1=y0+a*1.55+14;
+  g+=`<g transform="rotate(1.5 ${W/2} ${y1+80})">${strip(x0-20,y1,w2,b*1.32,5,'#F6EFDC',{ax:14,ay:5})}${S.highlight(x0+28,y1+20,tw(s2,b,'Georgia',700)+8,b*1.03,1,YEL)}${T(x0+30,y1+b*1.0,s2,{size:b,font:'Georgia',weight:700,fill:INK})}${tape(x0+10,y1,140,-10)}</g>`;
+  g+=label(x0+10,y1+b*1.32+34,'THE TEN COMMANDMENTS · PART 1',{size:V?34:30,rot:-2});
+  // one coral tag low in the frame (9:16: above the platform's caption/UI zone)
+  const ty=V?1590:1262;
+  g+=label(V?96:84,ty,'NO OTHER GODS',{size:V?48:42,bg:CORAL,rot:-3});
+  return g;
+}
+svg.innerHTML=paperDefs(t)+defs+scene()+title()+R(0,0,W,H,0,'url(#vig)')+
+  `<rect width="${W}" height="${H}" filter="url(#grain2)" opacity=".22" style="mix-blend-mode:overlay"/>`;
+window.ready=true;
+</script>

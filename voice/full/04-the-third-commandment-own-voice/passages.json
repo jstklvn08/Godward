@@ -1,0 +1,411 @@
+{
+ "s00-01-pivot-ca7c26.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "Most people think they know this one.",
+  "seed": 1,
+  "words_per_second": 3.5,
+  "in_range": true
+ },
+ "s00-02-story-8172c3.wav": {
+  "section": 0,
+  "mode": "story",
+  "text": "Don't use God's name as a swear word. And that's part of it.",
+  "seed": 1,
+  "words_per_second": 2.53,
+  "in_range": true
+ },
+ "s00-03-grave-3a9342.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "You shall not take the name of the LORD your God in vain,",
+  "seed": 3,
+  "words_per_second": 3.07,
+  "in_range": false
+ },
+ "s00-04-grave-bd2019.wav": {
+  "section": 0,
+  "mode": "grave",
+  "text": "for the LORD will not hold him guiltless who takes his name in vain.",
+  "seed": 3,
+  "words_per_second": 3.12,
+  "in_range": false
+ },
+ "s00-05-talk-0d0b04.wav": {
+  "section": 0,
+  "mode": "talk",
+  "text": "But the words underneath reach far beyond your mouth.",
+  "seed": 1,
+  "words_per_second": 3.33,
+  "in_range": true
+ },
+ "s00-06-pivot-701d64.wav": {
+  "section": 0,
+  "mode": "pivot",
+  "text": "You can break this commandment without saying a word.",
+  "seed": 1,
+  "words_per_second": 3.36,
+  "in_range": true
+ },
+ "s01-01-story-ae1a58.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "To see why, go back to a desert, and a bush that burned but did not burn up.",
+  "seed": 1,
+  "words_per_second": 3.21,
+  "in_range": true
+ },
+ "s01-02-story-c31442.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "Moses was sent back to Egypt to set God's people free.",
+  "seed": 1,
+  "words_per_second": 2.83,
+  "in_range": true
+ },
+ "s01-03-talk-580273.wav": {
+  "section": 1,
+  "mode": "talk",
+  "text": "And Moses asked a simple question.",
+  "seed": 1,
+  "words_per_second": 3.08,
+  "in_range": true
+ },
+ "s01-04-story-9a4c57.wav": {
+  "section": 1,
+  "mode": "story",
+  "text": "What is your name?",
+  "seed": 1,
+  "words_per_second": 3.03,
+  "in_range": true
+ },
+ "s01-05-grave-fc3d34.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "I am who I am.",
+  "seed": 1,
+  "words_per_second": 2.94,
+  "in_range": false
+ },
+ "s01-06-grave-30efc5.wav": {
+  "section": 1,
+  "mode": "grave",
+  "text": "This is my name forever, and thus I am to be remembered throughout all generations.",
+  "seed": 2,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s02-01-talk-8feffc.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "In Hebrew, that name is four letters, often written Yahweh.",
+  "seed": 1,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s02-02-talk-8601f2.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "When your Bible prints LORD in capital letters, that's this name.",
+  "seed": 1,
+  "words_per_second": 3.16,
+  "in_range": true
+ },
+ "s02-03-story-b6d13d.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "In the Bible, a name isn't just a label.",
+  "seed": 1,
+  "words_per_second": 3.53,
+  "in_range": true
+ },
+ "s02-04-story-f373ea.wav": {
+  "section": 2,
+  "mode": "story",
+  "text": "It tells you who someone is.",
+  "seed": 1,
+  "words_per_second": 2.45,
+  "in_range": true
+ },
+ "s02-05-talk-2d9e9e.wav": {
+  "section": 2,
+  "mode": "talk",
+  "text": "And God handed his name to a crowd of slaves, so they could call on him.",
+  "seed": 1,
+  "words_per_second": 3.61,
+  "in_range": true
+ },
+ "s03-01-pivot-b49e0b.wav": {
+  "section": 3,
+  "mode": "pivot",
+  "text": "So when God speaks from the mountain, he guards that name.",
+  "seed": 1,
+  "words_per_second": 3.48,
+  "in_range": true
+ },
+ "s03-02-talk-7d2c6e.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "Look closely at two words.",
+  "seed": 1,
+  "words_per_second": 3.42,
+  "in_range": true
+ },
+ "s03-03-story-9d6fdf.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "The Hebrew word for take means to lift up, or to carry.",
+  "seed": 1,
+  "words_per_second": 2.45,
+  "in_range": true
+ },
+ "s03-04-talk-894f90.wav": {
+  "section": 3,
+  "mode": "talk",
+  "text": "And in vain means empty, or hollow.",
+  "seed": 1,
+  "words_per_second": 3.17,
+  "in_range": true
+ },
+ "s03-05-story-3cf674.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "Like a promise with nothing inside.",
+  "seed": 1,
+  "words_per_second": 2.71,
+  "in_range": true
+ },
+ "s03-06-story-71bc5a.wav": {
+  "section": 3,
+  "mode": "story",
+  "text": "In other words, don't carry his name around emptily.",
+  "seed": 2,
+  "words_per_second": 3.26,
+  "in_range": true
+ },
+ "s04-01-talk-805433.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "That covers how we talk.",
+  "seed": 2,
+  "words_per_second": 3.18,
+  "in_range": true
+ },
+ "s04-02-story-d8b012.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "Using his name as a curse, or as a shrug.",
+  "seed": 1,
+  "words_per_second": 2.56,
+  "in_range": true
+ },
+ "s04-03-talk-a6a93b.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "It covers promises, too.",
+  "seed": 3,
+  "words_per_second": 3.2,
+  "in_range": true
+ },
+ "s04-04-story-5eecf6.wav": {
+  "section": 4,
+  "mode": "story",
+  "text": "In Israel, people swore by God's name to show they meant it.",
+  "seed": 1,
+  "words_per_second": 3.38,
+  "in_range": true
+ },
+ "s04-05-grave-c78a6c.wav": {
+  "section": 4,
+  "mode": "grave",
+  "text": "You shall not swear by my name falsely, and so profane the name of your God: I am the LORD.",
+  "seed": 3,
+  "words_per_second": 3.14,
+  "in_range": false
+ },
+ "s04-06-talk-7a41f9.wav": {
+  "section": 4,
+  "mode": "talk",
+  "text": "Lying with God's name attached dragged him into the lie.",
+  "seed": 1,
+  "words_per_second": 3.09,
+  "in_range": true
+ },
+ "s05-01-pivot-72e996.wav": {
+  "section": 5,
+  "mode": "pivot",
+  "text": "But here's where it gets bigger.",
+  "seed": 1,
+  "words_per_second": 3.39,
+  "in_range": true
+ },
+ "s05-02-story-c19242.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Israel didn't only speak God's name. They wore it.",
+  "seed": 3,
+  "words_per_second": 2.41,
+  "in_range": true
+ },
+ "s05-03-story-f6650f.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "After the priests' blessing, God said:",
+  "seed": 1,
+  "words_per_second": 2.59,
+  "in_range": true
+ },
+ "s05-04-grave-a9ef8f.wav": {
+  "section": 5,
+  "mode": "grave",
+  "text": "So shall they put my name upon the people of Israel, and I will bless them.",
+  "seed": 2,
+  "words_per_second": 3.19,
+  "in_range": false
+ },
+ "s05-05-talk-d4366a.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Think of a bride on her wedding day.",
+  "seed": 2,
+  "words_per_second": 4.68,
+  "in_range": false
+ },
+ "s05-06-story-57ac94.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "She takes her husband's name, and everywhere she goes, she carries it.",
+  "seed": 1,
+  "words_per_second": 2.7,
+  "in_range": true
+ },
+ "s05-07-talk-44d44e.wav": {
+  "section": 5,
+  "mode": "talk",
+  "text": "Many readers hear the third commandment that way.",
+  "seed": 1,
+  "words_per_second": 3.01,
+  "in_range": true
+ },
+ "s05-08-story-77cf73.wav": {
+  "section": 5,
+  "mode": "story",
+  "text": "Israel was carrying God's name into the world.",
+  "seed": 1,
+  "words_per_second": 2.97,
+  "in_range": true
+ },
+ "s06-01-story-db7460.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "How they lived would tell the nations what their God was like.",
+  "seed": 1,
+  "words_per_second": 2.84,
+  "in_range": true
+ },
+ "s06-02-grave-8c809c.wav": {
+  "section": 6,
+  "mode": "grave",
+  "text": "So you can carry the name emptily without ever saying it.",
+  "seed": 3,
+  "words_per_second": 2.78,
+  "in_range": true
+ },
+ "s06-03-talk-1ffae5.wav": {
+  "section": 6,
+  "mode": "talk",
+  "text": "Calling yourself his, while living as though he isn't there.",
+  "seed": 1,
+  "words_per_second": 3.31,
+  "in_range": true
+ },
+ "s06-04-story-13dcb7.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "His name stays the same.",
+  "seed": 1,
+  "words_per_second": 2.76,
+  "in_range": true
+ },
+ "s06-05-story-9ab031.wav": {
+  "section": 6,
+  "mode": "story",
+  "text": "But the people carrying it can make it look small.",
+  "seed": 3,
+  "words_per_second": 3.58,
+  "in_range": true
+ },
+ "s07-01-story-1d5151.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Centuries later, Jesus taught his followers to pray.",
+  "seed": 1,
+  "words_per_second": 2.47,
+  "in_range": true
+ },
+ "s07-02-story-3888c5.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "And the first thing he asked for was this.",
+  "seed": 2,
+  "words_per_second": 3.35,
+  "in_range": true
+ },
+ "s07-03-grave-daa91a.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "Our Father in heaven, hallowed be your name.",
+  "seed": 1,
+  "words_per_second": 2.83,
+  "in_range": true
+ },
+ "s07-04-talk-460146.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Hallowed means treated as holy, set apart.",
+  "seed": 3,
+  "words_per_second": 2.69,
+  "in_range": false
+ },
+ "s07-05-story-826d56.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Full, not empty.",
+  "seed": 8,
+  "words_per_second": 2.44,
+  "in_range": true,
+  "word_check": "match"
+ },
+ "s07-06-talk-920631.wav": {
+  "section": 7,
+  "mode": "talk",
+  "text": "Christians have long read that line as the third commandment turned into a prayer.",
+  "seed": 1,
+  "words_per_second": 3.76,
+  "in_range": true
+ },
+ "s07-07-grave-28ce02.wav": {
+  "section": 7,
+  "mode": "grave",
+  "text": "Don't carry his name as if it weighs nothing.",
+  "seed": 3,
+  "words_per_second": 3.31,
+  "in_range": false
+ },
+ "s07-08-story-bd550c.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Carry it like the best thing you own.",
+  "seed": 3,
+  "words_per_second": 3.67,
+  "in_range": false
+ },
+ "s07-09-story-9d5d9a.wav": {
+  "section": 7,
+  "mode": "story",
+  "text": "Next time, the fourth commandment, and a day God made for rest.",
+  "seed": 1,
+  "words_per_second": 3.09,
+  "in_range": true
+ }
+}

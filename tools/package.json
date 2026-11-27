@@ -1,0 +1,11 @@
+{
+  "name": "godward-tools",
+  "private": true,
+  "description": "Render Godward episode pages (HTML/SVG animated by window.seek) to MP4, stills, contact sheets and thumbnails.",
+  "type": "commonjs",
+  "dependencies": {
+    "ffmpeg-static": "^5.3.0",
+    "puppeteer-core": "^25.16.0",
+    "simple-icons": "^15.22.0"
+  }
+}

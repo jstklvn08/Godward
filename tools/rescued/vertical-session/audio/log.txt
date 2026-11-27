@@ -1,0 +1,2 @@
+C:/Users/User/AppData/Local/Temp/claude/6825648f516659e4/dd29e4dc-d8e2-425d-b9ff-92bf843362ef/scratchpad/audio/music.wav peak 0.114
+C:/Users/User/AppData/Local/Temp/claude/6825648f516659e4/dd29e4dc-d8e2-425d-b9ff-92bf843362ef/scratchpad/audio/sfx.wav peak 0.496

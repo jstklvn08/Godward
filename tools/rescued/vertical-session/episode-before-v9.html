@@ -1,0 +1,1145 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Creation and the Fall: Full Episode</title>
+<style>html,body{margin:0;background:#000;height:100%}svg{display:block;width:100vw;max-height:100vh}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"></svg>
+<script src="shared.js"></script>
+<script src="style-kit.js"></script>
+<script>
+// Full episode in the glowing-collage style of clip 6, timed to the narration
+// "Creation and the fall.wav" (260.4 s). Cue times below come from a word-level transcript.
+// On-screen strips show the narration's own wording, with the passage it summarises.
+const {G,R,C,E,L,P,T,prog,ease,lerp,mix,sc,rng,clamp}=K;
+const {tw,hash,nid,jit,piece,glow,torn,ridge:ridge0,strip,tape,label,mark,scribble,arrow,highlight,paperDefs,paperOver,vignette,chubby:chubby0,along,sword,wing,snake}=S;
+// In portrait, landscape layers reach further down so the ground fills the tall frame.
+const ridge=(seed,base,amp,wave,x0=-120,x1=2040,bottom=1200)=>ridge0(seed,base,amp,wave,x0,x1,bottom===1200&&/[?&]v=1/.test(location.search)?1780:bottom);
+const INK='#141416',YEL='#FFE100',CORAL='#FF5A48',STN=2100,DUR=260.4,PAN=.32;
+const r0=rng(404);
+const stars=[...Array(140)].map(()=>[r0()*1920,r0()*1080,1+r0()*3.2,r0()*6]);
+const flies=[...Array(30)].map(()=>[r0(),r0(),r0()*6.28,r0()]);
+const held=(t,fps=12)=>Math.floor(t*fps)/fps;
+const grad=(id,a,b,x2=1,y2=1)=>`<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
+const ADAM={f:false,tunic:'#FFC24C',tunic2:'#E0623C'},EVE={f:true,tunic:'#7CFFE6',tunic2:'#2E9AD8'};
+
+function sheetBase(i,c1,c2){
+  const V=/[?&]v=1/.test(location.search),y0=V?-700:-60,hh=V?2500:1200,id='sh'+i,inner=torn(-34,y0,1988,hh,14+i,18,0,18);
+  return grad(id,c1,c2,.7,1)+`<path d="${torn(-44,y0,2008,hh,10+i,18,0,18)}" fill="#F5F0E2"/><clipPath id="${id}c"><path d="${inner}"/></clipPath><g clip-path="url(#${id}c)"><path d="${inner}" fill="url(#${id})"/>`+(V?stars.map(st=>C(st[0].toFixed(0),(-680+st[1]*.62).toFixed(0),st[2]*.8,'#fff',{opacity:.35})).join(''):'');
+}
+// A torn verse strip: lines of the narration, an optional highlight on one phrase, and a reference label.
+function verse0(t,at,x,y,lines,ref,o={}){
+  const {size=46,hl=null,hlAt=at+.6,hlDur=.5,seed=7,labelBelow=true,id=1,maxW=0}=o;
+  const w=Math.max(maxW,...lines.map(s=>tw(s,size)))+100,h=lines.length*size*1.32+size*.9;
+  let g=strip(x,y,w,h,seed,'#F6EFDC',{ax:12,ay:4});
+  if(hl){const li=lines.findIndex(s=>s.includes(hl));if(li>=0){const pre=lines[li].slice(0,lines[li].indexOf(hl));g+=highlight(x+50+tw(pre,size),y+size*.45+li*size*1.32,tw(hl,size),size*1.12,ease.inOut(prog(t,hlAt,hlAt+hlDur)),YEL);}}
+  lines.forEach((s,i)=>g+=T(x+50,y+size*1.25+i*size*1.32,s,{size,font:'Georgia',fill:INK}));
+  g+=tape(x+w-40,y+2,120,8);
+  if(ref)g+=labelBelow?label(x,y+h+10,ref,{size:26}):label(x+w+10,y+h*.5-20,ref,{size:26});
+  return piece(t,at,x+w/2,y+h/2,g,id,1.2);
+}
+// ---------- Vertical mode, verse timing, subtitles, character life ----------
+// ?v=1 renders a 1080x1920 portrait cut: a camera moves over the sheets, verses sit on top, subtitles below.
+const VERT=/[?&]v=1/.test(location.search);
+let CURT=0;
+// Narration words: [text, start, end] from a word-level transcript of "Creation and the fall.wav".
+const SUBW=[["In",0,0.34],["the",0.34,0.44],["beginning,",0.44,1.48],["God",1.48,1.6],["created",1.6,2.16],["the",2.16,2.46],["heavens",2.46,2.76],["and",2.76,3.48],["the",3.48,3.66],["earth.",3.66,4.7],["The",4.7,5.04],["earth",5.04,5.28],["was",5.28,5.52],["formless",5.52,6.12],["and",6.12,6.58],["empty,",6.58,7.34],["and",7.34,7.72],["darkness",7.72,8.16],["covered",8.16,8.6],["the",8.6,8.84],["deep.",8.84,10.06],["Then",10.06,10.38],["God",10.38,10.76],["spoke.",10.76,12.44],["On",12.56,12.82],["the",12.82,12.98],["first",12.98,13.26],["day,",13.26,13.86],["there",13.86,14],["was",14,14.18],["light",14.18,14.6],["separated",14.6,15.42],["from",15.42,15.78],["the",15.78,15.94],["darkness.",15.94,16.96],["On",17,17.2],["the",17.2,17.38],["second,",17.38,18.18],["the",18.18,18.4],["sky",18.4,18.96],["dividing",18.96,19.7],["the",19.7,19.96],["waters.",19.96,20.98],["On",20.98,21.26],["the",21.26,21.44],["third,",21.44,21.96],["dry",21.96,22.24],["land,",22.24,22.64],["seas,",22.64,23],["and",23,23.28],["plants.",23.28,24.52],["On",24.52,24.88],["the",24.88,25.04],["fourth,",25.02,25.82],["the",25.82,26.04],["sun,",26.04,27.02],["the",27.02,27.1],["moon,",27.08,27.7],["and",27.7,27.78],["the",27.8,27.94],["stars.",27.94,29.04],["On",29.04,29.3],["the",29.3,29.46],["fifth,",29.46,30.1],["creatures",30.1,30.42],["filled",30.42,30.8],["the",30.8,31.02],["seas",31.02,31.32],["and",31.32,31.7],["birds",31.7,32.04],["filled",32.04,32.44],["the",32.44,32.64],["sky.",32.64,33.72],["And",33.72,33.9],["on",33.9,34.04],["the",34.04,34.26],["sixth,",34.26,35.08],["animals",35.08,35.36],["walked",35.36,35.86],["the",35.86,36.14],["land.",36.14,37.28],["But",37.28,37.64],["God",37.64,37.96],["wasn't",37.96,38.5],["finished.",38.5,40.2],["The",40.2,40.36],["climax",40.36,40.64],["of",40.64,40.96],["creation",40.96,41.3],["was",41.3,41.64],["humanity.",41.7,42.74],["God",42.74,42.96],["made",42.96,43.22],["human",43.22,43.56],["beings,",43.56,44.36],["male",44.36,44.64],["and",44.64,44.88],["female,",44.88,45.68],["in",45.68,45.78],["his",45.78,45.96],["own",45.96,46.18],["image.",46.18,47.16],["He",47.16,47.46],["blessed",47.46,47.94],["them",47.94,48.44],["and",48.44,49.06],["gave",49.06,49.34],["them",49.34,49.62],["charge",49.62,50.1],["over",50.1,50.58],["the",50.58,50.8],["earth.",50.8,51.76],["Then",51.76,52.1],["He",52.1,52.28],["looked",52.28,52.54],["at",52.54,52.72],["everything",52.72,53.3],["He",53.3,53.7],["had",53.7,53.82],["made,",53.82,54.4],["and",54.4,54.72],["it",54.72,54.86],["was",54.86,55],["very",55,55.3],["good.",55.3,56.22],["On",56.22,56.48],["the",56.48,56.66],["seventh",56.66,56.98],["day,",56.98,58],["God",58,58.08],["rested,",58.04,58.74],["and",58.74,59.08],["He",59.08,59.16],["made",59.16,59.38],["that",59.38,59.6],["day",59.6,59.9],["holy.",59.9,61.62],["Genesis",61.62,62],["then",62,62.42],["moves",62.42,62.66],["in",62.66,62.9],["closer.",62.9,63.2],["The",63.4,63.64],["Lord",63.66,63.95],["God",63.98,64.22],["formed",64.25,64.63],["the",64.67,64.91],["man",64.93,65.17],["from",65.2,65.48],["the",65.51,65.75],["dust",65.78,66.06],["of",66.09,66.28],["the",66.31,66.54],["ground,",66.57,67.28],["and",67.36,67.6],["breathed",67.63,68.1],["into",68.15,68.44],["his",68.47,68.71],["nostrils",68.74,69.21],["the",69.26,69.5],["breath",69.53,69.91],["of",70,70.14],["life.",70.14,71.28],["He",71.28,71.36],["placed",71.36,71.7],["him",71.7,71.98],["in",71.98,72.2],["a",72.2,72.32],["garden",72.32,72.72],["in",72.72,73.04],["Eden",73.04,73.42],["to",73.42,73.92],["work",73.92,74.22],["it",74.22,74.44],["and",74.44,74.74],["take",74.74,74.96],["care",74.96,75.28],["of",75.28,75.46],["it.",75.46,75.9],["In",76.9,77.08],["the",77.08,77.2],["middle",77.2,77.48],["of",77.48,77.72],["the",77.72,77.82],["garden",77.82,78.16],["stood",78.16,78.52],["two",78.52,78.94],["trees,",78.94,80],["tree",80,80.28],["of",80.28,80.46],["life",80.46,80.72],["and",80.72,81.18],["the",81.18,81.3],["tree",81.3,81.62],["of",81.62,81.86],["the",81.86,82],["knowledge",82,82.32],["of",82.32,82.64],["good",82.64,83],["and",83,83.5],["evil.",83.5,84.66],["The",84.66,84.8],["man",84.8,85.06],["could",85.06,85.3],["eat",85.3,85.42],["freely",85.42,85.82],["from",86.04,86.12],["any",86.1,86.46],["tree",86.46,86.86],["except",86.86,87.2],["the",87.2,87.44],["second",87.44,87.68],["one.",87.68,88.6],["If",88.6,88.88],["he",88.88,89.06],["ate",89.06,89.34],["from",89.34,89.62],["that",89.62,89.88],["tree,",89.88,90.78],["God",90.78,90.96],["warned,",90.96,91.98],["he",91.98,92.18],["would",92.18,92.32],["certainly",92.32,92.8],["die.",93.1,94.5],["Then",94.5,94.86],["God",94.86,95.2],["said",95.2,95.52],["something",95.52,95.96],["new.",95.96,96.72],["It",96.72,97.08],["is",97.08,97.22],["not",97.22,97.5],["good",97.5,97.92],["for",97.92,98.3],["the",98.3,98.46],["man",98.46,98.72],["to",98.72,98.98],["be",98.98,99.16],["alone.",99.16,100.4],["He",100.4,100.64],["brought",100.64,100.9],["the",100.9,101.14],["animals",101.14,101.44],["to",101.44,101.7],["the",101.7,101.82],["man",101.82,102.02],["to",102.02,102.16],["be",102.16,102.32],["named,",102.32,102.78],["but",102.78,103.12],["not",103.12,103.34],["one",103.34,103.86],["was",103.86,104.48],["a",104.48,104.7],["suitable",104.7,104.88],["helper.",104.86,105.96],["So",105.96,106.34],["God",106.34,106.64],["put",106.64,107],["the",107,107.26],["man",107.26,107.5],["into",107.5,107.86],["a",107.86,108.06],["deep",108.06,108.3],["sleep,",108.3,108.98],["took",108.98,109.12],["one",109.12,109.34],["of",109.34,109.46],["his",109.46,109.6],["ribs,",109.6,110.3],["and",110.3,110.58],["made",110.58,110.76],["a",110.76,110.94],["woman.",110.94,111.84],["When",111.84,112.1],["the",112.1,112.26],["man",112.26,112.52],["saw",112.52,112.9],["her,",112.9,113.38],["he",113.38,113.52],["said",113.52,113.76],["she",113.76,114],["was",114,114.2],["bone",114.2,114.64],["of",114.64,114.98],["my",114.98,115.28],["bones",115.28,115.76],["and",115.76,116.42],["flesh",116.42,116.9],["of",116.9,117.54],["my",117.54,117.82],["flesh.",117.82,119.12],["The",119.12,119.5],["two",119.5,119.82],["became",119.82,120.2],["one",120.2,120.54],["flesh,",120.54,121.38],["naked",121.38,121.64],["and",121.64,122.02],["without",122.02,122.3],["shame.",122.3,123.94],["Then",123.94,124.3],["came",124.3,124.52],["the",124.52,124.8],["serpent,",124.8,125.62],["craftier",125.6,126.02],["than",126.02,126.2],["any",126.2,126.52],["other",126.52,126.78],["wild",126.78,127.14],["animal.",127.14,128.14],["It",128.14,128.4],["asked",128.4,128.68],["the",128.68,128.84],["woman",128.84,129.04],["a",129.04,129.22],["question.",129.22,130.04],["Did",130.04,130.16],["God",130.16,130.46],["really",130.46,130.94],["say?",130.94,132.18],["She",132.18,132.44],["explained",132.44,132.84],["God's",132.84,133.24],["command,",133.24,133.94],["adding",133.94,134.14],["that",134.14,134.38],["they",134.38,134.52],["must",134.52,134.66],["not",134.66,135.02],["even",135.02,135.38],["touch",135.38,135.74],["the",135.74,136.02],["fruit.",136.02,137.12],["And",137.12,137.38],["the",137.38,137.62],["serpent",137.62,137.9],["contradicted",137.9,138.66],["God",138.66,139.12],["directly.",139.12,140.44],["You",140.44,140.66],["will",140.66,140.8],["not",140.8,141],["certainly",141,141.56],["die.",141.56,143.26],["Eat",143.26,143.5],["it,",143.5,143.76],["the",143.76,143.86],["serpent",143.86,144.12],["claimed,",144.12,144.84],["and",144.84,145.04],["your",145.04,145.18],["eyes",145.18,145.56],["will",145.56,145.8],["be",145.8,145.96],["opened.",145.96,147],["You",147,147.48],["will",147.48,147.78],["be",147.78,148.06],["like",148.06,148.36],["God,",148.36,149.1],["knowing",149.1,149.38],["good",149.38,149.78],["and",149.78,150.28],["evil.",150.28,151.76],["The",151.76,152.14],["woman",152.14,152.38],["saw",152.38,152.76],["that",152.76,152.96],["the",152.96,153.12],["fruit",153.12,153.38],["looked",153.38,153.68],["good",153.68,154.04],["and",154.04,154.5],["that",154.5,154.62],["it",154.62,154.7],["was",154.7,154.82],["desirable",154.82,155.32],["for",155.32,155.72],["gaining",155.72,155.98],["wisdom.",155.98,157.24],["She ate",157.24,157.7],["some.",157.7,158.88],["She",158.88,159.18],["gave",159.18,159.4],["some",159.4,159.66],["to",159.66,159.88],["her",159.88,160],["husband",160,160.32],["who",160.32,160.66],["was",160.66,160.86],["with",160.86,161.1],["her,",161.1,161.46],["and",161.46,161.82],["he",161.82,162.08],["ate",162.08,162.28],["too.",162.28,163.3],["Their",163.3,163.56],["eyes",163.56,163.9],["were",163.9,164.12],["opened",164.12,164.5],["just",164.5,165],["as",165,165.3],["promised.",165.3,166.48],["But",166.48,166.7],["all",166.7,166.92],["they",166.92,167.1],["discovered",167.1,167.64],["was",167.64,168.06],["their",168.06,168.3],["nakedness",168.3,169.1],["and",169.1,169.82],["their",169.82,170],["shame.",170,171.46],["So",171.46,171.7],["they",171.7,171.86],["sewed",171.86,172.34],["fig",172.34,172.7],["leaves",172.7,173.14],["together",173.14,173.64],["to",173.64,173.96],["cover",173.96,174.32],["themselves.",174.32,176.28],["Then",176.28,176.62],["they",176.62,176.82],["heard",176.82,177.04],["the",177.04,177.22],["Lord",177.22,177.4],["God",177.4,177.68],["walking",177.68,178.1],["in",178.1,178.3],["the",178.3,178.42],["garden,",178.42,179.02],["in",179.02,179.28],["the",179.28,179.44],["cool",179.44,179.82],["of",179.82,180.16],["the",180.16,180.32],["day,",180.32,180.92],["and",180.92,181.18],["they",181.18,181.32],["hid",181.32,181.64],["among",181.64,181.98],["the",181.98,182.16],["trees.",182.16,189.98],["He",183.48,183.62],["called",183.62,183.98],["out,",184,184.94],["Where",184.94,185.34],["are",185.34,185.66],["you?",185.66,186.64],["The",186.88,187.04],["man",187.04,187.38],["admitted",187.38,187.82],["that",187.82,188.14],["he",188.14,188.32],["had",188.32,188.48],["hidden",188.48,188.8],["in",188.8,189.16],["fear,",189.16,190.26],["and",190.26,190.54],["then",190.54,190.72],["came",190.72,190.96],["the",190.96,191.18],["blame.",191.18,192.32],["He",192.32,192.48],["pointed",192.48,192.74],["to",192.74,193.04],["the",193.04,193.2],["woman",193.2,193.42],["and",193.42,194],["to",194,194.16],["God,",194.16,194.68],["for giving",194.68,194.94],["her",194.94,195.24],["to",195.24,195.42],["him.",195.42,196.28],["She",196.28,196.42],["pointed",196.42,196.68],["to",196.68,196.96],["the",196.96,197.12],["serpent.",197.12,198.84],["The",198.84,199.1],["serpent",199.1,199.52],["was",199.52,199.92],["cursed",199.92,200.34],["to",200.34,200.84],["crawl",200.84,201.2],["on",201.2,201.44],["its",201.44,201.64],["belly.",201.64,203.16],["God",203.16,203.42],["put",203.42,203.72],["hostility",203.72,204.4],["between",204.4,204.96],["it",204.94,205.3],["and",205.3,205.88],["the",205.88,206.04],["woman",206.04,206.3],["and",206.3,207.06],["between",207.06,207.42],["their",207.42,207.7],["offspring.",207.7,209.14],["He",209.14,209.38],["will",209.38,209.56],["crush",209.56,209.88],["your",209.88,210.2],["head",210.2,210.56],["and",210.56,211.18],["you",211.18,211.3],["will",211.3,211.44],["strike",211.44,211.88],["his",211.88,212.2],["heel.",212.2,213.94],["Christians",213.94,214.02],["have",213.94,214.26],["long",214.26,214.6],["read",214.6,214.94],["this",214.94,215.26],["as",215.26,215.62],["the",215.62,215.78],["first",215.78,216.08],["hint",216.08,216.38],["of",216.38,216.56],["a",216.56,216.78],["savior.",216.78,217.7],["The",217.7,217.88],["woman",217.88,218.12],["would",218.12,218.38],["have",218.38,218.52],["greatly",218.52,218.82],["increased",218.94,219.56],["pain",219.56,220.1],["in",220.1,220.56],["childbearing",220.56,221.28],["and",221.28,222.06],["conflict",222.06,222.66],["in",222.66,222.94],["her",222.94,223.04],["marriage.",223.04,224.44],["The",224.44,224.64],["man",224.64,224.92],["would",224.92,225.14],["work",225.14,225.44],["cursed",225.44,225.9],["ground",225.9,226.38],["through",226.38,226.72],["painful",226.72,227.26],["toil",227.26,227.96],["among",228.32,228.64],["thorns",228.64,229.22],["and",229.22,229.54],["thistles",229.54,230.08],["until",230.08,230.9],["death.",230.9,232.16],["For",232.16,232.44],["dust",232.44,232.74],["you",232.74,233.1],["are,",233.1,233.82],["and",233.82,233.92],["to",233.92,234.08],["dust",234.08,234.52],["you",234.52,235.04],["will",235.04,235.22],["return.",235.22,236.94],["Adam",236.94,237.36],["named",237.36,237.58],["his",237.58,237.74],["wife",237.74,238],["Eve",238,238.5],["because",238.5,239],["she",239,239.22],["would",239.22,239.36],["become",239.36,239.66],["the",239.66,239.88],["mother",239.88,240.14],["of",240.14,240.72],["all",240.72,240.88],["the",240.88,241.04],["living,",241.04,241.76],["and",241.76,242.2],["in",242.2,242.38],["an",242.38,242.6],["act",242.6,242.8],["of",242.8,243],["mercy",243,243.42],["God",243.42,243.78],["made",243.78,244.14],["garments",244.14,244.54],["of",244.54,244.8],["skin",244.8,245.2],["and",245.2,245.86],["clothed",245.86,246.24],["them.",246.24,247.12],["Then",247.12,247.44],["he",247.44,247.58],["banished",247.58,247.88],["them",247.88,248.22],["from",248.22,248.46],["Eden",248.46,248.72],["so",248.72,249.24],["they",249.24,249.36],["would",249.36,249.5],["not",249.5,249.7],["eat",249.7,249.98],["from",249.98,250.22],["the",250.22,250.38],["tree",250.38,250.58],["of",250.58,250.74],["life",250.74,251.02],["and",251.02,251.48],["live",251.48,251.68],["forever.",251.68,253.1],["On",253.1,253.38],["the",253.38,253.52],["east",253.52,253.72],["side",253.72,254.02],["of",254.02,254.14],["the",254.14,254.26],["garden,",254.26,254.82],["he",254.82,255.16],["placed",255.16,255.52],["cherubim",255.52,256.18],["and",256.18,256.66],["a",256.66,256.8],["flaming",256.8,257.1],["sword",257.1,257.66],["to",257.66,258.28],["guard",258.28,258.54],["the",258.54,258.76],["way",258.76,258.94],["back",258.94,259.26],["to",259.26,259.48],["that",259.48,259.7],["tree.",259.7,260.38]];
+const normW=s=>s.toLowerCase().replace(/’/g,"'").replace(/[^a-z']/g,'');
+const SUBN=SUBW.map(w=>normW(w[0]));
+// A verse leaves the screen about a second after the narration finishes saying it.
+const VEND={};
+function verseEnd(at,lines){
+  const key=at+'|'+lines.join(' ');
+  if(VEND[key]!=null)return VEND[key];
+  const vw=lines.join(' ').split(/\s+/).map(normW).filter(Boolean);
+  let best=null;
+  for(let n=Math.min(3,vw.length);n>=1&&best==null;n--){
+    const tail=vw.slice(-n);
+    for(let i=n-1;i<SUBW.length;i++){
+      if(SUBW[i][1]<at-2)continue;if(SUBW[i][1]>at+25)break;
+      if(tail.every((w,j)=>SUBN[i-n+1+j]===w)){best=SUBW[i][2];break;}
+    }
+  }
+  return VEND[key]=Math.max(best!=null?best+1.3:at+2+vw.length*.42,at+2.5);
+}
+// Verses: in landscape they fade out in place; in portrait they are queued for the top band.
+const VQ=[];
+function verse(t,at,x,y,lines,ref,o={}){
+  const end=verseEnd(at,lines);
+  if(VERT){VQ.push({at,end,lines,ref,o});return `<!--V${VQ.length-1}-->`;}
+  const fo=prog(t,end,end+.5);
+  if(fo>=1)return '';
+  return G(`translate(0 ${(-30*ease.inOut(fo)).toFixed(1)})`,verse0(t,at,x,y,lines,ref,o),1-fo);
+}
+// Re-wrap a verse for the narrow frame, keeping the highlighted phrase on one line.
+function wrapVerse(lines,size,maxW,hl){
+  let text=lines.join(' ');const toks=[];
+  if(hl&&text.includes(hl)){const i=text.indexOf(hl);toks.push(...text.slice(0,i).split(/\s+/).filter(Boolean),hl,...text.slice(i+hl.length).split(/\s+/).filter(Boolean));}
+  else toks.push(...text.split(/\s+/).filter(Boolean));
+  for(let i=toks.length-2;i>=0;i--)if(/^[“‘"(]+$/.test(toks[i])){toks[i]+=toks[i+1];toks.splice(i+1,1);}
+  const out=[];let cur='';
+  toks.forEach(w=>{const n=cur?cur+' '+w:w;if(cur&&tw(n,size)>maxW){out.push(cur);cur=w;}else cur=n;});
+  if(cur)out.push(cur);
+  // Join a hanging highlighted phrase back onto its punctuation.
+  return out.map(s=>s.replace(/ ([,.;:!?”])/g,'$1'));
+}
+function verseOverlay(t){
+  let g='',y=170;
+  VQ.filter(v=>t>=v.at&&t<v.end+.5).sort((a,b)=>a.at-b.at).forEach(v=>{
+    const size=Math.min(54,Math.max(44,v.o.size||46)),lines=wrapVerse(v.lines,size,880,v.o.hl);
+    const w=Math.max(...lines.map(s=>tw(s,size)))+100,h=lines.length*size*1.32+size*.9,x=(1080-w)/2;
+    const out=prog(t,v.end,v.end+.5);
+    g+=G(`translate(0 ${(-50*ease.inOut(out)).toFixed(1)})`,verse0(t,v.at,x,y,lines,v.ref,Object.assign({},v.o,{size,labelBelow:true,maxW:0})),1-out);
+    y+=h+(v.ref?70:30);
+  });
+  return g;
+}
+// Subtitles: short cues, the word being spoken turns yellow.
+const CUES=(()=>{
+  const cues=[];let cur=null;
+  SUBW.forEach((w,i)=>{
+    const prev=SUBW[i-1],len=cur?cur.w.map(x=>x[0]).join(' ').length:0;
+    const brk=!cur||len+w[0].length+1>34||(prev&&/[.?!]$/.test(prev[0]))||(prev&&w[1]-prev[2]>.7)||(prev&&/[,;:]$/.test(prev[0])&&len>18);
+    if(brk){cur={w:[]};cues.push(cur);}
+    cur.w.push(w);
+  });
+  cues.forEach((c,i)=>{c.s=c.w[0][1];c.e=Math.min(c.w[c.w.length-1][2]+.6,cues[i+1]?cues[i+1].w[0][1]:1e9);});
+  return cues;
+})();
+// Portrait captions: tiny bursts of one to three words, each word popping in as it is spoken.
+const BURSTS=(()=>{
+  const out=[];let cur=null;
+  SUBW.forEach((w,i)=>{const prev=SUBW[i-1],len=cur?cur.w.map(x=>x[0]).join(' ').length:0;
+    if(!cur||cur.w.length>=3||len+w[0].length+1>15||(prev&&/[.?!,;:]$/.test(prev[0]))||(prev&&w[1]-prev[2]>.45)){cur={w:[]};out.push(cur);}
+    cur.w.push(w);});
+  out.forEach((c,i)=>{c.s=c.w[0][1];c.e=Math.min(c.w[c.w.length-1][2]+.35,out[i+1]?out[i+1].w[0][1]:1e9);});
+  return out;
+})();
+function burstCaption(t){
+  const c=BURSTS.find(c=>t>=c.s-.03&&t<c.e);if(!c)return '';
+  const size=78,F='Segoe UI',WT=900,sp=tw(' ',size,F,WT),y=1300;
+  const ws=c.w.map(w=>tw(w[0].toUpperCase(),size,F,WT)),tot=ws.reduce((a,b)=>a+b,0)+sp*(ws.length-1);
+  let x=540-tot/2,g='',x1=x;const vis=c.w.filter(w=>t>=w[1]-.03);
+  c.w.forEach((w,k)=>{const p=prog(t,w[1]-.03,w[1]+.1);if(p>0){const cur=k===vis.length-1,cx=x+ws[k]/2;
+    g+=G(sc(cx,y-size*.35,lerp(1.5,cur?1.08:1,ease.back(p))),T(x,y,w[0].toUpperCase(),{size,font:F,weight:WT,fill:cur?YEL:'#FFFFFF',extra:'stroke="#06061A" stroke-width="14" stroke-linejoin="round" paint-order="stroke"'}),Math.min(1,p*3));x1=x+ws[k];}
+    x+=ws[k]+sp;});
+  return g;
+}
+function subtitles(t){
+  if(VERT)return burstCaption(t);
+  const c=CUES.find(c=>t>=c.s-.05&&t<c.e);if(!c)return '';
+  const size=VERT?56:40,maxW=VERT?960:1500,cx=VERT?540:960,y0=VERT?1290:1046,F='Segoe UI',WT=800;
+  const sp=tw(' ',size,F,WT),wd=ws=>ws.reduce((a,w,i)=>a+tw(w[0],size,F,WT)+(i?sp:0),0);let lines=[c.w];
+  if(wd(c.w)>maxW){let bi=1,bm=1e9;for(let i=1;i<c.w.length;i++){const m=Math.max(wd(c.w.slice(0,i)),wd(c.w.slice(i)));if(m<bm){bm=m;bi=i;}}lines=[c.w.slice(0,bi),c.w.slice(bi)];}
+  const pop=ease.back(prog(t,c.s-.05,c.s+.12)),lh=size*1.2,top=y0-(lines.length-1)*lh;
+  let g='';
+  lines.forEach((ln,li)=>{
+    const tot=ln.reduce((a,w,i)=>a+tw(w[0],size,F,WT)+(i?sp:0),0);let x=cx-tot/2;
+    if(VERT)g+=R(cx-tot/2-28,top+li*lh-size*.98,tot+56,size*1.34,size*.4,'#05061A',{opacity:.62});
+    ln.forEach(w=>{const said=t>=w[1];g+=T(x,top+li*lh,w[0],{size,font:F,weight:WT,fill:said?YEL:'#FFFFFF',extra:`stroke="#08081A" stroke-width="${VERT?11:9}" stroke-linejoin="round" paint-order="stroke"`});x+=tw(w[0],size,F,WT)+sp;});
+  });
+  return `<g transform="${sc(cx,y0,lerp(.86,1,pop))}">${g}</g>`;
+}
+// Characters breathe, shift their weight, tilt their heads, and gesture while they speak.
+const TALK=[[129.4,131.4,1],[132.3,136.6,1],[186.9,189.3,0],[191.6,195.4,0],[196.0,198.6,1],[112.6,116.2,0]];
+const chubby=(x,y,s,o={})=>{
+  const ht=held(CURT,12),ph=(o.f?1.9:0)+(o.flip===-1?.7:0),br=Math.sin(ht*2.4+ph);
+  const o2=Object.assign({},o);
+  o2.lean=(o.lean||0)+Math.sin(ht*1.1+ph)*5;
+  if(o.walk==null)o2.walk=Math.sin(ht*1.3+ph)*.25;
+  const tk=TALK.find(k=>CURT>=k[0]&&CURT<k[1]&&(k[2]===1)===!!o.f);
+  if(tk)o2.reach=Math.max(o.reach||0,.22+.3*Math.abs(Math.sin(ht*4.4+ph)));
+  else if(!o.reach)o2.reach=.06+.06*Math.sin(ht*.8+ph);
+  const sy=1+.03*br,sx=1-.018*br,rot=Math.sin(ht*.9+ph)*2.4;
+  return `<g transform="translate(${x} ${y}) rotate(${rot.toFixed(2)}) scale(${sx.toFixed(3)} ${sy.toFixed(3)}) translate(${-x} ${-y})">`+chubby0(x,y,s,o2)+'</g>';
+};
+function firefly(t,x0,y0,w,h,col,n=24,k=1){
+  let g='';
+  flies.slice(0,n).forEach((f,i)=>{const x=x0+f[0]*w+Math.sin(t*.9+f[2])*26,y=y0+f[1]*h+Math.cos(t+f[2]*2)*20,pl=.5+.5*Math.sin(t*3.4+i);g+=glow(x,y,26,col,pl*.9*k)+C(x,y,3,'#fff',{opacity:pl*k});});
+  return g;
+}
+function starfield(t,k=1,maxY=1080){
+  return stars.map(s=>s[1]<maxY?C(s[0],s[1],s[2],'#fff',{opacity:k*(.3+.6*Math.sin(t*2.2+s[3])**2)}):'').join('');
+}
+const pair=(t,x,y,s,o={})=>{
+  const f=held(t,10),b=Math.sin(f*3)*2,{gap=170,aura='#7CFFE6',auraOp=.42,ad={},ev={}}=o;
+  return chubby(x-gap/2,y+b,s,Object.assign({},ADAM,{aura,auraOp,filter:'htSoft'},ad))+chubby(x+gap/2,y-b,s*.97,Object.assign({},EVE,{flip:-1,aura,auraOp,filter:'htSoft'},ev));
+};
+
+// ---------- Sheet 0: In the beginning (0-12.45) ----------
+function s0(t,l){
+  let g=sheetBase(0,'#10144A','#05061C');
+  g+=starfield(t,.5*prog(t,.2,1.5),700);
+  // The deep: dark paper waves, slowly rolling.
+  for(let i=0;i<4;i++){const y=640+i*95,ph=t*.35*(i%2?1:-1);g+=`<path d="${ridge(30+i,y+Math.sin(ph)*8,22-i*3,160+i*30)}" fill="${['#0E1A44','#0A1438','#07102C','#050A20'][i]}" transform="translate(${Math.sin(t*.3+i)*30} 0)"/>`;}
+  // A slow dark swirl over the waters: formless and empty.
+  const sw=prog(t,3.5,5.5);
+  for(let k=0;k<5;k++){const rx=520-k*90,ry=150-k*24,a=t*(8+k*4)*(k%2?1:-1);g+=`<ellipse cx="1300" cy="560" rx="${rx}" ry="${ry}" fill="none" stroke="${['#2C3F8E','#24357C','#1C2C6C','#2A4A9E','#3A5FC8'][k]}" stroke-width="${10-k}" stroke-dasharray="${60+k*30} ${40+k*20}" transform="rotate(${a} 1300 560)" opacity="${(.55-k*.06)*sw}"/>`;}
+  g+=glow(1300,560,520,'#1E2C7A',.5*sw);
+  g+=verse(t,.25,90,110,['In the beginning, God created','the heavens and the earth.'],'GENESIS 1:1',{size:62,hl:'the heavens and the earth.',hlAt:2.2,hlDur:1.3,seed:3,id:1});
+  // Formless, empty, dark.
+  g+=piece(t,5.6,1260,560,label(1180,540,'FORMLESS',{size:32}),2,1.4)+arrow(1300,600,1330,660,1250,720,ease.inOut(prog(t,5.8,6.3)),CORAL,7);
+  g+=piece(t,6.9,1560,470,label(1500,450,'EMPTY',{size:32}),3,1.4)+mark(scribble(1600,770,170,70,9),ease.inOut(prog(t,7.1,7.7)),CORAL,7);
+  g+=piece(t,8.2,600,560,label(520,520,'DARKNESS OVER THE DEEP',{size:32}),4,1.4);
+  g+=piece(t,8.6,300,480,label(90,454,'GENESIS 1:2',{size:26}),5,1);
+  // "Then God spoke": a line of light crosses the dark.
+  const sp=ease.inOut(prog(t,10.1,11.6));
+  if(sp>0){
+    const x=lerp(-100,2000,sp);
+    g+=glow(x,560,420,'#E9FFFF',.75)+L(-100,560,x,560,'#F4FFFF',5,{opacity:.9})+glow(960,560,1200,'#FFFBE6',.5*prog(t,11.2,12.4));
+    g+=piece(t,10.2,960,380,label(960,350,'THEN GOD SPOKE',{size:40,anchor:'middle'}),6,1.2);
+  }
+  return g;
+}
+
+// ---------- Sheet 1: six days (12.45-40.2) ----------
+const DAYS=[12.56,17.0,20.98,24.52,29.04,33.72];
+// Day-panel kit: a thin sticker edge sized for the small panels, and soft blurs.
+const DAYDEFS=`<filter id="dstk" x="-40%" y="-40%" width="180%" height="190%" color-interpolation-filters="sRGB"><feMorphology in="SourceAlpha" operator="dilate" radius="3" result="fat"/><feFlood flood-color="#fff" result="wf"/><feComposite in="wf" in2="fat" operator="in" result="white"/><feGaussianBlur in="fat" stdDeviation="3" result="b"/><feOffset in="b" dx="3" dy="5" result="o"/><feFlood flood-color="#000" flood-opacity=".45" result="sf"/><feComposite in="sf" in2="o" operator="in" result="shadow"/><feMerge><feMergeNode in="shadow"/><feMergeNode in="white"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="dblur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"/></filter><filter id="dblur2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter>`;
+// A small sticker: inner drawn in local units, placed at (x,y), the white edge stays panel-sized.
+const stk=(x,y,s,inner,fx=1,rot=0)=>s<=0?'':`<g filter="url(#dstk)"><g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(2)}) scale(${(s*fx).toFixed(3)} ${s.toFixed(3)})">${inner}</g></g>`;
+const spark=(x,y,r,c,o=1)=>P(`M${x} ${y-r}Q${x} ${y} ${x+r} ${y}Q${x} ${y} ${x} ${y+r}Q${x} ${y} ${x-r} ${y}Q${x} ${y} ${x} ${y-r}Z`,c,{opacity:o.toFixed(3)});
+const vg=(a,b,c)=>{const id=nid();return [`url(#${id})`,`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/>${c?`<stop offset=".55" stop-color="${b}"/><stop offset="1" stop-color="${c}"/>`:`<stop offset="1" stop-color="${b}"/>`}</linearGradient>`];};
+const arc=(px,py,r,c,wd=3,o=.6,up=1)=>P(`M${(px-r).toFixed(1)} ${py.toFixed(1)}Q${px.toFixed(1)} ${(py-r*.7*up).toFixed(1)} ${(px+r).toFixed(1)} ${py.toFixed(1)}`,'none',{stroke:c,'stroke-width':wd,opacity:o});
+const wrapX=(x,w,u,v,pad=80)=>x-pad+(((u*(w+2*pad)+v)%(w+2*pad))+(w+2*pad))%(w+2*pad);
+
+// Day 1: light with no source, set apart from the dark.
+function dayLight(t,lt,x,y,w,h){
+  let g=R(x,y,w,h,0,'#03041A');
+  const dcx=x+w*.2,dcy=y+h*.5;
+  for(let k=0;k<4;k++)g+=`<ellipse cx="${dcx}" cy="${dcy}" rx="${170-k*38}" ry="${110-k*24}" fill="none" stroke="${['#141C55','#18226A','#121A50','#1C2A78'][k]}" stroke-width="${7-k}" stroke-dasharray="${50+k*20} ${34+k*12}" transform="rotate(${(t*(9+k*5)*(k%2?-1:1)).toFixed(1)} ${dcx} ${dcy})"/>`;
+  const sp=ease.out(prog(lt,0,1.6)),bx=x+w*lerp(1.12,.42,sp);
+  const ex=(yy,off,amp)=>bx+off+Math.sin(yy/38+t*1.1)*amp+Math.sin(yy/14-t*1.9)*amp*.4;
+  const edge=(off,amp)=>{let d=`M${x+w+60} ${y-30}`;for(let yy=y-30;yy<=y+h+30;yy+=10)d+=`L${ex(yy,off,amp).toFixed(1)} ${yy}`;return d+`L${x+w+60} ${y+h+30}Z`;};
+  const lid=nid(),cid=nid();
+  g+=`<linearGradient id="${lid}" x1="0" y1="0" x2="1" y2=".25"><stop offset="0" stop-color="#FFB648"/><stop offset=".35" stop-color="#FFE4A0"/><stop offset="1" stop-color="#FFC870"/></linearGradient>`;
+  // A warm halo that bleeds into the dark, then the light itself.
+  g+=`<path d="${edge(-40,16)}" fill="#FF9E3A" opacity=".5" filter="url(#dblur)"/><path d="${edge(-16,12)}" fill="#FFE29A" opacity=".8" filter="url(#dblur)"/>`;
+  g+=`<clipPath id="${cid}"><path d="${edge(0,10)}"/></clipPath><path d="${edge(0,10)}" fill="url(#${lid})"/><g clip-path="url(#${cid})">`;
+  // Drifting pools of brightness: several, so no single source.
+  for(let k=0;k<6;k++)g+=glow(bx+50+hash(k,31)*w*.55+Math.sin(t*.4+k)*24,y+hash(k,32)*h+Math.cos(t*.3+k)*16,80+hash(k,33)*70,'#FFFFFF',.5+.18*Math.sin(t*1.3+k*2));
+  // Slanting shafts.
+  for(let k=0;k<7;k++){const sx=bx-30+k*52+Math.sin(t*.5+k)*14,wd=10+hash(k,35)*24;g+=P(`M${sx.toFixed(1)} ${y-10}L${(sx+wd).toFixed(1)} ${y-10}L${(sx+wd-110).toFixed(1)} ${y+h+10}L${(sx-110).toFixed(1)} ${y+h+10}Z`,'#FFFDF2',{opacity:(.32+.18*Math.sin(t*1.7+k*1.3)).toFixed(3)});}
+  g+='</g>';
+  // A bright filament on the boundary.
+  let fl='';for(let yy=y-30;yy<=y+h+30;yy+=10)fl+=(fl?'L':'M')+ex(yy,0,10).toFixed(1)+' '+yy;
+  g+=P(fl,'none',{stroke:'#FFFFFF','stroke-width':3,opacity:.85*sp})+P(fl,'none',{stroke:'#FFE7A0','stroke-width':12,opacity:.5*sp,filter:'url(#dblur2)'});
+  // Motes: golden sparks drifting up, a few straying out over the dark and fading.
+  for(let k=0;k<36;k++){
+    const yy=y+(((hash(k,42)-lt*.05*(.5+hash(k,43)))%1)+1)%1*h,xx=bx-40+hash(k,41)*(x+w-bx+50)+Math.sin(t*1.2+k)*10,tw=.5+.5*Math.sin(t*3+k*1.7);
+    const dark=xx<ex(yy,0,10),fade=dark?clamp(1-(ex(yy,0,10)-xx)/40):1;
+    if(fade<=0)continue;
+    if(k%3===0)g+=glow(xx,yy,14,'#FFC24C',.7*tw*fade)+spark(xx,yy,(5+hash(k,44)*6)*(.6+.4*tw),'#FFB02E',.95*tw*fade);
+    else g+=C(xx.toFixed(1),yy.toFixed(1),(1.4+hash(k,44)*2.2).toFixed(2),dark?'#FFD27A':'#FFB848',{opacity:((.45+.55*tw)*fade).toFixed(3)});
+  }
+  return g;
+}
+
+// Day 2: waters above, sky between, waters below.
+function daySky(t,lt,x,y,w,h){
+  const sep=ease.inOut(prog(lt,.05,1.3)),cy=y+h/2,cx=x+w/2;
+  const wb=lerp(cy,y+h*.3,sep),st=lerp(cy,y+h*.68,sep);
+  const [sf,sd]=vg('#1A3C96','#3A7ED0','#7CC4EE');
+  let g=sd+R(x,y,w,h,0,sf);
+  // Clouds drifting in the open sky.
+  [[.15,.45,.9],[.55,.3,.75],[.85,.62,.6]].forEach(([u,v,s],k)=>{
+    const px=wrapX(x,w,u,held(lt,8)*(9+k*3)),py=lerp(wb,st,v)+Math.sin(t*.7+k)*3;
+    g+=glow(px,py,60*s,'#FFFFFF',.25*sep)+stk(px,py,s*sep,C(-30,4,17,'#D6E8FF')+C(28,2,18,'#D6E8FF')+C(-14,-8,22,'#EAF4FF')+C(10,-14,25,'#F4FAFF')+R(-44,2,90,18,9,'#D6E8FF')+E(0,14,38,5,'#B4CEF2'));
+  });
+  // The vault: the dividing line bows into a dome as the waters part.
+  const vd=`M${x+4} ${st.toFixed(1)} Q${cx} ${(2*(wb+14)-st).toFixed(1)} ${x+w-4} ${st.toFixed(1)}`;
+  g+=P(vd+'Z','#A8F0FF',{opacity:.12*sep});
+  // Waters above: layered, wavy underside.
+  const UW=['#12AFCB','#0B88B0','#08658E','#05456C'];
+  for(let i=0;i<4;i++){const sh=Math.sin(t*.6+i*1.4)*18;g+=`<path d="${ridge(140+i,wb-i*20,6-i,28+i*8,x-60,x+w+60,y-60)}" fill="${UW[i]}" transform="translate(${sh.toFixed(1)} 0)"/>`;}
+  for(let k=0;k<16;k++){const px=wrapX(x,w,hash(k,51),lt*(k%2?10:-10),30),py=y+8+hash(k,52)*Math.max(0,wb-y-22);if(py<wb-12)g+=arc(px,py,9+hash(k,53)*6,'#8FEAFF',3,.45,-1);}
+  // Waters below.
+  const SW=['#12AFCB','#0C8DB5','#086A96','#054A74'];
+  for(let i=0;i<4;i++){const sh=Math.sin(t*.7+i*1.2+2)*18;g+=`<path d="${ridge(150+i,st+i*22,6,28+i*8,x-60,x+w+60,y+h+60)}" fill="${SW[i]}" transform="translate(${sh.toFixed(1)} 0)"/>`;}
+  for(let k=0;k<18;k++){const px=wrapX(x,w,hash(k,55),lt*(k%2?12:-8),30),py=st+14+hash(k,56)*(y+h-st-10);g+=arc(px,py,8+hash(k,57)*8,'#8FEAFF',3,.45);}
+  for(let k=0;k<14;k++){const px=wrapX(x,w,k/14,lt*14,20),py=st+2+Math.sin(px/28+t*2)*3;g+=C(px.toFixed(1),py.toFixed(1),2.5+hash(k,58)*2,'#E8FCFF',{opacity:(.7*sep).toFixed(2)});}
+  // Sparkles on both water edges.
+  for(let k=0;k<10;k++){const tw=Math.max(0,Math.sin(t*2.5+k*1.9));g+=spark(x+hash(k,59)*w,k%2?wb-6:st+8,7*tw,'#FFFFFF',.8*tw*sep);}
+  // The firmament line itself, drawn on and glowing.
+  const mp=ease.inOut(prog(lt,.2,1.2));
+  g+=P(vd,'none',{stroke:'#55F0FF','stroke-width':16,opacity:.45*mp,filter:'url(#dblur2)'})+mark(vd,mp,'#7DF8FF',6);
+  return g;
+}
+
+// Day 3: an island rising out of the sea, then plants.
+function dayLand(t,lt,x,y,w,h){
+  const sea=y+h*.64,[sf,sd]=vg('#0A1F55','#1E5698'),[wf,wd]=vg('#1490C0','#0A5290','#06305E');
+  let g=sd+wd+R(x,y,w,h,0,sf);
+  for(let k=0;k<3;k++)g+=E(wrapX(x,w,hash(k,61),lt*6,90),y+30+k*34,60+k*10,8,'#2D6CB4',{opacity:.5});
+  // The far sea behind the island.
+  g+=R(x,sea-14,w,30,0,'#0E5E98');
+  const rise=ease.out(prog(lt,0,1.2)),dy=(1-rise)*130;
+  const u0=.03,u1=.76,sh=px=>{const u=(px-x)/w;return Math.sin(Math.PI*clamp((u-u0)/(u1-u0)));};
+  const top=px=>sea+10-118*Math.pow(sh(px),.7)-Math.sin((px-x)/26)*3*sh(px)+dy;
+  const landPath=f=>{let d=`M${x+w*u0-10} ${sea+40}`;for(let px=x+w*u0-10;px<=x+w*u1+10;px+=6)d+=`L${px.toFixed(1)} ${(top(px)+f(px)).toFixed(1)}`;return d+`L${x+w*u1+10} ${sea+40}Z`;};
+  const beach=px=>{const u=(px-x)/w;return Math.max(0,(u-.6)/.16,(.13-u)/.1)*12;};
+  // Sand, then grass that stops short of the beaches, with shaded bands.
+  g+=`<path d="${landPath(()=>0)}" fill="#F2C470"/><path d="${landPath(beach)}" fill="#1FAE7C"/><path d="${landPath(px=>beach(px)+18)}" fill="#169068"/><path d="${landPath(px=>beach(px)+44)}" fill="#11795A"/>`;
+  // Grass tufts along the island.
+  for(let k=0;k<44;k++){
+    const px=x+w*(.12+k*(.5/44));
+    const py=top(px)+beach(px)+3,gr=ease.out(prog(lt,.9+k*.01,1.3+k*.01));if(gr<=0)continue;
+    const sw=Math.sin(t*1.8+k*.5)*3;
+    for(let j=-1;j<=1;j++)g+=L(px+j*3,py,px+j*6+sw,py-(9+hash(k,70+j)*10)*gr,k%2?'#3BE0A0':'#27C08A',3);
+  }
+  // Two small trees.
+  [[.2,.85,1.15],[.52,.72,1.4]].forEach(([u,s,at],k)=>{
+    const px=x+w*u,py=top(px)+6,gr=ease.back(prog(lt,at,at+.5));if(gr<=0)return;
+    const sw=Math.sin(t*1.2+k)*3;
+    g+=glow(px,py-56*s,60*s*gr,'#35F2B4',.35)+stk(px,py,s*gr,P('M-9 0 L-6 -40 L6 -40 L9 0Z','#9A5430')+`<g transform="rotate(${sw.toFixed(1)} 0 -40)">`+C(-20,-50,17,'#16A876')+C(20,-52,18,'#16A876')+C(0,-62,24,'#1FCB86')+C(-10,-72,15,'#35E59A')+C(12,-70,13,'#35E59A')+C(-14,-54,4.5,'#FF7BD5')+C(14,-58,4.5,'#FFD45E')+C(2,-78,4.5,'#FF7BD5')+C(22,-44,4,'#FF8A5C')+`</g>`);
+  });
+  // Flowers and glowing plants, all different.
+  const FL=[[.1,0,'#FF7BD5'],[.14,1,'#FFD45E'],[.27,2,'#FF8A5C'],[.32,3,'#35F2B4'],[.38,0,'#B98CFF'],[.43,1,'#FF7BD5'],[.47,2,'#7CFFE6'],[.58,3,'#FFD45E'],[.63,0,'#35F2B4'],[.67,1,'#FF8A5C'],[.24,1,'#B98CFF'],[.35,0,'#FFD45E']];
+  FL.forEach(([u,ty,c],k)=>{
+    const px=x+w*u,py=top(px)+beach(px)+4,gr=ease.back(prog(lt,1.0+k*.09,1.4+k*.09));if(gr<=0)return;
+    const hh=(22+hash(k,75)*18)*gr,sw=Math.sin(t*1.6+k)*5,hx=px+sw,hy=py-hh;
+    g+=P(`M${px} ${py} Q${px-3} ${py-hh*.5} ${hx} ${hy}`,'none',{stroke:'#0E6A52','stroke-width':3.5})+E(px+5+sw*.4,py-hh*.4,6*gr,2.6*gr,'#2ED69A',{transform:`rotate(-30 ${px+5+sw*.4} ${py-hh*.4})`});
+    g+=glow(hx,hy,22*gr,c,.75);
+    if(ty===0)g+=C(hx,hy,7*gr,c)+C(hx-2,hy-2,2.4*gr,'#FFFFFF',{opacity:.7});
+    else if(ty===1){for(let p=0;p<6;p++){const a=p/6*6.283+t*.3;g+=C(hx+Math.cos(a)*6*gr,hy+Math.sin(a)*6*gr,4*gr,c);}g+=C(hx,hy,3.6*gr,'#FFF3B0');}
+    else if(ty===2)g+=`<g transform="translate(${hx.toFixed(1)} ${hy.toFixed(1)}) scale(${gr.toFixed(3)})">`+P('M-8 -8 Q-10 6 0 8 Q10 6 8 -8 L4 -3 L0 -10 L-4 -3Z',c)+`</g>`;
+    else g+=`<g transform="translate(${hx.toFixed(1)} ${hy.toFixed(1)}) scale(${gr.toFixed(3)})">`+E(-7,6,8,3.5,'#2ED69A',{transform:'rotate(-35 -7 6)'})+E(7,4,8,3.5,'#2ED69A',{transform:'rotate(35 7 4)'})+E(0,-3,4,7,c)+`</g>`;
+  });
+  // Water streaming off the land as it rises.
+  if(rise<1)for(let k=0;k<12;k++){const px=x+w*(u0+.04+hash(k,68)*(u1-u0-.08)),dp=(lt*1.6+hash(k,69))%1;g+=C(px.toFixed(1),(top(px)+dp*50).toFixed(1),3,'#9FE6FF',{opacity:(.8*(1-rise)).toFixed(2)});}
+  // The near sea in front, with waves.
+  g+=`<path d="${ridge(64,sea+6,4,20,x-40,x+w+40,y+h+40)}" fill="${wf}" transform="translate(${(Math.sin(t*.8)*10).toFixed(1)} 0)"/>`;
+  for(let k=0;k<16;k++){const px=wrapX(x,w,hash(k,62),lt*(k%2?9:-9),20),py=sea+22+hash(k,63)*(y+h-sea-30);g+=arc(px,py,8+hash(k,64)*8,'#5FD0F2',3,.5);}
+  // Ripples as the land breaks the surface.
+  for(let k=0;k<3;k++){const rp=prog(lt,.15+k*.25,1.5+k*.25);if(rp>0&&rp<1)g+=`<ellipse cx="${x+w*.4}" cy="${sea+10}" rx="${(w*.3+rp*w*.5).toFixed(1)}" ry="${(8+rp*14).toFixed(1)}" fill="none" stroke="#BDF4FF" stroke-width="3" opacity="${(.6*(1-rp)).toFixed(3)}"/>`;}
+  // Foam where the waves meet the shore.
+  for(let k=0;k<14;k++){const px=x+w*(u0+.02)+k*(w*(u1-u0-.04)/13),lap=Math.sin(t*1.8+k*1.1);g+=arc(px+lap*4,sea+8+(k%2)*3,14+(k%3)*4,'#FFFFFF',3.5,.8*rise);}
+  for(let k=0;k<16;k++){const px=x+w*(u0+hash(k,65)*(u1-u0))+Math.sin(t*2+k)*4,py=sea+6+hash(k,66)*10;g+=C(px.toFixed(1),py.toFixed(1),1.5+hash(k,67)*2.5,'#FFFFFF',{opacity:(.8*rise).toFixed(2)});}
+  for(let k=0;k<5;k++){const px=x+w*.84+k*16,py=sea+12+Math.sin(t*2.4+k)*2;g+=arc(px,py,7,'#DDF8FF',3,.6);}
+  return g;
+}
+
+// Day 4: sun, moon and stars.
+function dayLights(t,lt,x,y,w,h){
+  const [sf,sd]=vg('#050A2E','#0B1650','#1C1462');
+  let g=sd+R(x,y,w,h,0,sf);
+  g+=`<ellipse cx="${x+w*.6}" cy="${y+h*.45}" rx="${w*.7}" ry="46" fill="#7A5CFF" opacity=".16" transform="rotate(-24 ${x+w*.6} ${y+h*.45})" filter="url(#dblur)"/>`;
+  const tall=h>w,sx=x+w*(tall?.42:.27),sy=y+h*(tall?.62:.52),mx=x+w*.74,my=y+h*(tall?.2:.3);
+  const SC=['#FFFFFF','#CFE4FF','#FFE6B0','#FFC2E8'];
+  for(let k=0;k<56;k++){
+    const px=x+hash(k,71)*w,py=y+hash(k,72)*h;
+    if(Math.hypot(px-sx,py-sy)<95||Math.hypot(px-mx,py-my)<55)continue;
+    const sa=prog(lt,.2+hash(k,74)*1.4,.5+hash(k,74)*1.4),tw=.3+.7*Math.sin(t*(1.4+hash(k,73)*2.2)+k)**2,c=SC[k%4];
+    if(sa<=0)continue;
+    if(k%6===0)g+=glow(px,py,16,c,.6*tw*sa)+spark(px,py,(5+hash(k,75)*5)*(.7+.3*tw),c,.95*sa);
+    else g+=C(px.toFixed(1),py.toFixed(1),(.8+hash(k,75)*1.8).toFixed(2),c,{opacity:(tw*sa).toFixed(3)});
+  }
+  // A constellation joined up.
+  const CN=[[.55,.7],[.62,.58],[.7,.64],[.79,.55],[.9,.6],[.86,.73],[.7,.64]].map(([u,v])=>[x+w*u,y+h*(tall?v-.28:v)]);
+  const cp=ease.inOut(prog(lt,1.6,3.2));
+  g+=mark('M'+CN.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L'),cp,'#A9D4FF',2,{opacity:.7});
+  CN.slice(0,6).forEach(([px,py],k)=>{const tw=.7+.3*Math.sin(t*2.6+k*2),a=prog(lt,1.4+k*.12,1.7+k*.12);g+=glow(px,py,20,'#BFE0FF',.7*a*tw)+spark(px,py,8*tw,'#FFFFFF',a);});
+  // Sun: layered glow, a turning corona and a warm disc.
+  const sp=ease.back(prog(lt,0,.7));
+  if(sp>0){
+    g+=glow(sx,sy,200*sp,'#FF8A2A',.5)+glow(sx,sy,130*sp,'#FFD45E',.85);
+    const rays=(n,r0,r1,rot,c,o)=>{let d='';for(let i=0;i<n*2;i++){const a=i/(n*2)*6.283+rot,r=(i%2?r0:r1+Math.sin(t*3+i)*5)*sp;d+=(i?'L':'M')+(sx+Math.cos(a)*r).toFixed(1)+' '+(sy+Math.sin(a)*r).toFixed(1);}return P(d+'Z',c,{opacity:o});};
+    g+=rays(16,56,92,-t*.12,'#FF7A2A',.6)+rays(12,56,80,t*.2,'#FFB03A',.85);
+    const sg=nid();
+    g+=`<radialGradient id="${sg}" cx=".42" cy=".4"><stop offset="0" stop-color="#FFF8D0"/><stop offset=".55" stop-color="#FFD040"/><stop offset="1" stop-color="#FF9A26"/></radialGradient>`;
+    g+=stk(sx,sy,sp,C(0,0,52,`url(#${sg})`)+C(-18,-18,12,'#FFFBE6',{opacity:.55})+C(18,14,6,'#FFB43A',{opacity:.6})+C(-8,22,4,'#FFB43A',{opacity:.6}));
+  }
+  // Moon: a cratered crescent.
+  const mp=ease.back(prog(lt,.35,1));
+  if(mp>0){
+    const mid=nid(),mg=nid();
+    g+=glow(mx-6,my+4,110*mp,'#9CC8FF',.45);
+    g+=`<mask id="${mid}" maskUnits="userSpaceOnUse" x="-60" y="-60" width="120" height="120"><circle r="40" fill="#fff"/><circle cx="17" cy="-12" r="34" fill="#000"/></mask><radialGradient id="${mg}" cx=".3" cy=".6"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C6DCFF"/></radialGradient>`;
+    g+=stk(mx,my,mp,`<g mask="url(#${mid})">`+C(0,0,40,`url(#${mg})`)+C(-22,8,6,'#AFC6EE')+C(-12,24,4,'#AFC6EE')+C(-28,-10,3.5,'#AFC6EE')+`</g>`,1,Math.sin(t*.8)*5);
+  }
+  // An occasional shooting star.
+  const ss=(lt%3.4)/.6;
+  if(lt>1&&ss<1){const ax=x+w*(.4+ss*.3),ay=y+h*(.12+ss*.12);g+=L(ax-50,ay-20,ax,ay,'#FFFFFF',2.5,{opacity:(1-ss).toFixed(2)})+C(ax,ay,3,'#FFFFFF',{opacity:(1-ss).toFixed(2)});}
+  return g;
+}
+
+// Day 5 creatures, facing +x.
+const FISH=[
+  (c,a)=>`<g transform="rotate(${a} -16 0)">${P('M-14 0 L-32 -13 L-28 0 L-32 13Z',c)}</g>`+P('M-4 -12 Q4 -24 12 -12Z',c)+E(0,0,21,15,c)+E(-5,0,4,13,'#FFFFFF',{opacity:.35})+C(10,-3,3.4,'#081038')+C(11,-4,1.1,'#FFFFFF'),
+  (c,a)=>`<g transform="rotate(${a} -24 0)">${P('M-22 0 L-40 -11 L-34 0 L-40 11Z',c)}</g>`+P('M-10 -6 L2 -16 L10 -6Z',c)+E(0,0,29,8.5,c)+L(-14,2,18,2,'#FFFFFF',2,{opacity:.4})+C(18,-2,2.6,'#081038'),
+  (c,a)=>P('M-4 -12 L-20 -34 L6 -16Z',c)+P('M-4 12 L-20 34 L6 16Z',c)+`<g transform="rotate(${a} -12 0)">${P('M-10 0 L-24 -9 L-24 9Z',c)}</g>`+P('M-14 0 Q0 -26 20 0 Q0 26 -14 0Z',c)+L(-2,-16,-2,16,'#141436',3,{opacity:.5})+L(7,-12,7,12,'#141436',3,{opacity:.5})+C(11,-3,2.6,'#081038'),
+  (c,a)=>[0,1,2,3,4,5,6,7].map(i=>{const q=i/8*6.283;return P(`M${(Math.cos(q)*15).toFixed(1)} ${(Math.sin(q)*15).toFixed(1)}L${(Math.cos(q+.2)*22).toFixed(1)} ${(Math.sin(q+.2)*22).toFixed(1)}L${(Math.cos(q+.4)*15).toFixed(1)} ${(Math.sin(q+.4)*15).toFixed(1)}Z`,c);}).join('')+`<g transform="rotate(${a} -16 0)">${P('M-14 0 L-26 -8 L-26 8Z',c)}</g>`+C(0,0,17,c)+E(2,7,12,7,'#FFF3D0',{opacity:.6})+C(7,-4,5,'#FFFFFF')+C(8,-4,2.6,'#081038'),
+];
+const whale=(t)=>P('M-82 -6 L-116 -30 Q-112 -10 -100 -2 Q-114 8 -114 28 Z','#2B4FB0',{transform:`rotate(${(Math.sin(t*1.6)*8).toFixed(1)} -82 0)`})+E(0,0,90,34,'#2B4FB0')+E(12,14,70,16,'#7FA8E8')+[0,1,2,3].map(i=>L(-16+i*18,8,-12+i*18,26,'#5A80CC',2.5)).join('')+E(16,24,20,7,'#2240A0',{transform:'rotate(28 16 24)'})+C(58,-6,4,'#081038')+C(59,-7,1.4,'#FFFFFF')+P('M60 8 Q74 10 86 4','none',{stroke:'#16307A','stroke-width':2.5})+C(-20,-18,4,'#3F64C8')+C(4,-24,3,'#3F64C8');
+const ray=(t)=>{const f=Math.sin(t*2.6)*8;return L(-30,0,-80,4,'#5A3EC0',3)+P(`M40 0 Q20 -16 -4 ${-30-f} Q-14 -10 -30 0 Q-14 10 -4 ${30+f} Q20 16 40 0Z`,'#7A5CE0')+C(0,-8,3,'#B9A6FF')+C(6,10,3,'#B9A6FF')+C(-12,2,2.4,'#B9A6FF')+C(26,-4,2.2,'#081038')+C(26,4,2.2,'#081038');};
+const bird=(f,c)=>P(`M-4 -2 Q-12 ${(-18*f-4).toFixed(1)} -22 ${(-26*f).toFixed(1)} Q2 ${(-12*f).toFixed(1)} 6 -2Z`,c,{opacity:.75})+P('M-12 -2 L-26 -9 L-23 4Z',c)+E(0,0,14,8,c)+C(12,-5,7,c)+P('M18 -7 L27 -4 L18 -1Z','#FFB03A')+P(`M-6 -2 Q0 ${(-22*f-2).toFixed(1)} -14 ${(-30*f).toFixed(1)} Q8 ${(-14*f).toFixed(1)} 8 -1Z`,c)+C(14,-6,1.8,'#081038');
+
+// Day 5: sea creatures and birds.
+function daySea(t,lt,x,y,w,h){
+  const sl=y+h*.42,lh=held(lt,12);
+  const [kf,kd]=vg('#13307E','#3576C4'),[wf,wd]=vg('#0D64A6','#073E7C','#04204C');
+  let g=kd+wd+R(x,y,w,sl-y+10,0,kf)+R(x,sl,w,h,0,wf);
+  for(let k=0;k<2;k++)g+=E(wrapX(x,w,.2+k*.5,lt*5,80),y+26+k*30,70,9,'#5C94D8',{opacity:.45});
+  // Light falling into the water.
+  for(let k=0;k<5;k++){const sx=x+40+k*110+Math.sin(t*.5+k)*12;g+=P(`M${sx} ${sl}L${sx+34} ${sl}L${sx-30} ${y+h}L${sx-84} ${y+h}Z`,'#BFF0FF',{opacity:(.07+.04*Math.sin(t*1.3+k)).toFixed(3)});}
+  // Seabed and swaying weed.
+  g+=`<path d="${ridge(171,y+h-20,8,40,x-20,x+w+20,y+h+40)}" fill="#0A2E4A"/>`;
+  for(let k=0;k<7;k++){const px=x+18+k*76+hash(k,81)*24,hh=40+hash(k,82)*44;let d=`M${px} ${y+h}`;for(let j=1;j<=5;j++)d+=`L${(px+Math.sin(t*1.5+j*.9+k)*j*2.2).toFixed(1)} ${(y+h-hh*j/5).toFixed(1)}`;g+=P(d,'none',{stroke:k%2?'#1FB38A':'#2ED69A','stroke-width':6});}
+  // Whale and ray in the deep.
+  const wp=ease.out(prog(lt,.2,1.2));
+  g+=stk(x+w+110-lh*60,y+h*.72+Math.sin(t*.8)*4,.55*wp,whale(t),-1);
+  g+=stk(wrapX(x,w,.05,lh*40,90),y+h*.56+Math.sin(t*1.1)*6,.6*ease.back(prog(lt,.8,1.2)),ray(t));
+  // Fish of every shape.
+  const FS=[[0,1,'#FF9A5C',-1,.55,48,0],[1,.95,'#7CFFE6',1,.6,64,.3],[2,1,'#FFD45E',-1,.74,34,.62],[3,.85,'#FF7BD5',1,.86,28,.1],[0,.6,'#7CFFE6',-1,.66,52,.85],[1,.75,'#FF8A7A',1,.9,58,.48],[2,.65,'#B98CFF',1,.5,40,.75],[3,.6,'#FFD45E',-1,.8,30,.35]];
+  FS.forEach(([ty,s,c,dir,v,sp,ph],k)=>{
+    const p=ease.back(prog(lt,.3+k*.12,.7+k*.12));if(p<=0)return;
+    const px=dir>0?wrapX(x,w,ph,lh*sp,60):x+w-(wrapX(x,w,ph,lh*sp,60)-x),py=y+h*v+Math.sin(t*2+k)*5;
+    g+=stk(px,py,s*p,FISH[ty](c,Math.sin(t*10+k)*14),dir);
+  });
+  // A small school.
+  for(let k=0;k<6;k++){const px=x+w-(wrapX(x,w,.4,lh*72,90)-x)+(k%3)*18+Math.floor(k/3)*9,py=y+h*.64+Math.floor(k/3)*14+Math.sin(t*3+k)*2;g+=E(px,py,7,3.5,'#E8FCFF',{opacity:(.85*prog(lt,.5,1)).toFixed(2)})+P(`M${px+6} ${py}L${px+12} ${py-4}L${px+12} ${py+4}Z`,'#E8FCFF',{opacity:(.85*prog(lt,.5,1)).toFixed(2)});}
+  // Bubbles.
+  for(let k=0;k<16;k++){const q=(lt*.22*(.6+hash(k,84))+hash(k,85))%1,bx=x+hash(k,83)*w+Math.sin(t*2+k)*4,by=y+h-q*(y+h-sl-8);g+=C(bx.toFixed(1),by.toFixed(1),(2+hash(k,86)*4).toFixed(1),'none',{stroke:'#BFF4FF','stroke-width':1.6,opacity:(.75*Math.min(1,(1-q)*4)).toFixed(2)});}
+  // The surface, with foam.
+  g+=`<path d="${ridge(172,sl,5,22,x-40,x+w+40,sl+12)}" fill="#3FA9E0" transform="translate(${(Math.sin(t*.9)*14).toFixed(1)} 0)"/>`;
+  for(let k=0;k<12;k++){const px=wrapX(x,w,k/12,lt*16,20);g+=arc(px,sl+2+Math.sin(px/30+t*2)*2,9,'#FFFFFF',3,.7);}
+  // Birds with beating wings.
+  const BD=[[1,'#FFFFFF',.13,52,0],[.7,'#FFD45E',.24,64,.3],[.85,'#FF8A7A',.32,44,.55],[.6,'#BFE8FF',.1,70,.7],[.75,'#FFFFFF',.27,58,.88]];
+  BD.forEach(([s,c,v,sp,ph],k)=>{
+    const p=ease.back(prog(lt,.1+k*.15,.5+k*.15));if(p<=0)return;
+    const f=Math.sin(held(t,12)*9+k*1.7),px=wrapX(x,w,ph,lh*sp,60),py=y+h*v+Math.sin(t*1.4+k)*6+f*3;
+    g+=stk(px,py,s*p,bird(f,c));
+  });
+  return g;
+}
+
+// Day 6 animals, facing +x, standing on y=0.
+const lion=(t,k)=>{const s=Math.floor(t*6+k)%2,lg=(dx,up,c)=>R(dx,-28-(up?4:0),13,28,6,c);let g='';
+  g+=P('M-42 -46 Q-68 -50 -66 -80','none',{stroke:'#E8A43A','stroke-width':7})+C(-66,-82,8,'#B5562A');
+  g+=lg(-34,s,'#D08A28')+lg(26,1-s,'#D08A28')+E(0,-42,48,25,'#F5B640')+lg(-26,1-s,'#F5B640')+lg(34,s,'#F5B640');
+  for(let i=0;i<11;i++){const a=i/11*6.283;g+=C(40+Math.cos(a)*27,-62+Math.sin(a)*27,11,'#D2602A');}
+  g+=C(40,-62,28,'#D2602A')+C(28,-84,7,'#F5B640')+C(52,-84,7,'#F5B640')+C(42,-60,20,'#F7C64C')+E(52,-52,11,8,'#FFE6A8')+P('M52 -58 L60 -58 L56 -53Z','#5A2A1A')+C(36,-65,2.8,'#1A0A10')+C(50,-65,2.8,'#1A0A10');
+  return g;};
+const elephant=(t,k)=>{const s=Math.floor(t*4+k)%2,sw=Math.sin(t*1.6)*8;let g='';
+  g+=P('M-64 -62 L-74 -38','none',{stroke:'#7068C0','stroke-width':5})+R(-46,-34-s*3,24,34,9,'#7068C0')+R(14,-34-(1-s)*3,24,34,9,'#7068C0');
+  g+=E(-6,-58,60,42,'#8C84DC')+R(-34,-34-(1-s)*3,24,34,9,'#8C84DC')+R(28,-34-s*3,24,34,9,'#8C84DC');
+  g+=C(50,-76,32,'#8C84DC')+P(`M70 -66 Q92 -54 ${(88+sw).toFixed(1)} -26 Q${(86+sw).toFixed(1)} -12 ${(98+sw).toFixed(1)} -16`,'none',{stroke:'#8C84DC','stroke-width':15});
+  g+=E(30,-72,22,30,'#7A72CC')+E(32,-70,13,20,'#E6A0E0')+P('M68 -56 Q76 -44 88 -48','none',{stroke:'#FFF6E0','stroke-width':5})+C(60,-86,3.6,'#141032')+C(61,-87,1.2,'#FFFFFF');
+  return g;};
+const deer=(t,k)=>{const gz=clamp(Math.sin(held(t,6)*.9+1)*1.8),a=gz*58;let g='';
+  g+=R(-30,-46,7,46,3,'#B8622A')+R(16,-46,7,46,3,'#B8622A')+C(-38,-64,6,'#FFF0D8');
+  g+=E(0,-56,38,17,'#D97E36')+E(2,-47,26,6,'#F5C890')+[[-14,-62],[-2,-66],[10,-62],[-20,-54],[4,-58]].map(([a1,b1])=>C(a1,b1,2.6,'#FFF0D8')).join('');
+  g+=R(-22,-46,7,46,3,'#D97E36')+R(24,-46,7,46,3,'#D97E36');
+  g+=`<g transform="rotate(${a.toFixed(1)} 24 -62)">`+P('M24 -62 L38 -92','none',{stroke:'#D97E36','stroke-width':14})+P('M38 -106 L32 -128 M34 -120 L24 -126 M42 -106 L48 -128 M46 -120 L56 -124','none',{stroke:'#FFE6B8','stroke-width':3.5})+E(32,-104,8,4,'#C26A2E',{transform:'rotate(-30 32 -104)'})+E(46,-98,15,10,'#D97E36')+C(58,-95,3.5,'#3A1A10')+C(47,-101,2.5,'#1A0A10')+`</g>`;
+  return g;};
+const rabbit=()=>C(-18,-16,6,'#FFFFFF')+E(0,-16,18,15,'#EDE4FF')+E(-6,-2,12,4,'#D8CCF4')+E(10,-52,4.5,14,'#EDE4FF',{transform:'rotate(-12 10 -40)'})+E(20,-52,4.5,14,'#EDE4FF',{transform:'rotate(10 20 -40)'})+E(10,-52,2,9,'#FF9AC8',{transform:'rotate(-12 10 -40)'})+E(20,-52,2,9,'#FF9AC8',{transform:'rotate(10 20 -40)'})+C(16,-30,12,'#EDE4FF')+C(21,-32,2.4,'#1A0A20')+C(28,-29,2,'#FF7BAA');
+const groundBird=(t,k)=>{const pk=Math.max(0,Math.sin(held(t,8)*3.2+k))**4*45;
+  return L(-3,-10,-4,0,'#FF9A3A',3)+L(4,-10,5,0,'#FF9A3A',3)+P('M-12 -22 L-32 -34 L-30 -16Z','#2F7FE0')+C(0,-20,15,'#3FA9FF')+E(-4,-20,10,7,'#2F7FE0')+E(5,-15,9,8,'#CDEBFF')+`<g transform="rotate(${pk.toFixed(1)} 8 -28)">`+P('M8 -45 L4 -56 M12 -46 L12 -58 M16 -45 L20 -55','none',{stroke:'#FFD45E','stroke-width':3})+C(12,-36,10,'#3FA9FF')+P('M20 -39 L31 -35 L20 -31Z','#FFB03A')+C(15,-38,2.2,'#081038')+`</g>`;};
+
+// Day 6: animals of the land.
+function dayBeasts(t,lt,x,y,w,h){
+  const [sf,sd]=vg('#0E2A5C','#1C5E8A');
+  let g=sd+R(x,y,w,h,0,sf);
+  for(let k=0;k<14;k++)g+=C(x+hash(k,91)*w,y+hash(k,92)*h*.4,1.2+hash(k,93),'#FFFFFF',{opacity:(.3+.4*Math.sin(t*2+k)**2).toFixed(2)});
+  g+=`<path d="${ridge(181,y+h*.52,14,50,x-20,x+w+20,y+h+40)}" fill="#14506E"/>`;
+  [[.08,.5],[.3,.47],[.9,.5]].forEach(([u,v],k)=>{const px=x+w*u,py=y+h*v+4;g+=L(px,py,px,py-16,'#0E3A50',4)+C(px,py-22,11,'#18607A');});
+  g+=`<path d="${ridge(61,y+h*.66,8,70,x-20,x+w+20,y+h+60)}" fill="#22B890"/><path d="${ridge(62,y+h*.82,6,50,x-20,x+w+20,y+h+60)}" fill="#1DA483"/>`;
+  const pop=k=>ease.back(prog(lt,.15+k*.3,.55+k*.3)),lh=held(lt,6);
+  g+=stk(x+w*.47,y+h*.73,.92*pop(0),elephant(t,0));
+  g+=stk(x+w*.88,y+h*.77,.8*pop(2),deer(t,2),-1);
+  g+=stk(x+w*.12+Math.min(lh,6)*7,y+h*.82,.82*pop(1),lion(t,1));
+  // The rabbit hops along in short bounds.
+  const hp=lt*1.5,hi=Math.floor(hp),hf=held(hp%1,12),hop=hf<.45?Math.sin(hf/.45*Math.PI):0;
+  g+=stk(x+w*.3+Math.min(hi+Math.min(hf/.45,1),9)*9,y+h*.95-hop*20,1*pop(3),rabbit());
+  g+=stk(x+w*.07,y+h*.97,.85*pop(4),groundBird(t,4));
+  // Foreground grass and a few flowers.
+  for(let k=0;k<62;k++){const px=x-4+k*(w+8)/61,hh=12+hash(k,95)*22,sw=Math.sin(t*1.6+k*.4)*5;g+=L(px,y+h+4,px+sw,y+h+4-hh,['#2ED69A','#17A378','#45F0B0'][k%3],4);}
+  [[.2,'#FF7BD5'],[.45,'#FFD45E'],[.62,'#7CFFE6']].forEach(([u,c],k)=>{const px=x+w*u+Math.sin(t*1.4+k)*3,py=y+h-26;g+=glow(px,py,16,c,.7)+C(px,py,5,c);});
+  return g;
+}
+
+const DAYFN=[dayLight,daySky,dayLand,dayLights,daySea,dayBeasts];
+function dayArt(i,t,lt,x,y,w,h){
+  const id=nid();
+  return `<clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6"/></clipPath><g clip-path="url(#${id})">`+DAYFN[i](t,lt,x,y,w,h)+'</g>';
+}
+function s1(t,l){
+  let g=sheetBase(1,'#141C5E','#0A0D3A')+DAYDEFS+starfield(t,.5,1080);
+  const W=500,H=360,xs=[170,710,1250],ys=[150,580];
+  const fin=prog(t,37.3,38.2);
+  DAYS.forEach((d,i)=>{
+    const x=xs[i%3],y=ys[Math.floor(i/3)],lt=t-d,on=lt>=0;
+    let c=`<path d="${torn(x-8,y-8,W+16,H+16,70+i,6,4)}" fill="#F7F2E6"/>`+R(x,y,W,H,6,'#070A26');
+    if(on)c+=dayArt(i,t,lt,x,y,W,H);
+    c+=label(x-8,y-30,`DAY ${i+1}`,{size:26,bg:on?INK:'#2A2E52'});
+    const names=['LIGHT','SKY · WATERS','LAND · SEAS · PLANTS','SUN · MOON · STARS','SEA CREATURES · BIRDS','LAND ANIMALS'];
+    if(on)c+=piece(t,d+.3,x+W-10,y+H+6,label(x+W+8,y+H-14,names[i],{size:22,anchor:'end',bg:'#14141A'}),10+i,1);
+    g+=`<g transform="${jit(t,20+i,x+W/2,y+H/2,1,8)}">${G('',c,1-.35*fin*(i<5?1:0))}</g>`;
+  });
+  g+=piece(t,13.0,960,70,label(960,40,'GENESIS 1:3–25',{size:28,anchor:'middle'}),9,1);
+  // But God wasn't finished.
+  if(t>37.3){
+    const x=1250,y=580;
+    g+=mark(scribble(x+250,y+180,300,230,12),ease.inOut(prog(t,37.4,38.1)),CORAL,9);
+    g+=piece(t,38.0,1500,1010,label(1500,990,'BUT GOD WASN’T FINISHED',{size:30,anchor:'middle',bg:CORAL}),30,1.2);
+  }
+  return g;
+}
+
+// ---------- Sheet 2: humanity, very good, rest (40.2-61.6) ----------
+function s2(t,l){
+  let g=sheetBase(2,'#16206A','#0B2F4C');
+  const rest=ease.inOut(prog(t,56.2,57.6));
+  g+=glow(1240,640,820,'#35F2C4',.42*(1-.5*rest))+glow(1240,640,900,'#6A4CFF',.35*rest);
+  g+=starfield(t,.55+.3*rest,620);
+  g+=`<path d="${ridge(80,850,20,240)}" fill="#0F4F86"/><path d="${ridge(81,905,14,180)}" fill="#22E0B4"/>`;
+  g+=firefly(t,700,300,1100,520,'#7CFFE6',22,.8);
+  // The two of them appear.
+  const ap=ease.back(prog(t,42.9,43.5));
+  if(ap>0)g+=`<g transform="${sc(1240,905,ap)}">${pair(t,1240,910,1.6,{gap:250})}</g>`;
+  g+=verse(t,42.8,70,90,['God made human beings,','male and female,','in his own image.'],'GENESIS 1:27',{size:50,hl:'in his own image.',hlAt:45.2,hlDur:.9,seed:21,id:1});
+  // Blessed, and given charge over the earth: creatures circle in.
+  const ch=ease.out(prog(t,47.3,48.5));
+  if(ch>0){
+    const ic=(k)=>{const a=k/7*6.283+t*.25,x=1240+Math.cos(a)*470,y=600+Math.sin(a)*190,cols=['#FFC24C','#35F2B4','#FF7BD5','#7CFFE6','#B98CFF','#FF9A5C','#FFD45E'];return glow(x,y,46,cols[k],.7*ch)+C(x,y,14*ch,cols[k]);};
+    for(let k=0;k<7;k++)g+=ic(k);
+    g+=piece(t,47.6,1240,330,label(1240,300,'BLESSED · GIVEN CHARGE OVER THE EARTH',{size:28,anchor:'middle'}),2,1.2);
+    g+=piece(t,47.9,1240,370,label(1240,350,'GENESIS 1:28',{size:22,anchor:'middle',bg:'#14141A'}),3,1);
+  }
+  // Very good.
+  if(t>51.8){
+    const vx=110,vy=520;
+    g+=piece(t,52.6,vx+330,vy+90,strip(vx,vy,560,170,33,'#F6EFDC',{ax:14,ay:5})+highlight(vx+60,vy+42,tw('very good.',92,'Georgia'),104,ease.inOut(prog(t,54.6,55.4)),YEL)+T(vx+60,vy+125,'very good.',{size:92,font:'Georgia',fill:INK})+tape(vx+60,vy+2,140,-8),4,1.4);
+    g+=piece(t,52.4,vx+250,vy-40,T(vx,vy-24,'He looked at everything he had made, and it was',{size:36,font:'Georgia',style:'italic',fill:'#DDE8FF'}),5,.8);
+    g+=piece(t,52.9,vx+560,vy+190,label(vx+560,vy+182,'GENESIS 1:31',{size:26,anchor:'end'}),6,1);
+    g+=mark(`M${vx+60} ${vy+150} Q${vx+250} ${vy+160} ${vx+470} ${vy+146} M${vx+80} ${vy+166} Q${vx+260} ${vy+176} ${vx+460} ${vy+162}`,ease.inOut(prog(t,55.0,55.6)),CORAL,6);
+  }
+  // Day seven: rest.
+  if(t>56.2){
+    g+=G('',R(-40,-60,2000,1200,0,'#0A0B2E'),.35*rest);
+    g+=piece(t,56.5,1240,140,label(1240,110,'DAY 7 · GOD RESTED, AND MADE THE DAY HOLY',{size:30,anchor:'middle',bg:'#1A1E50'}),7,1.2);
+    g+=piece(t,57.0,1240,190,label(1240,166,'GENESIS 2:2–3',{size:22,anchor:'middle',bg:'#14141A'}),8,1);
+    g+=glow(1240,170,520,'#FFF4C8',.35*rest);
+  }
+  return g;
+}
+
+// ---------- Shared pieces for the garden sheets ----------
+const fade=(t,b,inner)=>{inner.replace(/<!--V([0-9]+)-->/g,(m,i)=>{VQ[i].end=Math.min(VQ[i].end,b);return m;});return t>=b+.35?'':G('',inner,1-prog(t,b,b+.35));};
+const EDENP={c1:'#6A2FD8',c2:'#2E62E8',c3:'#1FE5C0',tr:'#4630A0',fruit:'#FFD45E',glow:'#2DE8C4'};
+const CRIMP={c1:'#5A1060',c2:'#AA1C60',c3:'#F2404E',tr:'#4A1038',fruit:'#FFB63C',glow:'#FF5A48'};
+const GREYP={c1:'#2C2A3E',c2:'#3A3850',c3:'#4C4A5E',tr:'#26243A',fruit:'#6C6068',glow:'#55506A'};
+const LIFEP={c1:'#B8860B',c2:'#E0A93F',c3:'#FFE08A',tr:'#6A4A2A',fruit:'#FFF4C8',glow:'#FFE08A'};
+const mixP=(a,b,p)=>Object.fromEntries(Object.keys(a).map(k=>[k,mix(a[k],b[k],p)]));
+const TFR=[[-260,-540],[-140,-700],[10,-790],[140,-690],[280,-560],[-40,-520],[90,-480],[-120,-470],[300,-430]];
+function bigTree(t,x,y,s,p,gk=1,o={}){
+  const {skip=-1,id=8}=o;
+  const tree=`<g filter="url(#htSoft)"><path d="M-110 20 C-60 -130 -80 -300 -70 -460 L80 -460 C80 -300 70 -130 124 20Z" fill="${p.tr}"/><path d="M-60 -400 C-130 -400 -220 -370 -290 -272 C-220 -336 -120 -350 -40 -350Z" fill="${p.tr}"/>
+    <circle cy="-610" r="280" fill="${p.c1}"/><circle cx="-250" cy="-520" r="150" fill="${p.c1}"/><circle cx="250" cy="-520" r="160" fill="${p.c1}"/><circle cx="-110" cy="-680" r="150" fill="${p.c2}"/><circle cx="130" cy="-670" r="165" fill="${p.c2}"/><circle cy="-520" r="170" fill="${p.c3}"/></g>`;
+  let g=glow(x,y-560*s,700*s,p.glow,.42*gk)+`<g transform="${jit(t,id,x,y,1,10)} translate(${x} ${y}) scale(${s})">${tree}</g>`;
+  TFR.forEach((f,i)=>{if(i===skip)return;const q=.86+.14*Math.sin(t*3+i);g+=glow(x+f[0]*s,y+f[1]*s,78*q*s,p.fruit,.85*gk)+C(x+f[0]*s,y+f[1]*s,22*s,p.fruit);});
+  return g;
+}
+const fruitAt=(t,x,y,r,col,gk=1)=>glow(x,y,r*3.4,col,.9*gk)+C(x,y,r,col)+C(x-r*.32,y-r*.36,r*.3,'#fff',{opacity:.6});
+// Naming the animals: each species drawn with its own build, facing +x, standing on y=0.
+// A tapered leg swung from the hip, with a hoof or paw.
+const bleg=(hx,hy,len,wd,a,c,foot,fw=1)=>`<g transform="rotate(${a.toFixed(1)} ${hx} ${hy})">`+P(`M${hx-wd/2} ${hy} L${hx+wd/2} ${hy} L${hx+wd*.28} ${hy+len*.55} L${hx+wd*.24} ${hy+len} L${hx-wd*.24} ${hy+len} L${hx-wd*.3} ${hy+len*.55}Z`,c)+R(hx-wd*.32*fw,hy+len-7,wd*.64*fw,9,3,foot)+`</g>`;
+const eyeAt=(x,y,r=3.4)=>C(x,y,r,'#120A10')+C(x+r*.35,y-r*.35,r*.35,'#FFFFFF');
+const BEAST={
+  ox:(a,c)=>{let g='';
+    g+=P('M-78 -88 Q-96 -70 -92 -40','none',{stroke:'#7A4426','stroke-width':6})+E(-92,-36,6,10,'#3A2014');
+    g+=bleg(-58,-58,58,20,-a,'#7A4426','#2A1810')+bleg(44,-58,58,20,a,'#7A4426','#2A1810');
+    g+=P('M-84 -84 C-70 -112 -10 -110 30 -112 C52 -126 72 -120 80 -100 C88 -84 84 -62 70 -52 C40 -44 -40 -44 -70 -50 C-88 -56 -92 -72 -84 -84Z',c);
+    g+=E(-10,-56,60,10,'#6A3A20',{opacity:.35})+P('M58 -62 Q66 -38 54 -34 Q46 -44 48 -60Z',c);
+    g+=bleg(-44,-58,58,20,a,c,'#2A1810')+bleg(58,-58,58,20,-a,c,'#2A1810');
+    g+=P('M74 -104 C88 -110 108 -100 112 -82 C116 -66 112 -54 102 -50 C92 -48 84 -58 78 -72Z',c)+E(106,-56,11,9,'#E8C49A')+C(109,-58,2,'#3A2014');
+    g+=P('M82 -104 Q70 -112 66 -124','none',{stroke:'#F3E6C8','stroke-width':7})+P('M94 -104 Q106 -110 108 -124','none',{stroke:'#F3E6C8','stroke-width':7})+E(76,-96,9,5,'#7A4426',{transform:'rotate(-20 76 -96)'})+eyeAt(96,-86,3);
+    return g;},
+  lion:(a,c)=>{let g='';
+    g+=P('M-74 -80 Q-108 -90 -112 -60','none',{stroke:c,'stroke-width':7})+P('M-116 -66 Q-120 -54 -110 -50 Q-104 -58 -110 -66Z','#7A3418');
+    g+=bleg(-56,-60,58,18,-a,'#C07A2E','#8A4A1E',1.3)+bleg(40,-60,58,18,a,'#C07A2E','#8A4A1E',1.3);
+    g+=P('M-80 -78 C-74 -98 -20 -100 20 -98 C50 -98 70 -90 72 -70 C72 -54 50 -50 20 -52 C-20 -54 -60 -50 -76 -58 C-84 -62 -84 -72 -80 -78Z',c)+E(-6,-56,56,8,'#9A5A20',{opacity:.3});
+    g+=bleg(-44,-60,58,18,a,c,'#C07A2E',1.3)+bleg(54,-60,58,18,-a,c,'#C07A2E',1.3);
+    for(let i=0;i<14;i++){const q=i/14*6.283;g+=C(70+Math.cos(q)*34,-96+Math.sin(q)*36+(Math.sin(q)>0?6:0),15,i%2?'#9A3E18':'#B04A1C');}
+    g+=C(70,-94,38,'#B8501E')+C(72,-98,28,'#D86A26');
+    g+=P('M76 -122 Q96 -122 102 -104 Q112 -96 110 -84 Q104 -72 90 -72 Q78 -74 72 -86 Q64 -110 76 -122Z',c)+C(78,-118,6,c)+E(102,-82,10,8,'#F7DCA8')+P('M104 -94 L112 -92 L108 -86Z','#4A2010')+eyeAt(92,-102,3);
+    return g;},
+  deer:(a,c)=>{let g='';
+    g+=bleg(-46,-70,72,11,-a,'#9A4E22','#2A1810')+bleg(34,-70,72,11,a,'#9A4E22','#2A1810');
+    g+=P('M-60 -90 C-52 -106 0 -108 30 -104 C50 -100 58 -88 54 -74 C50 -64 20 -62 -10 -64 C-40 -64 -58 -66 -62 -78Z',c)+E(-4,-66,42,6,'#F3DDBA')+P('M-60 -94 L-72 -102 L-64 -86Z','#FFF4E2');
+    g+=[[-30,-92],[-14,-96],[2,-94],[-22,-82],[12,-86]].map(([u,v])=>C(u,v,3,'#FFE8C8',{opacity:.8})).join('');
+    g+=bleg(-36,-70,72,11,a,c,'#2A1810')+bleg(44,-70,72,11,-a,c,'#2A1810');
+    g+=P('M34 -98 C40 -120 50 -138 58 -146 L72 -138 C66 -124 58 -104 54 -88Z',c);
+    g+=P('M60 -130 L50 -154 L36 -160 M50 -154 L52 -170 M66 -132 L76 -156 L70 -170 M76 -156 L90 -162','none',{stroke:'#F3E2C0','stroke-width':4});
+    g+=P('M54 -150 C64 -156 78 -150 92 -140 C98 -136 96 -128 88 -128 C76 -128 64 -132 56 -138Z',c)+C(94,-134,3,'#1A0A08')+E(50,-146,10,5,'#B8622A',{transform:'rotate(-30 50 -146)'})+eyeAt(70,-143,2.8);
+    return g;},
+  eagle:(a,c)=>{let g='';const hop=Math.abs(Math.sin(a/8))*4;
+    g+=`<g transform="translate(0 ${-hop.toFixed(1)})">`;
+    g+=L(-6,-30,-8,0,'#F2B820',6)+L(10,-30,12,0,'#F2B820',6)+P('M-16 0 L-2 0 M4 0 L20 0','none',{stroke:'#F2B820','stroke-width':5});
+    g+=P('M-30 -50 L-62 -24 L-50 -20 L-58 -12 L-28 -38Z','#F4F0E6');
+    g+=P('M-30 -46 C-36 -80 -10 -110 18 -108 C40 -104 44 -80 34 -56 C26 -36 4 -28 -12 -32 C-24 -34 -30 -40 -30 -46Z',c);
+    g+=P('M-24 -88 C-10 -100 20 -94 26 -70 C30 -54 10 -40 -24 -40 C-40 -40 -50 -50 -46 -60Z','#4A2E18');
+    g+=[0,1,2,3].map(i=>P(`M${-40+i*14} -50 Q${-30+i*14} -62 ${-22+i*14} -48`,'none',{stroke:'#2E1C10','stroke-width':2.5,opacity:.7})).join('');
+    g+=P('M8 -104 C14 -128 40 -134 52 -118 C58 -108 54 -96 44 -92 C30 -88 14 -92 8 -104Z','#F4F0E6');
+    g+=P('M50 -116 C62 -118 70 -110 66 -98 C64 -100 60 -104 52 -102Z','#F2B820')+eyeAt(40,-114,3)+P('M34 -120 L48 -122','none',{stroke:'#2E1C10','stroke-width':2});
+    return g+'</g>';},
+  horse:(a,c)=>{let g='';
+    g+=P('M-70 -96 C-100 -94 -110 -60 -104 -40 C-96 -60 -90 -76 -72 -84Z','#3A1E14');
+    g+=bleg(-54,-72,74,15,-a,'#8A3E1E','#1A0E08')+bleg(40,-72,74,15,a,'#8A3E1E','#1A0E08');
+    g+=P('M-74 -96 C-66 -116 -10 -116 30 -114 C56 -112 66 -100 64 -84 C62 -70 40 -66 10 -68 C-30 -68 -64 -66 -72 -76 C-78 -84 -78 -90 -74 -96Z',c)+E(-6,-70,52,8,'#7A3418',{opacity:.3});
+    g+=bleg(-42,-72,74,15,a,c,'#1A0E08')+bleg(52,-72,74,15,-a,c,'#1A0E08');
+    g+=P('M36 -108 C44 -132 58 -150 70 -158 L86 -148 C76 -134 64 -112 60 -92Z',c);
+    g+=P('M38 -110 C44 -134 56 -152 70 -162 L64 -146 C56 -132 50 -120 46 -106Z','#3A1E14');
+    g+=P('M66 -160 C76 -168 88 -162 108 -134 C114 -126 110 -118 102 -118 C94 -118 84 -126 72 -140Z',c)+E(104,-124,7,6,'#6A2E16')+C(106,-126,1.8,'#1A0E08')+P('M70 -160 L66 -174 L78 -164Z',c)+L(70,-130,98,-122,'#6A2E16',2)+eyeAt(82,-150,2.8)+E(92,-140,4,2,'#FFFFFF',{opacity:.0});
+    return g;},
+};
+// Walks in place with a stepped trot; drawn facing left (they enter from the right).
+const animal=(t,ax,ay,s,c,k,kind='ox')=>{
+  const ph=held(t,8)*7+k,a=Math.sin(ph)*16,b=Math.abs(Math.cos(ph))*2.5;
+  return `<g transform="translate(${ax.toFixed(1)} ${(ay-b).toFixed(1)}) scale(${-s} ${s})"><g filter="url(#sticker)">${BEAST[kind](a,c)}</g></g>`;
+};
+function gardenGround(t,top,mid,near,seed=0){
+  return `<path d="${ridge(90+seed,690,30,220)}" fill="${top}"/><path d="${ridge(91+seed,800,24,170)}" fill="${mid}"/><path d="${ridge(92+seed,930,14,150)}" fill="${near}"/>`;
+}
+function plants(t,k=1,cols=['#35F2B4','#FF7BD5'],n=16,seed=3){
+  let g='';for(let i=0;i<n;i++){const x=hash(i,seed)*1920,base=900+hash(i,seed+1)*40,h=40+hash(i,seed+2)*60,sw=Math.sin(t*1.5+i)*6,c=cols[i%2];g+=L(x,base,x+sw,base-h,'#0A2A3E',5)+glow(x+sw,base-h,30,c,.7*k)+C(x+sw,base-h,8,c);}
+  return g;
+}
+
+// ---------- Sheet 3: dust and breath (61.6-71.2) ----------
+function s3(t,l){
+  let g=sheetBase(3,'#123C5A','#0A1C3A');
+  const z=lerp(1.06,1,ease.out(prog(t,61.3,62.9)));
+  let w=glow(960,700,700,'#2DE8C4',.3)+`<path d="${ridge(95,880,16,200)}" fill="#7A5A3E"/><path d="${ridge(96,930,10,150)}" fill="#5E4430"/>`;
+  // Dust heap, then the dust gathers into a man.
+  const form=ease.inOut(prog(t,63.4,66.6)),breath=ease.inOut(prog(t,67.0,69.4));
+  for(let i=0;i<110;i++){
+    const hx=960+(hash(i,1)-.5)*360,hy=900-hash(i,2)*70*(1-Math.abs(hash(i,1)-.5)*1.6);
+    const tx=960+(hash(i,3)-.5)*110,ty=900-hash(i,4)*230;
+    const x=lerp(hx,tx,form)+Math.sin(t*3+i)*4*form*(1-form),y=lerp(hy,ty,form);
+    w+=C(x,y,3+hash(i,5)*4,'#C8A27A',{opacity:1-ease.in?1:1-.9*breath});
+  }
+  const sil=prog(t,65.2,66.8);
+  if(sil>0){
+    const col=breath>0;
+    w+=G('',chubby(960,905,1.15,Object.assign({},ADAM,{tunic:mix('#8C6A4A','#FFC24C',breath),tunic2:mix('#6A4A30','#E0623C',breath),skin:mix('#9C7A5A','#F5BE8E',breath),shade:mix('#6A4A30','#C4835E',breath),hair:mix('#5A3A28','#2E1C52',breath),eye:breath>.5?'#160F30':'#3A2818',aura:breath>.05?'#7CFFE6':null,auraOp:.5*breath,filter:'htSoft'})),sil);
+  }
+  // Breath of life: a stream of light, from no visible source.
+  if(t>66.8&&t<70.4){
+    for(let i=0;i<40;i++){const p=((t-66.8)*.7+i/40)%1,x=lerp(1700,990,p)+Math.sin(p*9+i)*30*(1-p),y=lerp(120,720,p)+Math.cos(p*7+i)*20*(1-p);w+=glow(x,y,26,'#E9FFFF',.8*(1-prog(t,69.6,70.4)))+C(x,y,3,'#fff');}
+  }
+  w+=glow(960,780,360,'#7CFFE6',.55*breath*(1-.4*prog(t,70,71)));
+  g+=`<g transform="${sc(960,600,z)}">${w}</g>`;
+  g+=piece(t,61.7,960,70,label(960,40,'GENESIS MOVES IN CLOSER',{size:28,anchor:'middle'}),1,1);
+  g+=verse(t,63.4,70,110,['The Lord God formed the man','from the dust of the ground,','and breathed into his nostrils','“the breath of life.”'],'GENESIS 2:7',{size:44,hl:'“the breath of life.”',hlAt:68.6,hlDur:.8,seed:41,id:2});
+  return g;
+}
+
+// ---------- Sheet 4: the garden, two trees, one warning (71.2-94.5) ----------
+function s4(t,l){
+  let g=sheetBase(4,'#0A1248','#0E5A7A');
+  g+=starfield(t,.5,420)+glow(1200,520,900,'#2DE8C4',.35);
+  g+=gardenGround(t,'#0F4F86','#0C6E86','#22E0B4',0);
+  const tr=ease.out(prog(t,76.2,77.4));
+  g+=G('',bigTree(t,760,930,.62,LIFEP,1,{id:31}),tr)+G('',bigTree(t,1440,930,.78,EDENP,1,{id:32}),tr);
+  g+=plants(t,1,['#35F2B4','#FF7BD5'],18,5)+firefly(t,0,250,1920,600,'#7CFFE6',26,.9);
+  // Adam tends the garden.
+  const work=prog(t,73.4,75.6),reach=Math.max(0,Math.sin((held(t,8)-73.4)*3))*work;
+  g+=chubby(330,935,1.15,Object.assign({},ADAM,{reach:reach*.4,aura:'#7CFFE6',auraOp:.45,filter:'htSoft'}));
+  g+=verse(t,71.4,70,70,['He placed him in a garden in Eden,','to work it and take care of it.'],'GENESIS 2:8, 15',{size:40,hl:'to work it and take care of it.',hlAt:73.5,hlDur:.9,seed:43,id:1}).replace(/^/,'')
+  g=g.replace(/$/,'');
+  // Two trees.
+  g+=piece(t,79.6,760,300,label(760,280,'THE TREE OF LIFE',{size:28,anchor:'middle',bg:'#14141A'}),2,1.2);
+  g+=piece(t,81.6,1440,170,label(1440,150,'THE TREE OF THE KNOWLEDGE OF GOOD AND EVIL',{size:26,anchor:'middle'}),3,1.2);
+  g+=piece(t,77.2,960,1020,label(960,1000,'GENESIS 2:9',{size:22,anchor:'middle',bg:'#14141A'}),4,1);
+  // The one limit.
+  if(t>84.6){
+    g+=mark(scribble(1440,560,420,400,14),ease.inOut(prog(t,86.6,87.6)),CORAL,9);
+    g+=piece(t,87.0,1440,960,label(1440,940,'EXCEPT THIS ONE',{size:30,anchor:'middle',bg:CORAL}),5,1.2);
+  }
+  g+=verse(t,88.7,70,300,['If he ate from that tree,','he would certainly die.'],'GENESIS 2:16–17',{size:42,hl:'certainly die.',hlAt:92.3,hlDur:.7,seed:47,id:6});
+  return g;
+}
+
+// ---------- Sheet 5: not alone (94.5-123.9) ----------
+function s5(t,l){
+  let g=sheetBase(5,'#1A1E6A','#0B3A5C');
+  g+=starfield(t,.5,420)+gardenGround(t,'#16407A','#0E5E7A','#22C8A8',4);
+  g+=plants(t,.8,['#35F2B4','#FFD45E'],14,9);
+  // God speaks: light and words only.
+  const sp=ease.out(prog(t,94.6,95.6))*(1-prog(t,99,100.4));
+  g+=glow(960,120,560,'#FFFBE6',.6*sp);
+  g+=fade(t,104.6,verse(t,96.8,560,80,['“It is not good for the man to be alone.”'],'GENESIS 2:18',{size:46,hl:'not good',hlAt:97.6,hlDur:.6,seed:51,id:1}));
+  // Adam alone; then animals come to be named.
+  const sleep=ease.inOut(prog(t,106,107.2))*(1-ease.inOut(prog(t,110.6,111.6)));
+  const alone=prog(t,97.5,98.5)*(1-prog(t,109.6,110.6));
+  const ax=520;
+  g+=`<g transform="rotate(${-88*sleep} ${ax} 935) translate(0 ${-20*sleep})">`+chubby(ax,935,1.2,Object.assign({},ADAM,{aura:'#7CFFE6',auraOp:.5-.3*alone,filter:'htSoft'}))+`</g>`;
+  if(sleep>.6){for(let k=0;k<3;k++){const p=((t-106.6)*.6+k/3)%1;g+=T(ax+60+p*80,840-p*120,'z',{size:28+k*6,font:'Georgia',style:'italic',fill:'#CFE8FF',op:(1-p)*.9});}}
+  const names=['OX','LION','DEER','EAGLE','HORSE'],cols=['#A8643A','#E8A848','#D47C3C','#6A4428','#B85A2E'],kinds=['ox','lion','deer','eagle','horse'];
+  for(let k=0;k<5;k++){
+    const a=100.4+k*.9,p=prog(t,a,a+3.2);
+    if(p>0&&p<1){const x=lerp(1980,780,p),o=Math.min(1,p*6,(1-p)*6);g+=G('',animal(t,x,926,1.0,cols[k],k,kinds[k])+label(x,706,names[k],{size:24,anchor:'middle'}),o);}
+  }
+  if(t>103.4&&t<106.2)g+=piece(t,103.6,1200,540,label(1200,520,'NOT ONE WAS A SUITABLE HELPER',{size:30,anchor:'middle',bg:CORAL}),2,1.2);
+  // From his side, a light; the light becomes the woman.
+  const orb=prog(t,107.6,109.6),born=ease.back(prog(t,109.4,110.2));
+  if(orb>0&&born<1)g+=glow(lerp(ax+40,ax+300,orb),lerp(880,760,orb),lerp(40,180,orb),'#FFF4C8',.9*(1-born));
+  if(born>0)g+=`<g transform="${sc(ax+300,935,born)}">`+chubby(ax+300,935,1.17,Object.assign({},EVE,{flip:-1,aura:'#7CFFE6',auraOp:.5,filter:'htSoft'}))+`</g>`;
+  g+=fade(t,111.4,piece(t,106.2,1300,330,label(1300,300,'A DEEP SLEEP · ONE OF HIS RIBS',{size:28,anchor:'middle'}),3,1.2)+piece(t,106.5,1300,370,label(1300,350,'GENESIS 2:21–22',{size:22,anchor:'middle',bg:'#14141A'}),4,1));
+  g+=verse(t,111.9,980,470,['“bone of my bones','and flesh of my flesh”'],'GENESIS 2:23',{size:50,hl:'bone of my bones',hlAt:113.6,hlDur:.9,seed:55,id:5});
+  // One flesh: the two lights become one.
+  const one=ease.inOut(prog(t,119.2,120.6));
+  if(one>0){g+=glow(ax+150,800,520,'#FFE08A',.55*one);g+=piece(t,119.6,ax+150,640,label(ax+150,540,'ONE FLESH · WITHOUT SHAME',{size:28,anchor:'middle'}),6,1.2)+piece(t,119.9,ax+150,600,label(ax+150,580,'GENESIS 2:24–25',{size:22,anchor:'middle',bg:'#14141A'}),7,1);}
+  return g;
+}
+
+// ---------- Sheet 6: the serpent's questions (123.9-151.8) ----------
+const SNK6='M1580 330 C1440 300 1290 360 1310 440 C1330 520 1460 500 1444 590 C1430 660 1310 640 1284 640 C1250 640 1230 610 1180 606';
+function s6(t,l){
+  const cr=ease.inOut(prog(t,124,131));
+  let g=sheetBase(6,'#14205E','#0B3A66');
+  g+=`<rect x="-40" y="-60" width="2000" height="1200" fill="${mix('#14275E','#5A0F36',cr)}" opacity=".92"/>`;
+  g+=glow(1350,380,900,mix('#2DE8C4','#FF5A48',cr),.45)+starfield(t,.45,500);
+  g+=gardenGround(t,mix('#0F4A8E','#5A1040',cr),mix('#0C6E86','#801642',cr),mix('#22E0B4','#C83A4E',cr),8);
+  g+=bigTree(t,1350,940,1,mixP(EDENP,CRIMP,cr),1,{id:61});
+  const sp=ease.inOut(prog(t,123.9,127.6));
+  g+=glow(1220,620,300,'#FF74E6',.34*sp)+`<g transform="${jit(t,4,1400,500,1.2,10)}">${snake(SNK6,sp,held(t,10),{w:20,head:1.35})}</g>`;
+  g+=pair(t,850,940,1.25,{gap:230,aura:mix('#7CFFE6','#FFA48C',cr)});
+  g+=piece(t,125.0,1590,760,label(1590,740,'CRAFTIER THAN ANY WILD ANIMAL',{size:26,anchor:'middle',bg:'#14141A'}),1,1.2);
+  g+=piece(t,125.3,1590,800,label(1590,780,'GENESIS 3:1',{size:22,anchor:'middle',bg:'#14141A'}),2,1);
+  // Round 1: the question, and her answer.
+  g+=fade(t,136.8,verse(t,130.1,70,70,['“Did God really say…?”'],'GENESIS 3:1',{size:50,hl:'really',hlAt:130.8,hlDur:.5,seed:61,id:3}));
+  g+=fade(t,136.8,verse(t,132.3,70,290,['God’s command, with an addition:','“…must not even touch it.”'],'GENESIS 3:2–3',{size:40,hl:'touch',hlAt:134.6,hlDur:.5,seed:63,id:4}));
+  if(!VERT&&t>134.8&&t<137.2)g+=mark(scribble(70+50+tw('“…must not even ',40)+tw('touch',40)/2,290+40*.45+40*1.32+22,tw('touch',40)/2+18,34,3),ease.inOut(prog(t,134.9,135.4)),CORAL,7)+piece(t,135.3,560,470,label(380,450,'SHE ADDS TO IT',{size:24,bg:CORAL}),5,1);
+  // Round 2: the contradiction, side by side.
+  if(t>137.1){
+    const s=50,a1='he would certainly die.',a2='You will ',b2='not',c2=' certainly die.';
+    g+=fade(t,146.8,verse(t,137.3,70,90,['God: “'+a1+'”'],'GENESIS 2:17',{size:s,seed:65,id:6}));
+    g+=fade(t,146.8,verse(t,140.5,70,330,['Serpent: “'+a2+b2+c2+'”'],'GENESIS 3:4',{size:s,seed:67,id:7}));
+    const nx=70+50+tw('Serpent: “'+a2,s)+tw(b2,s)/2;
+    if(!VERT&&t<147.2)g+=mark(scribble(nx,330+s*.45+s*.5,tw(b2,s)/2+16,40,5),ease.inOut(prog(t,141.4,141.9)),CORAL,8);
+    g+=fade(t,146.8,piece(t,138.0,980,90,label(840,70,'CONTRADICTS GOD DIRECTLY',{size:26,bg:CORAL}),8,1.2));
+  }
+  // Round 3: the offer.
+  g+=fade(t,151.3,piece(t,143.4,330,520,label(70,500,'“YOUR EYES WILL BE OPENED”',{size:30}),9,1.2));
+  g+=verse(t,147.1,70,110,['“You will be like God,','knowing good and evil.”'],'GENESIS 3:5',{size:50,hl:'like God,',hlAt:148.0,hlDur:.6,seed:69,id:10});
+  return g;
+}
+
+// ---------- Sheet 7: the fruit, and what it cost (151.8-176.3) ----------
+function s7(t,l){
+  const dr=ease.inOut(prog(t,163.3,165.4));
+  let g=sheetBase(7,'#3A0C3A','#5A0F36');
+  g+=`<rect x="-40" y="-60" width="2000" height="1200" fill="#201A30" opacity="${.85*dr}"/>`;
+  g+=glow(1300,380,900,mix('#FF5A48','#55506A',dr),.5*(1-.6*dr));
+  const p=mixP(CRIMP,GREYP,dr);
+  g+=gardenGround(t,mix('#5A1040','#25233A',dr),mix('#801642','#2B2940',dr),mix('#C83A4E','#3C3A50',dr),12);
+  g+=bigTree(t,1330,940,1,p,1-.8*dr,{id:71});
+  // The tear runs under the figures.
+  const tp=ease.out(prog(t,157.4,158.4));
+  if(tp>0){
+    const fx0=1030,fy0=715,rr=rng(7),a1=[`M${fx0} ${fy0}`],b1=[`M${fx0} ${fy0}`];
+    for(let i=1;i<=14;i++)a1.push(`L${(fx0-i*82).toFixed(0)} ${(fy0+(i*13)+(rr()-.5)*70).toFixed(0)}`);
+    for(let i=1;i<=14;i++)b1.push(`L${(fx0+i*80).toFixed(0)} ${(fy0-(i*34)+(rr()-.5)*70).toFixed(0)}`);
+    [a1.join(''),b1.join('')].forEach(d=>{g+=mark(d,tp,'#F7F2E6',26,{'stroke-linejoin':'miter'})+mark(d,tp,'#05050F',15,{'stroke-linejoin':'miter'});});
+  }
+  g+=`<g transform="${jit(t,4,1400,500,1.2,10)}">${snake(SNK6.replace(/[0-9.]+ [0-9.]+/g,m=>{const [a,b]=m.split(' ').map(Number);return (a-20)+' '+b;}),1,held(t,10),{w:20,head:1.35})}</g>`;
+  // Figures: she reaches, eats, gives; he eats. Then shame.
+  const reach=ease.inOut(prog(t,152.6,153.8)),take=ease.inOut(prog(t,155.6,156.4)),eat=ease.inOut(prog(t,156.6,157.3));
+  const give=ease.inOut(prog(t,159.2,160.4)),aEat=ease.inOut(prog(t,161.6,162.4));
+  const shrink=lerp(1.25,1.12,ease.inOut(prog(t,166.5,168)));
+  const huddle=ease.inOut(prog(t,166.5,168));
+  const skin=dr>.5?'#8C8290':'#F5BE8E',shade=dr>.5?'#544C5C':'#C4835E',hair=dr>.5?'#1E1C2C':'#2E1C52';
+  const aT=dr>.5?['#55536A','#3A3850']:['#FFC24C','#E0623C'],eT=dr>.5?['#5F5A70','#3E3B52']:['#7CFFE6','#2E9AD8'];
+  const aura=mix('#FFA48C','#55506A',dr),auraOp=.46*(1-.85*huddle);
+  const ex=lerp(900,960,huddle),adx=lerp(620,820,lerp(give*.3,1,huddle));
+  const Rv=Math.max(reach*(1-take*.12),give*.7)*(1-ease.inOut(prog(t,161.2,162.4)));
+  g+=`<g transform="${jit(t,6,adx,900,1.4,12)}">`+chubby(adx,940,shrink,Object.assign({},ADAM,{reach:Math.max(give*.5,aEat*.3)*(1-huddle),skin,shade,hair,tunic:aT[0],tunic2:aT[1],aura,auraOp,lean:-8*huddle,filter:'htSoft'}))+`</g>`;
+  g+=`<g transform="${jit(t,7,ex,900,1.4,12)}">`+chubby(ex,940,shrink*.98,Object.assign({},EVE,{flip:give>0||huddle>0?-1:1,reach:Rv*(1-huddle),skin,shade,hair,tunic:eT[0],tunic2:eT[1],aura,auraOp,lean:-8*huddle,filter:'htSoft'}))+`</g>`;
+  // Fruit position.
+  if(t<163.3){
+    const LOW=[1040,690],hx=900+lerp(52,116,reach)*1.25,hy=940-lerp(54,172,reach)*1.25-28;
+    let fx=lerp(LOW[0],hx,take),fy=lerp(LOW[1],hy,take);
+    if(give>0){fx=lerp(fx,ex-90,give);fy=lerp(fy,820,give);}
+    g+=fruitAt(t,fx,fy,31,p.fruit,1-.7*dr);
+    if(t>157.2)g+=C(fx+(give>0?18:-23),fy-8,15,'#FFF0C8');
+  }
+  // Fig leaves drift down to them.
+  if(t>171.4){
+    for(let k=0;k<4;k++){const lp=ease.out(prog(t,171.5+k*.25,172.8+k*.25)),tx=[adx-28,adx+20,ex-24,ex+24][k],ty=[840,850,846,856][k];const x=lerp(tx+[-200,160,-120,220][k],tx,lp),y=lerp(300,ty,lp),rot=lerp(160,0,lp)+Math.sin(t*3+k)*6*(1-lp);
+      if(lp>0)g+=`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${shrink*.9})"><g filter="url(#sticker)"><path d="M0 -40 C30 -40 44 -10 30 10 C46 18 30 44 0 40 C-30 44 -46 18 -30 10 C-44 -10 -30 -40 0 -40Z" fill="#3E8A4A"/></g>${L(0,-36,0,36,'#24602E',3)}</g>`;}
+  }
+  // Labels and verse.
+  g+=fade(t,158.6,piece(t,152.6,1080,480,label(820,450,'GOOD FOR FOOD',{size:28}),1,1.2)+piece(t,154.4,1080,520,label(760,500,'DESIRABLE FOR GAINING WISDOM',{size:28}),2,1.2));
+  g+=fade(t,170.9,verse(t,157.0,70,70,['She ate some. She gave some to her husband,','who was with her, and he ate too.'],'GENESIS 3:6',{size:40,hl:'and he ate too.',hlAt:162.0,hlDur:.6,seed:71,id:3}));
+  g+=fade(t,170.9,piece(t,163.5,1500,1000,label(1500,980,'THEIR EYES WERE OPENED',{size:28,anchor:'middle',bg:'#14141A'}),4,1.2));
+  g+=fade(t,170.9,piece(t,167.0,330,420,label(70,400,'ALL THEY FOUND: NAKEDNESS AND SHAME',{size:28,bg:CORAL}),5,1.2));
+  g+=piece(t,171.6,330,120,label(70,90,'FIG LEAVES TO COVER THEMSELVES',{size:30})+label(70,148,'GENESIS 3:7',{size:22,bg:'#14141A'}),6,1.2);
+  return g;
+}
+
+// ---------- Sheet 8: hiding, the question, and the blame (176.3-198.8) ----------
+function s8(t,l){
+  let g=sheetBase(8,'#141428','#1E1A34');
+  g+=starfield(t,.35,500)+gardenGround(t,'#25233A','#2B2940','#34324A',16);
+  // Trees to hide among.
+  [[380,.55],[700,.7],[1650,.6]].forEach(([x,s],i)=>g+=bigTree(t,x,940,s,GREYP,.25,{id:80+i}));
+  // The presence of God: a soft moving light, never a body.
+  const lx=lerp(2100,1250,ease.inOut(prog(t,176.3,183.4)));
+  g+=glow(lx,520,620,'#FFF4D8',.55)+glow(lx,520,220,'#FFFFFF',.55);
+  // They hide, then come out.
+  const hide=ease.inOut(prog(t,179.6,181))*(1-ease.inOut(prog(t,186.8,188)));
+  const ax=lerp(1000,640,hide),ex=lerp(1150,760,hide);
+  const dim={skin:'#8C8290',shade:'#544C5C',hair:'#1E1C2C'};
+  g+=chubby(ex,940,1.12,Object.assign({},EVE,dim,{tunic:'#5F5A70',tunic2:'#3E3B52',flip:hide>.5?1:-1,filter:'htSoft'}));
+  g+=chubby(ax,940,1.15,Object.assign({},ADAM,dim,{tunic:'#55536A',tunic2:'#3A3850',flip:hide>.5?1:-1,filter:'htSoft'}));
+  // A dark bush in front of them while they hide.
+  if(hide>0)g+=G('',`<g transform="translate(700 900)"><g filter="url(#sticker)"><path d="M-180 50 C-200 -40 -140 -100 -80 -70 C-60 -140 40 -140 60 -70 C120 -110 200 -60 180 50Z" fill="#1E1C30"/></g></g>`+[[600,860],[690,820],[790,870]].map(([x,y],k)=>C(x,y,6,'#3A3850')).join(''),hide);
+  g+=piece(t,176.6,330,100,label(70,70,'THEY HEARD THE LORD GOD WALKING IN THE GARDEN',{size:26})+label(70,124,'GENESIS 3:8',{size:22,bg:'#14141A'}),1,1.2);
+  // Where are you?
+  const q=ease.out(prog(t,183.5,184.4));
+  if(q>0)g+=G('',T(lx,540,'“Where are you?”',{size:96,font:'Georgia',style:'italic',fill:'#FFFFFF',anchor:'middle'})+label(lx,600,'GENESIS 3:9',{size:24,anchor:'middle'}),q*(1-prog(t,189.4,190)));
+  g+=fade(t,189.3,piece(t,187.0,ax,700,label(ax,660,'“I WAS AFRAID” · GENESIS 3:10',{size:24,anchor:'middle'}),2,1.2));
+  // The blame.
+  if(t>189.5){
+    g+=piece(t,189.6,1300,180,label(1300,150,'AND THEN CAME THE BLAME',{size:34,anchor:'middle',bg:CORAL}),3,1.2);
+    g+=arrow(ax+40,780,(ax+ex)/2,690,ex-20,780,ease.inOut(prog(t,192.4,193.0)),CORAL,8);
+    g+=arrow(ax,760,ax+300,520,lx-160,500,ease.inOut(prog(t,193.6,194.4)),CORAL,8);
+    g+=piece(t,193.0,(ax+ex)/2,640,label((ax+ex)/2,620,'THE WOMAN…',{size:22,anchor:'middle'}),4,1);
+    g+=piece(t,194.4,lx-260,450,label(lx-260,430,'…YOU GAVE HER TO ME',{size:22,anchor:'middle'}),5,1);
+    // A grey serpent in the grass, left.
+    const sx=lerp(-200,140,ease.out(prog(t,195.8,196.6)));
+    g+=`<g transform="translate(${sx} 0)">${snake('M0 930 C60 900 120 960 180 930 C220 912 250 930 280 925',1,held(t,10),{w:12,head:1,edge:'#2A2838',body:'#6A5A7A',hi:'#A89AB8',spot:'#8A7A9A'})}</g>`;
+    g+=arrow(ex-30,800,(ex+sx+280)/2,700,sx+300,900,ease.inOut(prog(t,196.4,197.1)),CORAL,8);
+    g+=piece(t,197.0,sx+300,820,label(sx+300,800,'THE SERPENT',{size:22,anchor:'middle'}),6,1);
+    g+=piece(t,197.2,1300,230,label(1300,206,'GENESIS 3:12–13',{size:22,anchor:'middle',bg:'#14141A'}),7,1);
+  }
+  return g;
+}
+
+// ---------- Sheet 9: what breaks, and a promise (198.8-236.9) ----------
+function s9(t,l){
+  let g=sheetBase(9,'#1A1636','#2A1030');
+  g+=starfield(t,.3,1080);
+  const W=540,H=420,xs=[90,690,1290],y=150,starts=[198.8,217.7,224.4],names=['THE SERPENT','THE WOMAN','THE MAN'],refs=['GENESIS 3:14–15','GENESIS 3:16','GENESIS 3:17–19'];
+  starts.forEach((s0_,i)=>{
+    const x=xs[i],lt=t-s0_,on=lt>=0;
+    let c=`<path d="${torn(x-8,y-8,W+16,H+16,120+i,6,4)}" fill="#F7F2E6"/>`+R(x,y,W,H,6,on?'#120E26':'#0A0818');
+    const id=nid();c+=`<clipPath id="${id}"><rect x="${x}" y="${y}" width="${W}" height="${H}" rx="6"/></clipPath><g clip-path="url(#${id})">`;
+    if(on){
+      c+=`<path d="${ridge(130+i,y+H*.74,8,60,x-20,x+W+20,y+H+60)}" fill="#3A2E3A"/>`;
+      if(i===0){
+        const crawl=(lt*60)%200;
+        c+=`<g transform="translate(${x+60-crawl*.2} ${y+H*.78-930})">${snake(`M0 930 C70 915 140 945 210 930 C270 918 330 940 390 930`,1,t,{w:13,head:1.05,edge:'#2A2838',body:'#7A5A8A',hi:'#B89AC8',spot:'#9A7AAA'})}</g>`;
+        // Hostility between them.
+        if(t>203.2){c+=mark(`M${x+W*.6} ${y+90} l30 30 l-30 30 l30 30 l-30 30`,ease.inOut(prog(t,203.4,204.2)),CORAL,7);c+=G('',chubby(x+W-80,y+H*.78,.6,Object.assign({},EVE,{flip:-1,skin:'#B49A92',shade:'#7E6068',tunic:'#7E7A98',tunic2:'#4A4668',filter:'htSoft'})),ease.out(prog(t,203.3,203.8)));}
+      }else if(i===1){
+        c+=chubby(x+W*.36,y+H*.78,.8,Object.assign({},EVE,{skin:'#B49A92',shade:'#7E6068',tunic:'#7E7A98',tunic2:'#4A4668',filter:'htSoft'}))+chubby(x+W*.68,y+H*.78,.82,Object.assign({},ADAM,{flip:-1,skin:'#B49A92',shade:'#7E6068',tunic:'#7A7090',tunic2:'#4A4668',filter:'htSoft'}));
+        c+=mark(`M${x+W*.52} ${y+70} l-16 40 l24 10 l-20 46 l26 8 l-18 44`,ease.inOut(prog(t,220.6,221.4)),CORAL,7);
+      }else{
+        const bend=Math.sin(held(t,6)*3)*.5+.5;
+        for(let k=0;k<7;k++){const tx=x+30+k*76,ty=y+H*.78;c+=P(`M${tx} ${ty} l10 -46 l8 30 l10 -54 l8 40 l10 -36 l6 66Z`,'#5A4A3A');}
+        c+=chubby(x+W*.5,y+H*.8,.82,Object.assign({},ADAM,{lean:10+8*bend,reach:.25*bend,skin:'#B49A92',shade:'#7E6068',tunic:'#7A7090',tunic2:'#4A4668',filter:'htSoft'}));
+        for(let k=0;k<3;k++){const p=((t*.8)+k/3)%1;c+=E(x+W*.5+30+k*14,y+H*.36+p*60,4,6,'#9ADFFF',{opacity:1-p});}
+      }
+    }
+    c+='</g>'+label(x-8,y-30,names[i],{size:26,bg:on?INK:'#2A2E52'});
+    if(on)c+=piece(t,s0_+.3,x+W,y+H+20,label(x+W+8,y+H-12,refs[i],{size:20,anchor:'end',bg:'#14141A'}),40+i,1);
+    g+=`<g transform="${jit(t,90+i,x+W/2,y+H/2,1,8)}">${c}</g>`;
+  });
+  g+=piece(t,199.4,360,620,label(90,606,'CURSED TO CRAWL ON ITS BELLY',{size:24,bg:CORAL}),11,1);
+  g+=piece(t,203.4,360,662,label(90,648,'HOSTILITY BETWEEN THEIR OFFSPRING',{size:24,bg:CORAL}),12,1);
+  g+=piece(t,218.4,960,620,label(690,606,'PAIN IN CHILDBEARING',{size:24,bg:CORAL}),13,1);
+  g+=piece(t,220.6,960,662,label(690,648,'CONFLICT IN MARRIAGE',{size:24,bg:CORAL}),14,1);
+  g+=piece(t,225.0,1560,620,label(1290,606,'CURSED GROUND · THORNS · THISTLES',{size:24,bg:CORAL}),15,1);
+  g+=piece(t,229.0,1560,662,label(1290,648,'PAINFUL TOIL, UNTIL DEATH',{size:24,bg:CORAL}),16,1);
+  // The promise, then dust.
+  const hope=ease.out(prog(t,209.2,210.2))*(1-prog(t,231.6,232.2));
+  if(hope>0)g+=glow(960,820,620,'#FFE08A',.45*hope);
+  g+=fade(t,231.8,verse(t,209.2,320,740,['“He will crush your head,','and you will strike his heel.”'],'GENESIS 3:15',{size:52,hl:'He will crush your head,',hlAt:210.2,hlDur:1,seed:91,id:20,labelBelow:false}));
+  g+=fade(t,231.8,piece(t,214.0,1500,990,label(1890,990,'CHRISTIANS HAVE LONG READ THIS AS THE FIRST HINT OF A SAVIOR',{size:22,anchor:'end',bg:'#FFE100',fill:'#141416'}),21,1));
+  g+=verse(t,232.3,420,750,['“For dust you are,','and to dust you will return.”'],'GENESIS 3:19',{size:52,hl:'to dust you will return.',hlAt:234.4,hlDur:1,seed:93,id:22,labelBelow:false});
+  if(t>232.4){for(let i=0;i<50;i++){const p=((t-232.4)*.25+hash(i,4))%1;g+=C(200+hash(i,5)*1520,lerp(1080,700,p),2+hash(i,6)*3,'#C8A27A',{opacity:(1-p)*.7});}}
+  return g;
+}
+
+// ---------- Sheet 10: Eve, and an act of mercy (236.9-247.1) ----------
+function s10(t,l){
+  let g=sheetBase(10,'#20163A','#3A1E2A');
+  g+=starfield(t,.4,600)+glow(960,500,800,'#FFB46A',.32)+gardenGround(t,'#3A2440','#4A2A3A','#5A3A40',20);
+  const sk=ease.inOut(prog(t,242.6,244.2)),mercy=Math.sin(clamp(prog(t,241.6,245.2))*Math.PI);
+  g+=glow(960,300,600,'#FFF4D8',.6*mercy);
+  for(let i=0;i<30;i++){const p=((t-241.6)*.5+hash(i,8))%1;if(t>241.6&&t<245.6)g+=C(700+hash(i,9)*520,lerp(200,880,p),3,'#FFF4D8',{opacity:(1-p)*mercy});}
+  const dimT=['#7E7A98','#4A4668'],skinT=['#C9A27A','#8A5E3C'];
+  const tu=k=>[mix(dimT[0],skinT[0],sk),mix(dimT[1],skinT[1],sk)];
+  const aura=mix('#55506A','#FFC88A',sk);
+  g+=chubby(820,935,1.3,Object.assign({},ADAM,{tunic:tu()[0],tunic2:tu()[1],skin:mix('#B49A92','#F5BE8E',sk),shade:mix('#7E6068','#C4835E',sk),aura,auraOp:.2+.3*sk,filter:'htSoft'}));
+  g+=chubby(1100,935,1.27,Object.assign({},EVE,{flip:-1,tunic:tu()[0],tunic2:tu()[1],skin:mix('#B49A92','#F5BE8E',sk),shade:mix('#7E6068','#C4835E',sk),aura,auraOp:.2+.3*sk,filter:'htSoft'}));
+  g+=piece(t,237.4,1100,560,label(1100,530,'EVE',{size:40,anchor:'middle'}),1,1.2);
+  g+=verse(t,238.0,70,90,['Adam named his wife Eve,','because she would become','the mother of all the living.'],'GENESIS 3:20',{size:42,hl:'the mother of all the living.',hlAt:239.6,hlDur:.9,seed:101,id:2});
+  g+=piece(t,242.8,1500,140,label(1500,110,'AN ACT OF MERCY',{size:34,anchor:'middle',bg:'#FFE100',fill:'#141416'})+label(1500,170,'GARMENTS OF SKIN · GENESIS 3:21',{size:24,anchor:'middle'}),3,1.2);
+  return g;
+}
+
+// ---------- Sheet 11: east of Eden (247.1-260.4) ----------
+function s11(t,l){
+  let g=sheetBase(11,'#14103E','#3A1040');
+  g+=glow(1480,560,960,'#FF7A34',.58)+starfield(t,.6,440);
+  const lay=(seed,base,amp,wave,col)=>`<path d="${ridge(seed,base+8,amp,wave)}" fill="#000" opacity=".4" filter="url(#sd)"/><path d="${ridge(seed,base,amp,wave)}" fill="${col}"/>`;
+  g+=lay(3,620,34,240,'#6A1440')+lay(11,730,28,180,'#3A1248');
+  const st=held(t,12),stoneId=nid(),inId=nid();
+  g+=grad(stoneId,'#7468A8','#241A58',1,.5)+grad(inId,'#7CFFE6','#FFB04C',0,1);
+  const gate=`<g filter="url(#htSoft)"><path d="M-290 0 V-470 C-290 -810 290 -810 290 -470 V0 H190 V-450 C190 -660 -190 -660 -190 -450 V0Z" fill="url(#${stoneId})"/></g>`;
+  g+=`<g transform="${jit(t,2,1480,700,1.2,10)} translate(1480 905) scale(1 1.03)"><path d="M-195 0 V-450 C-195 -665 195 -665 195 -450 V0Z" fill="url(#${inId})"/>${glow(0,-320,470,'#FFF0B8',.6)}${gate}</g>`;
+  const wo=ease.out(prog(t,253.2,254.2))*(.72+.2*Math.sin(t*3));
+  g+=`<g transform="translate(1480 400)"><g transform="translate(-290 10) scale(-.66 .84)">${wing(wo,'#FFF4C2')}</g><g transform="translate(290 10) scale(.42 .84)">${wing(wo,'#FFF4C2')}</g></g>`;
+  g+=glow(1190,410,160,'#FFF4C8',.7*wo)+glow(1770,410,160,'#FFF4C8',.7*wo);
+  const so=ease.out(prog(t,254.0,254.8));
+  g+=glow(1480,560,480,'#FF6A1E',.6*so)+G(`translate(1480 800) rotate(${Math.sin(st*2.2)*8})`,`<g filter="url(#sticker)">${sword(st*1.2,470)}</g>`,so);
+  g+=lay(19,880,10,150,'#120A28');
+  const p=ease.inOut(prog(t,247.6,259.4)),wk=held(t,8)*11,dim={skin:'#C3A08E',shade:'#7E6068',hair:'#1E1C2C',aura:'#FF8A3C',auraOp:.3,filter:'htSoft'};
+  g+=`<g transform="${jit(t,5,700,800,1.6,8)}">`+chubby(lerp(1090,150,p),894,.98,Object.assign({},ADAM,dim,{flip:-1,walk:wk,tunic:'#C9A27A',tunic2:'#8A5E3C'}))+`</g>`;
+  g+=`<g transform="${jit(t,6,800,800,1.6,8)}">`+chubby(lerp(1250,310,p),898,.95,Object.assign({},EVE,dim,{flip:-1,walk:wk+1.4,tunic:'#C9A27A',tunic2:'#8A5E3C'}))+`</g>`;
+  g+=verse(t,247.4,60,50,['He banished them from Eden, so they would not','eat from the tree of life and live forever.'],'GENESIS 3:22–23',{size:36,hl:'the tree of life',hlAt:250.6,hlDur:.7,seed:111,id:1});
+  g+=verse(t,253.3,60,175,['On the east side, cherubim and a flaming sword,','to guard the way back to that tree.'],'GENESIS 3:24',{size:34,hl:'to guard the way back',hlAt:256.6,hlDur:.8,seed:113,id:2,labelBelow:false});
+  g+=piece(t,253.6,1000,360,label(880,330,'CHERUBIM',{size:28}),3,1.2)+arrow(1060,380,1120,390,1180,400,ease.inOut(prog(t,253.8,254.3)),YEL,7);
+  g+=piece(t,254.6,1770,920,label(1880,842,'FLAMING SWORD',{size:28,anchor:'end'}),4,1.2)+arrow(1740,838,1660,760,1570,650,ease.inOut(prog(t,254.8,255.4)),YEL,7);
+  return g;
+}
+
+const SHEETS=[s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11];
+const CUTS=[12.45,40.2,61.6,71.2,94.5,123.9,151.8,176.3,198.8,236.9,247.1];
+const camX=t=>STN*CUTS.reduce((a,c)=>a+ease.inOut(prog(t,c-PAN,c+PAN)),0);
+// ---------- Portrait opening, drawn for the tall frame (0-12.45) ----------
+// "In the beginning": darkness, the heavens unfolding, the earth rising as deep water,
+// formless and empty, darkness swallowing it, then a crack of light when God speaks (no figure, no sun, no stars).
+const torusPts=(cx,cy,r,seed,t,n=48,amp=.12)=>{let d='';for(let i=0;i<=n;i++){const a=i/n*6.283,k=1+amp*(Math.sin(a*3+seed+t*.6)*.5+Math.sin(a*7+seed*2-t*.9)*.3+(hash(i%n,seed)-.5)*.4);d+=(i?'L':'M')+(cx+Math.cos(a)*r*k).toFixed(1)+' '+(cy+Math.sin(a)*r*k).toFixed(1);}return d+'Z';};
+function v0(t){
+  let g=DAYDEFS;
+  const [bg,bd]=vg('#070826','#0A0B2E','#03040F');
+  g+=bd+R(0,0,1080,1920,0,bg);
+  // The void: slow churning smoke, never still.
+  for(let k=0;k<9;k++){const x=540+Math.sin(t*.13+k*1.7)*380,y=260+k*200+Math.cos(t*.11+k)*60;g+=glow(x,y,260+hash(k,3)*200,['#1A1E5A','#22185C','#12204A'][k%3],.5);}
+  // "In the beginning": stamped letter by letter.
+  const tt='IN THE BEGINNING',ti=prog(t,.05,1.3),tf=1-prog(t,2.0,2.5);
+  if(tf>0){let ci=0;['IN THE','BEGINNING'].forEach((ln,li)=>{const sz=li?128:84,yb=li?1060:930;let x=540-tw(ln,sz,'Georgia')/2;
+    for(const ch of ln){const p=prog(t,.05+ci/tt.length*1.25,.05+ci/tt.length*1.25+.12),w=tw(ch,sz,'Georgia');ci++;
+      if(p>0)g+=G(sc(x+w/2,yb-sz*.35,lerp(1.6,1,ease.out(p))),T(x,yb,ch,{size:sz,font:'Georgia',fill:'#F3ECD8'}),p*tf);x+=w;}ci++;});
+    g+=G('',label(540,1120,'GENESIS 1:1',{size:26,anchor:'middle'}),prog(t,1.0,1.3)*tf);}
+  // The heavens: a vast vault of slow nebula veils and layered paper cloud banks rising in tiers.
+  // No stars, sun or light source yet: the colours are deep and self-lit, like ink on dark paper.
+  const HZ=1250,hv=k=>ease.back(prog(t,1.5+k*.14,2.4+k*.14)),veil=prog(t,1.4,3.0)*(1-.75*prog(t,7.4,9.4));
+  // Nebula veils sweeping in an S through the upper frame.
+  for(let k=0;k<16;k++){const u=k/15,x=540+Math.sin(u*5.2+t*.18)*360+Math.sin(t*.3+k)*30,y=lerp(160,1120,u)+Math.cos(t*.22+k*.7)*30;
+    g+=glow(x,y*.75,(240+hash(k,81)*200)*(.6+.4*veil),['#8A3AC8','#3A6AE0','#B03AA8','#2A8AC0','#6A3AE8'][k%5],.55*veil);}
+  // The vault itself: great arcs stretched over everything like a tent (Isaiah 40:22), drawn on.
+  for(let k=0;k<4;k++){const r=620+k*170,d=`M${540-r} ${HZ} A${r} ${r*1.25} 0 0 1 ${540+r} ${HZ}`;g+=mark(d,ease.inOut(prog(t,1.5+k*.15,2.6+k*.15)),['#C8B8FF','#9AC8FF','#E0B8FF','#B8D8FF'][k],3,{opacity:(.4*veil).toFixed(3)});}
+  // Fine curling filaments through the veils.
+  for(let k=0;k<7;k++){let d='';for(let j=0;j<=24;j++){const u=j/24,x=lerp(-60,1140,u),y=260+k*120+Math.sin(u*6+k*1.3+t*.35)*70+Math.sin(u*13+k)*18;d+=(j?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);}
+    g+=P(d,'none',{stroke:['#B89CFF','#7FC8FF','#E09CF0'][k%3],'stroke-width':2.5,opacity:(.22*veil).toFixed(3),'stroke-dasharray':`${80+k*20} ${50+k*10}`,'stroke-dashoffset':(-t*40*(k%2?1:-1)).toFixed(1)});}
+  // Paper cloud banks, far to near, each rising from the horizon with a soft rim.
+  const bank=(seed,base,col,rim,drift)=>{let d=`M-200 ${HZ+60}L-200 ${base}`,x=-200+((t*drift)%120);
+    let i=0;while(x<1300){const r=50+hash(i,seed)*110,bb=base+Math.sin((x+seed*40)/260)*90;d+=`L${x.toFixed(1)} ${bb.toFixed(1)}A${r.toFixed(1)} ${(r*.85).toFixed(1)} 0 0 1 ${(x+1.6*r).toFixed(1)} ${(bb+(hash(i,seed+1)-.5)*40).toFixed(1)}`;x+=-.4*r;x+=2*r;i++;}
+    d+=`L1300 ${HZ+60}Z`;return `<path d="${d}" fill="#000" opacity=".35" transform="translate(0 -12)" filter="url(#dblur2)"/><path d="${d}" fill="${col}"/><path d="${d}" fill="none" stroke="${rim}" stroke-width="3" opacity=".45"/>`;};
+  const BK=[[860,'#241868','#9A86F0',8],[1010,'#2A2A8A','#A8A8FF',-12],[1150,'#2A44A6','#B8D8FF',16]];
+  BK.forEach(([b,c,rm,dr],k)=>{const r=hv(k);if(r<=0)return;g+=`<g transform="translate(0 ${((1-r)*(HZ+60-b)).toFixed(1)})">${bank(200+k*7,b,c,rm,dr)}</g>`;});
+  // Drifting mist between the banks.
+  for(let k=0;k<6;k++){const x=((hash(k,91)*1400+t*(20+k*6))%1400)-160,y=300+k*150;g+=E(x,y,200,22,'#C8B8FF',{opacity:(.08*veil).toFixed(3)});}
+  // The earth: a deep, rolling body of water rising into the lower half.
+  const er=ease.out(prog(t,3.3,4.5)),dy=(1-er)*760;
+  const WC=['#14408E','#103278','#0C2760','#091C48','#061232'];
+  for(let i=0;i<5;i++){const ph=t*(.5+i*.12)*(i%2?1:-1),amp=(10+i*6)*(1+.8*prog(t,4.8,6.6));
+    g+=`<path d="${ridge(300+i,HZ+i*120+dy,amp,90+i*30,-60,1140,2100)}" fill="${WC[i]}" transform="translate(${(Math.sin(ph)*40).toFixed(1)} 0)"/>`;
+    for(let k=0;k<6;k++){const px=((hash(k,310+i)*1200+t*(30+i*10)*(i%2?1:-1))%1200+1200)%1200-60,py=HZ+i*120+dy+30+hash(k,320+i)*60;g+=arc(px,py,16+i*4,'#6A96E8',3.5,.5);}}
+  // Labels: the heavens and the earth.
+  const lf=1-prog(t,4.6,5.0);
+  if(lf>0){g+=G('',piece(t,2.5,540,520,label(540,500,'THE HEAVENS',{size:38,anchor:'middle'}),1,1.2),lf);g+=G('',piece(t,3.7,540,1500,label(540,1480,'THE EARTH',{size:38,anchor:'middle'}),2,1.2),lf);}
+  // Formless: torn scraps that try to take shape and fall apart.
+  const fm=prog(t,5.3,5.9)*(1-prog(t,8.6,9.6));
+  if(fm>0)for(let k=0;k<26;k++){const x=120+hash(k,41)*840+Math.sin(t*.9+k)*40,y=700+hash(k,42)*700+Math.cos(t*.7+k*2)*50,rot=t*(30+hash(k,43)*60)*(k%2?1:-1),s=18+hash(k,44)*36,life=.5+.5*Math.sin(t*1.7+k*2.3);
+    g+=`<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)})" opacity="${(fm*life*.85).toFixed(3)}"><path d="${torn(-s,-s*.6,s*2,s*1.2,k+50,4,3,8)}" fill="${['#2A3C8A','#3B2E8E','#1E4A7A'][k%3]}"/></g>`;}
+  g+=fade(t,9.4,piece(t,5.6,330,880,label(330,860,'FORMLESS',{size:40,anchor:'middle'}),3,1.4));
+  if(t>6.5&&t<9.8)g+=G('',mark(scribble(700,1080,230,150,9),ease.inOut(prog(t,6.6,7.2)),CORAL,8),1-prog(t,9.3,9.8));
+  g+=fade(t,9.4,piece(t,6.6,760,880,label(760,860,'EMPTY',{size:40,anchor:'middle',bg:CORAL}),4,1.4));
+  // Darkness covers the deep: ink spreading in from every edge.
+  const ink=k=>ease.inOut(prog(t,7.5+k*.07,9.6+k*.05));
+  const IP=[[0,0],[1080,0],[0,1920],[1080,1920],[540,-80],[540,2000],[-80,700],[1160,700],[-80,1300],[1160,1300],[260,380],[820,1600],[300,1500],[800,400]];
+  IP.forEach(([x,y],k)=>{const r=(520+hash(k,61)*260)*ink(k);if(r>2)g+=`<path d="${torusPts(x,y,r,k*5+7,t,40,.18)}" fill="#020207" opacity=".94"/>`;});
+  const dk=ease.inOut(prog(t,8.6,9.8));
+  if(dk>0)g+=R(0,0,1080,1920,0,'#020207',{opacity:(.86*dk).toFixed(3)});
+  g+=fade(t,10.0,piece(t,7.8,540,680,label(540,660,'DARKNESS OVER THE DEEP',{size:38,anchor:'middle'}),5,1.4)+piece(t,8.3,540,730,label(540,716,'GENESIS 1:2',{size:24,anchor:'middle'}),6,1));
+  // A breath of wind skims the hidden water (the Spirit hovering, Gen 1:2): just a moving ripple, no form.
+  if(t>8.8&&t<10.4){const p=prog(t,8.8,10.4),x=lerp(-100,1180,p);g+=P(`M${x-260} ${HZ+40} Q${x-130} ${HZ+20} ${x} ${HZ+40} T${x+260} ${HZ+40}`,'none',{stroke:'#4A6AC8','stroke-width':3,opacity:(.6*Math.sin(p*Math.PI)).toFixed(3)});}
+  // Then God spoke: a crack of light splits the dark from top to bottom, then opens.
+  const cp=ease.inOut(prog(t,10.06,10.7)),wo=Math.pow(prog(t,11.0,12.45),2.2);
+  if(cp>0){
+    let d='';for(let i=0;i<=32;i++){const y=-20+i*61,x=540+(hash(i,71)-.5)*70*(1-Math.abs(i-16)/20);d+=(i?'L':'M')+x.toFixed(1)+' '+y;}
+    if(wo>0){const w=wo*900;let L='',Rr='';for(let i=0;i<=32;i++){const y=-20+i*61,x=540+(hash(i,71)-.5)*70*(1-Math.abs(i-16)/20);L+=(i?'L':'M')+(x-w*(.6+.4*hash(i,72))).toFixed(1)+' '+y;Rr=`L${(x+w*(.6+.4*hash(i,73))).toFixed(1)} ${y}`+Rr;}
+      const [lg,ld]=vg('#FFF4D2','#FFFBEC','#FFE6A8');g+=ld+P(L+Rr+'Z',lg);}
+    g+=P(d,'none',{stroke:'#FFE7A0','stroke-width':60,opacity:.55*cp,filter:'url(#dblur)'})+P(d,'none',{stroke:'#FFF6D6','stroke-width':22,opacity:.8*cp,filter:'url(#dblur2)'})+mark(d,cp,'#FFFFFF',7);
+    for(let k=0;k<30;k++){const y=hash(k,74)*1920,dr=((t-10.2)*.6+hash(k,75))%1,x=540+(hash(k,76)-.5)*2*(40+dr*260);g+=C(x.toFixed(1),y.toFixed(1),2+hash(k,77)*3,'#FFE7A0',{opacity:((1-dr)*.9*cp).toFixed(2)});}
+    g+=G('',piece(t,10.4,540,560,label(540,530,'THEN GOD SPOKE',{size:48,anchor:'middle'}),7,1.6),1-prog(t,11.8,12.2));
+  }
+  g+=glow(540,960,1100,'#FFFBE6',.9*prog(t,11.6,12.45));
+  return g;
+}
+// Focus beats: the camera punches in and shakes only on these moments; the rest of the time it is steady.
+const FOCUS=[[2.46,.6],[3.66,.7],[6.58,.6],[8.84,.5],[10.1,1.2],[12.56,.5],[17.0,.5],[20.98,.5],[24.52,.5],[29.04,.5],[33.72,.5],[37.4,.8],[54.6,.8],[68.6,.7],[97.6,.8],[130.8,.8],[141.4,.9],[156.6,.9],[157.4,1.2],[163.4,.7],[183.5,1.1],[192.4,.6],[210.2,.8],[234.4,.8],[254.0,1.0]];
+function focusFx(t){
+  let dx=0,dy=0,rot=0,z=1;
+  FOCUS.forEach(([b,s])=>{const p=t-b;if(p<0||p>1.4)return;const e=Math.exp(-p*4.2)*s,f=Math.floor(t*24);
+    dx+=(hash(f,b*7)-.5)*2*16*e;dy+=(hash(f,b*7+3)-.5)*2*12*e;rot+=(hash(f,b*7+5)-.5)*1.4*e;z*=1+.07*s*ease.out(clamp(p/.18))*Math.exp(-p*1.3);});
+  return {dx,dy,rot,z};
+}
+// ---------- Portrait six days: fly into each day like stepping through a painting (12.45-38) ----------
+const DAYNAMES=['LIGHT','SKY · WATERS','LAND · SEAS · PLANTS','SUN · MOON · STARS','SEA CREATURES · BIRDS','LAND ANIMALS'];
+const DCW=460,DCH=818,DS=1920/DCH; // each day is painted on a tall canvas that fills the frame at scale DS
+function dayCanvas(i,t,k,o={}){
+  // k = how far we have flown in: 1 fills the frame, <1 hangs as a framed painting ahead of us.
+  const {frame=false,dim=0,cx=540,cy=960}=o,s=DS*k;
+  let g=`<g transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) scale(${s.toFixed(4)}) translate(${-DCW/2} ${-DCH/2})">`;
+  if(frame)g+=`<path d="${torn(-14,-14,DCW+28,DCH+28,60+i,6,4)}" fill="#000" opacity=".5" transform="translate(6 10)" filter="url(#dblur2)"/><path d="${torn(-12,-12,DCW+24,DCH+24,70+i,6,4)}" fill="#F7F2E6"/>`;
+  g+=R(0,0,DCW,DCH,0,'#070A26')+dayArt(i,t,t-DAYS[i],0,0,DCW,DCH);
+  if(dim>0)g+=R(0,0,DCW,DCH,0,'#03040F',{opacity:dim.toFixed(3)});
+  return g+'</g>';
+}
+function dayHeader(t,i,a){
+  if(a<=0)return '';
+  let g=piece(t,DAYS[i]+.05,540,230,label(540,196,`DAY ${i+1}`,{size:72,anchor:'middle'}),40+i,1.6);
+  g+=piece(t,DAYS[i]+.3,540,300,label(540,282,DAYNAMES[i],{size:34,anchor:'middle',bg:'#14141A'}),50+i,1.2);
+  // Progress: six dots, this one lit.
+  for(let k=0;k<6;k++){const x=540+(k-2.5)*34,on=k<=i;g+=C(x,372,on?9:7,on?(k===i?YEL:'#F7F2E6'):'#3A3E6A')+(k===i?glow(x,372,26,YEL,.6):'');}
+  return G('',g,a);
+}
+// "But God wasn't finished": pull back from Day 6 to all six days hung as a gallery that fills the frame.
+function dayGallery(t){
+  const q=ease.inOut(prog(t,36.9,37.9)),KC=.3065,cell=k=>[540+((k%3)-1)*357,1030+(Math.floor(k/3)-.5)*640];
+  let g='';
+  g+=piece(t,37.2,540,250,label(540,210,'GENESIS 1:3–25',{size:44,anchor:'middle'}),70,1.2);
+  g+=piece(t,37.0,540,330,label(540,300,'SIX DAYS',{size:34,anchor:'middle',bg:'#14141A'}),71,1.2);
+  for(let k=0;k<5;k++){const a=ease.back(prog(t,37.0+k*.09,37.45+k*.09));if(a<=0)continue;const [x,y]=cell(k);
+    g+=`<g transform="${jit(t,80+k,x,y,1,8)}">`+dayCanvas(k,t,KC*a,{frame:true,cx:x,cy:y})+label(x-162,y-306,`DAY ${k+1}`,{size:24})+'</g>';}
+  const [x6,y6]=cell(5);
+  g+=dayCanvas(5,t,lerp(1.07,KC,q),{frame:q>.05,cx:lerp(540,x6,q),cy:lerp(960,y6,q)});
+  if(q>=1)g+=label(x6-162,y6-306,'DAY 6',{size:24});
+  if(t>37.4){g+=mark(scribble(x6,y6,210,330,12),ease.inOut(prog(t,37.4,38.1)),CORAL,10);
+    g+=piece(t,38.0,540,1720,label(540,1690,'BUT GOD WASN’T FINISHED',{size:44,anchor:'middle',bg:CORAL}),72,1.4);}
+  return g;
+}
+function v1(t){
+  let g=DAYDEFS;
+  if(t>=36.9)return g+dayGallery(t);
+  // Which day we are in, and how far through the fly-in to the next one.
+  let i=0;while(i<5&&t>=DAYS[i+1]-.7)i++;
+  const D=DAYS[i],p=ease.inOut(prog(t,D-.7,D+.15));
+  const push=1+.07*prog(t,D,i<5?DAYS[i+1]-.7:37.0);
+  if(i>0&&p<1){
+    // Fly through: the day we are leaving rushes past, the next hangs as a framed painting and fills the screen.
+    const kIn=.3*Math.pow(1/.3,p),kOut=(1+.07)*Math.pow(2.8,p);
+    g+=G('',dayCanvas(i-1,t,kOut,{dim:.55*p}),1-p*p);
+    g+=dayCanvas(i,t,kIn*(p>=1?push:1),{frame:true});
+  }else if(i===0&&t<D+.15){
+    // Out of the light of "Then God spoke", straight into Day 1.
+    g+=dayCanvas(0,t,lerp(1.25,1,ease.out(prog(t,CUTS[0],D+.15))));
+  }else g+=dayCanvas(i,t,push);
+  // Header replaces the empty top band; it hands over between days.
+  const hOut=i<5?1-prog(t,DAYS[i+1]-.75,DAYS[i+1]-.55):1-prog(t,36.9,37.3);
+  g+=dayHeader(t,i,(t>=D-.1?hOut:0));
+  return g;
+}
+// Portrait camera: per sheet, [time, x, y, zoom] in that sheet's own coordinates. Moves ease between keys.
+const CAMS=[
+  [[0,960,560,.9],[4.6,1250,560,1.05],[7.7,1250,560,1.05],[8.3,720,560,1.0],[9.8,960,520,.85],[12.4,960,520,.85]],
+  [[12.6,420,330,1.75],[16.6,420,330,1.75],[17.1,960,330,1.75],[20.6,960,330,1.75],[21.1,1500,330,1.75],[24.1,1500,330,1.75],[24.7,420,760,1.75],[28.6,420,760,1.75],[29.2,960,760,1.75],[33.3,960,760,1.75],[33.9,1500,760,1.75],[36.6,1500,760,1.75],[37.6,1260,600,.98],[40,1260,600,.98]],
+  [[40.5,1240,640,1.0],[42.8,1240,700,1.15],[46.8,1240,700,1.15],[47.7,1240,560,.86],[51.6,1240,560,.86],[52.3,560,600,1.0],[55.9,560,600,1.0],[56.5,1240,480,.9],[61.4,1240,480,.95]],
+  [[61.8,960,560,1.0],[63.3,960,700,1.3],[66.6,960,700,1.3],[67.2,1180,560,.95],[70,960,650,1.1],[71,960,650,1.12]],
+  [[71.4,520,700,1.15],[75.6,520,700,1.15],[76.4,1000,560,.88],[79.2,1000,560,.88],[79.7,760,500,1.0],[81.2,760,500,1.0],[81.7,1420,520,.98],[88.4,1440,560,.98],[89,1100,560,.9],[94.3,1100,560,.92]],
+  [[94.7,960,500,.9],[99.6,780,650,1.05],[100.5,1000,700,1.0],[104.2,1100,700,1.0],[106,1000,640,.95],[111.2,1000,640,.95],[111.8,700,700,1.2],[118.8,700,700,1.2],[119.4,670,640,1.0],[123.7,670,640,1.0]],
+  [[124.2,1300,560,.95],[127.6,1350,560,.95],[130.1,1000,620,1.08],[143,1000,620,1.08],[143.5,720,620,1.0],[146.8,800,620,1.0],[147.4,1100,600,.95],[151.6,1100,600,.95]],
+  [[152.1,1000,600,1.0],[157,900,650,1.12],[162.6,900,650,1.12],[163.4,1150,600,.9],[166.7,620,600,.95],[171.2,620,600,.95],[171.7,720,500,1.0],[176.1,720,500,1.0]],
+  [[176.6,600,560,1.0],[179.6,900,600,1.0],[183.2,1150,560,.9],[186.8,1150,560,.9],[187.3,800,620,1.05],[189.4,800,620,1.05],[189.9,1000,560,.86],[195.6,1000,560,.86],[196.2,700,640,.95],[198.6,700,640,.95]],
+  [[199.1,360,420,1.35],[209,360,450,1.3],[210,380,480,1.15],[217.4,380,480,1.15],[217.9,960,420,1.35],[224,960,430,1.35],[224.6,1560,420,1.35],[231.6,1560,450,1.3],[232.2,960,520,.6],[236.7,960,520,.62]],
+  [[237.1,960,620,1.1],[242.4,960,620,1.12],[242.9,1150,460,.95],[246.9,1150,460,.95]],
+  [[247.3,1300,560,.9],[253.4,1450,520,.9],[256.2,1250,580,.92],[260.4,420,650,1.05]],
+];
+const CAMK=(()=>{
+  const all=[];
+  CAMS.forEach((L,i)=>{
+    const a=i?CUTS[i-1]+PAN:0,b=i<CUTS.length?CUTS[i]-PAN:DUR+1,l=L.map(k=>[clamp(k[0],a,b),i*STN+k[1],k[2],k[3]]);
+    all.push([a,...l[0].slice(1)],...l,[b,...l[l.length-1].slice(1)]);
+  });
+  return all;
+})();
+function camAt(t){
+  let i=0;while(i<CAMK.length-2&&CAMK[i+1][0]<=t)i++;
+  const A=CAMK[i],B=CAMK[i+1],d=B[0]-A[0],p=d<1e-6?1:ease.inOut(clamp((t-A[0])/d));
+  return {x:lerp(A[1],B[1],p),y:lerp(A[2],B[2],p),z:lerp(A[3],B[3],p)};
+}
+const FW=1080,FH=1920,BANDY=1010;
+const vstars=stars.map(s=>[s[0]*.5625,s[1]*1.78,s[2],s[3]]);
+// Portrait foreground: grass, flowers and stones in each scene's colours, so the tall frame's lower part is never bare.
+const VFG={2:[['#22E0B4','#1AB894','#3BF0C4'],['#FF7BD5','#FFD45E','#7CFFE6']],3:[['#7A5A3E','#6A4C34','#8C6A4A'],[]],4:[['#22E0B4','#19B08E','#3BF0C4'],['#FF7BD5','#FFD45E','#35F2B4']],5:[['#22C8A8','#18A890','#34DCBC'],['#35F2B4','#FFD45E','#FF7BD5']],6:[['#C83A4E','#A02A44','#E04A5E'],['#FFB63C','#FF74E6']],7:[['#3C3A50','#2E2C40','#4A4860'],[]],8:[['#34324A','#2A2840','#403E58'],[]],10:[['#5A3A40','#4A2A3A','#6A4A4E'],['#FFC88A']],11:[['#1E1238','#160C2C','#2A1A48'],['#FF8A3C']]};
+function vFore(i,t){
+  const P_=VFG[i];if(!P_)return '';const [gc,fc]=P_;let g='';
+  const it=[...Array(90)].map((_,k)=>[k,1010+Math.pow(hash(k,i*13+1),.8)*760]).sort((a,b)=>a[1]-b[1]);
+  it.forEach(([k,y])=>{const x=hash(k,i*13+2)*2060-60,d=(y-1010)/760,s=lerp(.7,2.2,d),sw=Math.sin(t*1.5+k)*5*s,c=gc[k%3];
+    if(k%9===0){g+=E(x,y,26*s,12*s,gc[1])+E(x-6*s,y-4*s,14*s,6*s,gc[2],{opacity:.6});return;}
+    for(let j=-1;j<=1;j++)g+=L(x+j*5*s,y,x+j*9*s+sw,y-(16+hash(k,j+5)*20)*s,c,3.2*s);
+    if(fc.length&&k%5===0){const fy=y-(30+hash(k,9)*16)*s,col=fc[k%fc.length];g+=L(x,y,x+sw,fy,'#0A2A3E',2.5*s)+glow(x+sw,fy,18*s,col,.7)+C(x+sw,fy,5*s,col);}});
+  return g;
+}
+// One sheet seen through the portrait camera, held inside its paper so no wall ever shows.
+function sheetView(i,t,tc){
+  const c=camAt(tc),z=Math.max(c.z,1.12);
+  let x=c.x-i*STN,y=c.y;
+  const xa=540/z-30,xb=1950-540/z;x=xa<xb?clamp(x,xa,xb):960;
+  const ya=-640+BANDY/z,yb=1720-(FH-BANDY)/z;y=ya<yb?clamp(y,ya,yb):540;
+  return `<g transform="translate(${FW/2} ${BANDY}) scale(${z.toFixed(4)}) translate(${(-x).toFixed(1)} ${(-y).toFixed(1)})">`+SHEETS[i](t,t)+vFore(i,t)+'</g></g>';
+}
+function sheetScene(i,t,tc){return i===0?v0(t):i===1?v1(t):sheetView(i,t,tc);}
+function frameV(t){
+  VQ.length=0;
+  const fx=focusFx(t),big=s=>s.replace(/width="1920" height="1080"/g,`width="${FW}" height="${FH}"`);
+  const [wg,wd]=vg('#0C1040','#05061A','#0A0C30');
+  let g=big(paperDefs(t))+wd+R(0,0,FW,FH,0,wg);
+  // Which sheet, and whether we are scrolling down to the next one.
+  let i=0;while(i<CUTS.length&&t>=CUTS[i])i++;
+  const SL=.38;let scene;
+  const kn=CUTS.findIndex(c=>t>=c-SL&&t<c+SL);
+  if(kn>=1){
+    // Scroll: the old scene slides up and away, the next rises from below.
+    const c=CUTS[kn],q=ease.inOut(prog(t,c-SL,c+SL));
+    scene=`<g transform="translate(0 ${(-FH*q).toFixed(1)})">${sheetScene(kn,t,c-PAN)}</g><g transform="translate(0 ${(FH*(1-q)).toFixed(1)})">${sheetScene(kn+1,t,c+PAN)}</g>`;
+  }else scene=sheetScene(i,t,i>=2?clamp(t,CUTS[i-1]+PAN,(CUTS[i]||DUR+1)-PAN):t);
+  g+=`<g transform="translate(540 960) rotate(${fx.rot.toFixed(2)}) scale(${fx.z.toFixed(4)}) translate(${(-540+fx.dx).toFixed(1)} ${(-960+fx.dy).toFixed(1)})">${scene}</g>`;
+  if(t>=CUTS[0]&&t<13.4)g+=R(0,0,FW,FH,0,'#FFFBEC',{opacity:(1-ease.out(prog(t,CUTS[0],13.4))).toFixed(3)});
+  g+=verseOverlay(t);
+  g+=big(vignette(.38))+big(paperOver({tex:.2,grain:.32,blot:.12,texL:.3}));
+  g+=subtitles(t);
+  const fo=prog(t,259.4,260.3);
+  if(fo>0)g+=R(0,0,FW,FH,0,'#000',{opacity:fo});
+  return g;
+}
+function frame(t){
+  CURT=t;
+  if(VERT)return frameV(t);
+  const cx=camX(t);
+  let w='';
+  SHEETS.forEach((fn,i)=>{const x=i*STN-cx;if(x>-2100&&x<2100)w+=G(`translate(${x.toFixed(1)} 0)`,fn(t,t)+'</g>');});
+  let g=paperDefs(t)+R(0,0,1920,1080,0,'#07071A')+w;
+  g+=vignette(.42);
+  g+=paperOver({tex:.2,grain:.32,blot:.12,texL:.3});
+  g+=subtitles(t);
+  // Fade to black at the very end.
+  const fo=prog(t,259.4,260.3);
+  if(fo>0)g+=R(0,0,1920,1080,0,'#000',{opacity:fo});
+  return g;
+}
+(function(){
+  const svg=document.querySelector('svg');
+  if(VERT)svg.setAttribute('viewBox','0 0 1080 1920');
+  window.DUR=DUR;
+  window.seek=t=>{svg.innerHTML=frame(Math.max(0,Math.min(t,DUR-.001)));};
+  seek(0);
+  if(!location.search.includes('render')){const st=performance.now();const loop=n=>{seek(((n-st)/1000)%DUR);requestAnimationFrame(loop);};requestAnimationFrame(loop);}
+})();
+</script>

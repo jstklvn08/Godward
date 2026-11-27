@@ -1,0 +1,79 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Creation and the Fall: Instagram Thumbnail</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:1080px;height:1350px}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350"></svg>
+<script src="shared.js"></script>
+<script src="style-kit.js"></script>
+<script>
+// Instagram feed post, 4:5 (1080x1350), in the glowing-collage style of clip 6.
+// Key content stays inside the centre 1012 px so the 3:4 profile-grid crop keeps it.
+const {G,R,C,E,L,P,T,prog,ease,lerp,mix,rng}=K;
+const {tw,hash,nid,glow,torn,ridge,strip,tape,label,mark,scribble,paperDefs,chubby,snake}=S;
+const INK='#141416',YEL='#FFE100',CORAL='#FF5A48',W=1080,H=1350,t=5.3;
+const SNK='M1580 330 C1440 300 1290 360 1310 440 C1330 520 1460 500 1444 590 C1430 660 1310 640 1284 640 C1250 640 1230 610 1180 606';
+
+const ridgeW=(seed,base,amp,wave)=>ridge(seed,base,amp,wave,-60,W+60,H+60);
+const defs=`<defs>
+  <filter id="tex2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".62 .48" numOctaves="4" seed="11"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .9 .9 .9 0 -.98"/></filter>
+  <filter id="texL2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".05 .62" numOctaves="4" seed="23"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.2 1.2 0 0 -1.12"/></filter>
+  <filter id="grain2" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".88" numOctaves="2" seed="38"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="2.6" intercept="-.8"/><feFuncG type="linear" slope="2.6" intercept="-.8"/><feFuncB type="linear" slope="2.6" intercept="-.8"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>
+  <linearGradient id="bg" x1="0" y1="0" x2=".5" y2="1"><stop offset="0" stop-color="#12185A"/><stop offset=".55" stop-color="#4A0E44"/><stop offset="1" stop-color="#7A1238"/></linearGradient>
+  <radialGradient id="vig" cx="50%" cy="50%" r="72%"><stop offset=".55" stop-color="#02021A" stop-opacity="0"/><stop offset="1" stop-color="#02021A" stop-opacity=".55"/></radialGradient>
+</defs>`;
+
+function scene(){
+  let g=R(0,0,W,H,0,'url(#bg)');
+  // Stars and a warm crimson glow behind the tree.
+  const r=rng(77);
+  for(let i=0;i<90;i++){const x=r()*W,y=r()*700,s=1+r()*3;g+=C(x,y,s,'#fff',{opacity:.25+.6*r()});}
+  g+=glow(690,700,720,'#FF5A48',.5)+glow(690,640,420,'#FF74E6',.25);
+  // Paper-cut hills with soft shadows.
+  const layer=(seed,base,amp,wave,col)=>`<path d="${ridgeW(seed,base+8,amp,wave)}" fill="#000" opacity=".4" filter="url(#sd)"/><path d="${ridgeW(seed,base,amp,wave)}" fill="${col}"/>`;
+  g+=layer(2,1010,30,180,'#5A1040')+layer(7,1110,24,140,'#801642');
+  // The tree, paper-cut with a soft halftone, scaled into the frame.
+  const tree=`<g filter="url(#htSoft)"><path d="M-110 20 C-60 -130 -80 -300 -70 -460 L80 -460 C80 -300 70 -130 124 20Z" fill="#4A1038"/><path d="M-60 -400 C-130 -400 -220 -370 -290 -272 C-220 -336 -120 -350 -40 -350Z" fill="#4A1038"/>
+    <circle cy="-610" r="280" fill="#5A1060"/><circle cx="-250" cy="-520" r="150" fill="#5A1060"/><circle cx="250" cy="-520" r="160" fill="#5A1060"/><circle cx="-110" cy="-680" r="150" fill="#AA1C60"/><circle cx="130" cy="-670" r="165" fill="#AA1C60"/><circle cy="-520" r="170" fill="#F2404E"/></g>`;
+  const TX=700,TY=1200,TS=.86;
+  g+=`<g transform="translate(${TX} ${TY}) scale(${TS})">${tree}</g>`;
+  [[-260,-540],[-140,-700],[10,-790],[140,-690],[280,-560],[-40,-520],[90,-480],[-120,-470],[300,-430]].forEach((f,i)=>{const x=TX+f[0]*TS,y=TY+f[1]*TS;g+=glow(x,y,66,'#FFB63C',.85)+C(x,y,19,'#FFB63C')+C(x-6,y-7,6,'#fff',{opacity:.6});});
+  // The serpent, wound down the trunk.
+  g+=`<g transform="translate(${TX} ${TY}) scale(${TS}) translate(-1330 -940)">${glow(1220,620,300,'#FF74E6',.4)}${snake(SNK,1,t,{w:21,head:1.4})}</g>`;
+  // Front ground.
+  g+=layer(13,1235,14,150,'#C83A4E');
+  // Adam and Eve, glowing, with sticker borders. She holds the fruit.
+  g+=glow(330,1100,330,'#FFA48C',.45);
+  g+=chubby(175,1300,1.5,{f:false,tunic:'#FFC24C',tunic2:'#E0623C',aura:'#FFA48C',auraOp:.45,filter:'htSoft'});
+  g+=chubby(420,1300,1.48,{f:true,reach:1,tunic:'#7CFFE6',tunic2:'#2E9AD8',aura:'#FFA48C',auraOp:.45,filter:'htSoft'});
+  const fx=420+116*1.48+4,fy=1300-172*1.48-40;
+  g+=glow(fx,fy,150,'#FFD45E',.95)+C(fx,fy,38,'#FFD45E')+C(fx-12,fy-13,11,'#fff',{opacity:.65});
+  // Annotation: coral circle on the fruit.
+  g+=mark(scribble(fx,fy,72,66,8),1,CORAL,8);
+  g+=label(140,800,'ONE RULE',{size:32,bg:CORAL,rot:-3});
+  g+=P(`M370 835 Q470 850 ${fx-58} ${fy-40}`,'none',{stroke:CORAL,'stroke-width':7});
+  g+=P(`M${fx-84} ${fy-54} L${fx-58} ${fy-40} L${fx-76} ${fy-16}`,'none',{stroke:CORAL,'stroke-width':7});
+  return g;
+}
+function title(){
+  let g='';
+  // Three torn strips, slightly off-axis, taped on.
+  const s1='How everything',s2='went wrong',s3='in Eden';
+  const a=70,b=124,c=84;
+  const w1=tw(s1,a,'Georgia',700)+90,w2=tw(s2,b,'Georgia',700)+100,w3=tw(s3,c,'Georgia',700)+90;
+  g+=`<g transform="rotate(-2.5 ${W/2} 120)">${strip(70,58,w1,116,3,'#F6EFDC',{ax:12,ay:4})}${T(115,140,s1,{size:a,font:'Georgia',weight:700,fill:INK})}${tape(70+w1-30,60,130,9)}</g>`;
+  g+=`<g transform="rotate(1.5 ${W/2} 260)">${strip(50,186,w2,164,5,'#F6EFDC',{ax:14,ay:5})}${S.highlight(98,206,tw(s2,b,'Georgia',700)+8,130,1,YEL)}${T(100,310,s2,{size:b,font:'Georgia',weight:700,fill:INK})}${tape(80,186,140,-10)}</g>`;
+  g+=`<g transform="rotate(-1.5 ${W/2} 420)">${strip(520,370,w3,124,9,'#F6EFDC',{ax:12,ay:4})}${T(565,458,s3,{size:c,font:'Georgia',weight:700,fill:INK})}</g>`;
+  // Coral marker under "wrong".
+  const wx=100+tw('went ',b,'Georgia',700),ww=tw('wrong',b,'Georgia',700);
+  g+=`<g transform="rotate(1.5 ${W/2} 260)">${mark(`M${wx} 334 Q${wx+ww/2} 350 ${wx+ww} 330`,1,CORAL,9)}</g>`;
+  g+=label(80,392,'GENESIS 1–3',{size:34,rot:-2});
+  g+=label(80,452,'THE CREATION AND THE FALL',{size:24,rot:-2,bg:'#14141A'});
+  return g;
+}
+document.querySelector('svg').innerHTML=paperDefs(t)+defs+scene()+title()+
+  R(0,0,W,H,0,'url(#vig)')+
+  `<rect width="${W}" height="${H}" filter="url(#tex2)" opacity=".2" style="mix-blend-mode:multiply"/>`+
+  `<rect width="${W}" height="${H}" filter="url(#texL2)" opacity=".28" style="mix-blend-mode:screen"/>`+
+  `<rect width="${W}" height="${H}" filter="url(#grain2)" opacity=".26" style="mix-blend-mode:overlay"/>`;
+window.ready=true;
+</script>

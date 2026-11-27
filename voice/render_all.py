@@ -28,7 +28,15 @@ BLOCK = re.compile(r"^## (?P<clip>\S+)\s+Preset: `(?P<preset>\w+)`.*?^> (?P<text
 
 
 def read_clips() -> dict[str, tuple[str, str]]:
-    source = (VOICE_DIR / "narration.md").read_text(encoding="utf-8")
+    path = VOICE_DIR / "narration.md"
+    if "{{ESV " in path.read_text(encoding="utf-8"):
+        # Scripture is kept as references; the filled, trimmed copy holds the ESV text.
+        path = VOICE_DIR / "narration.esv.md"
+        if not path.exists():
+            sys.exit("narration.md has ESV references. Run ../scripts/fill_esv.py narration.md and trim the verses first.")
+    source = path.read_text(encoding="utf-8")
+    if "{{ESV " in source:
+        sys.exit(f"{path.name} still has unfilled ESV references.")
     return {m["clip"]: (m["preset"], m["text"].strip()) for m in BLOCK.finditer(source)}
 
 

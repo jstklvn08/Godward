@@ -1,0 +1,79 @@
+[
+ {
+  "scene": 1,
+  "title": "In the beginning",
+  "start": 0.0,
+  "end": 7.64,
+  "seconds": 7.64
+ },
+ {
+  "scene": 2,
+  "title": "Six days",
+  "start": 8.44,
+  "end": 29.76,
+  "seconds": 21.32
+ },
+ {
+  "scene": 3,
+  "title": "In his image",
+  "start": 30.56,
+  "end": 47.17,
+  "seconds": 16.61
+ },
+ {
+  "scene": 4,
+  "title": "Dust and breath",
+  "start": 47.97,
+  "end": 59.95,
+  "seconds": 11.98
+ },
+ {
+  "scene": 5,
+  "title": "Two trees",
+  "start": 60.75,
+  "end": 73.17,
+  "seconds": 12.42
+ },
+ {
+  "scene": 6,
+  "title": "Not alone",
+  "start": 73.97,
+  "end": 95.02,
+  "seconds": 21.05
+ },
+ {
+  "scene": 7,
+  "title": "The serpent",
+  "start": 95.82,
+  "end": 116.48,
+  "seconds": 20.66
+ },
+ {
+  "scene": 8,
+  "title": "The fruit",
+  "start": 117.28,
+  "end": 135.58,
+  "seconds": 18.3
+ },
+ {
+  "scene": 9,
+  "title": "Where are you?",
+  "start": 136.38,
+  "end": 152.59,
+  "seconds": 16.21
+ },
+ {
+  "scene": 10,
+  "title": "The judgment",
+  "start": 153.39,
+  "end": 178.2,
+  "seconds": 24.81
+ },
+ {
+  "scene": 11,
+  "title": "Exile",
+  "start": 179.0,
+  "end": 197.58,
+  "seconds": 18.58
+ }
+]
